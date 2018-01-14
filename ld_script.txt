@@ -488,7 +488,12 @@ SECTIONS {
         src/battle/battle_controller_linkopponent.o(.rodata);
         data/battle_moves.o(.rodata);
         src/battle/battle_util.o(.rodata);
-        src/pokemon/pokemon_data.o(.rodata);
+        src/pokemon/pokemon_1.o(.rodata);
+        src/pokemon/pokemon_1.o(.data); /* gEvolutionTable needs to be non-const to match */
+        src/battle/calculate_base_damage.o(.rodata);
+        src/pokemon/pokemon_2.o(.rodata);
+        src/pokemon/pokemon_item_effect.o(.rodata);
+        src/pokemon/pokemon_3.o(.rodata);
         . = ALIGN(4);
         src/engine/trig.o(.rodata);
         src/engine/util.o(.rodata);
@@ -521,7 +526,6 @@ SECTIONS {
         src/engine/tileset_anim.o(.rodata);
         src/engine/palette.o(.rodata);
         src/engine/sound.o(.rodata);
-        data/battle_anim.o(.rodata);
         src/battle/battle_anim.o(.rodata);
         src/rom_8077ABC.o(.rodata);
         data/map_events.o(.rodata);
@@ -548,7 +552,7 @@ SECTIONS {
         src/pokemon/pokemon_summary_screen.o(.rodata);
         src/field/fldeff_cut.o(.rodata);
         src/field/item_menu.o(.rodata);
-        data/battle_anim_80A7E7C.o(.rodata);
+        src/battle/battle_anim_80A7E7C.o(.rodata);
         src/field/item.o(.rodata);
         src/debug/matsuda_debug_menu.o(.rodata);
         data/contest.o(.rodata);
