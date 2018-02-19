@@ -1,12 +1,10 @@
 #include "global.h"
-#include "field_map_obj.h"
+#include "event_object_movement.h"
 #include "berry.h"
 #include "event_data.h"
 #include "field_camera.h"
 #include "field_effect.h"
 #include "field_effect_helpers.h"
-#include "field_ground_effect.h"
-#include "field_map_obj_helpers.h"
 #include "field_player_avatar.h"
 #include "fieldmap.h"
 #include "palette.h"
@@ -17,6 +15,8 @@
 #include "constants/maps.h"
 #include "constants/map_objects.h"
 #include "trainer_see.h"
+
+// this file was known as evobjmv.c in Game Freak's original source
 
 // rodata
 
@@ -1908,7 +1908,7 @@ static u16 gUnknown_030005A6;
 
 struct MapObject gMapObjects[16];
 #if DEBUG
-u8 gUnknown_Debug_03004BC0[4];  // unknown type
+u8 gUnknown_Debug_03004BC0;
 #endif
 
 void npc_clear_ids_and_state(struct MapObject *mapObj)
@@ -1920,48 +1920,16 @@ void npc_clear_ids_and_state(struct MapObject *mapObj)
     mapObj->mapobj_unk_1C = 0xFF;
 }
 
-#if DEBUG
-__attribute__((naked))
-void npcs_clear_ids_and_state()
-{
-    asm(
-        "	push	{r4, r5, lr}\n"
-        "	mov	r4, #0x0\n"
-        "	ldr	r5, ._2         @ gMapObjects\n"
-        "._1:\n"
-        "	lsl	r0, r4, #0x3\n"
-        "	add	r0, r0, r4\n"
-        "	lsl	r0, r0, #0x2\n"
-        "	add	r0, r0, r5\n"
-        "	bl	npc_clear_ids_and_state\n"
-        "	add	r0, r4, #1\n"
-        "	lsl	r0, r0, #0x18\n"
-        "	lsr	r4, r0, #0x18\n"
-        "	cmp	r4, #0xf\n"
-        "	bls	._1	@cond_branch\n"
-        "	ldr	r1, ._2 + 4     @ gUnknown_Debug_03004BC0\n"
-        "	mov	r0, #0x0\n"
-        "	strb	r0, [r1]\n"
-        "	pop	{r4, r5}\n"
-        "	pop	{r0}\n"
-        "	bx	r0\n"
-        "._3:\n"
-        "	.align	2, 0\n"
-        "._2:\n"
-        "	.word	gMapObjects\n"
-        "	.word	gUnknown_Debug_03004BC0\n"
-        "\n"
-    );
-}
-#else
 void npcs_clear_ids_and_state(void)
 {
     u8 i;
 
     for (i = 0; i < 16; i++)
         npc_clear_ids_and_state(&gMapObjects[i]);
-}
+#if DEBUG
+	gUnknown_Debug_03004BC0 = 0;
 #endif
+}
 
 void sub_805AA98(void)
 {
@@ -2004,7 +1972,7 @@ u8 sub_805AB54(void)
 
 u8 GetFieldObjectIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup)
 {
-    if (localId <= 0xFE)
+    if (localId < 255)
         return GetFieldObjectIdByLocalIdAndMapInternal(localId, mapNum, mapGroup);
     else
         return GetFieldObjectIdByLocalId(localId);
@@ -2055,190 +2023,80 @@ u8 GetFieldObjectIdByLocalId(u8 localId)
     return 16;
 }
 
-#if DEBUG
-__attribute__((naked))
-u8 InitFieldObjectStateFromTemplate(struct MapObjectTemplate *template, u8 b, u8 c)
+// The bitfield at 0x18 needs to be u16 for this function to match
+struct MapObjectAlt
 {
-    asm(
-        "	push	{r4, r5, r6, r7, lr}\n"
-        "	mov	r7, r9\n"
-        "	mov	r6, r8\n"
-        "	push	{r6, r7}\n"
-        "	add	sp, sp, #0xfffffffc\n"
-        "	add	r5, r0, #0\n"
-        "	lsl	r1, r1, #0x18\n"
-        "	lsr	r6, r1, #0x18\n"
-        "	lsl	r2, r2, #0x18\n"
-        "	lsr	r7, r2, #0x18\n"
-        "	ldrb	r0, [r5]\n"
-        "	add	r1, r6, #0\n"
-        "	add	r2, r7, #0\n"
-        "	mov	r3, sp\n"
-        "	bl	GetAvailableFieldObjectSlot\n"
-        "	lsl	r0, r0, #0x18\n"
-        "	cmp	r0, #0\n"
-        "	beq	._35	@cond_branch\n"
-        "	mov	r0, #0x10\n"
-        "	b	._36\n"
-        "._35:\n"
-        "	mov	r0, sp\n"
-        "	ldrb	r1, [r0]\n"
-        "	lsl	r0, r1, #0x3\n"
-        "	add	r0, r0, r1\n"
-        "	lsl	r0, r0, #0x2\n"
-        "	ldr	r1, ._40        @ gMapObjects\n"
-        "	add	r4, r0, r1\n"
-        "	add	r0, r4, #0\n"
-        "	bl	npc_clear_ids_and_state\n"
-        "	ldrh	r3, [r5, #0x4]\n"
-        "	add	r3, r3, #0x7\n"
-        "	lsl	r3, r3, #0x10\n"
-        "	lsr	r3, r3, #0x10\n"
-        "	ldrh	r2, [r5, #0x6]\n"
-        "	add	r2, r2, #0x7\n"
-        "	lsl	r2, r2, #0x10\n"
-        "	lsr	r2, r2, #0x10\n"
-        "	ldrb	r0, [r4]\n"
-        "	mov	r1, #0x1\n"
-        "	orr	r0, r0, r1\n"
-        "	mov	r1, #0x4\n"
-        "	orr	r0, r0, r1\n"
-        "	strb	r0, [r4]\n"
-        "	ldrb	r0, [r5, #0x1]\n"
-        "	strb	r0, [r4, #0x5]\n"
-        "	ldrb	r0, [r5, #0x9]\n"
-        "	strb	r0, [r4, #0x6]\n"
-        "	ldrb	r0, [r5]\n"
-        "	strb	r0, [r4, #0x8]\n"
-        "	strb	r6, [r4, #0x9]\n"
-        "	strb	r7, [r4, #0xa]\n"
-        "	strh	r3, [r4, #0xc]\n"
-        "	strh	r2, [r4, #0xe]\n"
-        "	strh	r3, [r4, #0x10]\n"
-        "	strh	r2, [r4, #0x12]\n"
-        "	strh	r3, [r4, #0x14]\n"
-        "	strh	r2, [r4, #0x16]\n"
-        "	ldrb	r0, [r5, #0x8]\n"
-        "	mov	r7, #0xf\n"
-        "	add	r1, r7, #0\n"
-        "	and	r1, r1, r0\n"
-        "	ldrb	r2, [r4, #0xb]\n"
-        "	mov	r0, #0x10\n"
-        "	neg	r0, r0\n"
-        "	mov	r8, r0\n"
-        "	and	r0, r0, r2\n"
-        "	orr	r0, r0, r1\n"
-        "	strb	r0, [r4, #0xb]\n"
-        "	ldrb	r1, [r5, #0x8]\n"
-        "	lsl	r1, r1, #0x4\n"
-        "	and	r0, r0, r7\n"
-        "	orr	r0, r0, r1\n"
-        "	strb	r0, [r4, #0xb]\n"
-        "	ldrb	r1, [r5, #0xa]\n"
-        "	lsl	r1, r1, #0x1c\n"
-        "	mov	r0, #0xf\n"
-        "	mov	r9, r0\n"
-        "	lsr	r1, r1, #0x1c\n"
-        "	ldrb	r2, [r4, #0x19]\n"
-        "	mov	r0, r8\n"
-        "	and	r0, r0, r2\n"
-        "	orr	r0, r0, r1\n"
-        "	strb	r0, [r4, #0x19]\n"
-        "	ldrb	r1, [r5, #0xa]\n"
-        "	lsr	r1, r1, #0x4\n"
-        "	lsl	r1, r1, #0x4\n"
-        "	and	r0, r0, r7\n"
-        "	orr	r0, r0, r1\n"
-        "	strb	r0, [r4, #0x19]\n"
-        "	ldrh	r0, [r5, #0xc]\n"
-        "	strb	r0, [r4, #0x7]\n"
-        "	ldrh	r0, [r5, #0xe]\n"
-        "	strb	r0, [r4, #0x1d]\n"
-        "	ldr	r1, ._40 + 4    @ gUnknown_0836DC09\n"
-        "	ldrb	r0, [r5, #0x9]\n"
-        "	add	r0, r0, r1\n"
-        "	ldrb	r1, [r0]\n"
-        "	add	r0, r4, #0\n"
-        "	add	r0, r0, #0x20\n"
-        "	strb	r1, [r0]\n"
-        "	ldrb	r1, [r0]\n"
-        "	add	r0, r4, #0\n"
-        "	bl	FieldObjectSetDirection\n"
-        "	add	r0, r4, #0\n"
-        "	bl	FieldObjectHandleDynamicGraphicsId\n"
-        "	ldr	r1, ._40 + 8    @ gUnknown_0836DBBC\n"
-        "	ldrb	r0, [r4, #0x6]\n"
-        "	add	r0, r0, r1\n"
-        "	ldrb	r0, [r0]\n"
-        "	cmp	r0, #0\n"
-        "	beq	._39	@cond_branch\n"
-        "	ldrb	r2, [r4, #0x19]\n"
-        "	add	r0, r7, #0\n"
-        "	and	r0, r0, r2\n"
-        "	cmp	r0, #0\n"
-        "	bne	._38	@cond_branch\n"
-        "	lsl	r0, r2, #0x1c\n"
-        "	lsr	r0, r0, #0x1c\n"
-        "	add	r0, r0, #0x1\n"
-        "	mov	r1, r9\n"
-        "	and	r0, r0, r1\n"
-        "	mov	r1, r8\n"
-        "	and	r1, r1, r2\n"
-        "	orr	r1, r1, r0\n"
-        "	strb	r1, [r4, #0x19]\n"
-        "._38:\n"
-        "	ldrb	r2, [r4, #0x19]\n"
-        "	mov	r0, #0xf0\n"
-        "	and	r0, r0, r2\n"
-        "	cmp	r0, #0\n"
-        "	bne	._39	@cond_branch\n"
-        "	lsr	r1, r2, #0x4\n"
-        "	add	r1, r1, #0x1\n"
-        "	lsl	r1, r1, #0x4\n"
-        "	add	r0, r7, #0\n"
-        "	and	r0, r0, r2\n"
-        "	orr	r0, r0, r1\n"
-        "	strb	r0, [r4, #0x19]\n"
-        "._39:\n"
-        "	ldr	r1, ._40 + 12   @ gUnknown_Debug_03004BC0\n"
-        "	ldrb	r0, [r1]\n"
-        "	add	r0, r0, #0x1\n"
-        "	strb	r0, [r1]\n"
-        "	mov	r0, sp\n"
-        "	ldrb	r0, [r0]\n"
-        "._36:\n"
-        "	add	sp, sp, #0x4\n"
-        "	pop	{r3, r4}\n"
-        "	mov	r8, r3\n"
-        "	mov	r9, r4\n"
-        "	pop	{r4, r5, r6, r7}\n"
-        "	pop	{r1}\n"
-        "	bx	r1\n"
-        "._41:\n"
-        "	.align	2, 0\n"
-        "._40:\n"
-        "	.word	gMapObjects\n"
-        "	.word	gUnknown_0836DC09\n"
-        "	.word	gUnknown_0836DBBC\n"
-        "	.word	gUnknown_Debug_03004BC0\n"
-        "\n"
-    );
-}
-#else
-#ifdef NONMATCHING
-u8 InitFieldObjectStateFromTemplate(struct MapObjectTemplate *template, u8 b, u8 c)
-{
-    struct MapObject *mapObj;  //TODO: resolve the mapobj_unk_19b weirdness
-    u8 var;
-    u16 r3;
-    u16 r2;
+    /*0x00*/ u32 active:1;
+             u32 mapobj_bit_1:1;
+             u32 mapobj_bit_2:1;
+             u32 mapobj_bit_3:1;
+             u32 mapobj_bit_4:1;
+             u32 mapobj_bit_5:1;
+             u32 mapobj_bit_6:1;
+             u32 mapobj_bit_7:1;
+    /*0x01*/ u32 mapobj_bit_8:1;
+             u32 mapobj_bit_9:1;
+             u32 mapobj_bit_10:1;
+             u32 mapobj_bit_11:1;
+             u32 mapobj_bit_12:1;
+             u32 mapobj_bit_13:1;
+             u32 mapobj_bit_14:1;
+             u32 mapobj_bit_15:1;
+    /*0x02*/ u32 mapobj_bit_16:1;
+             u32 mapobj_bit_17:1;
+             u32 mapobj_bit_18:1;
+             u32 mapobj_bit_19:1;
+             u32 mapobj_bit_20:1;
+             u32 mapobj_bit_21:1;
+             u32 mapobj_bit_22:1;
+             u32 mapobj_bit_23:1;
+    /*0x03*/ u32 mapobj_bit_24:1;
+             u32 mapobj_bit_25:1;
+             u32 mapobj_bit_26:1;
+             u32 mapobj_bit_27:1;
+             u32 mapobj_bit_28:1;
+             u32 mapobj_bit_29:1;
+             u32 mapobj_bit_30:1;
+             u32 mapobj_bit_31:1;
+    /*0x04*/ u8 spriteId;
+    /*0x05*/ u8 graphicsId;
+    /*0x06*/ u8 animPattern;
+    /*0x07*/ u8 trainerType;
+    /*0x08*/ u8 localId;
+    /*0x09*/ u8 mapNum;
+    /*0x0A*/ u8 mapGroup;
+    /*0x0B*/ u8 mapobj_unk_0B_0:4;
+             u8 elevation:4;
+    /*0x0C*/ struct Coords16 coords1;
+    /*0x10*/ struct Coords16 coords2;
+    /*0x14*/ struct Coords16 coords3;
+    /*0x18*/ u16 mapobj_unk_18:4;  //current direction?
+    /*0x18*/ u16 placeholder18:4;
+    /*0x19*/ u16 rangeX:4;
+    /*0x19*/ u16 rangeY:4;
+    /*0x1A*/ u8 mapobj_unk_1A;
+    /*0x1B*/ u8 mapobj_unk_1B;
+    /*0x1C*/ u8 mapobj_unk_1C;
+    /*0x1D*/ u8 trainerRange_berryTreeId;
+    /*0x1E*/ u8 mapobj_unk_1E;
+    /*0x1F*/ u8 mapobj_unk_1F;
+    /*0x20*/ u8 mapobj_unk_20;
+    /*0x21*/ u8 mapobj_unk_21;
+    /*0x22*/ u8 animId;
+    /*size = 0x24*/
+};
 
-    //asm("nop"::"r"(b));
+u8 InitFieldObjectStateFromTemplate(struct MapObjectTemplate *template, u8 b, u8 c)
+{
+    struct MapObjectAlt *mapObj;  //TODO: resolve the mapobj_unk_19b weirdness
+    u8 var;
+    s16 r3;
+    s16 r2;
+
     if (GetAvailableFieldObjectSlot(template->localId, b, c, &var) != 0)
         return 16;
-    //_0805ACCE
-    mapObj = &gMapObjects[var];
-    npc_clear_ids_and_state(mapObj);
+    mapObj = (void *)&gMapObjects[var];
+    npc_clear_ids_and_state((struct MapObject *)mapObj);
     r3 = template->x + 7;
     r2 = template->y + 7;
     mapObj->active = TRUE;
@@ -2247,6 +2105,7 @@ u8 InitFieldObjectStateFromTemplate(struct MapObjectTemplate *template, u8 b, u8
     mapObj->animPattern = template->movementType;
     mapObj->localId = template->localId;
     mapObj->mapNum = b;
+	asm("":::"r6");
     mapObj->mapGroup = c;
     mapObj->coords1.x = r3;
     mapObj->coords1.y = r2;
@@ -2256,186 +2115,26 @@ u8 InitFieldObjectStateFromTemplate(struct MapObjectTemplate *template, u8 b, u8
     mapObj->coords3.y = r2;
     mapObj->mapobj_unk_0B_0 = template->elevation;
     mapObj->elevation = template->elevation;
-    mapObj->range.as_nybbles.x = template->unkA_0;
-    mapObj->range.as_nybbles.y = template->unkA_4;
+    mapObj->rangeX = template->unkA_0;
+    mapObj->rangeY = template->unkA_4;
     mapObj->trainerType = template->unkC;
     mapObj->trainerRange_berryTreeId = template->unkE;
     mapObj->mapobj_unk_20 = gUnknown_0836DC09[template->movementType];
     FieldObjectSetDirection((struct MapObject *)mapObj, mapObj->mapobj_unk_20);
-    FieldObjectHandleDynamicGraphicsId(mapObj);
-    //asm("":::"r5","r6");
+    asm("":::"r5","r6");
+	FieldObjectHandleDynamicGraphicsId((struct MapObject *)mapObj);
     if (gUnknown_0836DBBC[mapObj->animPattern] != 0)
     {
-        if (mapObj->range.as_nybbles.x == 0)
-            mapObj->range.as_nybbles.x++;
-        if (mapObj->range.as_nybbles.y == 0)
-            mapObj->range.as_nybbles.y++;
+        if (mapObj->rangeX == 0)
+            mapObj->rangeX++;
+        if (mapObj->rangeY == 0)
+            mapObj->rangeY++;
     }
+#if DEBUG
+	gUnknown_Debug_03004BC0++;
+#endif
     return var;
 }
-#else
-__attribute__((naked))
-u8 InitFieldObjectStateFromTemplate(struct MapObjectTemplate *template, u8 b, u8 c)
-{
-    asm(".syntax unified\n\
-    push {r4-r7,lr}\n\
-    mov r7, r9\n\
-    mov r6, r8\n\
-    push {r6,r7}\n\
-    sub sp, 0x4\n\
-    adds r5, r0, 0\n\
-    lsls r1, 24\n\
-    lsrs r6, r1, 24\n\
-    lsls r2, 24\n\
-    lsrs r7, r2, 24\n\
-    ldrb r0, [r5]\n\
-    adds r1, r6, 0\n\
-    adds r2, r7, 0\n\
-    mov r3, sp\n\
-    bl GetAvailableFieldObjectSlot\n\
-    lsls r0, 24\n\
-    cmp r0, 0\n\
-    beq _0805ACCE\n\
-    movs r0, 0x10\n\
-    b _0805ADC2\n\
-_0805ACCE:\n\
-    mov r0, sp\n\
-    ldrb r1, [r0]\n\
-    lsls r0, r1, 3\n\
-    adds r0, r1\n\
-    lsls r0, 2\n\
-    ldr r1, _0805ADD0 @ =gMapObjects\n\
-    adds r4, r0, r1\n\
-    adds r0, r4, 0\n\
-    bl npc_clear_ids_and_state\n\
-    ldrh r3, [r5, 0x4]\n\
-    adds r3, 0x7\n\
-    lsls r3, 16\n\
-    lsrs r3, 16\n\
-    ldrh r2, [r5, 0x6]\n\
-    adds r2, 0x7\n\
-    lsls r2, 16\n\
-    lsrs r2, 16\n\
-    ldrb r0, [r4]\n\
-    movs r1, 0x1\n\
-    orrs r0, r1\n\
-    movs r1, 0x4\n\
-    orrs r0, r1\n\
-    strb r0, [r4]\n\
-    ldrb r0, [r5, 0x1]\n\
-    strb r0, [r4, 0x5]\n\
-    ldrb r0, [r5, 0x9]\n\
-    strb r0, [r4, 0x6]\n\
-    ldrb r0, [r5]\n\
-    strb r0, [r4, 0x8]\n\
-    strb r6, [r4, 0x9]\n\
-    strb r7, [r4, 0xA]\n\
-    strh r3, [r4, 0xC]\n\
-    strh r2, [r4, 0xE]\n\
-    strh r3, [r4, 0x10]\n\
-    strh r2, [r4, 0x12]\n\
-    strh r3, [r4, 0x14]\n\
-    strh r2, [r4, 0x16]\n\
-    ldrb r0, [r5, 0x8]\n\
-    movs r7, 0xF\n\
-    adds r1, r7, 0\n\
-    ands r1, r0\n\
-    ldrb r2, [r4, 0xB]\n\
-    movs r0, 0x10\n\
-    negs r0, r0\n\
-    mov r8, r0\n\
-    ands r0, r2\n\
-    orrs r0, r1\n\
-    strb r0, [r4, 0xB]\n\
-    ldrb r1, [r5, 0x8]\n\
-    lsls r1, 4\n\
-    ands r0, r7\n\
-    orrs r0, r1\n\
-    strb r0, [r4, 0xB]\n\
-    ldrb r1, [r5, 0xA]\n\
-    lsls r1, 28\n\
-    movs r0, 0xF\n\
-    mov r9, r0\n\
-    lsrs r1, 28\n\
-    ldrb r2, [r4, 0x19]\n\
-    mov r0, r8\n\
-    ands r0, r2\n\
-    orrs r0, r1\n\
-    strb r0, [r4, 0x19]\n\
-    ldrb r1, [r5, 0xA]\n\
-    lsrs r1, 4\n\
-    lsls r1, 4\n\
-    ands r0, r7\n\
-    orrs r0, r1\n\
-    strb r0, [r4, 0x19]\n\
-    ldrh r0, [r5, 0xC]\n\
-    strb r0, [r4, 0x7]\n\
-    ldrh r0, [r5, 0xE]\n\
-    strb r0, [r4, 0x1D]\n\
-    ldr r1, _0805ADD4 @ =gUnknown_0836DC09\n\
-    ldrb r0, [r5, 0x9]\n\
-    adds r0, r1\n\
-    ldrb r1, [r0]\n\
-    adds r0, r4, 0\n\
-    adds r0, 0x20\n\
-    strb r1, [r0]\n\
-    ldrb r1, [r0]\n\
-    adds r0, r4, 0\n\
-    bl FieldObjectSetDirection\n\
-    adds r0, r4, 0\n\
-    bl FieldObjectHandleDynamicGraphicsId\n\
-    ldr r1, _0805ADD8 @ =gUnknown_0836DBBC\n\
-    ldrb r0, [r4, 0x6]\n\
-    adds r0, r1\n\
-    ldrb r0, [r0]\n\
-    cmp r0, 0\n\
-    beq _0805ADBE\n\
-    ldrb r2, [r4, 0x19]\n\
-    adds r0, r7, 0\n\
-    ands r0, r2\n\
-    cmp r0, 0\n\
-    bne _0805ADA6\n\
-    lsls r0, r2, 28\n\
-    lsrs r0, 28\n\
-    adds r0, 0x1\n\
-    mov r1, r9\n\
-    ands r0, r1\n\
-    mov r1, r8\n\
-    ands r1, r2\n\
-    orrs r1, r0\n\
-    strb r1, [r4, 0x19]\n\
-_0805ADA6:\n\
-    ldrb r2, [r4, 0x19]\n\
-    movs r0, 0xF0\n\
-    ands r0, r2\n\
-    cmp r0, 0\n\
-    bne _0805ADBE\n\
-    lsrs r1, r2, 4\n\
-    adds r1, 0x1\n\
-    lsls r1, 4\n\
-    adds r0, r7, 0\n\
-    ands r0, r2\n\
-    orrs r0, r1\n\
-    strb r0, [r4, 0x19]\n\
-_0805ADBE:\n\
-    mov r0, sp\n\
-    ldrb r0, [r0]\n\
-_0805ADC2:\n\
-    add sp, 0x4\n\
-    pop {r3,r4}\n\
-    mov r8, r3\n\
-    mov r9, r4\n\
-    pop {r4-r7}\n\
-    pop {r1}\n\
-    bx r1\n\
-    .align 2, 0\n\
-_0805ADD0: .4byte gMapObjects\n\
-_0805ADD4: .4byte gUnknown_0836DC09\n\
-_0805ADD8: .4byte gUnknown_0836DBBC\n\
-    .syntax divided\n");
-}
-#endif
-#endif
 
 u8 sub_805ADDC(u8 localId)
 {
@@ -2475,38 +2174,14 @@ u8 GetAvailableFieldObjectSlot(u16 a, u8 b, u8 c, u8 *d)
     return 0;
 }
 
-#if DEBUG
-__attribute__((naked))
-void RemoveFieldObject(struct MapObject *mapObject)
-{
-    asm(
-        "	push	{lr}\n"
-        "	ldrb	r2, [r0]\n"
-        "	mov	r1, #0x2\n"
-        "	neg	r1, r1\n"
-        "	and	r1, r1, r2\n"
-        "	strb	r1, [r0]\n"
-        "	bl	RemoveFieldObjectInternal\n"
-        "	ldr	r1, ._72        @ gUnknown_Debug_03004BC0\n"
-        "	ldrb	r0, [r1]\n"
-        "	sub	r0, r0, #0x1\n"
-        "	strb	r0, [r1]\n"
-        "	pop	{r0}\n"
-        "	bx	r0\n"
-        "._73:\n"
-        "	.align	2, 0\n"
-        "._72:\n"
-        "	.word	gUnknown_Debug_03004BC0\n"
-        "\n"
-    );
-}
-#else
 void RemoveFieldObject(struct MapObject *mapObject)
 {
     mapObject->active = FALSE;
     RemoveFieldObjectInternal(mapObject);
-}
+#if DEBUG
+	gUnknown_Debug_03004BC0--;
 #endif
+}
 
 void RemoveFieldObjectByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup)
 {
@@ -2539,226 +2214,6 @@ void npc_hide_all_but_player(void)
     }
 }
 
-#if DEBUG
-__attribute__((naked))
-u8 sub_805AFCC(struct MapObjectTemplate *mapObjTemplate, struct SpriteTemplate *sprTemplate, u8 c, u8 d, s16 e, s16 f)
-{
-    asm(
-        "	push	{r4, r5, r6, r7, lr}\n"
-        "	mov	r7, sl\n"
-        "	mov	r6, r9\n"
-        "	mov	r5, r8\n"
-        "	push	{r5, r6, r7}\n"
-        "	add	r7, r1, #0\n"
-        "	add	r1, r2, #0\n"
-        "	add	r2, r3, #0\n"
-        "	ldr	r3, [sp, #0x20]\n"
-        "	ldr	r4, [sp, #0x24]\n"
-        "	lsl	r1, r1, #0x18\n"
-        "	lsr	r1, r1, #0x18\n"
-        "	lsl	r2, r2, #0x18\n"
-        "	lsr	r2, r2, #0x18\n"
-        "	lsl	r3, r3, #0x10\n"
-        "	lsr	r3, r3, #0x10\n"
-        "	mov	r9, r3\n"
-        "	lsl	r4, r4, #0x10\n"
-        "	lsr	r4, r4, #0x10\n"
-        "	mov	sl, r4\n"
-        "	bl	InitFieldObjectStateFromTemplate\n"
-        "	lsl	r0, r0, #0x18\n"
-        "	lsr	r0, r0, #0x18\n"
-        "	mov	r8, r0\n"
-        "	cmp	r0, #0x10\n"
-        "	bne	._83	@cond_branch\n"
-        "	mov	r0, #0x10\n"
-        "	b	._92\n"
-        "._83:\n"
-        "	mov	r0, r8\n"
-        "	lsl	r4, r0, #0x3\n"
-        "	add	r0, r4, r0\n"
-        "	lsl	r0, r0, #0x2\n"
-        "	ldr	r1, ._87        @ gMapObjects\n"
-        "	add	r5, r0, r1\n"
-        "	ldrb	r0, [r5, #0x5]\n"
-        "	bl	GetFieldObjectGraphicsInfo\n"
-        "	add	r6, r0, #0\n"
-        "	ldrb	r1, [r6, #0xc]\n"
-        "	mov	r0, #0xf\n"
-        "	and	r0, r0, r1\n"
-        "	cmp	r0, #0\n"
-        "	bne	._85	@cond_branch\n"
-        "	ldrh	r0, [r6, #0x2]\n"
-        "	lsl	r1, r1, #0x1c\n"
-        "	lsr	r1, r1, #0x1c\n"
-        "	bl	npc_load_two_palettes__no_record\n"
-        "	b	._89\n"
-        "._88:\n"
-        "	.align	2, 0\n"
-        "._87:\n"
-        "	.word	gMapObjects\n"
-        "._85:\n"
-        "	cmp	r0, #0xa\n"
-        "	bne	._89	@cond_branch\n"
-        "	ldrh	r0, [r6, #0x2]\n"
-        "	lsl	r1, r1, #0x1c\n"
-        "	lsr	r1, r1, #0x1c\n"
-        "	bl	npc_load_two_palettes__and_record\n"
-        "._89:\n"
-        "	ldrb	r0, [r5, #0x6]\n"
-        "	cmp	r0, #0x4c\n"
-        "	bne	._90	@cond_branch\n"
-        "	ldrb	r0, [r5, #0x1]\n"
-        "	mov	r1, #0x20\n"
-        "	orr	r0, r0, r1\n"
-        "	strb	r0, [r5, #0x1]\n"
-        "._90:\n"
-        "	ldr	r1, ._93        @ 0xffff\n"
-        "	add	r0, r1, #0\n"
-        "	strh	r0, [r7, #0x2]\n"
-        "	add	r0, r7, #0\n"
-        "	mov	r1, #0x0\n"
-        "	mov	r2, #0x0\n"
-        "	mov	r3, #0x0\n"
-        "	bl	CreateSprite\n"
-        "	lsl	r0, r0, #0x18\n"
-        "	lsr	r7, r0, #0x18\n"
-        "	cmp	r7, #0x40\n"
-        "	bne	._91	@cond_branch\n"
-        "	ldr	r1, ._93 + 4    @ gUnknown_Debug_03004BC0\n"
-        "	ldrb	r0, [r1]\n"
-        "	sub	r0, r0, #0x1\n"
-        "	strb	r0, [r1]\n"
-        "	ldr	r0, ._93 + 8    @ gMapObjects\n"
-        "	mov	r2, r8\n"
-        "	add	r1, r4, r2\n"
-        "	lsl	r1, r1, #0x2\n"
-        "	add	r1, r1, r0\n"
-        "	ldrb	r2, [r1]\n"
-        "	mov	r0, #0x2\n"
-        "	neg	r0, r0\n"
-        "	and	r0, r0, r2\n"
-        "	strb	r0, [r1]\n"
-        "	mov	r0, #0x10\n"
-        "	b	._92\n"
-        "._94:\n"
-        "	.align	2, 0\n"
-        "._93:\n"
-        "	.word	0xffff\n"
-        "	.word	gUnknown_Debug_03004BC0\n"
-        "	.word	gMapObjects\n"
-        "._91:\n"
-        "	lsl	r0, r7, #0x4\n"
-        "	add	r0, r0, r7\n"
-        "	lsl	r0, r0, #0x2\n"
-        "	ldr	r1, ._96        @ gSprites\n"
-        "	add	r4, r0, r1\n"
-        "	mov	r1, r9\n"
-        "	lsl	r0, r1, #0x10\n"
-        "	asr	r0, r0, #0x10\n"
-        "	ldrh	r2, [r5, #0x10]\n"
-        "	add	r0, r0, r2\n"
-        "	lsl	r0, r0, #0x10\n"
-        "	asr	r0, r0, #0x10\n"
-        "	mov	r2, sl\n"
-        "	lsl	r1, r2, #0x10\n"
-        "	asr	r1, r1, #0x10\n"
-        "	ldrh	r2, [r5, #0x12]\n"
-        "	add	r1, r1, r2\n"
-        "	lsl	r1, r1, #0x10\n"
-        "	asr	r1, r1, #0x10\n"
-        "	add	r2, r4, #0\n"
-        "	add	r2, r2, #0x20\n"
-        "	add	r3, r4, #0\n"
-        "	add	r3, r3, #0x22\n"
-        "	bl	sub_8060388\n"
-        "	ldrh	r0, [r6, #0x8]\n"
-        "	lsl	r0, r0, #0x10\n"
-        "	asr	r0, r0, #0x11\n"
-        "	neg	r0, r0\n"
-        "	add	r1, r4, #0\n"
-        "	add	r1, r1, #0x28\n"
-        "	strb	r0, [r1]\n"
-        "	ldrh	r0, [r6, #0xa]\n"
-        "	lsl	r0, r0, #0x10\n"
-        "	asr	r0, r0, #0x11\n"
-        "	neg	r0, r0\n"
-        "	add	r2, r4, #0\n"
-        "	add	r2, r2, #0x29\n"
-        "	strb	r0, [r2]\n"
-        "	ldrh	r0, [r4, #0x20]\n"
-        "	add	r0, r0, #0x8\n"
-        "	strh	r0, [r4, #0x20]\n"
-        "	ldrh	r1, [r4, #0x22]\n"
-        "	add	r1, r1, #0x10\n"
-        "	mov	r0, #0x0\n"
-        "	ldsb	r0, [r2, r0]\n"
-        "	add	r0, r0, r1\n"
-        "	strh	r0, [r4, #0x22]\n"
-        "	ldrb	r1, [r6, #0xc]\n"
-        "	lsl	r1, r1, #0x1c\n"
-        "	lsr	r1, r1, #0x18\n"
-        "	ldrb	r2, [r4, #0x5]\n"
-        "	mov	r0, #0xf\n"
-        "	and	r0, r0, r2\n"
-        "	orr	r0, r0, r1\n"
-        "	strb	r0, [r4, #0x5]\n"
-        "	add	r2, r4, #0\n"
-        "	add	r2, r2, #0x3e\n"
-        "	ldrb	r0, [r2]\n"
-        "	mov	r1, #0x2\n"
-        "	orr	r0, r0, r1\n"
-        "	strb	r0, [r2]\n"
-        "	mov	r0, r8\n"
-        "	strh	r0, [r4, #0x2e]\n"
-        "	strb	r7, [r5, #0x4]\n"
-        "	ldrb	r1, [r6, #0xc]\n"
-        "	lsl	r1, r1, #0x19\n"
-        "	lsr	r1, r1, #0x1f\n"
-        "	lsl	r1, r1, #0x4\n"
-        "	ldrb	r2, [r5, #0x1]\n"
-        "	mov	r0, #0x11\n"
-        "	neg	r0, r0\n"
-        "	and	r0, r0, r2\n"
-        "	orr	r0, r0, r1\n"
-        "	strb	r0, [r5, #0x1]\n"
-        "	lsl	r0, r0, #0x1b\n"
-        "	cmp	r0, #0\n"
-        "	blt	._95	@cond_branch\n"
-        "	ldrb	r0, [r5, #0x18]\n"
-        "	lsl	r0, r0, #0x1c\n"
-        "	lsr	r0, r0, #0x1c\n"
-        "	bl	FieldObjectDirectionToImageAnimId\n"
-        "	add	r1, r0, #0\n"
-        "	lsl	r1, r1, #0x18\n"
-        "	lsr	r1, r1, #0x18\n"
-        "	add	r0, r4, #0\n"
-        "	bl	StartSpriteAnim\n"
-        "._95:\n"
-        "	ldrb	r0, [r5, #0xb]\n"
-        "	lsr	r0, r0, #0x4\n"
-        "	add	r1, r4, #0\n"
-        "	mov	r2, #0x1\n"
-        "	bl	SetObjectSubpriorityByZCoord\n"
-        "	add	r0, r5, #0\n"
-        "	add	r1, r4, #0\n"
-        "	bl	sub_80634D0\n"
-        "	mov	r0, r8\n"
-        "._92:\n"
-        "	pop	{r3, r4, r5}\n"
-        "	mov	r8, r3\n"
-        "	mov	r9, r4\n"
-        "	mov	sl, r5\n"
-        "	pop	{r4, r5, r6, r7}\n"
-        "	pop	{r1}\n"
-        "	bx	r1\n"
-        "._97:\n"
-        "	.align	2, 0\n"
-        "._96:\n"
-        "	.word	gSprites\n"
-        "\n"
-    );
-}
-#else
 u8 sub_805AFCC(struct MapObjectTemplate *mapObjTemplate, struct SpriteTemplate *sprTemplate, u8 c, u8 d, s16 e, s16 f)
 {
     u8 mapObjectId;
@@ -2788,6 +2243,9 @@ u8 sub_805AFCC(struct MapObjectTemplate *mapObjTemplate, struct SpriteTemplate *
     spriteId = CreateSprite(sprTemplate, 0, 0, 0);
     if (spriteId == 64)
     {
+#if DEBUG
+        gUnknown_Debug_03004BC0--;
+#endif
         gMapObjects[mapObjectId].active = FALSE;
         return 16;
     }
@@ -2808,7 +2266,6 @@ u8 sub_805AFCC(struct MapObjectTemplate *mapObjTemplate, struct SpriteTemplate *
     sub_80634D0(mapObject, sprite);
     return mapObjectId;
 }
-#endif
 
 u8 SpawnFieldObject(struct MapObjectTemplate *mapObjTemplate, u8 b, u8 c, s16 d, s16 e)
 {
@@ -2917,7 +2374,7 @@ u8 AddPseudoFieldObject(u16 graphicsId, void (*callback)(struct Sprite *), s16 x
 
 extern void sub_8064970(struct Sprite *);
 extern void sub_8060470(s16 *, s16 *, s16, s16);
-extern void InitObjectPriorityByZCoord();
+void InitObjectPriorityByZCoord(struct Sprite *sprite, u8 z);
 
 u8 sub_805B410(u8 graphicsId, u8 b, s16 x, s16 y, u8 elevation, u8 direction)
 {
@@ -3031,79 +2488,26 @@ void RemoveFieldObjectIfOutsideView(struct MapObject *mapObject)
 
 void sub_805B75C(u8, s16, s16);
 
-#if DEBUG
-__attribute__((naked))
-void sub_805B710(u16 u161, u16 u162)
-{
-    asm(
-        "	push	{r4, r5, r6, r7, lr}\n"
-        "	mov	r7, r8\n"
-        "	push	{r7}\n"
-        "	add	r4, r0, #0\n"
-        "	add	r5, r1, #0\n"
-        "	lsl	r4, r4, #0x10\n"
-        "	lsr	r4, r4, #0x10\n"
-        "	lsl	r5, r5, #0x10\n"
-        "	lsr	r5, r5, #0x10\n"
-        "	ldr	r6, ._153       @ gUnknown_Debug_03004BC0\n"
-        "	mov	r0, #0x0\n"
-        "	strb	r0, [r6]\n"
-        "	bl	ClearPlayerAvatarInfo\n"
-        "	mov	r7, #0x0\n"
-        "	ldr	r0, ._153 + 4   @ gMapObjects\n"
-        "	mov	r8, r0\n"
-        "	lsl	r4, r4, #0x10\n"
-        "	lsl	r5, r5, #0x10\n"
-        "._152:\n"
-        "	lsl	r0, r7, #0x3\n"
-        "	add	r0, r0, r7\n"
-        "	lsl	r0, r0, #0x2\n"
-        "	add r0, r0, r8\n"
-        "	ldrb	r0, [r0]\n"
-        "	lsl	r0, r0, #0x1f\n"
-        "	cmp	r0, #0\n"
-        "	beq	._151	@cond_branch\n"
-        "	add	r0, r7, #0\n"
-        "	asr	r1, r4, #0x10\n"
-        "	asr	r2, r5, #0x10\n"
-        "	bl	sub_805B75C\n"
-        "	ldrb	r0, [r6]\n"
-        "	add	r0, r0, #0x1\n"
-        "	strb	r0, [r6]\n"
-        "._151:\n"
-        "	add	r0, r7, #1\n"
-        "	lsl	r0, r0, #0x18\n"
-        "	lsr	r7, r0, #0x18\n"
-        "	cmp	r7, #0xf\n"
-        "	bls	._152	@cond_branch\n"
-        "	bl	sub_805AAB0\n"
-        "	pop	{r3}\n"
-        "	mov	r8, r3\n"
-        "	pop	{r4, r5, r6, r7}\n"
-        "	pop	{r0}\n"
-        "	bx	r0\n"
-        "._154:\n"
-        "	.align	2, 0\n"
-        "._153:\n"
-        "	.word	gUnknown_Debug_03004BC0\n"
-        "	.word	gMapObjects\n"
-        "\n"
-    );
-}
-#else
 void sub_805B710(u16 a, u16 b)
 {
     u8 i;
 
+#if DEBUG
+    gUnknown_Debug_03004BC0 = 0;
+#endif
     ClearPlayerAvatarInfo();
     for (i = 0; i < 16; i++)
     {
         if (gMapObjects[i].active)
+        {
             sub_805B75C(i, a, b);
+#if DEBUG
+            gUnknown_Debug_03004BC0++;
+#endif
+        }
     }
     sub_805AAB0();
 }
-#endif
 
 extern void SetPlayerAvatarFieldObjectIdAndObjectId(u8, u8);
 extern void sub_805B914(struct MapObject *);
@@ -3865,7 +3269,7 @@ u8 sub_805C904(struct MapObject *mapObject, struct Sprite *sprite)
 }
 
 extern u8 FieldObjectExecRegularAnim(struct MapObject *, struct Sprite *);
-extern void sub_8064820(struct Sprite *, s16);
+void sub_8064820(struct Sprite *, s16);
 
 u8 sub_805C930(struct MapObject *mapObject, struct Sprite *sprite)
 {
@@ -8870,4 +8274,1150 @@ void UpdateMapObjSpriteVisibility(struct MapObject *mapObject, struct Sprite *sp
     {
         sprite->invisible = 1;
     }
+}
+
+static void nullsub(struct MapObject *mapObj, struct Sprite *sprite, u8);
+static void DoTracksGroundEffect_Footprints(struct MapObject *mapObj, struct Sprite *sprite, u8);
+static void DoTracksGroundEffect_BikeTireTracks(
+struct MapObject *mapObj, struct Sprite *sprite, u8);
+void GroundEffect_SpawnOnTallGrass(struct MapObject *mapObj, struct Sprite *sprite);
+void sub_8063E94(struct MapObject *mapObj, struct Sprite *sprite);
+void sub_8063EE0(struct MapObject *mapObj, struct Sprite *sprite);
+void sub_8063F2C(struct MapObject *mapObj, struct Sprite *sprite);
+void GroundEffect_WaterReflection(struct MapObject *mapObj, struct Sprite *sprite);
+void GroundEffect_IceReflection(struct MapObject *mapObj, struct Sprite *sprite);
+void GroundEffect_FlowingWater(struct MapObject *mapObj, struct Sprite *sprite);
+void sub_8063FA0(struct MapObject *mapObj, struct Sprite *sprite);
+void sub_8063FCC(struct MapObject *mapObj, struct Sprite *sprite);
+void GroundEffect_Ripple(struct MapObject *mapObj, struct Sprite *sprite);
+void GroundEffect_StepOnPuddle(struct MapObject *mapObj, struct Sprite *sprite);
+void GroundEffect_SandPile(struct MapObject *mapObj, struct Sprite *sprite);
+void GroundEffect_JumpOnTallGrass(struct MapObject *mapObj, struct Sprite *sprite);
+void GroundEffect_JumpOnLongGrass(struct MapObject *mapObj, struct Sprite *sprite);
+void GroundEffect_JumpOnShallowWater(struct MapObject *mapObj, struct Sprite *sprite);
+void GroundEffect_JumpOnWater(struct MapObject *mapObj, struct Sprite *sprite);
+void GroundEffect_JumpLandingDust(struct MapObject *mapObj, struct Sprite *sprite);
+void GroundEffect_ShortGrass(struct MapObject *mapObj, struct Sprite *sprite);
+void GroundEffect_HotSprings(struct MapObject *mapObj, struct Sprite *sprite);
+void GroundEffect_Seaweed(struct MapObject *mapObj, struct Sprite *sprite);
+u8 GetReflectionTypeByMetatileBehavior(u32 behavior);
+
+static void GetAllGroundEffectFlags_OnSpawn(struct MapObject *mapObj, u32 *flags)
+{
+    FieldObjectUpdateMetatileBehaviors(mapObj);
+    GetGroundEffectFlags_Reflection(mapObj, flags);
+    GetGroundEffectFlags_TallGrassOnSpawn(mapObj, flags);
+    GetGroundEffectFlags_LongGrassOnSpawn(mapObj, flags);
+    GetGroundEffectFlags_SandPile(mapObj, flags);
+    GetGroundEffectFlags_ShallowFlowingWater(mapObj, flags);
+    GetGroundEffectFlags_ShortGrass(mapObj, flags);
+    GetGroundEffectFlags_HotSprings(mapObj, flags);
+}
+
+static void GetAllGroundEffectFlags_OnBeginStep(struct MapObject *mapObj, u32 *flags)
+{
+    FieldObjectUpdateMetatileBehaviors(mapObj);
+    GetGroundEffectFlags_Reflection(mapObj, flags);
+    GetGroundEffectFlags_TallGrassOnBeginStep(mapObj, flags);
+    GetGroundEffectFlags_LongGrassOnBeginStep(mapObj, flags);
+    GetGroundEffectFlags_Tracks(mapObj, flags);
+    GetGroundEffectFlags_SandPile(mapObj, flags);
+    GetGroundEffectFlags_ShallowFlowingWater(mapObj, flags);
+    GetGroundEffectFlags_Puddle(mapObj, flags);
+    GetGroundEffectFlags_ShortGrass(mapObj, flags);
+    GetGroundEffectFlags_HotSprings(mapObj, flags);
+}
+
+static void GetAllGroundEffectFlags_OnFinishStep(struct MapObject *mapObj, u32 *flags)
+{
+    FieldObjectUpdateMetatileBehaviors(mapObj);
+    GetGroundEffectFlags_ShallowFlowingWater(mapObj, flags);
+    GetGroundEffectFlags_SandPile(mapObj, flags);
+    GetGroundEffectFlags_Puddle(mapObj, flags);
+    GetGroundEffectFlags_Ripple(mapObj, flags);
+    GetGroundEffectFlags_ShortGrass(mapObj, flags);
+    GetGroundEffectFlags_HotSprings(mapObj, flags);
+    GetGroundEffectFlags_Seaweed(mapObj, flags);
+    GetGroundEffectFlags_JumpLanding(mapObj, flags);
+}
+
+void FieldObjectUpdateMetatileBehaviors(struct MapObject *mapObj)
+{
+    mapObj->mapobj_unk_1F = MapGridGetMetatileBehaviorAt(mapObj->coords3.x, mapObj->coords3.y);
+    mapObj->mapobj_unk_1E = MapGridGetMetatileBehaviorAt(mapObj->coords2.x, mapObj->coords2.y);
+}
+
+void GetGroundEffectFlags_Reflection(struct MapObject *mapObj, u32 *flags)
+{
+    u32 reflectionFlags[2] = { 0x00000020, 0x00000010 };
+    u8 type = FieldObjectCheckForReflectiveSurface(mapObj);
+
+    if (type)
+    {
+        if (!mapObj->mapobj_bit_17)
+        {
+            mapObj->mapobj_bit_17 = 0;
+            mapObj->mapobj_bit_17 = 1;
+            *flags |= reflectionFlags[type - 1];
+        }
+    }
+    else
+    {
+        mapObj->mapobj_bit_17 = 0;
+    }
+}
+
+void GetGroundEffectFlags_TallGrassOnSpawn(struct MapObject *mapObj, u32 *flags)
+{
+    if (MetatileBehavior_IsTallGrass(mapObj->mapobj_unk_1E))
+        *flags |= 0x1;
+}
+
+void GetGroundEffectFlags_TallGrassOnBeginStep(struct MapObject *mapObj, u32 *flags)
+{
+    if (MetatileBehavior_IsTallGrass(mapObj->mapobj_unk_1E))
+        *flags |= 0x2;
+}
+
+void GetGroundEffectFlags_LongGrassOnSpawn(struct MapObject *mapObj, u32 *flags)
+{
+    if (MetatileBehavior_IsLongGrass(mapObj->mapobj_unk_1E))
+        *flags |= 0x4;
+}
+
+void GetGroundEffectFlags_LongGrassOnBeginStep(struct MapObject *mapObj, u32 *flags)
+{
+    if (MetatileBehavior_IsLongGrass(mapObj->mapobj_unk_1E))
+        *flags |= 0x8;
+}
+
+void GetGroundEffectFlags_Tracks(struct MapObject *mapObj, u32 *flags)
+{
+    if (MetatileBehavior_IsDeepSand(mapObj->mapobj_unk_1F))
+    {
+        *flags |= 0x100;
+    }
+    else if (MetatileBehavior_IsSandOrDeepSand(mapObj->mapobj_unk_1F)
+             || MetatileBehavior_IsUnusedFootprintMetatile(mapObj->mapobj_unk_1F))
+    {
+        *flags |= 0x80;
+    }
+}
+
+void GetGroundEffectFlags_SandPile(struct MapObject *mapObj, u32 *flags)
+{
+    if (MetatileBehavior_IsDeepSand(mapObj->mapobj_unk_1E)
+        && MetatileBehavior_IsDeepSand(mapObj->mapobj_unk_1F))
+    {
+        if (!mapObj->mapobj_bit_20)
+        {
+            mapObj->mapobj_bit_20 = 0;
+            mapObj->mapobj_bit_20 = 1;
+            *flags |= 0x800;
+        }
+    }
+    else
+    {
+        mapObj->mapobj_bit_20 = 0;
+    }
+}
+
+void GetGroundEffectFlags_ShallowFlowingWater(struct MapObject *mapObj, u32 *flags)
+{
+    if ((MetatileBehavior_IsShallowFlowingWater(mapObj->mapobj_unk_1E)
+         && MetatileBehavior_IsShallowFlowingWater(mapObj->mapobj_unk_1F))
+        || (MetatileBehavior_IsPacifidlogLog(mapObj->mapobj_unk_1E)
+            && MetatileBehavior_IsPacifidlogLog(mapObj->mapobj_unk_1F)))
+    {
+        if (!mapObj->mapobj_bit_19)
+        {
+            mapObj->mapobj_bit_19 = 0;
+            mapObj->mapobj_bit_19 = 1;
+            *flags |= 0x40;
+        }
+    }
+    else
+    {
+        mapObj->mapobj_bit_19 = 0;
+    }
+}
+
+void GetGroundEffectFlags_Puddle(struct MapObject *mapObj, u32 *flags)
+{
+    if (MetatileBehavior_IsPuddle(mapObj->mapobj_unk_1E)
+        && MetatileBehavior_IsPuddle(mapObj->mapobj_unk_1F))
+    {
+        *flags |= 0x400;
+    }
+}
+
+void GetGroundEffectFlags_Ripple(struct MapObject *mapObj, u32 *flags)
+{
+    if (MetatileBehavior_HasRipples(mapObj->mapobj_unk_1E))
+        *flags |= 0x200;
+}
+
+void GetGroundEffectFlags_ShortGrass(struct MapObject *mapObj, u32 *flags)
+{
+    if (MetatileBehavior_IsShortGrass(mapObj->mapobj_unk_1E)
+        && MetatileBehavior_IsShortGrass(mapObj->mapobj_unk_1F))
+    {
+        if (!mapObj->mapobj_bit_18)
+        {
+            mapObj->mapobj_bit_18 = 0;
+            mapObj->mapobj_bit_18 = 1;
+            *flags |= 0x20000;
+        }
+    }
+    else
+    {
+        mapObj->mapobj_bit_18 = 0;
+    }
+}
+
+void GetGroundEffectFlags_HotSprings(struct MapObject *mapObj, u32 *flags)
+{
+    if (MetatileBehavior_IsHotSprings(mapObj->mapobj_unk_1E)
+        && MetatileBehavior_IsHotSprings(mapObj->mapobj_unk_1F))
+    {
+        if (!mapObj->mapobj_bit_21)
+        {
+            mapObj->mapobj_bit_21 = 0;
+            mapObj->mapobj_bit_21 = 1;
+            *flags |= 0x40000;
+        }
+    }
+    else
+    {
+        mapObj->mapobj_bit_21 = 0;
+    }
+}
+
+void GetGroundEffectFlags_Seaweed(struct MapObject *mapObj, u32 *flags)
+{
+    if (MetatileBehavior_IsSeaweed(mapObj->mapobj_unk_1E))
+        *flags |= 0x80000;
+}
+
+void GetGroundEffectFlags_JumpLanding(struct MapObject *mapObj, u32 *flags)
+{
+    typedef bool8 (*MetatileFunc)(u8);
+
+    static const MetatileFunc metatileFuncs[] = {
+        MetatileBehavior_IsTallGrass,
+        MetatileBehavior_IsLongGrass,
+        MetatileBehavior_IsPuddle,
+        MetatileBehavior_IsSurfableWaterOrUnderwater,
+        MetatileBehavior_IsShallowFlowingWater,
+        MetatileBehavior_IsATile,
+    };
+
+    static const u32 jumpLandingFlags[] = {
+        0x00001000, // Landing in tall grass
+        0x00002000, // Landing in long grass
+        0x00004000, // Landing on puddle
+        0x00008000, // Landing on surfable water or underwater
+        0x00004000, // Landing on shallow flowing water
+        0x00010000, // Landing on any other type of ground
+    };
+
+    if (mapObj->mapobj_bit_5 && !mapObj->mapobj_bit_25)
+    {
+        u8 i;
+
+        for (i = 0; i < 6; i++)
+        {
+            if (metatileFuncs[i](mapObj->mapobj_unk_1E))
+            {
+                *flags |= jumpLandingFlags[i];
+                return;
+            }
+        }
+    }
+}
+
+u8 FieldObjectCheckForReflectiveSurface(struct MapObject *mapObj)
+{
+    const struct MapObjectGraphicsInfo *info = GetFieldObjectGraphicsInfo(mapObj->graphicsId);
+
+    // ceil div by tile width?
+    s16 width = (info->width + 8) >> 4;
+    s16 height = (info->height + 8) >> 4;
+    s16 i;
+    s16 j;
+    u8 result;
+    u8 b;
+    s16 one;
+
+#define RETURN_REFLECTION_TYPE_AT(x, y)              \
+    b = MapGridGetMetatileBehaviorAt(x, y);          \
+    result = GetReflectionTypeByMetatileBehavior(b); \
+    if (result != 0)                                 \
+        return result;
+
+    for (i = 0, one = 1; i < height; i++)
+    {
+        RETURN_REFLECTION_TYPE_AT(mapObj->coords2.x, mapObj->coords2.y + one + i)
+        RETURN_REFLECTION_TYPE_AT(mapObj->coords3.x, mapObj->coords3.y + one + i)
+        for (j = 1; j < width; j++)
+        {
+            RETURN_REFLECTION_TYPE_AT(mapObj->coords2.x + j, mapObj->coords2.y + one + i)
+            RETURN_REFLECTION_TYPE_AT(mapObj->coords2.x - j, mapObj->coords2.y + one + i)
+            RETURN_REFLECTION_TYPE_AT(mapObj->coords3.x + j, mapObj->coords3.y + one + i)
+            RETURN_REFLECTION_TYPE_AT(mapObj->coords3.x - j, mapObj->coords3.y + one + i)
+        }
+    }
+    return 0;
+
+#undef RETURN_REFLECTION_TYPE_AT
+}
+
+u8 GetReflectionTypeByMetatileBehavior(u32 behavior)
+{
+    if (MetatileBehavior_IsIce(behavior))
+        return 1;
+    else if (MetatileBehavior_IsReflective(behavior))
+        return 2;
+    else
+        return 0;
+}
+
+u8 GetLedgeJumpDirection(s16 x, s16 y, u8 z)
+{
+    static bool8 (*const unknown_08376040[])(u8) = {
+        MetatileBehavior_IsJumpSouth,
+        MetatileBehavior_IsJumpNorth,
+        MetatileBehavior_IsJumpWest,
+        MetatileBehavior_IsJumpEast,
+    };
+
+    u8 b;
+    u8 index = z;
+
+    if (index == 0)
+        return 0;
+    else if (index > 4)
+        index -= 4;
+
+    index--;
+    b = MapGridGetMetatileBehaviorAt(x, y);
+
+    if (unknown_08376040[index](b) == 1)
+        return index + 1;
+
+    return 0;
+}
+
+void FieldObjectSetSpriteOamTableForLongGrass(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    if (mapObj->mapobj_bit_4)
+        return;
+
+    if (!MetatileBehavior_IsLongGrass(mapObj->mapobj_unk_1E))
+        return;
+
+    if (!MetatileBehavior_IsLongGrass(mapObj->mapobj_unk_1F))
+        return;
+
+    sprite->subspriteTableNum = 4;
+
+    if (ZCoordToPriority(mapObj->elevation) == 1)
+        sprite->subspriteTableNum = 5;
+}
+
+bool8 IsZCoordMismatchAt(u8 z, s16 x, s16 y)
+{
+    u8 mapZ;
+
+    if (z == 0)
+        return FALSE;
+
+    mapZ = MapGridGetZCoordAt(x, y);
+
+    if (mapZ == 0 || mapZ == 0xF)
+        return FALSE;
+
+    if (mapZ != z)
+        return TRUE;
+
+    return FALSE;
+}
+
+static const u8 sUnknown_08376050[] = {
+    0x73, 0x73, 0x53, 0x73, 0x53, 0x73, 0x53, 0x73, 0x53, 0x73, 0x53, 0x73, 0x53, 0x00, 0x00, 0x73
+};
+
+// Each byte corresponds to a sprite priority for a field object.
+// This is directly the inverse of gFieldObjectPriorities_08376070.
+static const u8 sFieldObjectPriorities_08376060[] = {
+    2, 2, 2, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 0, 0, 2
+};
+
+// Each byte corresponds to a sprite priority for a field object.
+// This is the inverse of gFieldObjectPriorities_08376060.
+// 1 = Above player sprite
+// 2 = Below player sprite
+static const u8 sFieldObjectPriorities_08376070[] = {
+    1, 1, 1, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 0, 0, 1,
+};
+
+void FieldObjectUpdateZCoordAndPriority(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    if (mapObj->mapobj_bit_26)
+        return;
+
+    FieldObjectUpdateZCoord(mapObj);
+
+    sprite->subspriteTableNum = sFieldObjectPriorities_08376070[mapObj->elevation];
+    sprite->oam.priority = sFieldObjectPriorities_08376060[mapObj->elevation];
+}
+
+void InitObjectPriorityByZCoord(struct Sprite *sprite, u8 z)
+{
+    sprite->subspriteTableNum = sFieldObjectPriorities_08376070[z];
+    sprite->oam.priority = sFieldObjectPriorities_08376060[z];
+}
+
+u8 ZCoordToPriority(u8 z)
+{
+    return sFieldObjectPriorities_08376060[z];
+}
+
+void FieldObjectUpdateZCoord(struct MapObject *mapObj)
+{
+    u8 z = MapGridGetZCoordAt(mapObj->coords2.x, mapObj->coords2.y);
+    u8 z2 = MapGridGetZCoordAt(mapObj->coords3.x, mapObj->coords3.y);
+
+    if (z == 0xF || z2 == 0xF)
+        return;
+
+    mapObj->mapobj_unk_0B_0 = z;
+
+    if (z != 0 && z != 0xF)
+        mapObj->elevation = z;
+}
+
+void SetObjectSubpriorityByZCoord(u8 a, struct Sprite *sprite, u8 b)
+{
+    s32 tmp = sprite->centerToCornerVecY;
+    u32 tmpa = *(u16 *)&sprite->pos1.y;
+    u32 tmpb = *(u16 *)&gSpriteCoordOffsetY;
+    s32 tmp2 = (tmpa - tmp) + tmpb;
+    u16 tmp3 = (0x10 - ((((u32)tmp2 + 8) & 0xFF) >> 4)) * 2;
+    sprite->subpriority = tmp3 + sUnknown_08376050[a] + b;
+}
+
+void FieldObjectUpdateSubpriority(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    if (mapObj->mapobj_bit_26)
+        return;
+
+    SetObjectSubpriorityByZCoord(mapObj->elevation, sprite, 1);
+}
+
+bool8 AreZCoordsCompatible(u8 a, u8 b)
+{
+    if (a == 0 || b == 0)
+        return TRUE;
+
+    if (a != b)
+        return FALSE;
+
+    return TRUE;
+}
+
+void GroundEffect_SpawnOnTallGrass(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    gFieldEffectArguments[0] = mapObj->coords2.x;
+    gFieldEffectArguments[1] = mapObj->coords2.y;
+    gFieldEffectArguments[2] = mapObj->elevation;
+    gFieldEffectArguments[3] = 2;
+    gFieldEffectArguments[4] = mapObj->localId << 8 | mapObj->mapNum;
+    gFieldEffectArguments[5] = mapObj->mapGroup;
+    gFieldEffectArguments[6] = (u8)gSaveBlock1.location.mapNum << 8 | (u8)gSaveBlock1.location.mapGroup;
+    gFieldEffectArguments[7] = 1;
+    FieldEffectStart(FLDEFF_TALL_GRASS);
+}
+
+void sub_8063E94(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    gFieldEffectArguments[0] = mapObj->coords2.x;
+    gFieldEffectArguments[1] = mapObj->coords2.y;
+    gFieldEffectArguments[2] = mapObj->elevation;
+    gFieldEffectArguments[3] = 2;
+    gFieldEffectArguments[4] = mapObj->localId << 8 | mapObj->mapNum;
+    gFieldEffectArguments[5] = mapObj->mapGroup;
+    gFieldEffectArguments[6] = (u8)gSaveBlock1.location.mapNum << 8 | (u8)gSaveBlock1.location.mapGroup;
+    gFieldEffectArguments[7] = 0;
+    FieldEffectStart(FLDEFF_TALL_GRASS);
+}
+
+void sub_8063EE0(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    gFieldEffectArguments[0] = mapObj->coords2.x;
+    gFieldEffectArguments[1] = mapObj->coords2.y;
+    gFieldEffectArguments[2] = mapObj->elevation;
+    gFieldEffectArguments[3] = 2;
+    gFieldEffectArguments[4] = mapObj->localId << 8 | mapObj->mapNum;
+    gFieldEffectArguments[5] = mapObj->mapGroup;
+    gFieldEffectArguments[6] = (u8)gSaveBlock1.location.mapNum << 8 | (u8)gSaveBlock1.location.mapGroup;
+    gFieldEffectArguments[7] = 1;
+    FieldEffectStart(FLDEFF_LONG_GRASS);
+}
+
+void sub_8063F2C(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    gFieldEffectArguments[0] = mapObj->coords2.x;
+    gFieldEffectArguments[1] = mapObj->coords2.y;
+    gFieldEffectArguments[2] = mapObj->elevation;
+    gFieldEffectArguments[3] = 2;
+    gFieldEffectArguments[4] = (mapObj->localId << 8) | mapObj->mapNum;
+    gFieldEffectArguments[5] = mapObj->mapGroup;
+    gFieldEffectArguments[6] = (u8)gSaveBlock1.location.mapNum << 8 | (u8)gSaveBlock1.location.mapGroup;
+    gFieldEffectArguments[7] = 0;
+    FieldEffectStart(FLDEFF_LONG_GRASS);
+}
+
+void GroundEffect_WaterReflection(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    SetUpReflection(mapObj, sprite, 0);
+}
+
+void GroundEffect_IceReflection(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    SetUpReflection(mapObj, sprite, 1);
+}
+
+void GroundEffect_FlowingWater(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    oe_exec_and_other_stuff(FLDEFF_FEET_IN_FLOWING_WATER, mapObj);
+}
+
+static void (*const gUnknown_08376080[])(struct MapObject *mapObj, struct Sprite *sprite, u8 a) = {
+    nullsub, DoTracksGroundEffect_Footprints, DoTracksGroundEffect_BikeTireTracks,
+};
+
+void sub_8063FA0(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    const struct MapObjectGraphicsInfo *info = GetFieldObjectGraphicsInfo(mapObj->graphicsId);
+    gUnknown_08376080[info->tracks](mapObj, sprite, 0);
+}
+
+void sub_8063FCC(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    const struct MapObjectGraphicsInfo *info = GetFieldObjectGraphicsInfo(mapObj->graphicsId);
+    gUnknown_08376080[info->tracks](mapObj, sprite, 1);
+}
+
+static void nullsub(struct MapObject *mapObj, struct Sprite *sprite, u8 a)
+{
+}
+
+static void DoTracksGroundEffect_Footprints(struct MapObject *mapObj, struct Sprite *sprite, u8 a)
+{
+    // First half-word is a Field Effect script id. (gFieldEffectScriptPointers)
+    u16 sandFootprints_FieldEffectData[2] = {
+            FLDEFF_SAND_FOOTPRINTS,
+            FLDEFF_DEEP_SAND_FOOTPRINTS
+    };
+
+    gFieldEffectArguments[0] = mapObj->coords3.x;
+    gFieldEffectArguments[1] = mapObj->coords3.y;
+    gFieldEffectArguments[2] = 149;
+    gFieldEffectArguments[3] = 2;
+    gFieldEffectArguments[4] = mapObj->mapobj_unk_18;
+    FieldEffectStart(sandFootprints_FieldEffectData[a]);
+}
+
+static void DoTracksGroundEffect_BikeTireTracks(
+    struct MapObject *mapObj, struct Sprite *sprite, u8 a)
+{
+    //  Specifies which bike track shape to show next.
+    //  For example, when the bike turns from up to right, it will show
+    //  a track that curves to the right.
+    //  Each 4-byte row corresponds to the initial direction of the bike, and
+    //  each byte in that row is for the next direction of the bike in the order
+    //  of down, up, left, right.
+    static const u8 bikeTireTracks_Transitions[4][4] = {
+        1, 2, 7, 8,
+        1, 2, 6, 5,
+        5, 8, 3, 4,
+        6, 7, 3, 4,
+    };
+
+    if (mapObj->coords2.x != mapObj->coords3.x || mapObj->coords2.y != mapObj->coords3.y)
+    {
+        gFieldEffectArguments[0] = mapObj->coords3.x;
+        gFieldEffectArguments[1] = mapObj->coords3.y;
+        gFieldEffectArguments[2] = 149;
+        gFieldEffectArguments[3] = 2;
+        gFieldEffectArguments[4] =
+            bikeTireTracks_Transitions[mapObj->mapobj_unk_20][mapObj->mapobj_unk_18 - 5];
+        FieldEffectStart(FLDEFF_BIKE_TIRE_TRACKS);
+    }
+}
+
+void GroundEffect_Ripple(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    DoRippleFieldEffect(mapObj, sprite);
+}
+
+void GroundEffect_StepOnPuddle(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    oe_exec_and_other_stuff(FLDEFF_SPLASH, mapObj);
+}
+
+void GroundEffect_SandPile(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    oe_exec_and_other_stuff(FLDEFF_SAND_PILE, mapObj);
+}
+
+void GroundEffect_JumpOnTallGrass(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    u8 spriteId;
+
+    gFieldEffectArguments[0] = mapObj->coords2.x;
+    gFieldEffectArguments[1] = mapObj->coords2.y;
+    gFieldEffectArguments[2] = mapObj->elevation;
+    gFieldEffectArguments[3] = 2;
+    FieldEffectStart(FLDEFF_JUMP_TALL_GRASS);
+
+    spriteId = sub_8126FF0(
+        mapObj->localId, mapObj->mapNum, mapObj->mapGroup, mapObj->coords2.x, mapObj->coords2.y);
+
+    if (spriteId == MAX_SPRITES)
+        GroundEffect_SpawnOnTallGrass(mapObj, sprite);
+}
+
+void GroundEffect_JumpOnLongGrass(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    gFieldEffectArguments[0] = mapObj->coords2.x;
+    gFieldEffectArguments[1] = mapObj->coords2.y;
+    gFieldEffectArguments[2] = mapObj->elevation;
+    gFieldEffectArguments[3] = 2;
+    FieldEffectStart(FLDEFF_JUMP_LONG_GRASS);
+}
+
+void GroundEffect_JumpOnShallowWater(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    gFieldEffectArguments[0] = mapObj->coords2.x;
+    gFieldEffectArguments[1] = mapObj->coords2.y;
+    gFieldEffectArguments[2] = mapObj->elevation;
+    gFieldEffectArguments[3] = sprite->oam.priority;
+    FieldEffectStart(FLDEFF_JUMP_SMALL_SPLASH);
+}
+
+void GroundEffect_JumpOnWater(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    gFieldEffectArguments[0] = mapObj->coords2.x;
+    gFieldEffectArguments[1] = mapObj->coords2.y;
+    gFieldEffectArguments[2] = mapObj->elevation;
+    gFieldEffectArguments[3] = sprite->oam.priority;
+    FieldEffectStart(FLDEFF_JUMP_BIG_SPLASH);
+}
+
+void GroundEffect_JumpLandingDust(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    gFieldEffectArguments[0] = mapObj->coords2.x;
+    gFieldEffectArguments[1] = mapObj->coords2.y;
+    gFieldEffectArguments[2] = mapObj->elevation;
+    gFieldEffectArguments[3] = sprite->oam.priority;
+    FieldEffectStart(FLDEFF_DUST);
+}
+
+void GroundEffect_ShortGrass(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    oe_exec_and_other_stuff(FLDEFF_SHORT_GRASS, mapObj);
+}
+
+void GroundEffect_HotSprings(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    oe_exec_and_other_stuff(FLDEFF_HOT_SPRINGS_WATER, mapObj);
+}
+
+void GroundEffect_Seaweed(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    gFieldEffectArguments[0] = mapObj->coords2.x;
+    gFieldEffectArguments[1] = mapObj->coords2.y;
+    FieldEffectStart(FLDEFF_BUBBLES);
+}
+
+static void (*const gUnknown_083760A0[])(struct MapObject *mapObj, struct Sprite *sprite) = {
+    GroundEffect_SpawnOnTallGrass,
+    sub_8063E94,
+    sub_8063EE0,
+    sub_8063F2C,
+    GroundEffect_WaterReflection,
+    GroundEffect_IceReflection,
+    GroundEffect_FlowingWater,
+    sub_8063FA0,
+    sub_8063FCC,
+    GroundEffect_Ripple,
+    GroundEffect_StepOnPuddle,
+    GroundEffect_SandPile,
+    GroundEffect_JumpOnTallGrass,
+    GroundEffect_JumpOnLongGrass,
+    GroundEffect_JumpOnShallowWater,
+    GroundEffect_JumpOnWater,
+    GroundEffect_JumpLandingDust,
+    GroundEffect_ShortGrass,
+    GroundEffect_HotSprings,
+    GroundEffect_Seaweed
+};
+
+void sub_8064218(struct MapObject *mapObj, struct Sprite *sprite, u32 flags)
+{
+    u8 i;
+    for (i = 0; i < ARRAY_COUNT(gUnknown_083760A0); i++, flags >>= 1)
+        if (flags & 1)
+            gUnknown_083760A0[i](mapObj, sprite);
+}
+
+void filters_out_some_ground_effects(struct MapObject *mapObj, u32 *flags)
+{
+    if (mapObj->mapobj_bit_4)
+    {
+        mapObj->mapobj_bit_18 = 0;
+        mapObj->mapobj_bit_20 = 0;
+        mapObj->mapobj_bit_19 = 0;
+        mapObj->mapobj_bit_21 = 0;
+        *flags &= 0xFFF9F7BD;
+    }
+}
+
+void FilterOutStepOnPuddleGroundEffectIfJumping(struct MapObject *mapObj, u32 *flags)
+{
+    if (mapObj->mapobj_bit_5)
+        *flags &= 0xFFFFFBFF;
+}
+
+void DoGroundEffects_OnSpawn(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    u32 flags;
+
+    if (mapObj->mapobj_bit_2)
+    {
+        flags = 0;
+        FieldObjectUpdateZCoordAndPriority(mapObj, sprite);
+        GetAllGroundEffectFlags_OnSpawn(mapObj, &flags);
+        FieldObjectSetSpriteOamTableForLongGrass(mapObj, sprite);
+        sub_8064218(mapObj, sprite, flags);
+        mapObj->mapobj_bit_2 = 0;
+        mapObj->mapobj_bit_4 = 0;
+    }
+}
+
+void DoGroundEffects_OnBeginStep(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    u32 flags;
+
+    if (mapObj->mapobj_bit_2)
+    {
+        flags = 0;
+        FieldObjectUpdateZCoordAndPriority(mapObj, sprite);
+        GetAllGroundEffectFlags_OnBeginStep(mapObj, &flags);
+        FieldObjectSetSpriteOamTableForLongGrass(mapObj, sprite);
+        filters_out_some_ground_effects(mapObj, &flags);
+        sub_8064218(mapObj, sprite, flags);
+        mapObj->mapobj_bit_2 = 0;
+        mapObj->mapobj_bit_4 = 0;
+    }
+}
+
+void DoGroundEffects_OnFinishStep(struct MapObject *mapObj, struct Sprite *sprite)
+{
+    u32 flags;
+
+    if (mapObj->mapobj_bit_3)
+    {
+        flags = 0;
+        FieldObjectUpdateZCoordAndPriority(mapObj, sprite);
+        GetAllGroundEffectFlags_OnFinishStep(mapObj, &flags);
+        FieldObjectSetSpriteOamTableForLongGrass(mapObj, sprite);
+        FilterOutStepOnPuddleGroundEffectIfJumping(mapObj, &flags);
+        sub_8064218(mapObj, sprite, flags);
+        mapObj->mapobj_bit_3 = 0;
+        mapObj->mapobj_bit_5 = 0;
+    }
+}
+
+typedef void (*SpriteStepFunc)(struct Sprite *sprite, u8 dir);
+
+void Step1(struct Sprite *sprite, u8 dir);
+void Step2(struct Sprite *sprite, u8 dir);
+void Step3(struct Sprite *sprite, u8 dir);
+void Step4(struct Sprite *sprite, u8 dir);
+void Step8(struct Sprite *sprite, u8 dir);
+
+const SpriteStepFunc Unknown_83760F0[] = {
+    Step1,
+    Step1,
+    Step1,
+    Step1,
+    Step1,
+    Step1,
+    Step1,
+    Step1,
+    Step1,
+    Step1,
+    Step1,
+    Step1,
+    Step1,
+    Step1,
+    Step1,
+    Step1
+};
+
+const SpriteStepFunc Unknown_8376130[] = {
+    Step2,
+    Step2,
+    Step2,
+    Step2,
+    Step2,
+    Step2,
+    Step2,
+    Step2
+};
+
+const SpriteStepFunc Unknown_8376150[] = {
+    Step2,
+    Step3,
+    Step3,
+    Step2,
+    Step3,
+    Step3
+};
+
+const SpriteStepFunc Unknown_8376168[] = {
+    Step4,
+    Step4,
+    Step4,
+    Step4
+};
+
+const SpriteStepFunc Unknown_8376178[] = {
+    Step8,
+    Step8
+};
+
+const SpriteStepFunc *const gUnknown_08376180[] = {
+    Unknown_83760F0,
+    Unknown_8376130,
+    Unknown_8376150,
+    Unknown_8376168,
+    Unknown_8376178
+};
+
+const s16 gUnknown_08376194[] = {
+    16, 8, 6, 4, 2
+};
+
+const s8 Unknown_837619E[] = {
+     -4,  -6,  -8, -10, -11, -12, -12, -12, -11, -10,  -9,  -8,  -6,  -4,   0,   0
+};
+
+const s8 Unknown_83761AE[] = {
+      0,  -2,  -3,  -4,  -5,  -6,  -6,  -6,  -5,  -5,  -4,  -3,  -2,   0,   0,   0
+};
+
+const s8 Unknown_83761BE[] = {
+     -2,  -4,  -6,  -8,  -9, -10, -10, -10,  -9,  -8,  -6,  -5,  -3,  -2,   0,   0
+};
+
+const s8 *const gUnknown_083761D0[] = {
+    Unknown_837619E,
+    Unknown_83761AE,
+    Unknown_83761BE
+};
+
+bool8 FreezeMapObject(struct MapObject *mapObject)
+{
+    if (mapObject->mapobj_bit_6 || mapObject->mapobj_bit_8)
+    {
+        return TRUE;
+    }
+    else
+    {
+        mapObject->mapobj_bit_8 = 1;
+        mapObject->mapobj_bit_23 = gSprites[mapObject->spriteId].animPaused;
+        mapObject->mapobj_bit_24 = gSprites[mapObject->spriteId].affineAnimPaused;
+        gSprites[mapObject->spriteId].animPaused = 1;
+        gSprites[mapObject->spriteId].affineAnimPaused = 1;
+        return FALSE;
+    }
+}
+
+void FreezeMapObjects(void)
+{
+    u8 i;
+    for (i = 0; i < 16; i++)
+        if (gMapObjects[i].active && i != gPlayerAvatar.mapObjectId)
+            FreezeMapObject(&gMapObjects[i]);
+}
+
+void FreezeMapObjectsExceptOne(u8 a1)
+{
+    u8 i;
+    for (i = 0; i < 16; i++)
+        if (i != a1 && gMapObjects[i].active && i != gPlayerAvatar.mapObjectId)
+            FreezeMapObject(&gMapObjects[i]);
+}
+
+void UnfreezeMapObject(struct MapObject *mapObject)
+{
+    if (mapObject->active && mapObject->mapobj_bit_8)
+    {
+        mapObject->mapobj_bit_8 = 0;
+        gSprites[mapObject->spriteId].animPaused = mapObject->mapobj_bit_23;
+        gSprites[mapObject->spriteId].affineAnimPaused = mapObject->mapobj_bit_24;
+    }
+}
+
+void UnfreezeMapObjects(void)
+{
+    u8 i;
+    for (i = 0; i < 16; i++)
+        if (gMapObjects[i].active)
+            UnfreezeMapObject(&gMapObjects[i]);
+}
+
+void Step1(struct Sprite *sprite, u8 dir)
+{
+    sprite->pos1.x += gDirectionToVector[dir].x;
+    sprite->pos1.y += gDirectionToVector[dir].y;
+}
+
+void Step2(struct Sprite *sprite, u8 dir)
+{
+    sprite->pos1.x += 2 * (u16) gDirectionToVector[dir].x;
+    sprite->pos1.y += 2 * (u16) gDirectionToVector[dir].y;
+}
+
+void Step3(struct Sprite *sprite, u8 dir)
+{
+    sprite->pos1.x += 2 * (u16) gDirectionToVector[dir].x + (u16) gDirectionToVector[dir].x;
+    sprite->pos1.y += 2 * (u16) gDirectionToVector[dir].y + (u16) gDirectionToVector[dir].y;
+}
+
+void Step4(struct Sprite *sprite, u8 dir)
+{
+    sprite->pos1.x += 4 * (u16) gDirectionToVector[dir].x;
+    sprite->pos1.y += 4 * (u16) gDirectionToVector[dir].y;
+}
+
+void Step8(struct Sprite *sprite, u8 dir)
+{
+    sprite->pos1.x += 8 * (u16) gDirectionToVector[dir].x;
+    sprite->pos1.y += 8 * (u16) gDirectionToVector[dir].y;
+}
+
+void oamt_npc_ministep_reset(struct Sprite *sprite, u8 a2, u8 a3)
+{
+    sprite->data[3] = a2;
+    sprite->data[4] = a3;
+    sprite->data[5] = 0;
+}
+
+bool8 obj_npc_ministep(struct Sprite *sprite)
+{
+    if (sprite->data[5] >= gUnknown_08376194[sprite->data[4]])
+        return FALSE;
+
+    gUnknown_08376180[sprite->data[4]][sprite->data[5]](sprite, sprite->data[3]);
+
+    sprite->data[5]++;
+
+    if (sprite->data[5] < gUnknown_08376194[sprite->data[4]])
+        return FALSE;
+
+    return TRUE;
+}
+
+void sub_806467C(struct Sprite *sprite, u8 a2)
+{
+    sprite->data[3] = a2;
+    sprite->data[4] = 0;
+    sprite->data[5] = 0;
+}
+
+bool8 sub_806468C(struct Sprite *sprite)
+{
+    if (!(sprite->data[4] & 1))
+    {
+        Step1(sprite, sprite->data[3]);
+        sprite->data[5]++;
+    }
+
+    sprite->data[4]++;
+
+    if (sprite->data[5] > 15)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+s16 sub_80646C8(s16 a1, u8 a2)
+{
+    return gUnknown_083761D0[a2][a1];
+}
+
+void sub_80646E4(struct Sprite *sprite, u8 a2, u8 a3, u8 a4)
+{
+    sprite->data[3] = a2;
+    sprite->data[4] = a3;
+    sprite->data[5] = a4;
+    sprite->data[6] = 0;
+}
+
+u8 sub_8064704(struct Sprite *sprite)
+{
+    s16 v5[3] = {0x10, 0x10, 0x20};
+    u8 v6[3] = {0, 0, 1};
+    u8 v2 = 0;
+
+    if (sprite->data[4])
+        Step1(sprite, sprite->data[3]);
+
+    sprite->pos2.y = sub_80646C8(sprite->data[6] >> v6[sprite->data[4]], sprite->data[5]);
+
+    sprite->data[6]++;
+
+    if (sprite->data[6] == (v5[sprite->data[4]] >> 1))
+        v2 = 1;
+
+    if (sprite->data[6] >= v5[sprite->data[4]])
+    {
+        sprite->pos2.y = 0;
+        v2 = -1;
+    }
+
+    return v2;
+}
+
+u8 sub_806478C(struct Sprite *sprite)
+{
+    s16 v5[3] = {0x20, 0x20, 0x40};
+    u8 v6[3] = {1, 1, 2};
+    u8 v2 = 0;
+
+    if (sprite->data[4] && !(sprite->data[6] & 1))
+        Step1(sprite, sprite->data[3]);
+
+    sprite->pos2.y = sub_80646C8(sprite->data[6] >> v6[sprite->data[4]], sprite->data[5]);
+
+    sprite->data[6]++;
+
+    if (sprite->data[6] == (v5[sprite->data[4]] >> 1))
+        v2 = 1;
+
+    if (sprite->data[6] >= v5[sprite->data[4]])
+    {
+        sprite->pos2.y = 0;
+        v2 = -1;
+    }
+
+    return v2;
+}
+
+void sub_8064820(struct Sprite *sprite, s16 a2)
+{
+    sprite->data[3] = a2;
+}
+
+bool8 sub_8064824(struct Sprite *sprite)
+{
+    sprite->data[3]--;
+
+    if (sprite->data[3] == 0)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+void obj_anim_image_set_and_seek(struct Sprite *sprite, u8 a2, u8 a3)
+{
+    sprite->animNum = a2;
+    sprite->animPaused = 0 ;
+    SeekSpriteAnim(sprite, a3);
+}
+
+bool8 sub_8064864(struct Sprite *sprite)
+{
+    if (sprite->animEnded)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+void sub_806487C(struct Sprite *sprite, bool8 invisible)
+{
+    u16 x, y;
+    s16 x2, y2;
+
+    sprite->invisible = invisible;
+
+    if (sprite->coordOffsetEnabled)
+    {
+        x = sprite->pos1.x + sprite->pos2.x + sprite->centerToCornerVecX + gSpriteCoordOffsetX;
+        y = sprite->pos1.y + sprite->pos2.y + sprite->centerToCornerVecY + gSpriteCoordOffsetY;
+    }
+    else
+    {
+        x = sprite->pos1.x + sprite->pos2.x + sprite->centerToCornerVecX;
+        y = sprite->pos1.y + sprite->pos2.y + sprite->centerToCornerVecY;
+    }
+
+    x2 = x - (sprite->centerToCornerVecX >> 1);
+    y2 = y - (sprite->centerToCornerVecY >> 1);
+
+    if ((s16)x > 255 || x2 < -16)
+        sprite->invisible = 1;
+    if ((s16)y > 175 || y2 < -16)
+        sprite->invisible = 1;
+}
+
+void sub_8064970(struct Sprite *sprite)
+{
+    SetObjectSubpriorityByZCoord(sprite->data[1], sprite, 1);
+    sub_806487C(sprite, 0);
+}
+
+void sub_8064990(u8 a1, u8 dir)
+{
+    u8 i;
+    for (i = 0; i < MAX_SPRITES; i++)
+    {
+        struct Sprite *sprite = &gSprites[i];
+        if (sprite->inUse && sprite->callback == sub_8064970 && (u8)sprite->data[0] == a1)
+        {
+            u8 animNum = FieldObjectDirectionToImageAnimId(dir);
+            StartSpriteAnim(sprite, animNum);
+            break;
+        }
+    }
+}
+
+u32 oe_exec_and_other_stuff(u8 fieldEffectId, struct MapObject *mapObject)
+{
+    FieldObjectGetLocalIdAndMap(mapObject, &gFieldEffectArguments[0], &gFieldEffectArguments[1], &gFieldEffectArguments[2]);
+    return FieldEffectStart(fieldEffectId);
+}
+
+void DoShadowFieldEffect(struct MapObject *mapObject)
+{
+    if (!mapObject->mapobj_bit_22)
+    {
+        mapObject->mapobj_bit_22 = 1;
+        oe_exec_and_other_stuff(FLDEFF_SHADOW, mapObject);
+    }
+}
+
+void DoRippleFieldEffect(struct MapObject *mapObject, struct Sprite *sprite)
+{
+    const struct MapObjectGraphicsInfo *gfxInfo = GetFieldObjectGraphicsInfo(mapObject->graphicsId);
+    gFieldEffectArguments[0] = sprite->pos1.x;
+    gFieldEffectArguments[1] = sprite->pos1.y + (gfxInfo->height >> 1) - 2;
+    gFieldEffectArguments[2] = 151;
+    gFieldEffectArguments[3] = 3;
+    FieldEffectStart(FLDEFF_RIPPLE);
 }

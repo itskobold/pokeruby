@@ -9,9 +9,7 @@
 #include "field_control_avatar.h"
 #include "field_effect.h"
 #include "field_fadetransition.h"
-#include "field_ground_effect.h"
-#include "field_map_obj.h"
-#include "field_map_obj_helpers.h"
+#include "event_object_movement.h"
 #include "field_message_box.h"
 #include "field_player_avatar.h"
 #include "field_screen_effect.h"
@@ -2235,7 +2233,7 @@ u16 sub_80554E4(u32 a1)
     return 23;
 }
 
-u32 sub_80554F8(void)
+s32 sub_80554F8(void)
 {
     if (sub_8054FC0(0x83) == TRUE)
         return 2;
