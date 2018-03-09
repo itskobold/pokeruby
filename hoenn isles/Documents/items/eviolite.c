@@ -1,6 +1,6 @@
 //the eviolite item!
-//works on new rules - if a Pokemon can evolve, and it has a BST of less than 500, it will recieve a stat boost. also prevents evolution
-//their BST is subtracted from 500, then the result is divided by 6 and added onto each of their base stats
+//works on new rules - if a Pokemon can evolve, and it has a BST of less than 512, it will recieve a stat boost. also prevents evolution
+//their BST is subtracted from 512, then the result is divided by 6 and added onto each of their base stats
 
 //to do - make sure wild and trainer Pokemon stats are affected too (wild Pokemon caught holding eviolite are not affected - check if item held is eviolite and update stats on Pokemon creation) 
 
@@ -81,19 +81,19 @@ u16 CalculateBaseStatTotal(struct Pokemon *mon)
 	u16 evioliteBoost = 0;
 
 //a new bit of code needs to be added to calculate the boost each stat should recieve
-//the Pokemon needs to be raised to a BST of (roughly) 500
-//this code also contains a bit that prevents Pokemon with a BST of 500 or above being affected just to be sure
+//the Pokemon needs to be raised to a BST of (roughly) 512
+//this code also contains a bit that prevents Pokemon with a BST of 512 or above being affected just to be sure
 
 	if ((item == ITEM_EVIOLITE) && (gEvolutionTable[species][0].targetSpecies != SPECIES_NONE))	//if mon is holding eviolite & can evolve
 	{
 		u16 statTotal = CalculateBaseStatTotal(mon);
-		if(statTotal > 500)
+		if(statTotal > 512)
 		{
 			evioliteBoost = 0;
 		}
 		else
 		{
-			evioliteBoost = ((500 - statTotal) / 6);
+			evioliteBoost = ((512 - statTotal) / 6);
 		}
 	}
 	
