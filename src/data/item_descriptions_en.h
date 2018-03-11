@@ -68,6 +68,26 @@ static const u8 gItemDescription_LairBall[] = _(
     "Catches DARK-\n"
     "and DRAGON-type\n"
     "POKéMON easily.");
+
+static const u8 gItemDescription_FrostStone[] = _(
+    "Makes certain\n"
+    "species of POKéMON\n"
+    "evolve.");
+	
+static const u8 gItemDescription_DawnStone[] = _(
+    "Makes certain\n"
+    "species of POKéMON\n"
+    "evolve.");
+	
+static const u8 gItemDescription_DuskStone[] = _(
+    "Makes certain\n"
+    "species of POKéMON\n"
+    "evolve.");
+	
+static const u8 gItemDescription_ShinyStone[] = _(
+    "Makes certain\n"
+    "species of POKéMON\n"
+    "evolve.");
 //HOENNISLES END
 
 static const u8 gItemDescription_MasterBall[] = _(
