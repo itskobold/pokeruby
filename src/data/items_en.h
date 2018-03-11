@@ -4275,6 +4275,7 @@ const struct Item gItems[] =
         .battleUseFunc = NULL,
         .secondaryId = 0,
     },
+//HOENNISLES START
     {
         .name = _("EVIOLITE"),
         .itemId = ITEM_EVIOLITE,
@@ -4291,6 +4292,23 @@ const struct Item gItems[] =
         .battleUseFunc = NULL,
         .secondaryId = 0,
     },
+//HOENNISLES END
+/*  VANILLA   {
+        .name = _("????????"),
+        .itemId = ITEM_NONE,
+        .price = 0,
+        .holdEffect = HOLD_EFFECT_NONE,
+        .holdEffectParam = 0,
+        .description = gItemDescription_Dummy,
+        .importance = 0,
+        .unk19 = 0,
+        .pocket = POCKET_ITEMS,
+        .type = 4,
+        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .battleUsage = 0,
+        .battleUseFunc = NULL,
+        .secondaryId = 0,
+    }, */
     {
         .name = _("RED SCARF"),
         .itemId = ITEM_RED_SCARF,
