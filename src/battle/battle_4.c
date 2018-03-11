@@ -15752,6 +15752,69 @@ void atkEF_handleballthrow(void)
             case ITEM_PREMIER_BALL:
                 ball_multiplier = 10;
                 break;
+			//HOENNISLES START
+			//new ball types!
+			case ITEM_BALANCE_BALL:
+			    if (gBattleMons[gBankTarget].type1 == TYPE_FIGHTING || gBattleMons[gBankTarget].type2 == TYPE_FIGHTING || gBattleMons[gBankTarget].type1 == TYPE_PSYCHIC || gBattleMons[gBankTarget].type2 == TYPE_PSYCHIC)
+                    ball_multiplier = 50;
+                else
+                    ball_multiplier = 10;
+                break;
+			case ITEM_ROOST_BALL:
+				if (gBattleMons[gBankTarget].type1 == TYPE_FLYING || gBattleMons[gBankTarget].type2 == TYPE_FLYING || gBattleMons[gBankTarget].type1 == TYPE_AUDIO || gBattleMons[gBankTarget].type2 == TYPE_AUDIO)
+                    ball_multiplier = 50;
+                else
+                    ball_multiplier = 10;
+                break;
+			case ITEM_FURNACE_BALL:
+				if (gBattleMons[gBankTarget].type1 == TYPE_FIRE || gBattleMons[gBankTarget].type2 == TYPE_FIRE || gBattleMons[gBankTarget].type1 == TYPE_GROUND || gBattleMons[gBankTarget].type2 == TYPE_GROUND)
+                    ball_multiplier = 50;
+                else
+                    ball_multiplier = 10;
+                break;
+			case ITEM_GEODE_BALL:
+				if (gBattleMons[gBankTarget].type1 == TYPE_ROCK || gBattleMons[gBankTarget].type2 == TYPE_ROCK || gBattleMons[gBankTarget].type1 == TYPE_STEEL || gBattleMons[gBankTarget].type2 == TYPE_STEEL)
+                    ball_multiplier = 50;
+                else
+                    ball_multiplier = 10;
+                break;
+			case ITEM_VENOM_BALL:
+				if (gBattleMons[gBankTarget].type1 == TYPE_BUG || gBattleMons[gBankTarget].type2 == TYPE_BUG || gBattleMons[gBankTarget].type1 == TYPE_POISON || gBattleMons[gBankTarget].type2 == TYPE_POISON)
+                    ball_multiplier = 50;
+                else
+                    ball_multiplier = 10;
+                break;
+			case ITEM_COMET_BALL:
+				if (gBattleMons[gBankTarget].type1 == TYPE_COSMIC || gBattleMons[gBankTarget].type2 == TYPE_COSMIC || gBattleMons[gBankTarget].type1 == TYPE_ICE || gBattleMons[gBankTarget].type2 == TYPE_ICE)
+                    ball_multiplier = 50;
+                else
+                    ball_multiplier = 10;
+                break;
+			case ITEM_FABLE_BALL:
+				if (gBattleMons[gBankTarget].type1 == TYPE_FAIRY || gBattleMons[gBankTarget].type2 == TYPE_FAIRY || gBattleMons[gBankTarget].type1 == TYPE_GHOST || gBattleMons[gBankTarget].type2 == TYPE_GHOST)
+                    ball_multiplier = 50;
+                else
+                    ball_multiplier = 10;
+                break;
+			case ITEM_SWAMP_BALL:
+				if (gBattleMons[gBankTarget].type1 == TYPE_WATER || gBattleMons[gBankTarget].type2 == TYPE_WATER || gBattleMons[gBankTarget].type1 == TYPE_GRASS || gBattleMons[gBankTarget].type2 == TYPE_GRASS)
+                    ball_multiplier = 50;
+                else
+                    ball_multiplier = 10;
+                break;
+			case ITEM_NEUTRON_BALL:
+				if (gBattleMons[gBankTarget].type1 == TYPE_NORMAL || gBattleMons[gBankTarget].type2 == TYPE_NORMAL || gBattleMons[gBankTarget].type1 == TYPE_ELECTRIC || gBattleMons[gBankTarget].type2 == TYPE_ELECTRIC)
+                    ball_multiplier = 50;
+                else
+                    ball_multiplier = 10;
+                break;
+			case ITEM_LAIR_BALL:
+				if (gBattleMons[gBankTarget].type1 == TYPE_DRAGON || gBattleMons[gBankTarget].type2 == TYPE_DRAGON || gBattleMons[gBankTarget].type1 == TYPE_DARK || gBattleMons[gBankTarget].type2 == TYPE_DARK)
+                    ball_multiplier = 50;
+                else
+                    ball_multiplier = 10;
+                break;
+			//HOENNISLES END
             }
         }
         else

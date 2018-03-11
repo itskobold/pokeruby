@@ -13,6 +13,61 @@ static const u8 gItemDescription_SpaceRock[] = _(
      "A hold item that\n"
     "raises the power of\n"
     "COSMIC-type moves.");
+	
+static const u8 gItemDescription_UltraPotion[] = _(
+    "Restores the HP of\n"
+    "a POKéMON by\n"
+    "150 points.");
+	
+static const u8 gItemDescription_BalanceBall[] = _(
+    "Catches FIGHTING-\n"
+    "and PSYCHIC-type\n"
+    "POKéMON easily.");
+	
+static const u8 gItemDescription_RoostBall[] = _(
+    "Catches FLYING-\n"
+    "and AUDIO-type\n"
+    "POKéMON easily.");
+	
+static const u8 gItemDescription_FurnaceBall[] = _(
+    "Catches FIRE-\n"
+    "and GROUND-type\n"
+    "POKéMON easily.");
+	
+static const u8 gItemDescription_GeodeBall[] = _(
+    "Catches STEEL-\n"
+    "and ROCK-type\n"
+    "POKéMON easily.");
+
+static const u8 gItemDescription_VenomBall[] = _(
+    "Catches POISON-\n"
+    "and BUG-type\n"
+    "POKéMON easily.");
+	
+static const u8 gItemDescription_CometBall[] = _(
+    "Catches ICE-\n"
+    "and COSMIC-type\n"
+    "POKéMON easily.");
+	
+static const u8 gItemDescription_FableBall[] = _(
+    "Catches FAIRY-\n"
+    "and GHOST-type\n"
+    "POKéMON easily.");
+	
+static const u8 gItemDescription_SwampBall[] = _(
+    "Catches GRASS-\n"
+    "and WATER-type\n"
+    "POKéMON easily.");
+	
+static const u8 gItemDescription_NeutronBall[] = _(
+    "Catches NORMAL-\n"
+    "and ELECTRIC-type\n"
+    "POKéMON easily.");
+	
+static const u8 gItemDescription_LairBall[] = _(
+    "Catches DARK-\n"
+    "and DRAGON-type\n"
+    "POKéMON easily.");
 //HOENNISLES END
 
 static const u8 gItemDescription_MasterBall[] = _(
@@ -112,12 +167,12 @@ static const u8 gItemDescription_MaxPotion[] = _(
 static const u8 gItemDescription_HyperPotion[] = _(
     "Restores the HP of\n"
     "a POKéMON by\n"
-    "200 points.");
+    "300 points.");
 
 static const u8 gItemDescription_SuperPotion[] = _(
     "Restores the HP of\n"
     "a POKéMON by\n"
-    "50 points.");
+    "75 points.");
 
 static const u8 gItemDescription_FullHeal[] = _(
     "Heals all the status\n"
@@ -353,7 +408,7 @@ static const u8 gItemDescription_FluffyTail[] = _(
 
 static const u8 gItemDescription_SuperRepel[] = _(
     "Repels weak wild\n"
-    "POKéMON for 200\n"
+    "POKéMON for 175\n"
     "steps.");
 
 static const u8 gItemDescription_MaxRepel[] = _(

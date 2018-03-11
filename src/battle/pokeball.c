@@ -37,6 +37,18 @@ extern u8 gHealthboxIDs[];
 #define GFX_TAG_TIMERBALL   55009
 #define GFX_TAG_LUXURYBALL  55010
 #define GFX_TAG_PREMIERBALL 55011
+//HOENNISLES START
+#define GFX_TAG_BALANCEBALL 55012
+#define GFX_TAG_ROOSTBALL 55013
+#define GFX_TAG_FURNACEBALL 55014
+#define GFX_TAG_GEODEBALL 55015
+#define GFX_TAG_VENOMBALL 55016
+#define GFX_TAG_COMETBALL 55017
+#define GFX_TAG_FABLEBALL 55018
+#define GFX_TAG_SWAMPBALL 55019
+#define GFX_TAG_NEUTRONBALL 55020
+#define GFX_TAG_LAIRBALL 55021
+//HOENNISLES END
 
 static const struct CompressedSpriteSheet sBallSpriteSheets[] =
 {
@@ -52,6 +64,19 @@ static const struct CompressedSpriteSheet sBallSpriteSheets[] =
     {gInterfaceGfx_TimerBall,   384, GFX_TAG_TIMERBALL},
     {gInterfaceGfx_LuxuryBall,  384, GFX_TAG_LUXURYBALL},
     {gInterfaceGfx_PremierBall, 384, GFX_TAG_PREMIERBALL},
+//HOENNISLES START
+//all new balls use premier ball sprites for now
+    {gInterfaceGfx_PremierBall, 384, GFX_TAG_BALANCEBALL},
+	{gInterfaceGfx_PremierBall, 384, GFX_TAG_ROOSTBALL},
+	{gInterfaceGfx_PremierBall, 384, GFX_TAG_FURNACEBALL},
+	{gInterfaceGfx_PremierBall, 384, GFX_TAG_GEODEBALL},
+	{gInterfaceGfx_PremierBall, 384, GFX_TAG_VENOMBALL},
+	{gInterfaceGfx_PremierBall, 384, GFX_TAG_COMETBALL},
+	{gInterfaceGfx_PremierBall, 384, GFX_TAG_FABLEBALL},
+	{gInterfaceGfx_PremierBall, 384, GFX_TAG_SWAMPBALL},
+	{gInterfaceGfx_PremierBall, 384, GFX_TAG_NEUTRONBALL},
+	{gInterfaceGfx_PremierBall, 384, GFX_TAG_LAIRBALL},
+//HOENNISLES END
 };
 
 static const struct CompressedSpritePalette sBallSpritePalettes[] =
@@ -68,6 +93,19 @@ static const struct CompressedSpritePalette sBallSpritePalettes[] =
     {gInterfacePal_TimerBall,   GFX_TAG_TIMERBALL},
     {gInterfacePal_LuxuryBall,  GFX_TAG_LUXURYBALL},
     {gInterfacePal_PremierBall, GFX_TAG_PREMIERBALL},
+//HOENNISLES START
+//all new balls use premier ball palettes for now
+    {gInterfacePal_PremierBall, GFX_TAG_BALANCEBALL},
+	{gInterfacePal_PremierBall, GFX_TAG_ROOSTBALL},
+	{gInterfacePal_PremierBall, GFX_TAG_FURNACEBALL},
+	{gInterfacePal_PremierBall, GFX_TAG_GEODEBALL},
+	{gInterfacePal_PremierBall, GFX_TAG_VENOMBALL},
+	{gInterfacePal_PremierBall, GFX_TAG_COMETBALL},
+	{gInterfacePal_PremierBall, GFX_TAG_FABLEBALL},
+	{gInterfacePal_PremierBall, GFX_TAG_SWAMPBALL},
+	{gInterfacePal_PremierBall, GFX_TAG_NEUTRONBALL},
+	{gInterfacePal_PremierBall, GFX_TAG_LAIRBALL},
+//HOENNISLES END
 };
 
 static const struct OamData sBallOamData =
@@ -294,6 +332,98 @@ const struct SpriteTemplate gBallSpriteTemplates[] =
         .affineAnims = sBallAffineAnimSequences,
         .callback = objc_0804ABD4,
     },
+	//HOENNISLES START
+	{
+        .tileTag = GFX_TAG_BALANCEBALL,
+        .paletteTag = GFX_TAG_BALANCEBALL,
+        .oam = &sBallOamData,
+        .anims = sBallAnimSequences,
+        .images = NULL,
+        .affineAnims = sBallAffineAnimSequences,
+        .callback = objc_0804ABD4,
+    },
+	{
+        .tileTag = GFX_TAG_ROOSTBALL,
+        .paletteTag = GFX_TAG_ROOSTBALL,
+        .oam = &sBallOamData,
+        .anims = sBallAnimSequences,
+        .images = NULL,
+        .affineAnims = sBallAffineAnimSequences,
+        .callback = objc_0804ABD4,
+    },
+	{
+        .tileTag = GFX_TAG_FURNACEBALL,
+        .paletteTag = GFX_TAG_FURNACEBALL,
+        .oam = &sBallOamData,
+        .anims = sBallAnimSequences,
+        .images = NULL,
+        .affineAnims = sBallAffineAnimSequences,
+        .callback = objc_0804ABD4,
+    },
+	{
+        .tileTag = GFX_TAG_GEODEBALL,
+        .paletteTag = GFX_TAG_GEODEBALL,
+        .oam = &sBallOamData,
+        .anims = sBallAnimSequences,
+        .images = NULL,
+        .affineAnims = sBallAffineAnimSequences,
+        .callback = objc_0804ABD4,
+    },
+	{
+        .tileTag = GFX_TAG_VENOMBALL,
+        .paletteTag = GFX_TAG_VENOMBALL,
+        .oam = &sBallOamData,
+        .anims = sBallAnimSequences,
+        .images = NULL,
+        .affineAnims = sBallAffineAnimSequences,
+        .callback = objc_0804ABD4,
+    },
+	{
+        .tileTag = GFX_TAG_COMETBALL,
+        .paletteTag = GFX_TAG_COMETBALL,
+        .oam = &sBallOamData,
+        .anims = sBallAnimSequences,
+        .images = NULL,
+        .affineAnims = sBallAffineAnimSequences,
+        .callback = objc_0804ABD4,
+    },
+	{
+        .tileTag = GFX_TAG_FABLEBALL,
+        .paletteTag = GFX_TAG_FABLEBALL,
+        .oam = &sBallOamData,
+        .anims = sBallAnimSequences,
+        .images = NULL,
+        .affineAnims = sBallAffineAnimSequences,
+        .callback = objc_0804ABD4,
+    },
+	{
+        .tileTag = GFX_TAG_SWAMPBALL,
+        .paletteTag = GFX_TAG_SWAMPBALL,
+        .oam = &sBallOamData,
+        .anims = sBallAnimSequences,
+        .images = NULL,
+        .affineAnims = sBallAffineAnimSequences,
+        .callback = objc_0804ABD4,
+    },
+	{
+        .tileTag = GFX_TAG_NEUTRONBALL,
+        .paletteTag = GFX_TAG_NEUTRONBALL,
+        .oam = &sBallOamData,
+        .anims = sBallAnimSequences,
+        .images = NULL,
+        .affineAnims = sBallAffineAnimSequences,
+        .callback = objc_0804ABD4,
+    },
+	{
+        .tileTag = GFX_TAG_LAIRBALL,
+        .paletteTag = GFX_TAG_LAIRBALL,
+        .oam = &sBallOamData,
+        .anims = sBallAnimSequences,
+        .images = NULL,
+        .affineAnims = sBallAffineAnimSequences,
+        .callback = objc_0804ABD4,
+    },
+	//HOENNISLES END
 };
 
 extern u32 ball_number_to_ball_processing_index(u16);  // not sure of return type

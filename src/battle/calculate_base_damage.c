@@ -171,7 +171,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     }
 
 	//HOENNISLES START
-	for (i = 0; i < 20; i++)
+	for (i = 0; i < 21; i++)
 	//HOENNISLES END
 
     //for (i = 0; i < 17; i++) VANILLA
