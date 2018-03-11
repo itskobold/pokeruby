@@ -1,3 +1,20 @@
+//HOENNISLES START
+static const u8 gItemDescription_Potpourri[] = _(
+    "A hold item that\n"
+    "raises the power of\n"
+    "FAIRY-type moves.");
+	
+static const u8 gItemDescription_TinWhistle[] = _(
+    "A hold item that\n"
+    "raises the power of\n"
+    "AUDIO-type moves.");
+	
+static const u8 gItemDescription_SpaceRock[] = _(
+     "A hold item that\n"
+    "raises the power of\n"
+    "COSMIC-type moves.");
+//HOENNISLES END
+
 static const u8 gItemDescription_MasterBall[] = _(
     "The best BALL that\n"
     "catches a POKéMON\n"

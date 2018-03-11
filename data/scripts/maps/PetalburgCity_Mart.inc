@@ -25,7 +25,13 @@ PetalburgCity_Mart_Items1:: @ 81552D0
 	.2byte ITEM_X_ATTACK
 	.2byte ITEM_X_DEFEND
 	.2byte ITEM_ORANGE_MAIL
+	//HOENNISLES START
+	.2byte ITEM_POTPOURRI
+	.2byte ITEM_TIN_WHISTLE
+	.2byte ITEM_SPACE_ROCK
+	.2byte ITEM_MASTER_BALL
 	.2byte ITEM_NONE
+	//HOENNISLES END
 	release
 	end
 
