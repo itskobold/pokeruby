@@ -3624,6 +3624,8 @@ bool8 PartyMenuUpdateMonHeldItem(struct Pokemon *pkmn, u16 item)
     itemData[0] = item;
     itemData[1] = item >> 8;
     SetMonData(pkmn, MON_DATA_HELD_ITEM, itemData);
+	CalculateMonStats(ewram1C000.pokemon); //note that "ewram1C000.pokemon" will probably change - update it to the Pokemon being affected
+	RedrawPokemonInfoInMenu(ewram1C000.unk5, ewram1C000.pokemon); //ewram1C000.unk5 will probably change too
     return FALSE;
 }
 
@@ -3789,8 +3791,10 @@ void PartyMenuTryGiveMonHeldItem_806ECE8(u8 taskId, TaskFunc func)
         {
             if (ItemIsMail(currentItem) == TRUE)
                 TakeMailFromMon(ewram1C000.pokemon);
-            DisplayTakeHeldItemMessage(ewram1C000.unk5, currentItem, 0);
             SetMonData(ewram1C000.pokemon, MON_DATA_HELD_ITEM, itemData);
+			CalculateMonStats(ewram1C000.pokemon);
+		    RedrawPokemonInfoInMenu(ewram1C000.unk5, ewram1C000.pokemon);
+            DisplayTakeHeldItemMessage(ewram1C000.unk5, currentItem, 0); //this line has been moved
         }
         else
         {

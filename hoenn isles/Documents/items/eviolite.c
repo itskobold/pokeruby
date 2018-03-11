@@ -56,7 +56,7 @@
     CALC_STAT(baseSpAttack, evioliteBoost, spAttackIV, spAttackEV, 4, MON_DATA_SPATK)
     CALC_STAT(baseSpDefense, evioliteBoost, spDefenseIV, spDefenseEV, 5, MON_DATA_SPDEF)
 
-//add a function to calculate a Pokemon's base stat total below the CALC_STAT macro itself
+//add a function to calculate a Pokemon's base stat total
 //this will make bst equal the Pokemon's base stat total. there might be a better way to do this part...
 
 u16 CalculateBaseStatTotal(struct Pokemon *mon)

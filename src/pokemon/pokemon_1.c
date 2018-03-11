@@ -451,14 +451,41 @@ u16 CalculateBoxMonChecksum(struct BoxPokemon *boxMon)
     return checksum;
 }
 
-#define CALC_STAT(base, iv, ev, statIndex, field)               \
-{                                                               \
-    u8 baseStat = gBaseStats[species].base;                     \
-    s32 n = (((2 * baseStat + iv + ev / 4) * level) / 100) + 5; \
-    u8 nature = GetNature(mon);                                 \
-    n = nature_stat_mod(nature, n, statIndex);                  \
-    SetMonData(mon, field, &n);                                 \
+/*#define CALC_STAT(base, iv, ev, statIndex, field)                	\	VANILLA
+{                                                               			\
+    u8 baseStat = gBaseStats[species].base;                     			\
+    s32 n = (((2 * baseStat + iv + ev / 4) * level) / 100) + 5;  \
+    u8 nature = GetNature(mon);                                 			\
+    n = nature_stat_mod(nature, n, statIndex);                  			\
+    SetMonData(mon, field, &n);                                 			\
+}*/
+
+//HOENNISLES START
+#define CALC_STAT(base, eviolite, iv, ev, statIndex, field)                	\
+{                                                               			\
+    u8 baseStat = gBaseStats[species].base;                     			\
+    s32 n = (((2 * baseStat + eviolite + iv + ev / 4) * level) / 100) + 5;  \
+    u8 nature = GetNature(mon);                                 			\
+    n = nature_stat_mod(nature, n, statIndex);                  			\
+    SetMonData(mon, field, &n);                                 			\
 }
+
+u16 CalculateBaseStatTotal(struct Pokemon *mon)
+{
+	u16 bst = 0;
+    u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
+
+	u8 bstHP = gBaseStats[species].baseHP;
+	u8 bstATK = gBaseStats[species].baseAttack;
+	u8 bstDEF = gBaseStats[species].baseDefense;
+	u8 bstSPD = gBaseStats[species].baseSpeed;
+	u8 bstSPATK = gBaseStats[species].baseSpAttack;
+	u8 bstSPDEF = gBaseStats[species].baseSpDefense;
+
+	bst = (bstHP + bstATK + bstDEF + bstSPD + bstSPATK + bstSPDEF);
+	return bst;
+}
+//HOENNISLES END
 
 void CalculateMonStats(struct Pokemon *mon)
 {
@@ -479,16 +506,38 @@ void CalculateMonStats(struct Pokemon *mon)
     u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
     s32 level = GetLevelFromMonExp(mon);
     s32 newMaxHP;
+	//HOENNISLES START
+	u16 item = GetMonData(mon, MON_DATA_HELD_ITEM, NULL);
+	u16 evioliteBoost = 0;
+	//HOENNISLES END
 
     SetMonData(mon, MON_DATA_LEVEL, &level);
-
+	
+	//HOENNISLES START
+	if ((item == ITEM_EVIOLITE) && (gEvolutionTable[species][0].targetSpecies != SPECIES_NONE))	//if mon is holding eviolite & can evolve
+	{
+		u16 statTotal = CalculateBaseStatTotal(mon);
+		if(statTotal > 512)
+		{
+			evioliteBoost = 0;
+		}
+		else
+		{
+			evioliteBoost = ((512 - statTotal) / 6);
+		}
+	}
+	//HOENNISLES END
+	
     if (species == SPECIES_SHEDINJA)
     {
         newMaxHP = 1;
     }
     else
     {
-        s32 n = 2 * gBaseStats[species].baseHP + hpIV;
+		//HOENNISLES START
+		s32 n = 2 * gBaseStats[species].baseHP + evioliteBoost + hpIV;
+		//HOENNISLES END
+        //s32 n = 2 * gBaseStats[species].baseHP + hpIV;	VANILLA
         newMaxHP = (((n + hpEV / 4) * level) / 100) + level + 10;
     }
 
@@ -498,11 +547,11 @@ void CalculateMonStats(struct Pokemon *mon)
 
     SetMonData(mon, MON_DATA_MAX_HP, &newMaxHP);
 
-    CALC_STAT(baseAttack, attackIV, attackEV, 1, MON_DATA_ATK)
-    CALC_STAT(baseDefense, defenseIV, defenseEV, 2, MON_DATA_DEF)
-    CALC_STAT(baseSpeed, speedIV, speedEV, 3, MON_DATA_SPEED)
-    CALC_STAT(baseSpAttack, spAttackIV, spAttackEV, 4, MON_DATA_SPATK)
-    CALC_STAT(baseSpDefense, spDefenseIV, spDefenseEV, 5, MON_DATA_SPDEF)
+    CALC_STAT(baseAttack, evioliteBoost, attackIV, attackEV, 1, MON_DATA_ATK)
+    CALC_STAT(baseDefense, evioliteBoost, defenseIV, defenseEV, 2, MON_DATA_DEF)
+    CALC_STAT(baseSpeed, evioliteBoost, speedIV, speedEV, 3, MON_DATA_SPEED)
+    CALC_STAT(baseSpAttack, evioliteBoost, spAttackIV, spAttackEV, 4, MON_DATA_SPATK)
+    CALC_STAT(baseSpDefense, evioliteBoost, spDefenseIV, spDefenseEV, 5, MON_DATA_SPDEF)
 
     if (species == SPECIES_SHEDINJA)
     {
@@ -511,7 +560,23 @@ void CalculateMonStats(struct Pokemon *mon)
         else
             return;
     }
-    else
+	else
+    {
+        if (currentHP == 0 && oldMaxHP == 0)
+            currentHP = newMaxHP;
+        else if (currentHP != 0)
+		{
+			if (currentHP < (oldMaxHP - newMaxHP)) 	//check for underflow
+				currentHP = 1;						//set HP to 1
+			else
+				currentHP += newMaxHP - oldMaxHP;
+				if (currentHP == 0)
+					currentHP = 1;					//make sure HP can never be 0
+		}
+		else
+            return;
+    }
+    /*else			VANILLA
     {
         if (currentHP == 0 && oldMaxHP == 0)
             currentHP = newMaxHP;
@@ -519,7 +584,7 @@ void CalculateMonStats(struct Pokemon *mon)
             currentHP += newMaxHP - oldMaxHP;
         else
             return;
-    }
+    }*/
 
     SetMonData(mon, MON_DATA_HP, &currentHP);
 }

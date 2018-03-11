@@ -1,4 +1,9 @@
 //HOENNISLES START
+static const u8 gItemDescription_Eviolite[] = _(
+    "Raises the holder’s\n"
+    "base stats if they\n"
+    "can still evolve.");
+	
 static const u8 gItemDescription_Potpourri[] = _(
     "A hold item that\n"
     "raises the power of\n"
