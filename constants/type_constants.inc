@@ -16,3 +16,9 @@
 	.set TYPE_ICE,      0x0f
 	.set TYPE_DRAGON,   0x10
 	.set TYPE_DARK,     0x11
+//HOENNISLES START
+	.set TYPE_AUDIO,	0x12
+	.set TYPE_COSMIC,	0x13
+	.set TYPE_FAIRY,	0x14
+	.set TYPE_NULL,		0x15
+//HOENNISLES END

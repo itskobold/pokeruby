@@ -200,7 +200,11 @@ $(PICFRAMEGFXDIR)/frame5.4bpp: GFX_OPTS := -num_tiles 86
 
 TYPESGFXDIR := graphics/types
 
-types := normal fight flying poison ground rock bug ghost steel mystery fire water grass electric psychic ice dragon dark
+#### HOENNISLES START
+types := normal fight flying poison ground rock bug ghost steel mystery fire water grass electric psychic ice dragon dark audio cosmic fairy null
+#### HOENNISLES END
+
+#### VANILLA types := normal fight flying poison ground rock bug ghost steel mystery fire water grass electric psychic ice dragon dark
 contest_types := cool beauty cute smart tough
 
 $(TYPESGFXDIR)/move_types.4bpp: $(types:%=$(TYPESGFXDIR)/%.4bpp) $(contest_types:%=$(TYPESGFXDIR)/contest_%.4bpp)

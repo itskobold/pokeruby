@@ -117,6 +117,12 @@
 #define TYPE_ICE      0x0f
 #define TYPE_DRAGON   0x10
 #define TYPE_DARK     0x11
+//HOENNISLES START
+#define TYPE_AUDIO    0x12
+#define TYPE_COSMIC   0x13
+#define TYPE_FAIRY    0x14
+#define TYPE_NULL     0x15
+//HOENNISLES END
 
 #define PARTY_SIZE 6
 #define MAX_TOTAL_EVS 510
