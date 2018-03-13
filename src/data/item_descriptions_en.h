@@ -1,4 +1,9 @@
 //HOENNISLES START
+static const u8 gItemDescription_TreasureMap[] = _(
+    "A cryptic old map.\n"
+    "Instructions are\n"
+    "scrawled all over it.");
+
 static const u8 gItemDescription_Eviolite[] = _(
     "Raises the holder’s\n"
     "base stats if they\n"

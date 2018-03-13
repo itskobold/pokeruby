@@ -16,6 +16,8 @@ PetalburgCity_Mart_EventScript_1552B0:: @ 81552B0
 PetalburgCity_Mart_Items1:: @ 81552D0
 //HOENNISLES START
 	.2byte ITEM_EVIOLITE
+	.2byte ITEM_SHINY_STONE
+	.2byte ITEM_TREASURE_MAP
 //HOENNISLES END
 	.2byte ITEM_POKE_BALL
 	.2byte ITEM_POTION
