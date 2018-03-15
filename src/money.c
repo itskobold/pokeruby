@@ -68,15 +68,25 @@ void AddMoney(u32 *arg0, u32 arg1)
 {
     if (*arg0 > *arg0 + arg1)
     {
-        *arg0 = 999999;
+//HOENNISLES START
+        *arg0 = 99999999; //max money is now 99,999,999. how wild is that. i love pokeruby so much
+//HOENNISLES END	
+//        *arg0 = 999999; VANILLA
         return;
     }
 
     *arg0 = *arg0 + arg1;
-    if (*arg0 > 999999)
+//HOENNISLES START
+    if (*arg0 > 99999999)
+    {
+        *arg0 = 99999999;
+    }
+//HOENNISLES END
+
+/*    if (*arg0 > 999999) VANILLA
     {
         *arg0 = 999999;
-    }
+    } */
 }
 
 void RemoveMoney(u32 *arg0, u32 arg1)
@@ -96,10 +106,19 @@ void GetMoneyAmountText(u8 *buffer, u32 amount, u8 arg2)
     u8 width;
     u8 i;
 
-    if (amount > 999999)
+//HOENNISLES START
+	if (amount > 99999999)
+		width = 9;
+	else if (amount > 9999999)
+		width = 8;
+	else if (amount > 999999)
         width = 7;
+/* VANILLA
+    if (amount > 999999)
+		width = 7; */
     else if (amount > 99999)
         width = 6;
+
     // A special sprite is used for 10000 in the decoration
     // shop, so be sure to account for this.
     else if (amount > 10000)

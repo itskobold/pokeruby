@@ -3684,7 +3684,7 @@ const struct Item gItems[] =
 	{
         .name = _("BALANCE BALL"),
         .itemId = ITEM_BALANCE_BALL,
-        .price = 0,
+        .price = 9999,
         .holdEffect = HOLD_EFFECT_NONE,
         .holdEffectParam = 0,
         .description = gItemDescription_BalanceBall,
@@ -3700,7 +3700,7 @@ const struct Item gItems[] =
 	{
         .name = _("ROOST BALL"),
         .itemId = ITEM_ROOST_BALL,
-        .price = 0,
+        .price = 1,
         .holdEffect = HOLD_EFFECT_NONE,
         .holdEffectParam = 0,
         .description = gItemDescription_RoostBall,
@@ -3780,7 +3780,7 @@ const struct Item gItems[] =
 	{
         .name = _("FABLE BALL"),
         .itemId = ITEM_FABLE_BALL,
-        .price = 0,
+        .price = 65000,
         .holdEffect = HOLD_EFFECT_NONE,
         .holdEffectParam = 0,
         .description = gItemDescription_FableBall,
