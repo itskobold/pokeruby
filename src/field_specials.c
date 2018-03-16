@@ -2234,7 +2234,8 @@ u16 GetNumMovedLilycoveFanClubMembers(void)
 void UpdateMovedLilycoveFanClubMembers(void)
 {
     u8 i = 0;
-    if (gSaveBlock2.playTimeHours < 999)
+	//HOENNISLES
+    if (gSaveBlock2.playTimeHours < 65535) //VANILLA 999
     {
         while (1)
         {

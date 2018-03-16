@@ -2,6 +2,10 @@
 	.include "constants/constants.inc"
 
 	.section .rodata
+	
+	@@HOENNISLES
+gOtherText_PlayTimeCropped::
+	.string "PLAYED$"
 
 	@ unused
 gOtherText_TopSpeed::

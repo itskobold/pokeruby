@@ -705,7 +705,8 @@ void PrintPlayTime(void)
     Menu_PrintText(gMainMenuString_Time, 16, 3);
     FormatPlayTime(playTime, gSaveBlock2.playTimeHours, gSaveBlock2.playTimeMinutes, 1);
     sub_8072C74(alignedPlayTime, playTime, 48, 1);
-    Menu_PrintText(alignedPlayTime, 22, 3);
+//HOENNISLES
+    Menu_PrintText(alignedPlayTime, 21, 3); //VANILLA     Menu_PrintText(alignedPlayTime, 22, 3);
 #elif defined(GERMAN)
     Menu_PrintTextPixelCoords(gMainMenuString_Time, 124, 24, TRUE);
     FormatPlayTime(playTime, gSaveBlock2.playTimeHours, gSaveBlock2.playTimeMinutes, 1);
@@ -733,7 +734,17 @@ void PrintBadgeCount(void)
     Menu_PrintTextPixelCoords(gMainMenuString_Badges, 124, 40, TRUE);
 #endif
     ConvertIntToDecimalString(buffer, GetBadgeCount());
-    Menu_PrintTextPixelCoords(buffer, 205, 40, 1);
+//HOENNISLES START
+	if (gSaveBlock2.playTimeHours >= 10000)
+	{
+		Menu_PrintTextPixelCoords(buffer, 200, 40, 1);	
+	}
+	else
+	{
+		Menu_PrintTextPixelCoords(buffer, 197, 40, 1);
+	}
+//HOENNISLES END
+	//Menu_PrintTextPixelCoords(buffer, 205, 40, 1);	VANILLA
 }
 
 #define tTrainerSpriteId data[2]
