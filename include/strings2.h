@@ -1,9 +1,6 @@
 #ifndef GUARD_STRINGS2_H
 #define GUARD_STRINGS2_H
 
-//HOENNISLES
-extern const u8 gOtherText_PlayTimeCropped[];
-
 // ???
 extern const u8 gOtherText_TopSpeed[];
 

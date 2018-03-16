@@ -2,10 +2,6 @@
 	.include "constants/constants.inc"
 
 	.section .rodata
-	
-	@@HOENNISLES
-gOtherText_PlayTimeCropped::
-	.string "PLAYED$"
 
 	@ unused
 gOtherText_TopSpeed::
@@ -244,8 +240,9 @@ gOtherText_Girl:: @ 842C97D
 	.string "GIRL$"
 	.string "$"
 
+@@HOENNISLES
 gOtherText_Player:: @ 842C983
-	.string "PLAYER$"
+	.string "NAME$" @@VANILLA "PLAYER$"
 
 gOtherText_Badges:: @ 842C98A
 	.string "BADGES$"
@@ -254,8 +251,9 @@ gOtherText_Badges:: @ 842C98A
 gOtherText_Pokedex:: @ 842C992
 	.string "POKéDEX$"
 
+@@HOENNISLES
 gOtherText_PlayTime:: @ 842C99A
-	.string "PLAY TIME$"
+	.string "PLAYED$" @@VANILLA "PLAY TIME$"
 
 gOtherText_SentToPC:: @ 842C9A4
 	.string "{STR_VAR_1} was sent to\nthe PC.{PAUSE_UNTIL_PRESS}$"

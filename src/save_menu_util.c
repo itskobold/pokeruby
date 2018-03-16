@@ -95,15 +95,7 @@ void PrintSavePokedexCount(s16 x, s16 y)
 void PrintSavePlayTime(s16 x, s16 y)
 {
     char playtime[16];
-	
-    if (gSaveBlock2.playTimeHours >= 10000)
-    {
-		Menu_PrintText(gOtherText_PlayTimeCropped, x, y);
-	}
-	else
-	{
-		Menu_PrintText(gOtherText_PlayTime, x, y);
-	}
+	Menu_PrintText(gOtherText_PlayTime, x, y);
     FormatPlayTime(playtime, gSaveBlock2.playTimeHours, gSaveBlock2.playTimeMinutes, 1);
     MenuPrint_RightAligned(playtime, x + 12, y);
 }

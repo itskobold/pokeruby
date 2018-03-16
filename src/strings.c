@@ -42,9 +42,11 @@ const u8 gBoardNotInstalledMessage[] = _("The 1M sub-circuit board is\nnot insta
 const u8 gBatteryDryMessage[] = _("The internal battery has run dry.\nThe game can be played.\pHowever, clock-based events will\nno longer occur.");
 
 // main menu text 2
-const u8 gMainMenuString_Player[] = _("PLAYER");
+//HOENNISLES
+const u8 gMainMenuString_Player[] = _("NAME"); //VANILLA "PLAYER"
 const u8 gMainMenuString_Pokedex[] = _("POKéDEX");
-const u8 gMainMenuString_Time[] = _("TIME");
+//HOENNISLES
+const u8 gMainMenuString_Time[] = _("PLAYED"); //VANILLA "TIME"
 const u8 gMainMenuString_Badges[] = _("BADGES");
 
 // birch text

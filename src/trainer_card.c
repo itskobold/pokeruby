@@ -777,7 +777,17 @@ static void TrainerCard_Front_PrintPlayTime(u8 taskId)
         task->data[TD_SHOWING_LINK_CARD] ^= TRUE;
     }
     TrainerCard_Front_GetPlayTimeString(buffer, task->data[TD_SHOWING_LINK_CARD]);
-    Menu_PrintText(buffer, 10, 12);
+//HOENNISLES START
+	if (gSaveBlock2.playTimeHours >= 10000)
+	{
+		Menu_PrintTextPixelCoords(buffer, 77, 96, 1); //alters text position when player has played for over 10,000 hours (somehow)
+	}
+	else
+	{
+		Menu_PrintText(buffer, 10, 12);
+	}
+//HOENNISLES END
+//Menu_PrintText(buffer, 10, 12); VANILLA
 }
 
 static void TrainerCard_CreateFlipAnimationTask(void)
