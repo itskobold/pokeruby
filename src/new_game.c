@@ -30,6 +30,10 @@
 #include "secret_base.h"
 #include "text.h"
 #include "tv.h"
+//HOENNISLES START
+#include "item.h"
+#include "constants/items.h"
+//HOENNISLES END
 
 EWRAM_DATA u8 gDifferentSaveFile = 0;
 EWRAM_DATA u8 gUnknown_020297ED = 0;
@@ -88,6 +92,22 @@ void SetDefaultOptions(void)
     gSaveBlock2.optionsBattleSceneOff = FALSE;
     gSaveBlock2.regionMapZoom = FALSE;
 }
+
+//HOENNISLES START
+void SetDefaultGameModeAndNuzlocke(void)
+{
+	gSaveBlock2.nuzlockeMode = NUZLOCKE_MODE_OFF;		//defaults to standard, non-nuzlocke mode
+	gSaveBlock2.gameMode = GAME_MODE_STORY;				//defaults to story mode
+}
+
+void TryGivingNuzlockeBuff(void)
+{
+	if (gSaveBlock2.nuzlockeMode != NUZLOCKE_MODE_OFF)
+	{
+		AddBagItem(ITEM_NUZLOCKE_BUFF, 1);
+	}
+}
+//HOENNISLES END
 
 void ClearPokedexFlags(void)
 {
@@ -203,6 +223,10 @@ void NewGameInitData(void)
     ResetLotteryCorner();
     WarpToTruck();
     ScriptContext2_RunNewScript(gUnknown_0819FA81);
+//HOENNISLES START
+	SetDefaultGameModeAndNuzlocke();
+	TryGivingNuzlockeBuff();
+//HOENNISLES END
 }
 
 #if DEBUG

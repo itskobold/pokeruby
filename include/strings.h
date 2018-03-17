@@ -26,6 +26,16 @@ extern const u8 gMainMenuString_Continue[];
 extern const u8 gMainMenuString_Option[];
 extern const u8 gMainMenuString_MysteryEvents[];
 
+//HOENNISLES START
+extern const u8 gMainMenuString_Story[];
+extern const u8 gMainMenuString_Sandbox[];
+extern const u8 gMainMenuString_Random[];
+extern const u8 gMainMenuString_SuperRandom[];
+
+extern const u8 gMainMenuString_Nuzlocke[];
+extern const u8 gMainMenuString_Hardlocke[];
+extern const u8 gMainMenuString_Deadlocke[];
+
 // system text 2
 extern const u8 SystemText_UpdatingSaveExternal[];
 extern const u8 SystemText_SaveUpdated[];

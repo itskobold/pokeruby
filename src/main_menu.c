@@ -416,6 +416,38 @@ void Task_MainMenuDraw(u8 taskId)
             PrintMainMenuItem(gMainMenuString_Option, 2, 5);
             break;
         case HAS_SAVED_GAME:
+//HOENNISLES START
+			switch(gSaveBlock2.gameMode)
+			{
+				case GAME_MODE_STORY:
+					StringCopy(gStringVar1, gMainMenuString_Story);
+					break;
+				case GAME_MODE_SANDBOX:
+					StringCopy(gStringVar1, gMainMenuString_Sandbox);
+					break;
+				case GAME_MODE_RANDOM:
+					StringCopy(gStringVar1, gMainMenuString_Random);
+					break;
+				case GAME_MODE_SUPER_RANDOM:
+					StringCopy(gStringVar1, gMainMenuString_SuperRandom);
+					break;
+			}
+			switch(gSaveBlock2.nuzlockeMode)
+			{
+				case NUZLOCKE_MODE_OFF:
+					StringCopy(gStringVar2, gExpandedPlaceholder_Empty);
+					break;
+				case NUZLOCKE_MODE_NUZLOCKE:
+					StringCopy(gStringVar2, gMainMenuString_Nuzlocke);
+					break;
+				case NUZLOCKE_MODE_HARDLOCKE:
+					StringCopy(gStringVar2, gMainMenuString_Hardlocke);
+					break;
+				case NUZLOCKE_MODE_DEADLOCKE:
+					StringCopy(gStringVar2, gMainMenuString_Deadlocke);
+					break;
+			}
+//HOENNISLES END
             Menu_DrawStdWindowFrame(1, 0, 28, 7);
             PrintMainMenuItem(gMainMenuString_Continue, 2, 1);
             Menu_DrawStdWindowFrame(1, 8, 28, 11);

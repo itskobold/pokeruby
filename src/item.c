@@ -626,7 +626,17 @@ u8 ItemId_GetHoldEffectParam(u16 itemId)
 
 const u8 *ItemId_GetDescription(u16 itemId)
 {
-    return gItems[SanitizeItemId(itemId)].description;
+//HOENNISLES START
+	if (gItems[SanitizeItemId(itemId)].itemId == ITEM_NUZLOCKE_BUFF && gSaveBlock2.nuzlockeMode == NUZLOCKE_MODE_OFF)
+	{
+		return gItemDescription_NuzlockeBuffBroken;	//if item is a nuzlocke buff but the player isn't on nuzlocke mode, change the description
+	}
+	else
+	{
+		return gItems[SanitizeItemId(itemId)].description;
+	}
+//HOENNISLES END
+//	return gItems[SanitizeItemId(itemId)].description; VANILLA
 }
 
 bool32 ItemId_CopyDescription(u8 *a, u32 itemId, u32 c)
@@ -634,6 +644,13 @@ bool32 ItemId_CopyDescription(u8 *a, u32 itemId, u32 c)
     u32 r5 = c + 1;
     const u8 *description = gItems[SanitizeItemId(itemId)].description;
     u8 *str = a;
+
+//HOENNISLES START
+	if (gItems[SanitizeItemId(itemId)].itemId == ITEM_NUZLOCKE_BUFF && gSaveBlock2.nuzlockeMode == NUZLOCKE_MODE_OFF)
+	{
+		description = gItemDescription_NuzlockeBuffBroken;	//if item is a nuzlocke buff but the player isn't on nuzlocke mode, change the description
+	}
+//HOENNISLES END
 
     for (;;)
     {

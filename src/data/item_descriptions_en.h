@@ -1,4 +1,14 @@
 //HOENNISLES START
+static const u8 gItemDescription_NuzlockeBuff[] = _(
+    "A small charm that\n"
+    "defends and powers\n"
+    "up the holder.");
+	
+static const u8 gItemDescription_NuzlockeBuffBroken[] = _(
+    "A small charm.\n"
+    "It appears to have\n"
+    "lost its power...");
+
 static const u8 gItemDescription_TreasureMap[] = _(
     "A cryptic old map.\n"
     "Instructions are\n"
@@ -20,7 +30,7 @@ static const u8 gItemDescription_TinWhistle[] = _(
     "AUDIO-type moves.");
 	
 static const u8 gItemDescription_SpaceRock[] = _(
-     "A hold item that\n"
+    "A hold item that\n"
     "raises the power of\n"
     "COSMIC-type moves.");
 	

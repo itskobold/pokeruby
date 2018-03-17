@@ -126,6 +126,24 @@ enum
     OPTIONS_BATTLE_STYLE_SET
 };
 
+//HOENNISLES START
+enum
+{
+	NUZLOCKE_MODE_OFF,
+	NUZLOCKE_MODE_NUZLOCKE,
+	NUZLOCKE_MODE_HARDLOCKE,
+	NUZLOCKE_MODE_DEADLOCKE
+};
+
+enum
+{
+	GAME_MODE_STORY,
+	GAME_MODE_SANDBOX,
+	GAME_MODE_RANDOM,
+	GAME_MODE_SUPER_RANDOM
+};
+//HOENNISLES END
+
 enum
 {
     BAG_ITEMS = 1,
@@ -816,6 +834,10 @@ struct SaveBlock2 /* 0x02024EA4 */
     /*0x98*/ struct Time localTimeOffset;
     /*0xA0*/ struct Time lastBerryTreeUpdate;
     /*0xA8*/ struct BattleTowerData battleTower;
+//HOENNISLES START
+			 u8 nuzlockeMode;			   // Normal/Nuzlocke/Hardlocke/Deadlocke
+			 u8 gameMode;				   // Story/Sandbox/Semi-Random/Random
+//HOENNISLES END
 };
 
 struct MapPosition

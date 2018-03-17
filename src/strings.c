@@ -23,9 +23,20 @@ const u8 gSystemText_Pokemon2[] = _("POKéMON");
 
 // main menu text
 const u8 gMainMenuString_NewGame[] = _("NEW GAME");
-const u8 gMainMenuString_Continue[] = _("CONTINUE");
+//HOENNISLES
+const u8 gMainMenuString_Continue[] = _("CONTINUE - {STR_VAR_1}{STR_VAR_2}"); //VANILLA "CONTINUE"
 const u8 gMainMenuString_Option[] = _("OPTION");
 const u8 gMainMenuString_MysteryEvents[] = _("MYSTERY EVENTS");
+//HOENNISLES START
+const u8 gMainMenuString_Story[] = _("STORY$");
+const u8 gMainMenuString_Sandbox[] = _("SANDBOX$");
+const u8 gMainMenuString_Random[] = _("RANDOM$");
+const u8 gMainMenuString_SuperRandom[] = _("SUPER RANDOM$");
+
+const u8 gMainMenuString_Nuzlocke[] = _(" - {HIGHLIGHT WHITE2}{COLOR GREEN}NUZLOCKE$");
+const u8 gMainMenuString_Hardlocke[] = _(" - {HIGHLIGHT WHITE2}{COLOR BLUE}HARDLOCKE$");
+const u8 gMainMenuString_Deadlocke[] = _(" - {HIGHLIGHT WHITE2}{COLOR RED}DEADLOCKE$");
+//HOENNISLES END
 
 // system text 2
 const u8 SystemText_UpdatingSaveExternal[] = _("Updating save file using external\ndata. Please wait.");
