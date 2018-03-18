@@ -4279,7 +4279,7 @@ const struct Item gItems[] =
     {
         .name = _("EVIOLITE"),
         .itemId = ITEM_EVIOLITE,
-        .price = 0,
+        .price = 65535,
         .holdEffect = HOLD_EFFECT_NONE,
         .holdEffectParam = 0,
         .description = gItemDescription_Eviolite,

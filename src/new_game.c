@@ -100,11 +100,16 @@ void SetDefaultGameModeAndNuzlocke(void)
 	gSaveBlock2.gameMode = GAME_MODE_STORY;				//defaults to story mode
 }
 
-void TryGivingNuzlockeBuff(void)
+void GiveStarterItems(void)
 {
 	if (gSaveBlock2.nuzlockeMode != NUZLOCKE_MODE_OFF)
 	{
 		AddBagItem(ITEM_NUZLOCKE_BUFF, 1);
+		AddBagItem(ITEM_FULL_RESTORE, 3);
+	}
+	else
+	{
+		AddBagItem(ITEM_POTION, 1);
 	}
 }
 //HOENNISLES END
@@ -225,7 +230,7 @@ void NewGameInitData(void)
     ScriptContext2_RunNewScript(gUnknown_0819FA81);
 //HOENNISLES START
 	SetDefaultGameModeAndNuzlocke();
-	TryGivingNuzlockeBuff();
+	GiveStarterItems(); //this will probably be moved somewhere else eventually, but it's here for now
 //HOENNISLES END
 }
 

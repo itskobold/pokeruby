@@ -836,7 +836,7 @@ struct SaveBlock2 /* 0x02024EA4 */
     /*0xA8*/ struct BattleTowerData battleTower;
 //HOENNISLES START
 			 u8 nuzlockeMode;			   // Normal/Nuzlocke/Hardlocke/Deadlocke
-			 u8 gameMode;				   // Story/Sandbox/Semi-Random/Random
+			 u8 gameMode;				   // Story/Sandbox/Random/Super Random
 //HOENNISLES END
 };
 
