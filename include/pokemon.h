@@ -92,6 +92,10 @@
 #define MON_DATA_SPEED2            86
 #define MON_DATA_SPATK2            87
 #define MON_DATA_SPDEF2            88
+//HOENNISLES START
+#define MON_DATA_CUSTOM_TYPE_1       89
+#define MON_DATA_CUSTOM_TYPE_2       90
+//HOENNISLES END
 
 #define MAX_LEVEL 100
 
@@ -267,7 +271,15 @@ struct BoxPokemon
     /*0x14*/ u8 otName[OT_NAME_LENGTH];
     /*0x1B*/ u8 markings;
     /*0x1C*/ u16 checksum;
-    /*0x1E*/ u16 unknown;
+//HOENNISLES START
+//in super random mode, these values will be read and treated as the Pokemon's type
+	/*0x1E*/ u8 customType1;
+	/*0x1F*/ u8 customType2;	
+
+//we had to overwrite the unknown value to make this work. oops
+//it shouldn't be a problem but keep an eye out for bugs
+    //*0x1E*/ u16 unknown;
+//HOENNISLES END
 
     union
     {
@@ -354,6 +366,10 @@ struct BattlePokemon
     /*0x4C*/ u32 status1;
     /*0x50*/ u32 status2;
     /*0x54*/ u32 otId;
+//HOENNISLES START
+	/*0x58*/ u8 customType1;
+	/*0x59*/ u8 customType2;
+//HOENNISLES END
 };
 
 // Shouldn't these be the same enum?

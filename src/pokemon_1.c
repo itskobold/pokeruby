@@ -140,6 +140,10 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     u32 personality;
     u32 value;
     u16 checksum;
+//HOENNISLES START
+	u8 newType1 = gBaseStats[species].type1;
+	u8 newType2 = gBaseStats[species].type2;
+//HOENNISLES END
 
     ZeroBoxMonData(boxMon);
 
@@ -191,6 +195,8 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     value = 4;
     SetBoxMonData(boxMon, MON_DATA_POKEBALL, &value);
     SetBoxMonData(boxMon, MON_DATA_OT_GENDER, &gSaveBlock2.playerGender);
+	SetBoxMonData(boxMon, MON_DATA_CUSTOM_TYPE_1, &newType1);
+	SetBoxMonData(boxMon, MON_DATA_CUSTOM_TYPE_2, &newType2);
 
     if (fixedIV < 32)
     {
@@ -230,6 +236,56 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     }
 
     GiveBoxMonInitialMoveset(boxMon);
+	
+//HOENNISLES START
+//this generates random types, abilities and moves for Pokemon when the player is on Super Random mode
+
+//=====================================================================================================
+//TYPES
+//=====================================================================================================
+//it checks for mystery (???) and null types, and re-rolls if it lands on either of them
+//mystery type will be removed eventually
+//there is a 65% chance of the Pokemon being dual typed
+	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
+	{
+		u8 chance = Random() % 100;
+		do //re-roll if an invalid type
+		{
+			newType1 = Random() % 0x15; //number of types
+			if (newType1 != TYPE_MYSTERY && TYPE_NULL)
+				break;
+		}
+		while (newType1 == TYPE_MYSTERY && TYPE_NULL);
+		
+		SetBoxMonData(boxMon, MON_DATA_CUSTOM_TYPE_1, &newType1);
+		
+		if (chance <= 65) //65% chance of dual type
+		{
+			do //re-roll if an invalid type
+			{
+				newType2 = Random() % 0x15; //number of types
+				if (newType2 != TYPE_MYSTERY && TYPE_NULL && newType1)
+					break;
+			}
+			while (newType2 == TYPE_MYSTERY && TYPE_NULL && newType1);
+			
+			SetBoxMonData(boxMon, MON_DATA_CUSTOM_TYPE_2, &newType2);
+			return;
+		}
+		else
+		{
+			SetBoxMonData(boxMon, MON_DATA_CUSTOM_TYPE_2, &newType1); //set type 2 to the same type if mon rolled is a single type
+			return;
+		}
+	}
+//=====================================================================================================
+//ABILITY
+//=====================================================================================================
+
+//=====================================================================================================
+//MOVESET
+//=====================================================================================================
+//HOENNISLES END
 }
 
 void CreateMonWithNature(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 nature)

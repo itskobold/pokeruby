@@ -1508,12 +1508,32 @@ void IsGrassTypeInParty(void)
         pokemon = &gPlayerParty[i];
         if (GetMonData(pokemon, MON_DATA_SANITY_BIT2) && !GetMonData(pokemon, MON_DATA_IS_EGG))
         {
-            species = GetMonData(pokemon, MON_DATA_SPECIES);
+			//HOENNISLES START
+			//check for random types if player is on super random mode
+			if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
+			{
+				if (GetMonData(pokemon, MON_DATA_CUSTOM_TYPE_1) == TYPE_GRASS || GetMonData(pokemon, MON_DATA_CUSTOM_TYPE_2) == TYPE_GRASS)
+				{
+					gSpecialVar_Result = TRUE;
+					return;
+				}
+			}
+			else
+			{
+				species = GetMonData(pokemon, MON_DATA_SPECIES);
+				if (gBaseStats[species].type1 == TYPE_GRASS || gBaseStats[species].type2 == TYPE_GRASS)
+				{
+					gSpecialVar_Result = TRUE;
+					return;
+				}
+			}
+			//HOENNISLES END
+            /*species = GetMonData(pokemon, MON_DATA_SPECIES);	VANILLA
             if (gBaseStats[species].type1 == TYPE_GRASS || gBaseStats[species].type2 == TYPE_GRASS)
             {
                 gSpecialVar_Result = TRUE;
                 return;
-            }
+            }*/
         }
     }
     gSpecialVar_Result = FALSE;

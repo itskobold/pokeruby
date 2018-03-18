@@ -394,9 +394,19 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
     case MON_DATA_CHECKSUM:
         retVal = boxMon->checksum;
         break;
-    case MON_DATA_10:
+//HOENNISLES
+//not commented out in vanilla
+    /*case MON_DATA_10:
         retVal = boxMon->unknown;
+        break;*/
+//HOENNISLES START
+	case MON_DATA_CUSTOM_TYPE_1:
+		retVal = boxMon->customType1;
         break;
+	case MON_DATA_CUSTOM_TYPE_2:
+		retVal = boxMon->customType2;
+        break;
+//HOENNISLES END
     case MON_DATA_SPECIES:
         retVal = boxMon->isBadEgg ? SPECIES_EGG : substruct0->species;
         break;
@@ -750,9 +760,19 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const u8 *data)
     case MON_DATA_CHECKSUM:
         SET16(boxMon->checksum);
         break;
-    case MON_DATA_10:
+//HOENNISLES
+//not commented out in vanilla
+    /*case MON_DATA_10:
         SET16(boxMon->unknown);
+        break;*/
+//HOENNISLES START
+	case MON_DATA_CUSTOM_TYPE_1:
+		SET8(boxMon->customType1);
         break;
+	case MON_DATA_CUSTOM_TYPE_2:
+		SET8(boxMon->customType2);
+        break;
+//HOENNISLES END
     case MON_DATA_SPECIES:
     {
         SET16(substruct0->species);
@@ -1220,8 +1240,23 @@ void CopyPlayerPartyMonToBattleData(u8 battleIndex, u8 partyIndex)
     gBattleMons[battleIndex].isEgg = GetMonData(&gPlayerParty[partyIndex], MON_DATA_IS_EGG, NULL);
     gBattleMons[battleIndex].altAbility = GetMonData(&gPlayerParty[partyIndex], MON_DATA_ALT_ABILITY, NULL);
     gBattleMons[battleIndex].otId = GetMonData(&gPlayerParty[partyIndex], MON_DATA_OT_ID, NULL);
-    gBattleMons[battleIndex].type1 = gBaseStats[gBattleMons[battleIndex].species].type1;
-    gBattleMons[battleIndex].type2 = gBaseStats[gBattleMons[battleIndex].species].type2;
+	//HOENNISLES START
+	//this chooses whether to load the Pokemon's custom types or their normal types
+	//if the player were able to downgrade from super random to any other game type, the Pokemon will revert to using its normal types
+	//(but this can never happen, so that's okay)
+	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
+	{
+		gBattleMons[battleIndex].type1 = gBattleMons[battleIndex].customType1;
+		gBattleMons[battleIndex].type2 = gBattleMons[battleIndex].customType2;
+	}
+	else
+	{
+		gBattleMons[battleIndex].type1 = gBaseStats[gBattleMons[battleIndex].species].type1;
+		gBattleMons[battleIndex].type2 = gBaseStats[gBattleMons[battleIndex].species].type2;
+	}
+	//HOENNISLES END
+    /*gBattleMons[battleIndex].type1 = gBaseStats[gBattleMons[battleIndex].species].type1; VANILLA
+    gBattleMons[battleIndex].type2 = gBaseStats[gBattleMons[battleIndex].species].type2;*/
     gBattleMons[battleIndex].ability = GetAbilityBySpecies(gBattleMons[battleIndex].species, gBattleMons[battleIndex].altAbility);
     GetMonData(&gPlayerParty[partyIndex], MON_DATA_NICKNAME, nickname);
     StringCopy10(gBattleMons[battleIndex].nickname, nickname);

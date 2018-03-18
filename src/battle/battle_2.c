@@ -3875,9 +3875,21 @@ void UndoEffectsAfterFainting(void)
     ewram16100arr2(3, gActiveBank) = 0;
 
     eFlashFireArr.arr[gActiveBank] = 0;
-
-    gBattleMons[gActiveBank].type1 = gBaseStats[gBattleMons[gActiveBank].species].type1;
-    gBattleMons[gActiveBank].type2 = gBaseStats[gBattleMons[gActiveBank].species].type2;
+//HOENNISLES START
+//super random check
+	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
+	{
+		gBattleMons[gActiveBank].type1 = gBattleMons[gActiveBank].customType1;
+		gBattleMons[gActiveBank].type2 = gBattleMons[gActiveBank].customType2;
+	}
+	else
+	{
+		gBattleMons[gActiveBank].type1 = gBaseStats[gBattleMons[gActiveBank].species].type1;
+		gBattleMons[gActiveBank].type2 = gBaseStats[gBattleMons[gActiveBank].species].type2;
+	}
+//HOENNISLES END
+    /*gBattleMons[gActiveBank].type1 = gBaseStats[gBattleMons[gActiveBank].species].type1; VANILLA
+    gBattleMons[gActiveBank].type2 = gBaseStats[gBattleMons[gActiveBank].species].type2;*/
 }
 
 void bc_8012FAC(void)
@@ -3935,8 +3947,21 @@ void sub_8011384(void)
                 u8 r0;
 
                 MEMSET_ALT(&gBattleMons[gActiveBank], gBattleBufferB[gActiveBank][4 + i], 0x58, i, ptr);
-                gBattleMons[gActiveBank].type1 = gBaseStats[gBattleMons[gActiveBank].species].type1;
-                gBattleMons[gActiveBank].type2 = gBaseStats[gBattleMons[gActiveBank].species].type2;
+//HOENNISLES START
+//super random check
+				if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
+				{
+					gBattleMons[gActiveBank].type1 = gBattleMons[gActiveBank].customType1;
+					gBattleMons[gActiveBank].type2 = gBattleMons[gActiveBank].customType2;
+				}
+				else
+				{
+					gBattleMons[gActiveBank].type1 = gBaseStats[gBattleMons[gActiveBank].species].type1;
+					gBattleMons[gActiveBank].type2 = gBaseStats[gBattleMons[gActiveBank].species].type2;
+				}
+//HOENNISLES END
+				/*gBattleMons[gActiveBank].type1 = gBaseStats[gBattleMons[gActiveBank].species].type1; VANILLA
+                gBattleMons[gActiveBank].type2 = gBaseStats[gBattleMons[gActiveBank].species].type2;*/
                 gBattleMons[gActiveBank].ability = GetAbilityBySpecies(gBattleMons[gActiveBank].species, gBattleMons[gActiveBank].altAbility);
                 r0 = GetBankSide(gActiveBank);
                 ewram160BC[r0] = gBattleMons[gActiveBank].hp;

@@ -8322,8 +8322,21 @@ static void atk4D_switchindataupdate(void)
         monData[i] = gBattleBufferB[gActiveBank][4 + i];
     }
 
-    gBattleMons[gActiveBank].type1 = gBaseStats[gBattleMons[gActiveBank].species].type1;
-    gBattleMons[gActiveBank].type2 = gBaseStats[gBattleMons[gActiveBank].species].type2;
+//HOENNISLES START
+//super random check
+	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
+	{
+		gBattleMons[gActiveBank].type1 = gBattleMons[gActiveBank].customType1;
+		gBattleMons[gActiveBank].type2 = gBattleMons[gActiveBank].customType2;
+	}
+	else
+	{
+		gBattleMons[gActiveBank].type1 = gBaseStats[gBattleMons[gActiveBank].species].type1;
+		gBattleMons[gActiveBank].type2 = gBaseStats[gBattleMons[gActiveBank].species].type2;
+	}
+//HOENNISLES END
+	/*gBattleMons[gActiveBank].type1 = gBaseStats[gBattleMons[gActiveBank].species].type1; VANILLA
+    gBattleMons[gActiveBank].type2 = gBaseStats[gBattleMons[gActiveBank].species].type2;*/
     gBattleMons[gActiveBank].ability = GetAbilityBySpecies(gBattleMons[gActiveBank].species, gBattleMons[gActiveBank].altAbility);
 
     // check knocked off item
