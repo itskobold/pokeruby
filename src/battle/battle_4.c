@@ -11867,13 +11867,15 @@ static void atk90_tryconversiontypechange(void)
     for (checked_move = 0; checked_move < valid_moves; checked_move++)
     {
         move_type = gBattleMoves[gBattleMons[gBankAttacker].moves[checked_move]].type;
-        if (move_type == TYPE_MYSTERY)
+//HOENNISLES
+//not commented out in vanilla
+        /*if (move_type == TYPE_MYSTERY)
         {
             if (gBattleMons[gBankAttacker].type1 == TYPE_GHOST || gBattleMons[gBankAttacker].type2 == TYPE_GHOST)
                 move_type = TYPE_GHOST;
             else
                 move_type = TYPE_NORMAL;
-        }
+        }*/
         if (move_type != gBattleMons[gBankAttacker].type1 && move_type != gBattleMons[gBankAttacker].type2)
             break;
     }
@@ -11890,13 +11892,15 @@ static void atk90_tryconversiontypechange(void)
             while ((checked_move = Random() & 3) >= valid_moves);
 
             move_type = gBattleMoves[gBattleMons[gBankAttacker].moves[checked_move]].type;
-            if (move_type == TYPE_MYSTERY)
-            {
+//HOENNISLES
+//if statement not commented out in vanilla
+//            if (move_type == TYPE_MYSTERY)
+//           {
                 if (gBattleMons[gBankAttacker].type1 == TYPE_GHOST || gBattleMons[gBankAttacker].type2 == TYPE_GHOST)
                     move_type = TYPE_GHOST;
                 else
                     move_type = TYPE_NORMAL;
-            }
+//            }
         } while (move_type == gBattleMons[gBankAttacker].type1 || move_type == gBattleMons[gBankAttacker].type2);
 
         gBattleMons[gBankAttacker].type1 = move_type;

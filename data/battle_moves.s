@@ -1924,7 +1924,8 @@ gBattleMoves:: @ 81FB12C
 @ CURSE
 	.byte EFFECT_CURSE
 	.byte 0 @ power
-	.byte TYPE_MYSTERY
+@@HOENNISLES
+	.byte TYPE_GHOST 	@@TYPE_MYSTERY in vanilla
 	.byte 0 @ accuracy
 	.byte 10 @ PP
 	.byte 0 @ secondary effect chance
@@ -3911,3 +3912,181 @@ gBattleMoves:: @ 81FB12C
 	.byte TARGET_SELECTED_POKEMON
 	.byte 0 @ priority
 	.4byte F_AFFECTED_BY_KINGS_ROCK | F_MIRROR_MOVE_COMPATIBLE | F_AFFECTED_BY_PROTECT @ misc. flags
+
+@@HOENNISLES START
+@ DEBUG FAIRY 1
+	.byte EFFECT_HIT
+	.byte 40 @ power
+	.byte TYPE_FAIRY
+	.byte 100 @ accuracy
+	.byte 35 @ PP
+	.byte 0 @ secondary effect chance
+	.byte TARGET_SELECTED_POKEMON
+	.byte 0 @ priority
+	.4byte F_AFFECTED_BY_KINGS_ROCK | F_MIRROR_MOVE_COMPATIBLE | F_AFFECTED_BY_PROTECT | F_MAKES_CONTACT @ misc. flags
+	
+@ DEBUG FAIRY 2
+	.byte EFFECT_HIT
+	.byte 40 @ power
+	.byte TYPE_FAIRY
+	.byte 100 @ accuracy
+	.byte 35 @ PP
+	.byte 0 @ secondary effect chance
+	.byte TARGET_SELECTED_POKEMON
+	.byte 0 @ priority
+	.4byte F_AFFECTED_BY_KINGS_ROCK | F_MIRROR_MOVE_COMPATIBLE | F_AFFECTED_BY_PROTECT | F_MAKES_CONTACT @ misc. flags
+
+@ DEBUG FAIRY 3
+	.byte EFFECT_HIT
+	.byte 40 @ power
+	.byte TYPE_FAIRY
+	.byte 100 @ accuracy
+	.byte 35 @ PP
+	.byte 0 @ secondary effect chance
+	.byte TARGET_SELECTED_POKEMON
+	.byte 0 @ priority
+	.4byte F_AFFECTED_BY_KINGS_ROCK | F_MIRROR_MOVE_COMPATIBLE | F_AFFECTED_BY_PROTECT | F_MAKES_CONTACT @ misc. flags
+	
+@ DEBUG FAIRY 4
+	.byte EFFECT_HIT
+	.byte 40 @ power
+	.byte TYPE_FAIRY
+	.byte 100 @ accuracy
+	.byte 35 @ PP
+	.byte 0 @ secondary effect chance
+	.byte TARGET_SELECTED_POKEMON
+	.byte 0 @ priority
+	.4byte F_AFFECTED_BY_KINGS_ROCK | F_MIRROR_MOVE_COMPATIBLE | F_AFFECTED_BY_PROTECT | F_MAKES_CONTACT @ misc. flags
+	
+@ DEBUG COSMIC 1
+	.byte EFFECT_HIT
+	.byte 40 @ power
+	.byte TYPE_COSMIC
+	.byte 100 @ accuracy
+	.byte 35 @ PP
+	.byte 0 @ secondary effect chance
+	.byte TARGET_SELECTED_POKEMON
+	.byte 0 @ priority
+	.4byte F_AFFECTED_BY_KINGS_ROCK | F_MIRROR_MOVE_COMPATIBLE | F_AFFECTED_BY_PROTECT | F_MAKES_CONTACT @ misc. flags
+	
+@ DEBUG COSMIC 2
+	.byte EFFECT_HIT
+	.byte 40 @ power
+	.byte TYPE_COSMIC
+	.byte 100 @ accuracy
+	.byte 35 @ PP
+	.byte 0 @ secondary effect chance
+	.byte TARGET_SELECTED_POKEMON
+	.byte 0 @ priority
+	.4byte F_AFFECTED_BY_KINGS_ROCK | F_MIRROR_MOVE_COMPATIBLE | F_AFFECTED_BY_PROTECT | F_MAKES_CONTACT @ misc. flags
+
+@ DEBUG COSMIC 3
+	.byte EFFECT_HIT
+	.byte 40 @ power
+	.byte TYPE_COSMIC
+	.byte 100 @ accuracy
+	.byte 35 @ PP
+	.byte 0 @ secondary effect chance
+	.byte TARGET_SELECTED_POKEMON
+	.byte 0 @ priority
+	.4byte F_AFFECTED_BY_KINGS_ROCK | F_MIRROR_MOVE_COMPATIBLE | F_AFFECTED_BY_PROTECT | F_MAKES_CONTACT @ misc. flags
+	
+@ DEBUG COSMIC 4
+	.byte EFFECT_HIT
+	.byte 40 @ power
+	.byte TYPE_COSMIC
+	.byte 100 @ accuracy
+	.byte 35 @ PP
+	.byte 0 @ secondary effect chance
+	.byte TARGET_SELECTED_POKEMON
+	.byte 0 @ priority
+	.4byte F_AFFECTED_BY_KINGS_ROCK | F_MIRROR_MOVE_COMPATIBLE | F_AFFECTED_BY_PROTECT | F_MAKES_CONTACT @ misc. flags
+	
+@ DEBUG AUDIO 1
+	.byte EFFECT_HIT
+	.byte 40 @ power
+	.byte TYPE_AUDIO
+	.byte 100 @ accuracy
+	.byte 35 @ PP
+	.byte 0 @ secondary effect chance
+	.byte TARGET_SELECTED_POKEMON
+	.byte 0 @ priority
+	.4byte F_AFFECTED_BY_KINGS_ROCK | F_MIRROR_MOVE_COMPATIBLE | F_AFFECTED_BY_PROTECT | F_MAKES_CONTACT @ misc. flags
+	
+@ DEBUG AUDIO 2
+	.byte EFFECT_HIT
+	.byte 40 @ power
+	.byte TYPE_AUDIO
+	.byte 100 @ accuracy
+	.byte 35 @ PP
+	.byte 0 @ secondary effect chance
+	.byte TARGET_SELECTED_POKEMON
+	.byte 0 @ priority
+	.4byte F_AFFECTED_BY_KINGS_ROCK | F_MIRROR_MOVE_COMPATIBLE | F_AFFECTED_BY_PROTECT | F_MAKES_CONTACT @ misc. flags
+
+@ DEBUG AUDIO 3
+	.byte EFFECT_HIT
+	.byte 40 @ power
+	.byte TYPE_AUDIO
+	.byte 100 @ accuracy
+	.byte 35 @ PP
+	.byte 0 @ secondary effect chance
+	.byte TARGET_SELECTED_POKEMON
+	.byte 0 @ priority
+	.4byte F_AFFECTED_BY_KINGS_ROCK | F_MIRROR_MOVE_COMPATIBLE | F_AFFECTED_BY_PROTECT | F_MAKES_CONTACT @ misc. flags
+	
+@ DEBUG AUDIO 4
+	.byte EFFECT_HIT
+	.byte 40 @ power
+	.byte TYPE_AUDIO
+	.byte 100 @ accuracy
+	.byte 35 @ PP
+	.byte 0 @ secondary effect chance
+	.byte TARGET_SELECTED_POKEMON
+	.byte 0 @ priority
+	.4byte F_AFFECTED_BY_KINGS_ROCK | F_MIRROR_MOVE_COMPATIBLE | F_AFFECTED_BY_PROTECT | F_MAKES_CONTACT @ misc. flags
+	
+@ DEBUG NULL 1
+	.byte EFFECT_HIT
+	.byte 40 @ power
+	.byte TYPE_NULL
+	.byte 100 @ accuracy
+	.byte 35 @ PP
+	.byte 0 @ secondary effect chance
+	.byte TARGET_SELECTED_POKEMON
+	.byte 0 @ priority
+	.4byte F_AFFECTED_BY_KINGS_ROCK | F_MIRROR_MOVE_COMPATIBLE | F_AFFECTED_BY_PROTECT | F_MAKES_CONTACT @ misc. flags
+	
+@ DEBUG NULL 2
+	.byte EFFECT_HIT
+	.byte 40 @ power
+	.byte TYPE_NULL
+	.byte 100 @ accuracy
+	.byte 35 @ PP
+	.byte 0 @ secondary effect chance
+	.byte TARGET_SELECTED_POKEMON
+	.byte 0 @ priority
+	.4byte F_AFFECTED_BY_KINGS_ROCK | F_MIRROR_MOVE_COMPATIBLE | F_AFFECTED_BY_PROTECT | F_MAKES_CONTACT @ misc. flags
+
+@ DEBUG NULL 3
+	.byte EFFECT_HIT
+	.byte 40 @ power
+	.byte TYPE_NULL
+	.byte 100 @ accuracy
+	.byte 35 @ PP
+	.byte 0 @ secondary effect chance
+	.byte TARGET_SELECTED_POKEMON
+	.byte 0 @ priority
+	.4byte F_AFFECTED_BY_KINGS_ROCK | F_MIRROR_MOVE_COMPATIBLE | F_AFFECTED_BY_PROTECT | F_MAKES_CONTACT @ misc. flags
+	
+@ DEBUG NULL 4
+	.byte EFFECT_HIT
+	.byte 40 @ power
+	.byte TYPE_NULL
+	.byte 100 @ accuracy
+	.byte 35 @ PP
+	.byte 0 @ secondary effect chance
+	.byte TARGET_SELECTED_POKEMON
+	.byte 0 @ priority
+	.4byte F_AFFECTED_BY_KINGS_ROCK | F_MIRROR_MOVE_COMPATIBLE | F_AFFECTED_BY_PROTECT | F_MAKES_CONTACT @ misc. flags
+@@HOENNISLES END	

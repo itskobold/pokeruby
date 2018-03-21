@@ -201,7 +201,7 @@ $(PICFRAMEGFXDIR)/frame5.4bpp: GFX_OPTS := -num_tiles 86
 TYPESGFXDIR := graphics/types
 
 #### HOENNISLES START
-types := normal fight flying poison ground rock bug ghost steel mystery fire water grass electric psychic ice dragon dark audio cosmic fairy null
+types := normal fight flying poison ground rock bug ghost steel fire water grass electric psychic ice dragon dark audio cosmic fairy null
 #### HOENNISLES END
 
 #### VANILLA types := normal fight flying poison ground rock bug ghost steel mystery fire water grass electric psychic ice dragon dark

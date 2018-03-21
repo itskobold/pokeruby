@@ -354,3 +354,23 @@ gMoveNames:: @ 81F8320
 	.string "WATER PULSE$", 13
 	.string "DOOM DESIRE$", 13
 	.string "PSYCHO BOOST$", 13
+//HOENNISLES START
+	.string "DBG FAIRY 1$", 13
+	.string "DBG FAIRY 2$", 13
+	.string "DBG FAIRY 3$", 13
+	.string "DBG FAIRY 4$", 13
+	.string "DBG COSMIC 1$", 13
+	.string "DBG COSMIC 2$", 13
+	.string "DBG COSMIC 3$", 13
+	.string "DBG COSMIC 4$", 13
+	.string "DBG AUDIO 1$", 13
+	.string "DBG AUDIO 2$", 13
+	.string "DBG AUDIO 3$", 13
+	.string "DBG AUDIO 4$", 13
+	.string "DBG NULL 1$", 13
+	.string "DBG NULL 2$", 13
+	.string "DBG NULL 3$", 13
+	.string "DBG NULL 4$", 13
+//HOENNISLES END
+	
+

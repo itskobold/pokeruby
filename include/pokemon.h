@@ -112,7 +112,22 @@
 #define TYPE_BUG      0x06
 #define TYPE_GHOST    0x07
 #define TYPE_STEEL    0x08
-#define TYPE_MYSTERY  0x09
+//HOENNISLES START
+#define TYPE_FIRE     0x09
+#define TYPE_WATER    0x0a
+#define TYPE_GRASS    0x0b
+#define TYPE_ELECTRIC 0x0c
+#define TYPE_PSYCHIC  0x0d
+#define TYPE_ICE      0x0e
+#define TYPE_DRAGON   0x0f
+#define TYPE_DARK     0x10
+#define TYPE_AUDIO    0x11
+#define TYPE_COSMIC   0x12
+#define TYPE_FAIRY    0x13
+#define TYPE_NULL     0x14
+
+//HOENNISLES END
+/*#define TYPE_MYSTERY  0x09 VANILLA
 #define TYPE_FIRE     0x0a
 #define TYPE_WATER    0x0b
 #define TYPE_GRASS    0x0c
@@ -120,18 +135,16 @@
 #define TYPE_PSYCHIC  0x0e
 #define TYPE_ICE      0x0f
 #define TYPE_DRAGON   0x10
-#define TYPE_DARK     0x11
-//HOENNISLES START
-#define TYPE_AUDIO    0x12
-#define TYPE_COSMIC   0x13
-#define TYPE_FAIRY    0x14
-#define TYPE_NULL     0x15
-//HOENNISLES END
+#define TYPE_DARK     0x11*/
 
 #define PARTY_SIZE 6
 #define MAX_TOTAL_EVS 510
 #define NUM_STATS 6
 #define UNOWN_FORM_COUNT 28
+
+//HOENNISLES START
+#define NUM_BANNED_RANDOM_MOVES 6 //number of moves in random move banlist
+//HOENNISLES END
 
 enum {
     EGG_GROUP_NONE,
@@ -557,6 +570,12 @@ void GiveBoxMonInitialMoveset(struct BoxPokemon *boxMon);
 u16 MonTryLearningNewMove(struct Pokemon *mon, bool8 firstMove);
 void DeleteFirstMoveAndGiveMoveToMon(struct Pokemon *mon, u16 move);
 void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move);
+//HOENNISLES START
+void GenerateCustomTypesForMon(struct Pokemon *mon);
+void GenerateCustomTypesForBoxMon(struct BoxPokemon *boxMon);
+void GenerateSuperRandomMovesetForBoxMon(struct BoxPokemon *boxMon, s32 level);
+u16 GenerateSuperRandomMove(u8 moveType1, u8 moveType2);
+//HOENNISLES END
 
 u8 CountAliveMons(u8 a1);
 u8 sub_803C434(u8 a1);

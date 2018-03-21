@@ -1769,4 +1769,22 @@ const u8 * const gMoveDescriptions[] = {
     MoveDescription_WaterPulse,
     MoveDescription_DoomDesire,
     MoveDescription_PsychoBoost,
+//HOENNISLES START
+	MoveDescription_Pound,
+	MoveDescription_Pound,
+	MoveDescription_Pound,
+	MoveDescription_Pound,
+	MoveDescription_Pound,
+	MoveDescription_Pound,
+	MoveDescription_Pound,
+	MoveDescription_Pound,
+	MoveDescription_Pound,
+	MoveDescription_Pound,
+	MoveDescription_Pound,
+	MoveDescription_Pound,
+	MoveDescription_Pound,
+	MoveDescription_Pound,
+	MoveDescription_Pound,
+	MoveDescription_Pound,
+//HOENNISLES END
 };
