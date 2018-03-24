@@ -144,6 +144,9 @@
 
 //HOENNISLES START
 #define NUM_BANNED_RANDOM_MOVES 6 //number of moves in random move banlist
+#define NUM_BANNED_RANDOM_MONS 46 //number of Pokemon in random mon banlist
+#define NUM_MAX_POSSIBLE_EVOLUTIONS 5 //this should really be in evolution.h but moving it causes problems so eh
+#define NUM_MONS_WITH_BRANCHING_EVOS 8 //number of pokemon with evolution lines that branch out (like eevee, gloom, poliwhirl etc)
 //HOENNISLES END
 
 enum {
@@ -518,6 +521,10 @@ enum {
 #define EVO_LEVEL_SHEDINJA   0x000e // Pokémon reaches the specified level (special value for Shedinja)
 #define EVO_BEAUTY           0x000f // Pokémon levels up with beauty ≥ specified value
 
+//HOENNISLES START
+#define NUM_LEVEL_BASED_EVOS 8 //this and gLevelBasedEvoList (in wild_encounter.c) is messy as hell
+//HOENNISLES END
+
 struct Evolution
 {
     u16 method;
@@ -538,7 +545,8 @@ extern const u8 *const gItemEffectTable[];
 extern const struct BaseStats gBaseStats[];
 extern const u32 gExperienceTables[][101];
 extern const u16 *gLevelUpLearnsets[];
-extern struct Evolution gEvolutionTable[][5];
+//HOENNISLES
+extern struct Evolution gEvolutionTable[][NUM_MAX_POSSIBLE_EVOLUTIONS]; //VANILLA extern struct Evolution gEvolutionTable[][5];
 extern struct PokemonStorage gPokemonStorage;
 
 void ZeroBoxMonData(struct BoxPokemon *boxMon);
@@ -573,8 +581,12 @@ void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move);
 //HOENNISLES START
 void GenerateCustomTypesForMon(struct Pokemon *mon);
 void GenerateCustomTypesForBoxMon(struct BoxPokemon *boxMon);
-void GenerateSuperRandomMovesetForBoxMon(struct BoxPokemon *boxMon, s32 level);
+void GenerateSuperRandomMovesetForMon(struct Pokemon *mon, s32 level, bool8 hatched);
+void GenerateSuperRandomMovesetForBoxMon(struct BoxPokemon *boxMon, s32 level, bool8 hatched);
 u16 GenerateSuperRandomMove(u8 moveType1, u8 moveType2);
+bool8 IsRandomMoveBanned(u16 move);
+bool8 IsRandomMonBanned(u16 species);
+u8 GetSuperRandomMovesetSize(s32 level, bool8 hatched);
 //HOENNISLES END
 
 u8 CountAliveMons(u8 a1);

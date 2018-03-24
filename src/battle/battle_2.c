@@ -47,6 +47,9 @@
 #include "scanline_effect.h"
 #include "util.h"
 #include "ewram.h"
+//HOENNISLES START
+#include "wild_encounter.h"
+//HOENNISLES END
 
 struct UnknownStruct7
 {
@@ -1054,6 +1057,17 @@ u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
             u32 personalityValue;
             s32 j;
             u8 fixedIV;
+			//HOENNISLES START
+			u16 randomSpecies;
+			
+			//just to get the level
+			struct TrainerPartyMember0 *partyData = gTrainers[trainerNum].party;
+			
+			if (gSaveBlock2.gameMode >= GAME_MODE_RANDOM)
+			{
+				randomSpecies = GenerateRandomSpecies(partyData[i].level);
+			}
+			//HOENNISLES END
 
             if (gTrainers[trainerNum].doubleBattle == TRUE)
                 personalityValue = 0x80;
@@ -1075,7 +1089,17 @@ u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                     nameHash += gSpeciesNames[partyData[i].species][j];
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * 31 / 255;
-                CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0);
+				//HOENNISLES START
+				if (gSaveBlock2.gameMode >= GAME_MODE_RANDOM)
+				{
+					CreateMon(&party[i], randomSpecies, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0);
+				}
+				else
+				{
+					CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0);
+				}
+				//HOENNISLES END
+                //CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0); VANILLA
                 break;
             }
             case 1:
@@ -1086,7 +1110,17 @@ u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                     nameHash += gSpeciesNames[partyData[i].species][j];
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * 31 / 255;
-                CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0);
+                //HOENNISLES START
+				if (gSaveBlock2.gameMode >= GAME_MODE_RANDOM)
+				{
+					CreateMon(&party[i], randomSpecies, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0);
+				}
+				else
+				{
+					CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0);
+				}
+				//HOENNISLES END
+                //CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0); VANILLA
 
                 for (j = 0; j < 4; j++)
                 {
@@ -1103,7 +1137,17 @@ u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                     nameHash += gSpeciesNames[partyData[i].species][j];
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * 31 / 255;
-                CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0);
+                //HOENNISLES START
+				if (gSaveBlock2.gameMode >= GAME_MODE_RANDOM)
+				{
+					CreateMon(&party[i], randomSpecies, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0);
+				}
+				else
+				{
+					CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0);
+				}
+				//HOENNISLES END
+                //CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0); VANILLA
 
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
                 break;
@@ -1116,7 +1160,17 @@ u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                     nameHash += gSpeciesNames[partyData[i].species][j];
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * 31 / 255;
-                CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0);
+                //HOENNISLES START
+				if (gSaveBlock2.gameMode >= GAME_MODE_RANDOM)
+				{
+					CreateMon(&party[i], randomSpecies, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0);
+				}
+				else
+				{
+					CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0);
+				}
+				//HOENNISLES END
+                //CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0); VANILLA
 
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
                 for (j = 0; j < 4; j++)

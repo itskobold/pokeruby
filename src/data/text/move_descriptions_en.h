@@ -1770,7 +1770,7 @@ const u8 * const gMoveDescriptions[] = {
     MoveDescription_DoomDesire,
     MoveDescription_PsychoBoost,
 //HOENNISLES START
-	MoveDescription_Pound,
+	MoveDescription_Pound, //DBG moves. all temporary
 	MoveDescription_Pound,
 	MoveDescription_Pound,
 	MoveDescription_Pound,

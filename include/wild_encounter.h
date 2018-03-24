@@ -35,5 +35,11 @@ void FishingWildEncounter(u8 rod);
 u16 GetLocalWildMon(bool8 *isWaterMon);
 u16 GetLocalWaterMon(void);
 bool8 UpdateRepelCounter(void);
+//HOENNISLES START
+u16 GenerateRandomSpecies(u8 level);
+u16 CalculateRandomMonEvolutionStage(u16 species, u8 level);
+bool8 IsLevelBasedEvolution(u8 method);
+u8 GetRandomEvoBranch(u16 species);
+//HOENNISLES END
 
 #endif // GUARD_WILD_ENCOUNTER_H

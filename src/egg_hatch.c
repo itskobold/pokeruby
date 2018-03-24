@@ -244,7 +244,8 @@ static void CreatedHatchedMon(struct Pokemon *egg, struct Pokemon *temp)
     markings = GetMonData(egg, MON_DATA_MARKINGS);
     pokerus = GetMonData(egg, MON_DATA_POKERUS);
 
-    CreateMon(temp, species, 5, 32, TRUE, personality, 0, 0);
+//HOENNISLES
+    CreateMon(temp, species, 1, 32, TRUE, personality, 0, 0); //VANILLA CreateMon(temp, species, 5, 32, TRUE, personality, 0, 0);
 
     for (i = 0; i < 4; i++)
     {

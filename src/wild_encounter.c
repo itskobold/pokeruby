@@ -15,6 +15,23 @@
 #include "script.h"
 #include "constants/species.h"
 #include "tv.h"
+//HOENNISLES START
+#include "constants/items.h"
+#include "daycare.h"
+
+const u8 gLevelBasedEvoList[NUM_LEVEL_BASED_EVOS] = {EVO_LEVEL, EVO_LEVEL_ATK_GT_DEF, EVO_LEVEL_ATK_EQ_DEF, EVO_LEVEL_ATK_LT_DEF, EVO_LEVEL_SILCOON, EVO_LEVEL_CASCOON, EVO_LEVEL_NINJASK, EVO_LEVEL_SHEDINJA};
+const u16 gBranchingEvoMons[NUM_MONS_WITH_BRANCHING_EVOS][2] =
+{
+	{SPECIES_GLOOM, 2},
+	{SPECIES_POLIWHIRL, 2},
+	{SPECIES_SLOWPOKE, 2},
+	{SPECIES_EEVEE, 5},
+	{SPECIES_TYROGUE, 3},
+	{SPECIES_WURMPLE, 2},
+	{SPECIES_NINCADA, 2},
+	{SPECIES_CLAMPERL, 2},
+};
+//HOENNISLES END
 
 const struct WildPokemon PetalburgCity_WaterMons [] =
 {
@@ -2099,7 +2116,7 @@ const struct WildPokemon Route116_LandMons [] =
 };
 const struct WildPokemonInfo Route116_LandMonsInfo = {20, Route116_LandMons};
 
-const struct WildPokemon Route117_LandMons [] =
+/*const struct WildPokemon Route117_LandMons [] =
 {
     {13, 13, SPECIES_ZIGZAGOON},
     {13, 13, SPECIES_ROSELIA},
@@ -2121,6 +2138,30 @@ const struct WildPokemon Route117_LandMons [] =
     {13, 13, SPECIES_VOLBEAT},
 #endif
     {13, 13, SPECIES_SURSKIT},
+};*/
+
+const struct WildPokemon Route117_LandMons [] =
+{
+    {1, 100, SPECIES_ZIGZAGOON},
+    {1, 100, SPECIES_ROSELIA},
+    {1, 100, SPECIES_ZIGZAGOON},
+    {1, 100, SPECIES_ROSELIA},
+    {1, 100, SPECIES_MARILL},
+    {1, 100, SPECIES_ODDISH},
+#ifdef SAPPHIRE
+    {13, 13, SPECIES_VOLBEAT},
+    {13, 13, SPECIES_VOLBEAT},
+    {14, 14, SPECIES_VOLBEAT},
+    {14, 14, SPECIES_VOLBEAT},
+    {13, 13, SPECIES_ILLUMISE},
+#else
+    {1, 100, SPECIES_ILLUMISE},
+    {1, 100, SPECIES_ILLUMISE},
+    {1, 100, SPECIES_ILLUMISE},
+    {1, 100, SPECIES_ILLUMISE},
+    {1, 100, SPECIES_VOLBEAT},
+#endif
+    {1, 100, SPECIES_SURSKIT},
 };
 const struct WildPokemonInfo Route117_LandMonsInfo = {20, Route117_LandMons};
 
@@ -3978,10 +4019,95 @@ static u8 PickWildMonNature(void)
     return Random() % 25;
 }
 
-static void CreateWildMon(u16 species, u8 b)
+//HOENNISLES START
+u16 GenerateRandomSpecies(u8 level) //level is used to calculate evolution stages etc. has no effect on the level of the mon generated
 {
+	u16 species;
+	
+	do //generates an unbanned species
+	{
+		species = Random() % NUM_SPECIES;
+	}
+	while (IsRandomMonBanned(species));
+	species = CalculateRandomMonEvolutionStage(species, level);
+	return species;
+}
+
+u16 CalculateRandomMonEvolutionStage(u16 species, u8 level)
+//gets the mon's species and calculates a suitable evolution stage
+//so if a lv80 bulbasaur is generated it will be turned into a venusaur
+//likewise, if a lv3 venusaur is generated it will be turned into a bulbasaur
+//first evolution listed has priority
+{
+	int monEvoNumber = Random() % GetRandomEvoBranch(species); //picks a random evolution chain to follow
+	species = GetEggSpecies(species); //species now contains first stage
+	
+	while (gEvolutionTable[species][monEvoNumber].targetSpecies != SPECIES_NONE) //loop until mon can no longer evolve
+	{
+		if (IsLevelBasedEvolution(gEvolutionTable[species][monEvoNumber].method) == TRUE) //if mon evolves by level (including special evolutions like ninjask/shedninja)
+		{
+			if (level >= gEvolutionTable[species][monEvoNumber].param) //if level is equal or higher than specified for its pre-evo to evolve
+			{
+				species = gEvolutionTable[species][monEvoNumber].targetSpecies; //make species targetSpecies
+			}
+			else //level too low for mon to evolve
+			{
+				break;
+			}
+		}
+		else //mon evolves via item etc
+		{
+			if (level >= 45) //if level is equal to or higher than 45
+			{
+				species = gEvolutionTable[species][monEvoNumber].targetSpecies; //make species targetSpecies
+			}
+			else //if under level 45 just return species
+			{
+				return species;
+			}
+		}
+	}
+	return species;
+}
+
+u8 GetRandomEvoBranch(u16 species)
+{
+	int i;
+	
+	for (i = 0; i < NUM_MONS_WITH_BRANCHING_EVOS; i++)
+	{
+        if (gBranchingEvoMons[i][0] == species)
+            return gBranchingEvoMons[i][1];
+    }
+    return 0;
+}
+
+bool8 IsLevelBasedEvolution(u8 method)
+{
+    int i;
+	
+    for (i = 0; i < NUM_LEVEL_BASED_EVOS; i++)
+	{
+        if (gLevelBasedEvoList[i] == method)
+            return TRUE;
+    }
+    return FALSE;
+}
+//HOENNISLES END
+
+static void CreateWildMon(u16 species, u8 level) //HOENNISLES note - level was orignially called b at time of editing
+{	
     ZeroEnemyPartyMons();
-    CreateMonWithNature(&gEnemyParty[0], species, b, 0x20, PickWildMonNature());
+//HOENNISLES START
+//generates a random wild species for random & super random game modes
+//accounts for sensible evolutions (so no level 3 blazikens etc)
+//Pokemon on a banlist don't get generated (legendaries etc)
+	if (gSaveBlock2.gameMode >= GAME_MODE_RANDOM)
+	{
+		species = GenerateRandomSpecies(level);
+	}
+//HOENNISLES END
+	CreateMonWithNature(&gEnemyParty[0], species, level, 0x20, PickWildMonNature());
 }
 
 static bool8 GenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 area, bool8 checkRepel)

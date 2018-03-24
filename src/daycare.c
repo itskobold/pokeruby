@@ -21,6 +21,9 @@
 #include "strings2.h"
 #include "text.h"
 #include "trade.h"
+//HOENNISLES START
+#include "wild_encounter.h"
+//HOENNISLES END
 
 // RAM buffers used to assist with BuildEggMoveset()
 IWRAM_DATA u16 gHatchedEggLevelUpMoves[52];
@@ -339,7 +342,8 @@ u16 GetEggSpecies(u16 species)
         found = FALSE;
         for (j = 1; j < NUM_SPECIES; j++)
         {
-            for (k = 0; k < 5; k++)
+//HOENNISLES
+            for (k = 0; k < NUM_MAX_POSSIBLE_EVOLUTIONS; k++) //VANILLA for (k = 0; k < 5; k++)
             {
                 if (gEvolutionTable[j][k].targetSpecies == species)
                 {
@@ -512,6 +516,13 @@ void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, struct BoxP
     u8 numLevelUpMoves;
     u16 numEggMoves;
     u16 i, j;
+	
+//HOENNISLES START
+	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
+	{
+		GenerateSuperRandomMovesetForMon(egg, 1, TRUE); //eggs hatch at level 1
+	}
+//HOENNISLES END
 
     numSharedParentMoves = 0;
     for (i = 0; i < 4; i++)
@@ -1013,9 +1024,20 @@ static void _GiveEggFromDaycare(struct DayCare *daycare) // give_egg
     u16 species;
     u8 parentSlots[2]; // 0th index is "mother" daycare slot, 1st is "father"
     u8 isEgg;
-
-    species = DetermineEggSpeciesAndParentSlots(daycare, parentSlots);
-    AlterEggSpeciesWithIncenseItem(&species, daycare);
+	
+//HOENNISLES START
+//eggs hatched in super random give a random species
+	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
+	{
+		species = GenerateRandomSpecies(1); //eggs hatch at level 1 hence the value of 1
+	}
+	else
+	{
+		species = DetermineEggSpeciesAndParentSlots(daycare, parentSlots);
+    }
+//HOENNISLES END
+//species = DetermineEggSpeciesAndParentSlots(daycare, parentSlots); VANILLA
+	AlterEggSpeciesWithIncenseItem(&species, daycare);
     SetInitialEggData(&egg, species, daycare);
     InheritIVs(&egg, daycare);
     BuildEggMoveset(&egg, &daycare->mons[parentSlots[1]], &daycare->mons[parentSlots[0]]);

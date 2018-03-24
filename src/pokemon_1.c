@@ -34,6 +34,7 @@ const u16 gSpeciesToNationalPokedexNum[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 1
 const u16 gHoennToNationalOrder[] = {252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 63, 64, 65, 290, 291, 292, 293, 294, 295, 296, 297, 118, 119, 129, 130, 298, 183, 184, 74, 75, 76, 299, 300, 301, 41, 42, 169, 72, 73, 302, 303, 304, 305, 306, 66, 67, 68, 307, 308, 309, 310, 311, 312, 81, 82, 100, 101, 313, 314, 43, 44, 45, 182, 84, 85, 315, 316, 317, 318, 319, 320, 321, 322, 323, 218, 219, 324, 88, 89, 109, 110, 325, 326, 27, 28, 327, 227, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 174, 39, 40, 349, 350, 351, 120, 121, 352, 353, 354, 355, 356, 357, 358, 359, 37, 38, 172, 25, 26, 54, 55, 360, 202, 177, 178, 203, 231, 232, 127, 214, 111, 112, 361, 362, 363, 364, 365, 366, 367, 368, 369, 222, 170, 171, 370, 116, 117, 230, 371, 372, 373, 374, 375, 376, 377, 378, 379, 380, 381, 382, 383, 384, 385, 386, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 29, 30, 31, 32, 33, 34, 35, 36, 46, 47, 48, 49, 50, 51, 52, 53, 56, 57, 58, 59, 60, 61, 62, 69, 70, 71, 77, 78, 79, 80, 83, 86, 87, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 102, 103, 104, 105, 106, 107, 108, 113, 114, 115, 122, 123, 124, 125, 126, 128, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 173, 175, 176, 179, 180, 181, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 215, 216, 217, 220, 221, 223, 224, 225, 226, 228, 229, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411};
 //HOENNISLES START
 const u16 gRandomMoveBanlist[] = {MOVE_NONE, MOVE_STRUGGLE, MOVE_DBG_NULL_1, MOVE_DBG_NULL_2, MOVE_DBG_NULL_3, MOVE_DBG_NULL_4}; //these moves can't be in a random movelist
+const u16 gRandomMonBanlist[] = {SPECIES_NONE, SPECIES_ARTICUNO, SPECIES_ZAPDOS, SPECIES_MOLTRES, SPECIES_MEWTWO, SPECIES_MEW, SPECIES_ENTEI, SPECIES_RAIKOU, SPECIES_SUICUNE, SPECIES_LUGIA, SPECIES_HO_OH, SPECIES_CELEBI, SPECIES_REGIROCK, SPECIES_REGICE, SPECIES_REGISTEEL, SPECIES_LATIAS, SPECIES_LATIOS, SPECIES_KYOGRE, SPECIES_GROUDON, SPECIES_RAYQUAZA, SPECIES_JIRACHI, SPECIES_DEOXYS, SPECIES_OLD_UNOWN_B, SPECIES_OLD_UNOWN_C, SPECIES_OLD_UNOWN_D, SPECIES_OLD_UNOWN_E, SPECIES_OLD_UNOWN_F, SPECIES_OLD_UNOWN_G, SPECIES_OLD_UNOWN_H, SPECIES_OLD_UNOWN_I, SPECIES_OLD_UNOWN_J, SPECIES_OLD_UNOWN_K, SPECIES_OLD_UNOWN_L, SPECIES_OLD_UNOWN_M, SPECIES_OLD_UNOWN_N, SPECIES_OLD_UNOWN_O, SPECIES_OLD_UNOWN_P, SPECIES_OLD_UNOWN_Q, SPECIES_OLD_UNOWN_R, SPECIES_OLD_UNOWN_S, SPECIES_OLD_UNOWN_T, SPECIES_OLD_UNOWN_U, SPECIES_OLD_UNOWN_V, SPECIES_OLD_UNOWN_W, SPECIES_OLD_UNOWN_X, SPECIES_OLD_UNOWN_Y, SPECIES_OLD_UNOWN_Z};
 //HOENNISLES END
 
 const struct SpindaSpot gSpindaSpotGraphics[] =
@@ -239,6 +240,19 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
 }
 
 //HOENNISLES START
+//returns TRUE if species is on random mon banlist
+bool8 IsRandomMonBanned(u16 species)
+{
+    int i;
+	
+    for (i = 0; i < NUM_BANNED_RANDOM_MONS; i++)
+	{
+        if (gRandomMonBanlist[i] == species)
+            return TRUE;
+    }
+    return FALSE;
+}
+
 void GenerateCustomTypesForMon(struct Pokemon *mon)
 {
 	GenerateCustomTypesForBoxMon(&mon->box);
@@ -250,7 +264,7 @@ void GenerateCustomTypesForBoxMon(struct BoxPokemon *boxMon)
 	u8 newType1 = gBaseStats[species].type1;
 	u8 newType2 = gBaseStats[species].type2;
 
-	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
+	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM && !IsRandomMonBanned(species)) //don't generate random types when not on super random & for banned mons
 	{
 		u8 chance = Random() % 100;
 		newType1 = Random() % 0x14; //number of types
@@ -262,8 +276,6 @@ void GenerateCustomTypesForBoxMon(struct BoxPokemon *boxMon)
 			do //re-roll if the same type as type 1
 			{
 				newType2 = Random() % 0x14; //number of types. null type can't be generated
-				if (newType2 != newType1)
-					break;
 			}
 			while (newType2 == newType1);
 			
@@ -278,33 +290,26 @@ void GenerateCustomTypesForBoxMon(struct BoxPokemon *boxMon)
 	}
 }
 
-void GenerateSuperRandomMovesetForBoxMon(struct BoxPokemon *boxMon, s32 level)
+void GenerateSuperRandomMovesetForMon(struct Pokemon *mon, s32 level, bool8 hatched)
+{
+	GenerateSuperRandomMovesetForBoxMon(&mon->box, level, hatched);
+}
+
+void GenerateSuperRandomMovesetForBoxMon(struct BoxPokemon *boxMon, s32 level, bool8 hatched)
 //generates a random moveset for a Pokemon
 //each move has a 60% chance of being the same type as either one of the mon's types, a 15% chance of being a normal type move and a 25% chance of being a totally different type
 //there is a banlist so moves like struggle won't get generated
 {
 	u8 moveType1 = GetBoxMonData(boxMon, MON_DATA_CUSTOM_TYPE_1, NULL);
 	u8 moveType2 = GetBoxMonData(boxMon, MON_DATA_CUSTOM_TYPE_2, NULL);
-	int i, j;
+	int i;
 	u16 move = GenerateSuperRandomMove(moveType1, moveType2);
-	int levelCheck = 5;
 	
-	for (i = 0; i < 4; i++) //get (movelist length - 1) in i
-	{
-		if (level < levelCheck)
-		{
-			break;
-		}
-		levelCheck += 5; //below lv5 = 1 move, lv 5-9 = 2 moves, lv 10-14 = 3 moves, lv 15+ = 4 moves
-	}
-	
-	for (j = 0; j < (i + 1); j++) //make movelist
+	for (i = 0; i < (GetSuperRandomMovesetSize(level, hatched) + 1); i++) //make movelist
 	{
 		do
 		{
-		move = GenerateSuperRandomMove(moveType1, moveType2);
-		if (GiveMoveToBoxMon(boxMon, move) != (u16)-2)
-			break;
+			move = GenerateSuperRandomMove(moveType1, moveType2);
 		}
 		while (GiveMoveToBoxMon(boxMon, move) == (u16)-2);
 		
@@ -313,48 +318,77 @@ void GenerateSuperRandomMovesetForBoxMon(struct BoxPokemon *boxMon, s32 level)
     return;
 }
 
+u8 GetSuperRandomMovesetSize(s32 level, bool8 hatched)
+{
+	int movesetSize;
+	int levelCheck = 5;
+	
+	if (hatched == TRUE) //hatched mons always get 4 moves
+	{
+		movesetSize = 3;
+		return movesetSize;
+	}
+	else
+	{
+		for (movesetSize = 0; movesetSize < 4; movesetSize++) //get (movelist length - 1) in i
+		{
+			if (level < levelCheck)
+			{
+				return movesetSize;
+			}
+			levelCheck += 5; //below lv5 = 1 move, lv 5-9 = 2 moves, lv 10-14 = 3 moves, lv 15+ = 4 moves
+		}
+	}
+}
+
 u16 GenerateSuperRandomMove(u8 moveType1, u8 moveType2)
 //generates a random move based on two types given
 {
-	u16 move2;
+	u16 move;
 	u8 chance = Random() % 100;
-	int i;
 	
-	for (i = 0; i < NUM_BANNED_RANDOM_MOVES; i++)
+	do
 	{
-		do
+		if (chance > 40) //60% - generate STAB move
 		{
-			if (chance > 40) //60% - generate STAB move
+			do
 			{
-				do
-				{
-					move2 = Random() % NUM_MOVES;
-					if (moveType1 == gBattleMoves[move2].type || moveType2 == gBattleMoves[move2].type)
-						break;
-				}
-				while (moveType1 != gBattleMoves[move2].type || moveType2 != gBattleMoves[move2].type);
+				move = Random() % NUM_MOVES;
+				if (moveType1 == gBattleMoves[move].type || moveType2 == gBattleMoves[move].type)
+					break;
 			}
-			else if (chance > 15) //25% - generate totally random move
+			while (moveType1 != gBattleMoves[move].type || moveType2 != gBattleMoves[move].type);
+		}
+		else if (chance > 15) //25% - generate totally random move
+		{
+			move = Random() % NUM_MOVES;
+		}
+		else //15% - generate normal type move
+		{
+			do
 			{
-				move2 = Random() % NUM_MOVES;
+				move = Random() % NUM_MOVES; //generate move value
+				if (TYPE_NORMAL == gBattleMoves[move].type)
+					break;
 			}
-			else //15% - generate normal type move
-			{
-				do
-				{
-					move2 = Random() % NUM_MOVES; //generate move value
-					if (TYPE_NORMAL == gBattleMoves[move2].type)
-						break;
-				}
-				while (TYPE_NORMAL != gBattleMoves[move2].type);
-			}	
-			if (move2 != gRandomMoveBanlist[i] || move2 != 0)
-			{
-				break;
-			}
-		} while(move2 == gRandomMoveBanlist[i] || move2 == 0);
-	}
-	return move2;
+			while (TYPE_NORMAL != gBattleMoves[move].type);
+		}
+	} while (IsRandomMoveBanned(move));
+	
+	return move;
+}
+
+//returns TRUE if move is on random move banlist
+bool8 IsRandomMoveBanned(u16 move)
+{
+    int i;
+	
+    for (i = 0; i < NUM_BANNED_RANDOM_MOVES; i++)
+	{
+        if (gRandomMoveBanlist[i] == move)
+            return TRUE;
+    }
+    return FALSE;
 }
 //HOENNISLES END
 
@@ -640,7 +674,7 @@ void CalculateMonStats(struct Pokemon *mon)
     SetMonData(mon, MON_DATA_LEVEL, &level);
 	
 	//HOENNISLES START
-	if ((item == ITEM_EVIOLITE) && (gEvolutionTable[species][0].targetSpecies != SPECIES_NONE))	//if mon is holding eviolite & can evolve
+	if (item == ITEM_EVIOLITE && gEvolutionTable[species][0].targetSpecies != SPECIES_NONE)	//if mon is holding eviolite & can evolve
 	{
 		u16 statTotal = CalculateBaseStatTotal(mon);
 		if(statTotal > 512)
@@ -863,9 +897,9 @@ void GiveBoxMonInitialMoveset(struct BoxPokemon *boxMon)
 
 //HOENNISLES START
 //super random check
-	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
+	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM && !IsRandomMonBanned(species)) //don't generate random moveset for banned mons (legendaries basically) & when not on super random
 	{
-		GenerateSuperRandomMovesetForBoxMon(boxMon, level);
+		GenerateSuperRandomMovesetForBoxMon(boxMon, level, FALSE);
 		return;
 	}
 //HOENNISLES END
@@ -901,7 +935,7 @@ u16 MonTryLearningNewMove(struct Pokemon *mon, bool8 firstMove)
 	//multiple moves can be learned per level
 	u8 chance = Random() % 7;
 	
-	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM && chance == 0)
+	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM && !IsRandomMonBanned(species) && chance == 0) //random move if mon isn't banned/game is super random/chance is 0
 	{
 		gMoveToLearn = GenerateSuperRandomMove(moveType1, moveType2);
 		retVal = GiveMoveToMon(mon, gMoveToLearn);
