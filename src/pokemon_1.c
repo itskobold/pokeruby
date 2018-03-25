@@ -235,13 +235,6 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
         SetBoxMonData(boxMon, MON_DATA_ALT_ABILITY, &value);
     }
 
-//HOENNISLES START
-//if mon caught from a wild battle, copy types from BattlePokemon struct
-//else, call GenerateCustomTypesForBoxMon
-	
-	
-	GenerateCustomTypesForBoxMon(boxMon);
-//HOENNISLES END
     GiveBoxMonInitialMoveset(boxMon);
 }
 
@@ -260,65 +253,23 @@ bool8 IsRandomMonBanned(u16 species)
 	
 }
 
-u8 MakeRandomWildType2(void) //no code to generate type 1 - is generated purely by random function
+void SetRandomTypesForBattleMon(void)
 {
-	//struct BattlePokemon data;
-	u8 chance = Random() % 100;
-	u8 newType1 = gBattleMons[gActiveBank].type1;
-	u8 newType2;
+	u8 *monData;
+	u8 customType1;
+	u8 customType2;
+	bool8 singleType;
 	
-	if (chance <= 65) //65% chance of dual type
-	{
-		do //re-roll if the same type as type 1
-		{
-			newType2 = Random() % 0x14; //number of types. null type can't be generated
-		}
-		while (newType2 == newType1);
-		
-		return newType2;
-	}
-	else
-	{
-		newType2 = newType1; //set type 2 to the same type if mon rolled is a single type
-		return newType2;
-	}
-}
-
-void GenerateCustomTypesForMon(struct Pokemon *mon)
-{
-	GenerateCustomTypesForBoxMon(&mon->box);
-}
-
-void GenerateCustomTypesForBoxMon(struct BoxPokemon *boxMon)
-{
-	u16 species = GetBoxMonData(boxMon, MON_DATA_SPECIES, NULL);
-	u8 newType1;
-	u8 newType2;
-
-	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM && !IsRandomMonBanned(species)) //don't generate random types when not on super random & for banned mons
-	{
-		u8 chance = Random() % 100;
-		newType1 = Random() % 0x14; //number of types
-		
-		SetBoxMonData(boxMon, MON_DATA_CUSTOM_TYPE_1, &newType1);
-		
-		if (chance <= 65) //65% chance of dual type
-		{
-			do //re-roll if the same type as type 1
-			{
-				newType2 = Random() % 0x14; //number of types. null type can't be generated
-			}
-			while (newType2 == newType1);
-			
-			SetBoxMonData(boxMon, MON_DATA_CUSTOM_TYPE_2, &newType2);
-			return;
-		}
+	monData = (u8*)(&gBattleMons[gActiveBank]);
+	
+	singleType = (GetMonData(monData, MON_DATA_PERSONALITY, NULL)) % 3;
+		customType1 = (GetMonData(monData, MON_DATA_PERSONALITY, NULL) >> 16) % 20;
+		if (singleType != 0)
+			customType2 = (GetMonData(monData, MON_DATA_PERSONALITY, NULL)) % 20;
 		else
-		{
-			SetBoxMonData(boxMon, MON_DATA_CUSTOM_TYPE_2, &newType1); //set type 2 to the same type if mon rolled is a single type
-			return;
-		}
-	}
+			customType2 = customType1;
+	gBattleMons[gActiveBank].type1 = customType1;
+	gBattleMons[gActiveBank].type2 = customType2;
 }
 
 void GenerateSuperRandomMovesetForMon(struct Pokemon *mon, s32 level, bool8 hatched)
@@ -331,10 +282,20 @@ void GenerateSuperRandomMovesetForBoxMon(struct BoxPokemon *boxMon, s32 level, b
 //each move has a 60% chance of being the same type as either one of the mon's types, a 15% chance of being a normal type move and a 25% chance of being a totally different type
 //there is a banlist so moves like struggle won't get generated
 {
-	u8 moveType1 = GetBoxMonData(boxMon, MON_DATA_CUSTOM_TYPE_1, NULL);
-	u8 moveType2 = GetBoxMonData(boxMon, MON_DATA_CUSTOM_TYPE_2, NULL);
+	u8 moveType1;
+	u8 moveType2;
+	bool8 singleType;
 	int i;
-	u16 move = GenerateSuperRandomMove(moveType1, moveType2);
+	u16 move;
+	
+	singleType = (GetBoxMonData(boxMon, MON_DATA_PERSONALITY, NULL)) % 3;
+		moveType1 = (GetBoxMonData(boxMon, MON_DATA_PERSONALITY, NULL) >> 16) % 20;
+		if (singleType != 0)
+			moveType2 = (GetBoxMonData(boxMon, MON_DATA_PERSONALITY, NULL)) % 20;
+		else
+			moveType2 = moveType1;
+	
+	move = GenerateSuperRandomMove(moveType1, moveType2);
 	
 	for (i = 0; i < (GetSuperRandomMovesetSize(level, hatched) + 1); i++) //make movelist
 	{
@@ -957,14 +918,22 @@ u16 MonTryLearningNewMove(struct Pokemon *mon, bool8 firstMove)
     u32 retVal = 0;
     u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
     u8 level = GetMonData(mon, MON_DATA_LEVEL, NULL);
-	u8 moveType1 = GetMonData(mon, MON_DATA_CUSTOM_TYPE_1, NULL);
-	u8 moveType2 = GetMonData(mon, MON_DATA_CUSTOM_TYPE_2, NULL);
 	
 	//HOENNISLES START
 	//super random check
 	//1/7 chance of learning a random move
 	//multiple moves can be learned per level
+	u8 moveType1;
+	u8 moveType2;
 	u8 chance = Random() % 7;
+	bool8 singleType;
+	
+	singleType = (GetMonData(mon, MON_DATA_PERSONALITY, NULL)) % 3;
+	moveType1 = (GetMonData(mon, MON_DATA_PERSONALITY, NULL) >> 16) % 20;
+	if (singleType != 0)
+		moveType2 = (GetMonData(mon, MON_DATA_PERSONALITY, NULL)) % 20;
+	else
+		moveType2 = moveType1;
 	
 	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM && !IsRandomMonBanned(species) && chance == 0) //random move if mon isn't banned/game is super random/chance is 0
 	{

@@ -1503,6 +1503,12 @@ void IsGrassTypeInParty(void)
     u8 i;
     u16 species;
     struct Pokemon *pokemon;
+//HOENNISLES START
+	u16 customType1;
+	u16 customType2;
+	bool8 singleType;
+//HOENNISLES END
+
     for (i=0; i<PARTY_SIZE; i++)
     {
         pokemon = &gPlayerParty[i];
@@ -1512,7 +1518,14 @@ void IsGrassTypeInParty(void)
 			//check for random types if player is on super random mode
 			if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
 			{
-				if (GetMonData(pokemon, MON_DATA_CUSTOM_TYPE_1) == TYPE_GRASS || GetMonData(pokemon, MON_DATA_CUSTOM_TYPE_2) == TYPE_GRASS)
+				singleType = (GetMonData(pokemon, MON_DATA_PERSONALITY, NULL)) % 3;
+				customType1 = (GetMonData(pokemon, MON_DATA_PERSONALITY, NULL) >> 16) % 20;
+				if (singleType != 0)
+					customType2 = (GetMonData(pokemon, MON_DATA_PERSONALITY, NULL)) % 20;
+				else
+					customType2 = customType1;
+				
+				if (customType1 == TYPE_GRASS || customType2 == TYPE_GRASS)
 				{
 					gSpecialVar_Result = TRUE;
 					return;

@@ -399,14 +399,6 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
     /*case MON_DATA_10:
         retVal = boxMon->unknown;
         break;*/
-//HOENNISLES START
-	case MON_DATA_CUSTOM_TYPE_1:
-		retVal = boxMon->customType1;
-        break;
-	case MON_DATA_CUSTOM_TYPE_2:
-		retVal = boxMon->customType2;
-        break;
-//HOENNISLES END
     case MON_DATA_SPECIES:
         retVal = boxMon->isBadEgg ? SPECIES_EGG : substruct0->species;
         break;
@@ -765,14 +757,6 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const u8 *data)
     /*case MON_DATA_10:
         SET16(boxMon->unknown);
         break;*/
-//HOENNISLES START
-	case MON_DATA_CUSTOM_TYPE_1:
-		SET8(boxMon->customType1);
-        break;
-	case MON_DATA_CUSTOM_TYPE_2:
-		SET8(boxMon->customType2);
-        break;
-//HOENNISLES END
     case MON_DATA_SPECIES:
     {
         SET16(substruct0->species);
@@ -1208,7 +1192,12 @@ void CopyPlayerPartyMonToBattleData(u8 battleIndex, u8 partyIndex)
 {
     s32 i;
     s8 nickname[POKEMON_NAME_LENGTH * 2];
-
+	//HOENNISLES START
+	u8 customType1;
+	u8 customType2;
+	bool8 singleType;
+	//HOENNISLES END
+	
     gBattleMons[battleIndex].species = GetMonData(&gPlayerParty[partyIndex], MON_DATA_SPECIES, NULL);
     gBattleMons[battleIndex].item = GetMonData(&gPlayerParty[partyIndex], MON_DATA_HELD_ITEM, NULL);
 
@@ -1245,17 +1234,15 @@ void CopyPlayerPartyMonToBattleData(u8 battleIndex, u8 partyIndex)
 	//if the player were able to downgrade from super random to any other game type, the Pokemon will revert to using its normal types
 	//(but this can never happen, so that's okay)
 	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
-	{
-		if (GetBankSide(gActiveBank) == SIDE_PLAYER)
-		{
-			gBattleMons[battleIndex].type1 = GetMonData(&gPlayerParty[partyIndex], MON_DATA_CUSTOM_TYPE_1, NULL);
-			gBattleMons[battleIndex].type2 = GetMonData(&gPlayerParty[partyIndex], MON_DATA_CUSTOM_TYPE_2, NULL);
-		}
-		else //is enemy mon, types can just be totally random!
-		{
-			gBattleMons[gActiveBank].type1 = Random() % 0x14; //number of types
-			gBattleMons[gActiveBank].type2 = MakeRandomWildType2();
-		}
+	{	
+		singleType = (GetMonData(&gPlayerParty[partyIndex], MON_DATA_PERSONALITY, NULL)) % 3;
+			customType1 = (GetMonData(&gPlayerParty[partyIndex], MON_DATA_PERSONALITY, NULL) >> 16) % 20;
+			if (singleType != 0)
+				customType2 = (GetMonData(&gPlayerParty[partyIndex], MON_DATA_PERSONALITY, NULL)) % 20;
+			else
+				customType2 = customType1;
+		gBattleMons[gActiveBank].type1 = customType1;
+		gBattleMons[gActiveBank].type2 = customType2;
 	}
 	else
 	{

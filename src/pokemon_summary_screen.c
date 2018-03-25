@@ -2450,8 +2450,9 @@ static void sub_809FC34(struct Pokemon *mon)
     u16 species;
     u8 ability;
 	//HOENNISLES START
-	u8 customType1;
-	u8 customType2;
+	u16 customType1;
+	u16 customType2;
+	bool8 singleType;
 	//HOENNISLES END
 
     for (i = 0; i < 5; i++)
@@ -2514,8 +2515,12 @@ static void sub_809FC34(struct Pokemon *mon)
 //load custom type icons if super random game mode
 		if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
 		{
-			customType1 = GetMonData(mon, MON_DATA_CUSTOM_TYPE_1);
-			customType2 = GetMonData(mon, MON_DATA_CUSTOM_TYPE_2);
+			singleType = (GetMonData(mon, MON_DATA_PERSONALITY, NULL)) % 3;
+			customType1 = (GetMonData(mon, MON_DATA_PERSONALITY, NULL) >> 16) % 20;
+			if (singleType != 0)
+				customType2 = (GetMonData(mon, MON_DATA_PERSONALITY, NULL)) % 20;
+			else
+				customType2 = customType1;
 		
 			sub_80A198C(customType1, 120, 48, 0);
 			if (customType1 != customType2)

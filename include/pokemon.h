@@ -93,8 +93,7 @@
 #define MON_DATA_SPATK2            87
 #define MON_DATA_SPDEF2            88
 //HOENNISLES START
-#define MON_DATA_CUSTOM_TYPE_1       89
-#define MON_DATA_CUSTOM_TYPE_2       90
+#define MON_DATA_CUSTOM_ABILITY    89
 //HOENNISLES END
 
 #define MAX_LEVEL 100
@@ -584,9 +583,7 @@ u16 MonTryLearningNewMove(struct Pokemon *mon, bool8 firstMove);
 void DeleteFirstMoveAndGiveMoveToMon(struct Pokemon *mon, u16 move);
 void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move);
 //HOENNISLES START
-void GenerateCustomTypesForMon(struct Pokemon *mon);
-void GenerateCustomTypesForBoxMon(struct BoxPokemon *boxMon);
-u8 MakeRandomWildType2(void);
+void SetRandomTypesForBattleMon(void);
 void GenerateSuperRandomMovesetForMon(struct Pokemon *mon, s32 level, bool8 hatched);
 void GenerateSuperRandomMovesetForBoxMon(struct BoxPokemon *boxMon, s32 level, bool8 hatched);
 u16 GenerateSuperRandomMove(u8 moveType1, u8 moveType2);
