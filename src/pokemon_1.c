@@ -35,6 +35,8 @@ const u16 gHoennToNationalOrder[] = {252, 253, 254, 255, 256, 257, 258, 259, 260
 //HOENNISLES START
 const u16 gRandomMoveBanlist[] = {MOVE_NONE, MOVE_STRUGGLE, MOVE_DBG_NULL_1, MOVE_DBG_NULL_2, MOVE_DBG_NULL_3, MOVE_DBG_NULL_4}; //these moves can't be in a random movelist
 const u16 gRandomMonBanlist[] = {SPECIES_NONE, SPECIES_ARTICUNO, SPECIES_ZAPDOS, SPECIES_MOLTRES, SPECIES_MEWTWO, SPECIES_MEW, SPECIES_ENTEI, SPECIES_RAIKOU, SPECIES_SUICUNE, SPECIES_LUGIA, SPECIES_HO_OH, SPECIES_CELEBI, SPECIES_REGIROCK, SPECIES_REGICE, SPECIES_REGISTEEL, SPECIES_LATIAS, SPECIES_LATIOS, SPECIES_KYOGRE, SPECIES_GROUDON, SPECIES_RAYQUAZA, SPECIES_JIRACHI, SPECIES_DEOXYS, SPECIES_OLD_UNOWN_B, SPECIES_OLD_UNOWN_C, SPECIES_OLD_UNOWN_D, SPECIES_OLD_UNOWN_E, SPECIES_OLD_UNOWN_F, SPECIES_OLD_UNOWN_G, SPECIES_OLD_UNOWN_H, SPECIES_OLD_UNOWN_I, SPECIES_OLD_UNOWN_J, SPECIES_OLD_UNOWN_K, SPECIES_OLD_UNOWN_L, SPECIES_OLD_UNOWN_M, SPECIES_OLD_UNOWN_N, SPECIES_OLD_UNOWN_O, SPECIES_OLD_UNOWN_P, SPECIES_OLD_UNOWN_Q, SPECIES_OLD_UNOWN_R, SPECIES_OLD_UNOWN_S, SPECIES_OLD_UNOWN_T, SPECIES_OLD_UNOWN_U, SPECIES_OLD_UNOWN_V, SPECIES_OLD_UNOWN_W, SPECIES_OLD_UNOWN_X, SPECIES_OLD_UNOWN_Y, SPECIES_OLD_UNOWN_Z};
+extern struct BattlePokemon gBattleMons[];
+extern u8 gActiveBank;
 //HOENNISLES END
 
 const struct SpindaSpot gSpindaSpotGraphics[] =
@@ -234,6 +236,10 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     }
 
 //HOENNISLES START
+//if mon caught from a wild battle, copy types from BattlePokemon struct
+//else, call GenerateCustomTypesForBoxMon
+	
+	
 	GenerateCustomTypesForBoxMon(boxMon);
 //HOENNISLES END
     GiveBoxMonInitialMoveset(boxMon);
@@ -251,6 +257,31 @@ bool8 IsRandomMonBanned(u16 species)
             return TRUE;
     }
     return FALSE;
+	
+}
+
+u8 MakeRandomWildType2(void) //no code to generate type 1 - is generated purely by random function
+{
+	//struct BattlePokemon data;
+	u8 chance = Random() % 100;
+	u8 newType1 = gBattleMons[gActiveBank].type1;
+	u8 newType2;
+	
+	if (chance <= 65) //65% chance of dual type
+	{
+		do //re-roll if the same type as type 1
+		{
+			newType2 = Random() % 0x14; //number of types. null type can't be generated
+		}
+		while (newType2 == newType1);
+		
+		return newType2;
+	}
+	else
+	{
+		newType2 = newType1; //set type 2 to the same type if mon rolled is a single type
+		return newType2;
+	}
 }
 
 void GenerateCustomTypesForMon(struct Pokemon *mon)
@@ -261,8 +292,8 @@ void GenerateCustomTypesForMon(struct Pokemon *mon)
 void GenerateCustomTypesForBoxMon(struct BoxPokemon *boxMon)
 {
 	u16 species = GetBoxMonData(boxMon, MON_DATA_SPECIES, NULL);
-	u8 newType1 = gBaseStats[species].type1;
-	u8 newType2 = gBaseStats[species].type2;
+	u8 newType1;
+	u8 newType2;
 
 	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM && !IsRandomMonBanned(species)) //don't generate random types when not on super random & for banned mons
 	{

@@ -1246,8 +1246,16 @@ void CopyPlayerPartyMonToBattleData(u8 battleIndex, u8 partyIndex)
 	//(but this can never happen, so that's okay)
 	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
 	{
-		gBattleMons[battleIndex].type1 = gBattleMons[battleIndex].customType1;
-		gBattleMons[battleIndex].type2 = gBattleMons[battleIndex].customType2;
+		if (GetBankSide(gActiveBank) == SIDE_PLAYER)
+		{
+			gBattleMons[battleIndex].type1 = GetMonData(&gPlayerParty[partyIndex], MON_DATA_CUSTOM_TYPE_1, NULL);
+			gBattleMons[battleIndex].type2 = GetMonData(&gPlayerParty[partyIndex], MON_DATA_CUSTOM_TYPE_2, NULL);
+		}
+		else //is enemy mon, types can just be totally random!
+		{
+			gBattleMons[gActiveBank].type1 = Random() % 0x14; //number of types
+			gBattleMons[gActiveBank].type2 = MakeRandomWildType2();
+		}
 	}
 	else
 	{

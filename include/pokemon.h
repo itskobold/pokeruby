@@ -364,10 +364,9 @@ struct BattlePokemon
     /*0x17*/ u32 isEgg:1;
     /*0x17*/ u32 altAbility:1;
     /*0x18*/ s8 statStages[8];
-    /*0x20*/ u8 ability;
+    /*0x20*/ u16 ability;
     /*0x21*/ u8 type1;
     /*0x22*/ u8 type2;
-    /*0x23*/ u8 unknown;
     /*0x24*/ u8 pp[4];
     /*0x28*/ u16 hp;
     /*0x2A*/ u8 level;
@@ -383,8 +382,14 @@ struct BattlePokemon
     /*0x50*/ u32 status2;
     /*0x54*/ u32 otId;
 //HOENNISLES START
-	/*0x58*/ u8 customType1;
-	/*0x59*/ u8 customType2;
+	///*0x58*/ u8 customType1;
+	///*0x59*/ u8 customType2;
+	///*0x5A*/ u16 customAbility;
+
+    ///*0x20*/ u8 ability;
+    ///*0x21*/ u8 type1;
+    ///*0x22*/ u8 type2;
+    ///*0x23*/ u8 unknown;
 //HOENNISLES END
 };
 
@@ -581,6 +586,7 @@ void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move);
 //HOENNISLES START
 void GenerateCustomTypesForMon(struct Pokemon *mon);
 void GenerateCustomTypesForBoxMon(struct BoxPokemon *boxMon);
+u8 MakeRandomWildType2(void);
 void GenerateSuperRandomMovesetForMon(struct Pokemon *mon, s32 level, bool8 hatched);
 void GenerateSuperRandomMovesetForBoxMon(struct BoxPokemon *boxMon, s32 level, bool8 hatched);
 u16 GenerateSuperRandomMove(u8 moveType1, u8 moveType2);

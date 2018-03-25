@@ -3933,8 +3933,16 @@ void UndoEffectsAfterFainting(void)
 //super random check
 	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
 	{
-		gBattleMons[gActiveBank].type1 = gBattleMons[gActiveBank].customType1;
-		gBattleMons[gActiveBank].type2 = gBattleMons[gActiveBank].customType2;
+		if (GetBankSide(gActiveBank) == SIDE_PLAYER)
+		{
+			gBattleMons[gActiveBank].type1 = GetMonData(&gPlayerParty[gActiveBank], MON_DATA_CUSTOM_TYPE_1, NULL);
+			gBattleMons[gActiveBank].type2 = GetMonData(&gPlayerParty[gActiveBank], MON_DATA_CUSTOM_TYPE_2, NULL);
+		}
+		else //is enemy mon, types can just be totally random!
+		{
+			gBattleMons[gActiveBank].type1 = Random() % 0x14; //number of types
+			gBattleMons[gActiveBank].type2 = MakeRandomWildType2();
+		}
 	}
 	else
 	{
@@ -4005,8 +4013,16 @@ void sub_8011384(void)
 //super random check
 				if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
 				{
-					gBattleMons[gActiveBank].type1 = gBattleMons[gActiveBank].customType1;
-					gBattleMons[gActiveBank].type2 = gBattleMons[gActiveBank].customType2;
+					if (GetBankSide(gActiveBank) == SIDE_PLAYER)
+					{
+						gBattleMons[gActiveBank].type1 = GetMonData(&gPlayerParty[gActiveBank], MON_DATA_CUSTOM_TYPE_1, NULL);
+						gBattleMons[gActiveBank].type2 = GetMonData(&gPlayerParty[gActiveBank], MON_DATA_CUSTOM_TYPE_2, NULL);
+					}
+					else //is enemy mon, types can just be totally random!
+					{
+						gBattleMons[gActiveBank].type1 = Random() % 0x14; //number of types
+						gBattleMons[gActiveBank].type2 = MakeRandomWildType2();
+					}
 				}
 				else
 				{
