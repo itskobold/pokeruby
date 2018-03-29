@@ -2450,9 +2450,10 @@ static void sub_809FC34(struct Pokemon *mon)
     u16 species;
     u8 ability;
 	//HOENNISLES START
-	u16 customType1;
-	u16 customType2;
+	u8 customType1;
+	u8 customType2;
 	bool8 singleType;
+	u16 customAbility;
 	//HOENNISLES END
 
     for (i = 0; i < 5; i++)
@@ -2536,8 +2537,17 @@ static void sub_809FC34(struct Pokemon *mon)
         /*sub_80A198C(gBaseStats[species].type1, 120, 48, 0); VANILLA
         if (gBaseStats[species].type1 != gBaseStats[species].type2)
             sub_80A198C(gBaseStats[species].type2, 160, 48, 1);*/
-
-        ability = GetAbilityBySpecies(GetMonData(mon, MON_DATA_SPECIES), GetMonData(mon, MON_DATA_ALT_ABILITY));
+//HOENNISLES START
+		customAbility = GetBoxMonData(&mon->box, MON_DATA_CUSTOM_ABILITY);
+		if (customAbility != 0)
+		{
+			ability = customAbility;
+		}
+		else
+		{
+//HOENNISLES END
+			ability = GetAbilityBySpecies(GetMonData(mon, MON_DATA_SPECIES), GetMonData(mon, MON_DATA_ALT_ABILITY));
+		}
         sub_80A1FF8(gAbilityNames[ability], 13, 11, 9);
         Menu_PrintText(gAbilityDescriptions[ability], 11, 11);
 

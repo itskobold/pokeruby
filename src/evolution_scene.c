@@ -508,7 +508,7 @@ static void CreateShedinja(u16 preEvoSpecies, struct Pokemon* mon)
         SetMonData(Shedinja, MON_DATA_NICKNAME, (void*)gSpeciesNames[gEvolutionTable[preEvoSpecies][1].targetSpecies]);
         SetMonData(Shedinja, MON_DATA_HELD_ITEM, (void*)&data);
         SetMonData(Shedinja, MON_DATA_MARKINGS, (void*)&data);
-        SetMonData(Shedinja, MON_DATA_10, (void*)&data);
+        //SetMonData(Shedinja, MON_DATA_10, (void*)&data);
         for (i = MON_DATA_COOL_RIBBON; i < MON_DATA_COOL_RIBBON + 5; i++)
             SetMonData(Shedinja, i, (void*)&data);
         for (i = MON_DATA_CHAMPION_RIBBON; i <= MON_DATA_FATEFUL_ENCOUNTER; i++)

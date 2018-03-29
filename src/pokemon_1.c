@@ -33,6 +33,7 @@ const u16 gSpeciesToHoennPokedexNum[] = {203, 204, 205, 206, 207, 208, 209, 210,
 const u16 gSpeciesToNationalPokedexNum[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 290, 291, 292, 276, 277, 285, 286, 327, 278, 279, 283, 284, 320, 321, 300, 301, 352, 343, 344, 299, 324, 302, 339, 340, 370, 341, 342, 349, 350, 318, 319, 328, 329, 330, 296, 297, 309, 310, 322, 323, 363, 364, 365, 331, 332, 361, 362, 337, 338, 298, 325, 326, 311, 312, 303, 307, 308, 333, 334, 360, 355, 356, 315, 287, 288, 289, 316, 317, 357, 293, 294, 295, 366, 367, 368, 359, 353, 354, 336, 335, 369, 304, 305, 306, 351, 313, 314, 345, 346, 347, 348, 280, 281, 282, 371, 372, 373, 374, 375, 376, 377, 378, 379, 382, 383, 384, 380, 381, 385, 386, 358};
 const u16 gHoennToNationalOrder[] = {252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 63, 64, 65, 290, 291, 292, 293, 294, 295, 296, 297, 118, 119, 129, 130, 298, 183, 184, 74, 75, 76, 299, 300, 301, 41, 42, 169, 72, 73, 302, 303, 304, 305, 306, 66, 67, 68, 307, 308, 309, 310, 311, 312, 81, 82, 100, 101, 313, 314, 43, 44, 45, 182, 84, 85, 315, 316, 317, 318, 319, 320, 321, 322, 323, 218, 219, 324, 88, 89, 109, 110, 325, 326, 27, 28, 327, 227, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 174, 39, 40, 349, 350, 351, 120, 121, 352, 353, 354, 355, 356, 357, 358, 359, 37, 38, 172, 25, 26, 54, 55, 360, 202, 177, 178, 203, 231, 232, 127, 214, 111, 112, 361, 362, 363, 364, 365, 366, 367, 368, 369, 222, 170, 171, 370, 116, 117, 230, 371, 372, 373, 374, 375, 376, 377, 378, 379, 380, 381, 382, 383, 384, 385, 386, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 29, 30, 31, 32, 33, 34, 35, 36, 46, 47, 48, 49, 50, 51, 52, 53, 56, 57, 58, 59, 60, 61, 62, 69, 70, 71, 77, 78, 79, 80, 83, 86, 87, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 102, 103, 104, 105, 106, 107, 108, 113, 114, 115, 122, 123, 124, 125, 126, 128, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 173, 175, 176, 179, 180, 181, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 215, 216, 217, 220, 221, 223, 224, 225, 226, 228, 229, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 387, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411};
 //HOENNISLES START
+const u16 gRandomAbilityBanlist[] = {ABILITY_NONE, ABILITY_WONDER_GUARD};
 const u16 gRandomMoveBanlist[] = {MOVE_NONE, MOVE_STRUGGLE, MOVE_DBG_NULL_1, MOVE_DBG_NULL_2, MOVE_DBG_NULL_3, MOVE_DBG_NULL_4}; //these moves can't be in a random movelist
 const u16 gRandomMonBanlist[] = {SPECIES_NONE, SPECIES_ARTICUNO, SPECIES_ZAPDOS, SPECIES_MOLTRES, SPECIES_MEWTWO, SPECIES_MEW, SPECIES_ENTEI, SPECIES_RAIKOU, SPECIES_SUICUNE, SPECIES_LUGIA, SPECIES_HO_OH, SPECIES_CELEBI, SPECIES_REGIROCK, SPECIES_REGICE, SPECIES_REGISTEEL, SPECIES_LATIAS, SPECIES_LATIOS, SPECIES_KYOGRE, SPECIES_GROUDON, SPECIES_RAYQUAZA, SPECIES_JIRACHI, SPECIES_DEOXYS, SPECIES_OLD_UNOWN_B, SPECIES_OLD_UNOWN_C, SPECIES_OLD_UNOWN_D, SPECIES_OLD_UNOWN_E, SPECIES_OLD_UNOWN_F, SPECIES_OLD_UNOWN_G, SPECIES_OLD_UNOWN_H, SPECIES_OLD_UNOWN_I, SPECIES_OLD_UNOWN_J, SPECIES_OLD_UNOWN_K, SPECIES_OLD_UNOWN_L, SPECIES_OLD_UNOWN_M, SPECIES_OLD_UNOWN_N, SPECIES_OLD_UNOWN_O, SPECIES_OLD_UNOWN_P, SPECIES_OLD_UNOWN_Q, SPECIES_OLD_UNOWN_R, SPECIES_OLD_UNOWN_S, SPECIES_OLD_UNOWN_T, SPECIES_OLD_UNOWN_U, SPECIES_OLD_UNOWN_V, SPECIES_OLD_UNOWN_W, SPECIES_OLD_UNOWN_X, SPECIES_OLD_UNOWN_Y, SPECIES_OLD_UNOWN_Z};
 extern struct BattlePokemon gBattleMons[];
@@ -229,13 +230,23 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
         SetBoxMonData(boxMon, MON_DATA_SPDEF_IV, &iv);
     }
 
-    if (gBaseStats[species].ability2)
+//HOENNISLES START
+	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM) //only generate random ability on super random
+	{
+		SetRandomAbility(boxMon);
+	}
+    else if (gBaseStats[species].ability2)
     {
         value = personality & 1;
         SetBoxMonData(boxMon, MON_DATA_ALT_ABILITY, &value);
     }
-
-    GiveBoxMonInitialMoveset(boxMon);
+//HOENNISLES END
+    /*if (gBaseStats[species].ability2) VANILLA
+    {
+        value = personality & 1;
+        SetBoxMonData(boxMon, MON_DATA_ALT_ABILITY, &value);
+    }
+    GiveBoxMonInitialMoveset(boxMon);*/
 }
 
 //HOENNISLES START
@@ -255,12 +266,10 @@ bool8 IsRandomMonBanned(u16 species)
 
 void SetRandomTypesForBattleMon(void)
 {
-	u8 *monData;
+	u8 *monData = (u8*)(&gBattleMons[gActiveBank]);
 	u8 customType1;
 	u8 customType2;
 	bool8 singleType;
-	
-	monData = (u8*)(&gBattleMons[gActiveBank]);
 	
 	singleType = (GetMonData(monData, MON_DATA_PERSONALITY, NULL)) % 3;
 		customType1 = (GetMonData(monData, MON_DATA_PERSONALITY, NULL) >> 16) % 20;
@@ -270,6 +279,39 @@ void SetRandomTypesForBattleMon(void)
 			customType2 = customType1;
 	gBattleMons[gActiveBank].type1 = customType1;
 	gBattleMons[gActiveBank].type2 = customType2;
+}
+
+void SetRandomAbility(struct BoxPokemon *boxMon)
+{
+	u16 ability;
+	
+	if (GetBoxMonData(boxMon, MON_DATA_SPECIES, NULL) == SPECIES_SHEDINJA) //shedninja always has wonder guard
+	{
+		SetBoxMonData(boxMon, MON_DATA_CUSTOM_ABILITY, ABILITY_WONDER_GUARD);
+	}
+	else
+	{
+		do
+		{
+			ability = Random() % NUM_ABILITIES;
+		} while (IsRandomAbilityBanned(ability));
+
+		SetBoxMonData(boxMon, MON_DATA_CUSTOM_ABILITY, ability);
+	}
+	return;
+}
+
+//returns TRUE if ability is on random ability banlist
+bool8 IsRandomAbilityBanned(u16 ability)
+{
+    int i;
+	
+    for (i = 0; i < NUM_BANNED_RANDOM_ABILITIES; i++)
+	{
+        if (gRandomAbilityBanlist[i] == ability)
+            return TRUE;
+    }
+    return FALSE;
 }
 
 void GenerateSuperRandomMovesetForMon(struct Pokemon *mon, s32 level, bool8 hatched)

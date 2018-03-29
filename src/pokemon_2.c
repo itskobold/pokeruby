@@ -310,7 +310,8 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
     struct PokemonSubstruct2 *substruct2 = NULL;
     struct PokemonSubstruct3 *substruct3 = NULL;
 
-    if (field > MON_DATA_10)
+	//HOENNISLES
+    if (field > MON_DATA_CUSTOM_ABILITY) //MON_DATA_10 in vanilla
     {
         substruct0 = &(GetSubstruct(boxMon, boxMon->personality, 0)->type0);
         substruct1 = &(GetSubstruct(boxMon, boxMon->personality, 1)->type1);
@@ -394,9 +395,12 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
     case MON_DATA_CHECKSUM:
         retVal = boxMon->checksum;
         break;
-//HOENNISLES
-//not commented out in vanilla
-    /*case MON_DATA_10:
+//HOENNISLES START
+	case MON_DATA_CUSTOM_ABILITY:
+        retVal = boxMon->customAbility;
+        break;
+//HOENNISLES END
+    /*case MON_DATA_10: VANILLA
         retVal = boxMon->unknown;
         break;*/
     case MON_DATA_SPECIES:
@@ -634,7 +638,8 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
         break;
     }
 
-    if (field > MON_DATA_10)
+	//HOENNISLES
+    if (field > MON_DATA_CUSTOM_ABILITY) //MON_DATA_10 in vanilla
         EncryptBoxMon(boxMon);
 
     return retVal;
@@ -693,7 +698,8 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const u8 *data)
     struct PokemonSubstruct2 *substruct2 = NULL;
     struct PokemonSubstruct3 *substruct3 = NULL;
 
-    if (field > MON_DATA_10)
+	//HOENNISLES
+    if (field > MON_DATA_CUSTOM_ABILITY) //MON_DATA_10 in vanilla
     {
         substruct0 = &(GetSubstruct(boxMon, boxMon->personality, 0)->type0);
         substruct1 = &(GetSubstruct(boxMon, boxMon->personality, 1)->type1);
@@ -752,9 +758,12 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const u8 *data)
     case MON_DATA_CHECKSUM:
         SET16(boxMon->checksum);
         break;
-//HOENNISLES
-//not commented out in vanilla
-    /*case MON_DATA_10:
+//HOENNISLES START
+	case MON_DATA_CUSTOM_ABILITY:
+        SET16(boxMon->customAbility);
+        break;
+//HOENNISLES END
+	/*case MON_DATA_10: VANILLA
         SET16(boxMon->unknown);
         break;*/
     case MON_DATA_SPECIES:
@@ -951,7 +960,8 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const u8 *data)
         break;
     }
 
-    if (field > MON_DATA_10)
+	//HOENNISLES
+    if (field > MON_DATA_CUSTOM_ABILITY) //MON_DATA_10 in vanilla
     {
         boxMon->checksum = CalculateBoxMonChecksum(boxMon);
         EncryptBoxMon(boxMon);
@@ -1196,6 +1206,7 @@ void CopyPlayerPartyMonToBattleData(u8 battleIndex, u8 partyIndex)
 	u8 customType1;
 	u8 customType2;
 	bool8 singleType;
+	u16 customAbility = GetMonData(&gPlayerParty[partyIndex], MON_DATA_CUSTOM_ABILITY, NULL);
 	//HOENNISLES END
 	
     gBattleMons[battleIndex].species = GetMonData(&gPlayerParty[partyIndex], MON_DATA_SPECIES, NULL);
@@ -1252,7 +1263,17 @@ void CopyPlayerPartyMonToBattleData(u8 battleIndex, u8 partyIndex)
 	//HOENNISLES END
     /*gBattleMons[battleIndex].type1 = gBaseStats[gBattleMons[battleIndex].species].type1; VANILLA
     gBattleMons[battleIndex].type2 = gBaseStats[gBattleMons[battleIndex].species].type2;*/
-    gBattleMons[battleIndex].ability = GetAbilityBySpecies(gBattleMons[battleIndex].species, gBattleMons[battleIndex].altAbility);
+	//HOENNISLES START
+	if (customAbility != 0) //always use custom ability even outside of super random! this is because some mons will be available with custom abilities in all game modes
+	{
+		gBattleMons[battleIndex].ability = customAbility;
+	}
+	else
+	{
+	//HOENNISLES END
+		gBattleMons[battleIndex].ability = GetAbilityBySpecies(gBattleMons[battleIndex].species, gBattleMons[battleIndex].altAbility);
+	}
+    //gBattleMons[battleIndex].ability = GetAbilityBySpecies(gBattleMons[battleIndex].species, gBattleMons[battleIndex].altAbility); VANILLA
     GetMonData(&gPlayerParty[partyIndex], MON_DATA_NICKNAME, nickname);
     StringCopy10(gBattleMons[battleIndex].nickname, nickname);
     GetMonData(&gPlayerParty[partyIndex], MON_DATA_OT_NAME, gBattleMons[battleIndex].otName);

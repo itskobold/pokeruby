@@ -13,7 +13,7 @@
 #define MON_DATA_OT_NAME            7
 #define MON_DATA_MARKINGS           8
 #define MON_DATA_CHECKSUM           9
-#define MON_DATA_10                10
+#define MON_DATA_CUSTOM_ABILITY    10
 #define MON_DATA_SPECIES           11
 #define MON_DATA_HELD_ITEM         12
 #define MON_DATA_MOVE1             13
@@ -93,7 +93,7 @@
 #define MON_DATA_SPATK2            87
 #define MON_DATA_SPDEF2            88
 //HOENNISLES START
-#define MON_DATA_CUSTOM_ABILITY    89
+//#define MON_DATA_CUSTOM_ABILITY    89
 //HOENNISLES END
 
 #define MAX_LEVEL 100
@@ -142,6 +142,8 @@
 #define UNOWN_FORM_COUNT 28
 
 //HOENNISLES START
+#define NUM_ABILITIES 78 //don't think this exists already. remove & replace if it does
+#define NUM_BANNED_RANDOM_ABILITIES 2 //number of abilities in random ability banlist
 #define NUM_BANNED_RANDOM_MOVES 6 //number of moves in random move banlist
 #define NUM_BANNED_RANDOM_MONS 46 //number of Pokemon in random mon banlist
 #define NUM_MAX_POSSIBLE_EVOLUTIONS 5 //this should really be in evolution.h but moving it causes problems so eh
@@ -218,9 +220,9 @@ struct PokemonSubstruct2
     u8 speedEV;
     u8 spAttackEV;
     u8 spDefenseEV;
-    u8 cool;
-    u8 beauty;
-    u8 cute;
+    u8 cool; //hidden power type?
+    u8 beauty; //random type 1
+    u8 cute; //random type 2
     u8 smart;
     u8 tough;
     u8 sheen;
@@ -287,14 +289,11 @@ struct BoxPokemon
     /*0x1B*/ u8 markings;
     /*0x1C*/ u16 checksum;
 //HOENNISLES START
-//in super random mode, these values will be read and treated as the Pokemon's type
-	/*0x1E*/ u8 customType1;
-	/*0x1F*/ u8 customType2;	
-
+	/*0x1E*/ u16 customAbility;
 //we had to overwrite the unknown value to make this work. oops
 //it shouldn't be a problem but keep an eye out for bugs
-    //*0x1E*/ u16 unknown;
 //HOENNISLES END
+    //*0x1E*/ u16 unknown; VANILLA
 
     union
     {
@@ -380,16 +379,6 @@ struct BattlePokemon
     /*0x4C*/ u32 status1;
     /*0x50*/ u32 status2;
     /*0x54*/ u32 otId;
-//HOENNISLES START
-	///*0x58*/ u8 customType1;
-	///*0x59*/ u8 customType2;
-	///*0x5A*/ u16 customAbility;
-
-    ///*0x20*/ u8 ability;
-    ///*0x21*/ u8 type1;
-    ///*0x22*/ u8 type2;
-    ///*0x23*/ u8 unknown;
-//HOENNISLES END
 };
 
 // Shouldn't these be the same enum?
@@ -583,6 +572,8 @@ u16 MonTryLearningNewMove(struct Pokemon *mon, bool8 firstMove);
 void DeleteFirstMoveAndGiveMoveToMon(struct Pokemon *mon, u16 move);
 void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move);
 //HOENNISLES START
+bool8 IsRandomAbilityBanned(u16 ability);
+void SetRandomAbility(struct BoxPokemon *boxMon);
 void SetRandomTypesForBattleMon(void);
 void GenerateSuperRandomMovesetForMon(struct Pokemon *mon, s32 level, bool8 hatched);
 void GenerateSuperRandomMovesetForBoxMon(struct BoxPokemon *boxMon, s32 level, bool8 hatched);
