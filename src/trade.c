@@ -5413,12 +5413,6 @@ static void _CreateInGameTradePokemon(u8 whichPlayerMon, u8 whichInGameTrade)
     SetMonData(pokemon, MON_DATA_OT_NAME, inGameTrade->otName);
     SetMonData(pokemon, MON_DATA_OT_GENDER, &inGameTrade->otGender);
     SetMonData(pokemon, MON_DATA_ALT_ABILITY, &inGameTrade->secondAbility);
-    SetMonData(pokemon, MON_DATA_BEAUTY, &inGameTrade->stats[1]);
-    SetMonData(pokemon, MON_DATA_CUTE, &inGameTrade->stats[2]);
-    SetMonData(pokemon, MON_DATA_COOL, &inGameTrade->stats[0]);
-    SetMonData(pokemon, MON_DATA_SMART, &inGameTrade->stats[3]);
-    SetMonData(pokemon, MON_DATA_TOUGH, &inGameTrade->stats[4]);
-    SetMonData(pokemon, MON_DATA_SHEEN, &inGameTrade->sheen);
     SetMonData(pokemon, MON_DATA_MET_LOCATION, &metLocation);
 
     isMail = FALSE;

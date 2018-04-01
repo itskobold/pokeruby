@@ -2186,27 +2186,28 @@ u32 dp01_getattr_by_ch1_for_player_pokemon_(u8 a, u8 *buffer)
         size = 2;
         break;
     case 49:
-        buffer[0] = GetMonData(&gPlayerParty[a], MON_DATA_COOL);
+        buffer[0] = GetMonData(&gPlayerParty[a], MON_DATA_TYPE_1);
         size = 1;
         break;
     case 50:
-        buffer[0] = GetMonData(&gPlayerParty[a], MON_DATA_BEAUTY);
+        buffer[0] = GetMonData(&gPlayerParty[a], MON_DATA_TYPE_2);
         size = 1;
         break;
     case 51:
-        buffer[0] = GetMonData(&gPlayerParty[a], MON_DATA_CUTE);
+        buffer[0] = GetMonData(&gPlayerParty[a], MON_DATA_HIDDEN_TYPE);
         size = 1;
         break;
     case 52:
-        buffer[0] = GetMonData(&gPlayerParty[a], MON_DATA_SMART);
-        size = 1;
-        break;
+        data16 = GetMonData(&gPlayerParty[a], MON_DATA_ABILITY);
+        buffer[0] = data16;
+        buffer[1] = data16 >> 8;
+        size = 2;
     case 53:
-        buffer[0] = GetMonData(&gPlayerParty[a], MON_DATA_TOUGH);
+        buffer[0] = GetMonData(&gPlayerParty[a], MON_DATA_33);
         size = 1;
         break;
     case 54:
-        buffer[0] = GetMonData(&gPlayerParty[a], MON_DATA_SHEEN);
+        buffer[0] = GetMonData(&gPlayerParty[a], MON_DATA_48);
         size = 1;
         break;
     case 55:
@@ -2450,22 +2451,22 @@ void dp01_setattr_by_ch1_for_player_pokemon(u8 a)
         SetMonData(&gPlayerParty[a], MON_DATA_SPDEF, &gBattleBufferA[gActiveBank][3]);
         break;
     case 49:
-        SetMonData(&gPlayerParty[a], MON_DATA_COOL, &gBattleBufferA[gActiveBank][3]);
+        SetMonData(&gPlayerParty[a], MON_DATA_TYPE_1, &gBattleBufferA[gActiveBank][3]);
         break;
     case 50:
-        SetMonData(&gPlayerParty[a], MON_DATA_BEAUTY, &gBattleBufferA[gActiveBank][3]);
+        SetMonData(&gPlayerParty[a], MON_DATA_TYPE_2, &gBattleBufferA[gActiveBank][3]);
         break;
     case 51:
-        SetMonData(&gPlayerParty[a], MON_DATA_CUTE, &gBattleBufferA[gActiveBank][3]);
+        SetMonData(&gPlayerParty[a], MON_DATA_HIDDEN_TYPE, &gBattleBufferA[gActiveBank][3]);
         break;
     case 52:
-        SetMonData(&gPlayerParty[a], MON_DATA_SMART, &gBattleBufferA[gActiveBank][3]);
+        SetMonData(&gPlayerParty[a], MON_DATA_ABILITY, &gBattleBufferA[gActiveBank][3]);
         break;
     case 53:
-        SetMonData(&gPlayerParty[a], MON_DATA_TOUGH, &gBattleBufferA[gActiveBank][3]);
+        SetMonData(&gPlayerParty[a], MON_DATA_33, &gBattleBufferA[gActiveBank][3]);
         break;
     case 54:
-        SetMonData(&gPlayerParty[a], MON_DATA_SHEEN, &gBattleBufferA[gActiveBank][3]);
+        SetMonData(&gPlayerParty[a], MON_DATA_48, &gBattleBufferA[gActiveBank][3]);
         break;
     case 55:
         SetMonData(&gPlayerParty[a], MON_DATA_COOL_RIBBON, &gBattleBufferA[gActiveBank][3]);

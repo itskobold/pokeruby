@@ -13,7 +13,7 @@
 #define MON_DATA_OT_NAME            7
 #define MON_DATA_MARKINGS           8
 #define MON_DATA_CHECKSUM           9
-#define MON_DATA_CUSTOM_ABILITY    10
+#define MON_DATA_10                10
 #define MON_DATA_SPECIES           11
 #define MON_DATA_HELD_ITEM         12
 #define MON_DATA_MOVE1             13
@@ -25,9 +25,9 @@
 #define MON_DATA_PP3               19
 #define MON_DATA_PP4               20
 #define MON_DATA_PP_BONUSES        21
-#define MON_DATA_COOL              22
-#define MON_DATA_BEAUTY            23
-#define MON_DATA_CUTE              24
+#define MON_DATA_TYPE_1            22
+#define MON_DATA_TYPE_2            23
+#define MON_DATA_HIDDEN_TYPE       24
 #define MON_DATA_EXP               25
 #define MON_DATA_HP_EV             26
 #define MON_DATA_ATK_EV            27
@@ -36,7 +36,7 @@
 #define MON_DATA_SPATK_EV          30
 #define MON_DATA_SPDEF_EV          31
 #define MON_DATA_FRIENDSHIP        32
-#define MON_DATA_SMART             33
+#define MON_DATA_33                33
 #define MON_DATA_POKERUS           34
 #define MON_DATA_MET_LOCATION      35
 #define MON_DATA_MET_LEVEL         36
@@ -50,8 +50,8 @@
 #define MON_DATA_SPDEF_IV          44
 #define MON_DATA_IS_EGG            45
 #define MON_DATA_ALT_ABILITY       46
-#define MON_DATA_TOUGH             47
-#define MON_DATA_SHEEN             48
+#define MON_DATA_ABILITY           47
+#define MON_DATA_48                48
 #define MON_DATA_OT_GENDER         49
 #define MON_DATA_COOL_RIBBON       50
 #define MON_DATA_BEAUTY_RIBBON     51
@@ -92,9 +92,6 @@
 #define MON_DATA_SPEED2            86
 #define MON_DATA_SPATK2            87
 #define MON_DATA_SPDEF2            88
-//HOENNISLES START
-//#define MON_DATA_CUSTOM_ABILITY    89
-//HOENNISLES END
 
 #define MAX_LEVEL 100
 
@@ -111,7 +108,6 @@
 #define TYPE_BUG      0x06
 #define TYPE_GHOST    0x07
 #define TYPE_STEEL    0x08
-//HOENNISLES START
 #define TYPE_FIRE     0x09
 #define TYPE_WATER    0x0a
 #define TYPE_GRASS    0x0b
@@ -124,17 +120,6 @@
 #define TYPE_COSMIC   0x12
 #define TYPE_FAIRY    0x13
 #define TYPE_NULL     0x14
-
-//HOENNISLES END
-/*#define TYPE_MYSTERY  0x09 VANILLA
-#define TYPE_FIRE     0x0a
-#define TYPE_WATER    0x0b
-#define TYPE_GRASS    0x0c
-#define TYPE_ELECTRIC 0x0d
-#define TYPE_PSYCHIC  0x0e
-#define TYPE_ICE      0x0f
-#define TYPE_DRAGON   0x10
-#define TYPE_DARK     0x11*/
 
 #define PARTY_SIZE 6
 #define MAX_TOTAL_EVS 510
@@ -220,12 +205,11 @@ struct PokemonSubstruct2
     u8 speedEV;
     u8 spAttackEV;
     u8 spDefenseEV;
-    u8 cool; //hidden power type?
-    u8 beauty; //random type 1
-    u8 cute; //random type 2
-    u8 smart;
-    u8 tough;
-    u8 sheen;
+    u8 type1;
+    u8 type2;
+    u8 hiddenType;
+	u8 data48;
+    u16 ability;
 };
 
 struct PokemonSubstruct3
@@ -288,12 +272,7 @@ struct BoxPokemon
     /*0x14*/ u8 otName[OT_NAME_LENGTH];
     /*0x1B*/ u8 markings;
     /*0x1C*/ u16 checksum;
-//HOENNISLES START
-	/*0x1E*/ u16 customAbility;
-//we had to overwrite the unknown value to make this work. oops
-//it shouldn't be a problem but keep an eye out for bugs
-//HOENNISLES END
-    //*0x1E*/ u16 unknown; VANILLA
+    /*0x1E*/ u16 unknown;
 
     union
     {
@@ -512,11 +491,8 @@ enum {
 #define EVO_LEVEL_CASCOON    0x000c // Pokémon reaches the specified level with a Cascoon personality value
 #define EVO_LEVEL_NINJASK    0x000d // Pokémon reaches the specified level (special value for Ninjask)
 #define EVO_LEVEL_SHEDINJA   0x000e // Pokémon reaches the specified level (special value for Shedinja)
-#define EVO_BEAUTY           0x000f // Pokémon levels up with beauty ≥ specified value
 
-//HOENNISLES START
 #define NUM_LEVEL_BASED_EVOS 8 //this and gLevelBasedEvoList (in wild_encounter.c) is messy as hell
-//HOENNISLES END
 
 struct Evolution
 {
@@ -538,8 +514,8 @@ extern const u8 *const gItemEffectTable[];
 extern const struct BaseStats gBaseStats[];
 extern const u32 gExperienceTables[][101];
 extern const u16 *gLevelUpLearnsets[];
-//HOENNISLES
-extern struct Evolution gEvolutionTable[][NUM_MAX_POSSIBLE_EVOLUTIONS]; //VANILLA extern struct Evolution gEvolutionTable[][5];
+
+extern struct Evolution gEvolutionTable[][NUM_MAX_POSSIBLE_EVOLUTIONS];
 extern struct PokemonStorage gPokemonStorage;
 
 void ZeroBoxMonData(struct BoxPokemon *boxMon);
@@ -571,7 +547,7 @@ void GiveBoxMonInitialMoveset(struct BoxPokemon *boxMon);
 u16 MonTryLearningNewMove(struct Pokemon *mon, bool8 firstMove);
 void DeleteFirstMoveAndGiveMoveToMon(struct Pokemon *mon, u16 move);
 void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move);
-//HOENNISLES START
+
 bool8 IsRandomAbilityBanned(u16 ability);
 void SetRandomAbility(struct BoxPokemon *boxMon);
 void SetRandomTypesForBattleMon(void);
@@ -581,7 +557,6 @@ u16 GenerateSuperRandomMove(u8 moveType1, u8 moveType2);
 bool8 IsRandomMoveBanned(u16 move);
 bool8 IsRandomMonBanned(u16 species);
 u8 GetSuperRandomMovesetSize(s32 level, bool8 hatched);
-//HOENNISLES END
 
 u8 CountAliveMons(u8 a1);
 u8 sub_803C434(u8 a1);

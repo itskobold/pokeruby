@@ -310,8 +310,7 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
     struct PokemonSubstruct2 *substruct2 = NULL;
     struct PokemonSubstruct3 *substruct3 = NULL;
 
-	//HOENNISLES
-    if (field > MON_DATA_CUSTOM_ABILITY) //MON_DATA_10 in vanilla
+    if (field > MON_DATA_10)
     {
         substruct0 = &(GetSubstruct(boxMon, boxMon->personality, 0)->type0);
         substruct1 = &(GetSubstruct(boxMon, boxMon->personality, 1)->type1);
@@ -395,14 +394,9 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
     case MON_DATA_CHECKSUM:
         retVal = boxMon->checksum;
         break;
-//HOENNISLES START
-	case MON_DATA_CUSTOM_ABILITY:
-        retVal = boxMon->customAbility;
-        break;
-//HOENNISLES END
-    /*case MON_DATA_10: VANILLA
+    case MON_DATA_10:
         retVal = boxMon->unknown;
-        break;*/
+        break;
     case MON_DATA_SPECIES:
         retVal = boxMon->isBadEgg ? SPECIES_EGG : substruct0->species;
         break;
@@ -448,23 +442,20 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
     case MON_DATA_SPDEF_EV:
         retVal = substruct2->spDefenseEV;
         break;
-    case MON_DATA_COOL:
-        retVal = substruct2->cool;
+	case MON_DATA_TYPE_1:
+        retVal = substruct2->type1;
         break;
-    case MON_DATA_BEAUTY:
-        retVal = substruct2->beauty;
+    case MON_DATA_TYPE_2:
+        retVal = substruct2->type2;
         break;
-    case MON_DATA_CUTE:
-        retVal = substruct2->cute;
+    case MON_DATA_HIDDEN_TYPE:
+        retVal = substruct2->hiddenType;
         break;
-    case MON_DATA_SMART:
-        retVal = substruct2->smart;
+    case MON_DATA_ABILITY:
+        retVal = substruct2->ability;
         break;
-    case MON_DATA_TOUGH:
-        retVal = substruct2->tough;
-        break;
-    case MON_DATA_SHEEN:
-        retVal = substruct2->sheen;
+    case MON_DATA_48:
+        retVal = substruct2->data48;
         break;
     case MON_DATA_POKERUS:
         retVal = substruct3->pokerus;
@@ -638,8 +629,7 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
         break;
     }
 
-	//HOENNISLES
-    if (field > MON_DATA_CUSTOM_ABILITY) //MON_DATA_10 in vanilla
+    if (field > MON_DATA_10)
         EncryptBoxMon(boxMon);
 
     return retVal;
@@ -698,8 +688,7 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const u8 *data)
     struct PokemonSubstruct2 *substruct2 = NULL;
     struct PokemonSubstruct3 *substruct3 = NULL;
 
-	//HOENNISLES
-    if (field > MON_DATA_CUSTOM_ABILITY) //MON_DATA_10 in vanilla
+    if (field > MON_DATA_10)
     {
         substruct0 = &(GetSubstruct(boxMon, boxMon->personality, 0)->type0);
         substruct1 = &(GetSubstruct(boxMon, boxMon->personality, 1)->type1);
@@ -758,14 +747,9 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const u8 *data)
     case MON_DATA_CHECKSUM:
         SET16(boxMon->checksum);
         break;
-//HOENNISLES START
-	case MON_DATA_CUSTOM_ABILITY:
-        SET16(boxMon->customAbility);
-        break;
-//HOENNISLES END
-	/*case MON_DATA_10: VANILLA
+	case MON_DATA_10:
         SET16(boxMon->unknown);
-        break;*/
+        break;
     case MON_DATA_SPECIES:
     {
         SET16(substruct0->species);
@@ -817,23 +801,20 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const u8 *data)
     case MON_DATA_SPDEF_EV:
         SET8(substruct2->spDefenseEV);
         break;
-    case MON_DATA_COOL:
-        SET8(substruct2->cool);
+    case MON_DATA_TYPE_1:
+        SET8(substruct2->type1);
         break;
-    case MON_DATA_BEAUTY:
-        SET8(substruct2->beauty);
+    case MON_DATA_TYPE_2:
+        SET8(substruct2->type2);
         break;
-    case MON_DATA_CUTE:
-        SET8(substruct2->cute);
+    case MON_DATA_HIDDEN_TYPE:
+        SET8(substruct2->hiddenType);
         break;
-    case MON_DATA_SMART:
-        SET8(substruct2->smart);
+    case MON_DATA_ABILITY:
+        SET8(substruct2->ability);
         break;
-    case MON_DATA_TOUGH:
-        SET8(substruct2->tough);
-        break;
-    case MON_DATA_SHEEN:
-        SET8(substruct2->sheen);
+    case MON_DATA_48:
+        SET8(substruct2->data48);
         break;
     case MON_DATA_POKERUS:
         SET8(substruct3->pokerus);
@@ -943,11 +924,8 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const u8 *data)
         break;
     case MON_DATA_IVS:
     {
-#ifdef BUGFIX_SETMONIVS
         u32 ivs = data[0] | (data[1] << 8) | (data[2] << 16) | (data[3] << 24);
-#else
-        u32 ivs = *data; // Bug: Only the HP IV and the lower 3 bits of the Attack IV are read. The rest become 0.
-#endif
+		
         substruct3->hpIV = ivs & 0x1F;
         substruct3->attackIV = (ivs >> 5) & 0x1F;
         substruct3->defenseIV = (ivs >> 10) & 0x1F;
@@ -960,8 +938,7 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const u8 *data)
         break;
     }
 
-	//HOENNISLES
-    if (field > MON_DATA_CUSTOM_ABILITY) //MON_DATA_10 in vanilla
+    if (field > MON_DATA_10)
     {
         boxMon->checksum = CalculateBoxMonChecksum(boxMon);
         EncryptBoxMon(boxMon);
@@ -1202,12 +1179,10 @@ void CopyPlayerPartyMonToBattleData(u8 battleIndex, u8 partyIndex)
 {
     s32 i;
     s8 nickname[POKEMON_NAME_LENGTH * 2];
-	//HOENNISLES START
 	u8 customType1;
 	u8 customType2;
 	bool8 singleType;
-	u16 customAbility = GetMonData(&gPlayerParty[partyIndex], MON_DATA_CUSTOM_ABILITY, NULL);
-	//HOENNISLES END
+	u16 customAbility = GetMonData(&gPlayerParty[partyIndex], MON_DATA_ABILITY, NULL);
 	
     gBattleMons[battleIndex].species = GetMonData(&gPlayerParty[partyIndex], MON_DATA_SPECIES, NULL);
     gBattleMons[battleIndex].item = GetMonData(&gPlayerParty[partyIndex], MON_DATA_HELD_ITEM, NULL);
@@ -1240,7 +1215,7 @@ void CopyPlayerPartyMonToBattleData(u8 battleIndex, u8 partyIndex)
     gBattleMons[battleIndex].isEgg = GetMonData(&gPlayerParty[partyIndex], MON_DATA_IS_EGG, NULL);
     gBattleMons[battleIndex].altAbility = GetMonData(&gPlayerParty[partyIndex], MON_DATA_ALT_ABILITY, NULL);
     gBattleMons[battleIndex].otId = GetMonData(&gPlayerParty[partyIndex], MON_DATA_OT_ID, NULL);
-	//HOENNISLES START
+
 	//this chooses whether to load the Pokemon's custom types or their normal types
 	//if the player were able to downgrade from super random to any other game type, the Pokemon will revert to using its normal types
 	//(but this can never happen, so that's okay)
@@ -1260,20 +1235,14 @@ void CopyPlayerPartyMonToBattleData(u8 battleIndex, u8 partyIndex)
 		gBattleMons[battleIndex].type1 = gBaseStats[gBattleMons[battleIndex].species].type1;
 		gBattleMons[battleIndex].type2 = gBaseStats[gBattleMons[battleIndex].species].type2;
 	}
-	//HOENNISLES END
-    /*gBattleMons[battleIndex].type1 = gBaseStats[gBattleMons[battleIndex].species].type1; VANILLA
-    gBattleMons[battleIndex].type2 = gBaseStats[gBattleMons[battleIndex].species].type2;*/
-	//HOENNISLES START
 	if (customAbility != 0) //always use custom ability even outside of super random! this is because some mons will be available with custom abilities in all game modes
 	{
 		gBattleMons[battleIndex].ability = customAbility;
 	}
 	else
 	{
-	//HOENNISLES END
 		gBattleMons[battleIndex].ability = GetAbilityBySpecies(gBattleMons[battleIndex].species, gBattleMons[battleIndex].altAbility);
 	}
-    //gBattleMons[battleIndex].ability = GetAbilityBySpecies(gBattleMons[battleIndex].species, gBattleMons[battleIndex].altAbility); VANILLA
     GetMonData(&gPlayerParty[partyIndex], MON_DATA_NICKNAME, nickname);
     StringCopy10(gBattleMons[battleIndex].nickname, nickname);
     GetMonData(&gPlayerParty[partyIndex], MON_DATA_OT_NAME, gBattleMons[battleIndex].otName);

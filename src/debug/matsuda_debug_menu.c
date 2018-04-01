@@ -638,12 +638,6 @@ void sub_80AA658(u8 var)
 
 void SetDebugMonForContest(void)
 {
-    SetMonData(&gPlayerParty[0], MON_DATA_COOL, &gContestMons[gContestPlayerMonIndex].cool);
-    SetMonData(&gPlayerParty[0], MON_DATA_CUTE, &gContestMons[gContestPlayerMonIndex].cute);
-    SetMonData(&gPlayerParty[0], MON_DATA_BEAUTY, &gContestMons[gContestPlayerMonIndex].beauty);
-    SetMonData(&gPlayerParty[0], MON_DATA_SMART, &gContestMons[gContestPlayerMonIndex].smart);
-    SetMonData(&gPlayerParty[0], MON_DATA_TOUGH, &gContestMons[gContestPlayerMonIndex].tough);
-    SetMonData(&gPlayerParty[0], MON_DATA_SHEEN, &gContestMons[gContestPlayerMonIndex].sheen);
     SetMonData(&gPlayerParty[0], MON_DATA_MOVE1, &gContestMons[gContestPlayerMonIndex].moves[0]);
     SetMonData(&gPlayerParty[0], MON_DATA_MOVE2, &gContestMons[gContestPlayerMonIndex].moves[1]);
     SetMonData(&gPlayerParty[0], MON_DATA_MOVE3, &gContestMons[gContestPlayerMonIndex].moves[2]);

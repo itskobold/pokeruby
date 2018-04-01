@@ -2512,8 +2512,8 @@ static void sub_809FC34(struct Pokemon *mon)
         sub_80A1F98(GetMonData(mon, MON_DATA_OT_ID) & 0xFFFF, 13, 5, 2, 193, 32, 1);
 
         species = GetMonData(mon, MON_DATA_SPECIES);
-//HOENNISLES START
-//load custom type icons if super random game mode
+
+		//load custom type icons if super random game mode
 		if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
 		{
 			singleType = (GetMonData(mon, MON_DATA_PERSONALITY, NULL)) % 3;
@@ -2533,19 +2533,14 @@ static void sub_809FC34(struct Pokemon *mon)
 			if (gBaseStats[species].type1 != gBaseStats[species].type2)
 				sub_80A198C(gBaseStats[species].type2, 160, 48, 1);
 		}
-//HOENNISLES END
-        /*sub_80A198C(gBaseStats[species].type1, 120, 48, 0); VANILLA
-        if (gBaseStats[species].type1 != gBaseStats[species].type2)
-            sub_80A198C(gBaseStats[species].type2, 160, 48, 1);*/
-//HOENNISLES START
-		customAbility = GetBoxMonData(&mon->box, MON_DATA_CUSTOM_ABILITY);
+
+		customAbility = GetBoxMonData(&mon->box, MON_DATA_ABILITY);
 		if (customAbility != 0)
 		{
 			ability = customAbility;
 		}
 		else
 		{
-//HOENNISLES END
 			ability = GetAbilityBySpecies(GetMonData(mon, MON_DATA_SPECIES), GetMonData(mon, MON_DATA_ALT_ABILITY));
 		}
         sub_80A1FF8(gAbilityNames[ability], 13, 11, 9);
