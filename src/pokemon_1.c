@@ -296,7 +296,7 @@ void SetRandomAbility(struct BoxPokemon *boxMon)
 			ability = Random() % NUM_ABILITIES;
 		} while (IsRandomAbilityBanned(ability));
 
-		SetBoxMonData(boxMon, MON_DATA_CUSTOM_ABILITY, ability);
+		SetBoxMonData(boxMon, MON_DATA_CUSTOM_ABILITY, &ability);
 	}
 	return;
 }
