@@ -638,6 +638,10 @@ u32 dp01_getattr_by_ch1_for_player_pokemon__(u8 a, u8 *buffer)
         GetMonData(&gEnemyParty[a], MON_DATA_NICKNAME, nickname);
         StringCopy10(battlePokemon.nickname, nickname);
         GetMonData(&gEnemyParty[a], MON_DATA_OT_NAME, battlePokemon.otName);
+		
+		battlePokemon.type1 = GetMonData(&gEnemyParty[a], MON_DATA_TYPE_1);
+		battlePokemon.type2 = GetMonData(&gEnemyParty[a], MON_DATA_TYPE_2);
+		battlePokemon.ability = GetMonData(&gEnemyParty[a], MON_DATA_ABILITY);
 
         MEMCPY_ALT(&battlePokemon, buffer, sizeof(battlePokemon), size, src);
         break;
@@ -870,7 +874,7 @@ u32 dp01_getattr_by_ch1_for_player_pokemon__(u8 a, u8 *buffer)
         size = 1;
         break;
     case 54:
-        buffer[0] = GetMonData(&gEnemyParty[a], MON_DATA_48);
+        buffer[0] = GetMonData(&gEnemyParty[a], MON_DATA_33);
         size = 1;
         break;
     case 55:
@@ -1120,7 +1124,7 @@ void sub_8038900(u8 a)
         SetMonData(&gEnemyParty[a], MON_DATA_33, &gBattleBufferA[gActiveBank][3]);
         break;
     case 54:
-        SetMonData(&gEnemyParty[a], MON_DATA_48, &gBattleBufferA[gActiveBank][3]);
+        SetMonData(&gEnemyParty[a], MON_DATA_33, &gBattleBufferA[gActiveBank][3]);
         break;
     case 55:
         SetMonData(&gEnemyParty[a], MON_DATA_COOL_RIBBON, &gBattleBufferA[gActiveBank][3]);

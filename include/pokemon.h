@@ -51,7 +51,7 @@
 #define MON_DATA_IS_EGG            45
 #define MON_DATA_ALT_ABILITY       46
 #define MON_DATA_ABILITY           47
-#define MON_DATA_48                48
+#define MON_DATA_NATURE            48
 #define MON_DATA_OT_GENDER         49
 #define MON_DATA_COOL_RIBBON       50
 #define MON_DATA_BEAUTY_RIBBON     51
@@ -128,7 +128,7 @@
 
 //HOENNISLES START
 #define NUM_ABILITIES 78 //don't think this exists already. remove & replace if it does
-#define NUM_BANNED_RANDOM_ABILITIES 2 //number of abilities in random ability banlist
+#define NUM_BANNED_RANDOM_ABILITIES 3 //number of abilities in random ability banlist
 #define NUM_BANNED_RANDOM_MOVES 6 //number of moves in random move banlist
 #define NUM_BANNED_RANDOM_MONS 46 //number of Pokemon in random mon banlist
 #define NUM_MAX_POSSIBLE_EVOLUTIONS 5 //this should really be in evolution.h but moving it causes problems so eh
@@ -208,7 +208,7 @@ struct PokemonSubstruct2
     u8 type1;
     u8 type2;
     u8 hiddenType;
-	u8 data48;
+	u8 nature;
     u16 ability;
 };
 
@@ -341,7 +341,7 @@ struct BattlePokemon
     /*0x17*/ u32 isEgg:1;
     /*0x17*/ u32 altAbility:1;
     /*0x18*/ s8 statStages[8];
-    /*0x20*/ u16 ability;
+    /*0x20*/ u8 nature;
     /*0x21*/ u8 type1;
     /*0x22*/ u8 type2;
     /*0x24*/ u8 pp[4];
@@ -355,7 +355,8 @@ struct BattlePokemon
     /*0x3C*/ u8 otName[8];
     /*0x44*/ u32 experience;
     /*0x48*/ u32 personality;
-    /*0x4C*/ u32 status1;
+    /*0x4C*/ u16 status1;
+	/*0x4E*/ u16 ability;
     /*0x50*/ u32 status2;
     /*0x54*/ u32 otId;
 };
@@ -550,7 +551,7 @@ void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move);
 
 bool8 IsRandomAbilityBanned(u16 ability);
 void SetRandomAbility(struct BoxPokemon *boxMon);
-void SetRandomTypesForBattleMon(void);
+void GenerateRandomTypes(struct Pokemon *mon);
 void GenerateSuperRandomMovesetForMon(struct Pokemon *mon, s32 level, bool8 hatched);
 void GenerateSuperRandomMovesetForBoxMon(struct BoxPokemon *boxMon, s32 level, bool8 hatched);
 u16 GenerateSuperRandomMove(u8 moveType1, u8 moveType2);

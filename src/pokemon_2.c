@@ -454,8 +454,8 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
     case MON_DATA_ABILITY:
         retVal = substruct2->ability;
         break;
-    case MON_DATA_48:
-        retVal = substruct2->data48;
+    case MON_DATA_NATURE:
+        retVal = substruct2->nature;
         break;
     case MON_DATA_POKERUS:
         retVal = substruct3->pokerus;
@@ -813,8 +813,8 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const u8 *data)
     case MON_DATA_ABILITY:
         SET8(substruct2->ability);
         break;
-    case MON_DATA_48:
-        SET8(substruct2->data48);
+    case MON_DATA_NATURE:
+        SET8(substruct2->nature);
         break;
     case MON_DATA_POKERUS:
         SET8(substruct3->pokerus);
@@ -1179,9 +1179,6 @@ void CopyPlayerPartyMonToBattleData(u8 battleIndex, u8 partyIndex)
 {
     s32 i;
     s8 nickname[POKEMON_NAME_LENGTH * 2];
-	u8 customType1;
-	u8 customType2;
-	bool8 singleType;
 	u16 customAbility = GetMonData(&gPlayerParty[partyIndex], MON_DATA_ABILITY, NULL);
 	
     gBattleMons[battleIndex].species = GetMonData(&gPlayerParty[partyIndex], MON_DATA_SPECIES, NULL);
@@ -1221,14 +1218,8 @@ void CopyPlayerPartyMonToBattleData(u8 battleIndex, u8 partyIndex)
 	//(but this can never happen, so that's okay)
 	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
 	{	
-		singleType = (GetMonData(&gPlayerParty[partyIndex], MON_DATA_PERSONALITY, NULL)) % 3;
-			customType1 = (GetMonData(&gPlayerParty[partyIndex], MON_DATA_PERSONALITY, NULL) >> 16) % 20;
-			if (singleType != 0)
-				customType2 = (GetMonData(&gPlayerParty[partyIndex], MON_DATA_PERSONALITY, NULL)) % 20;
-			else
-				customType2 = customType1;
-		gBattleMons[gActiveBank].type1 = customType1;
-		gBattleMons[gActiveBank].type2 = customType2;
+		gBattleMons[gActiveBank].type1 = GetMonData(&gPlayerParty[partyIndex], MON_DATA_TYPE_1, NULL);
+		gBattleMons[gActiveBank].type2 = GetMonData(&gPlayerParty[partyIndex], MON_DATA_TYPE_2, NULL);
 	}
 	else
 	{

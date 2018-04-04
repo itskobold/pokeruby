@@ -20,7 +20,6 @@ void PlayTimeCounter_Reset()
     gSaveBlock2.playTimeVBlanks = 0;
 }
 
-//HOENNISLES START
 void PlayTimeCounter_Loop()
 {
     gSaveBlock2.playTimeHours = 0;
@@ -28,18 +27,13 @@ void PlayTimeCounter_Loop()
     gSaveBlock2.playTimeSeconds = 0;
     gSaveBlock2.playTimeVBlanks = 0;
 }
-//HOENNISLES END
 
 void PlayTimeCounter_Start()
 {
     sPlayTimeCounterState = RUNNING;
 
-//HOENNISLES
-    if (gSaveBlock2.playTimeHours > 65535) //VANILLA 999
-	//HOENNISLES START
+    if (gSaveBlock2.playTimeHours > 65535)
 		PlayTimeCounter_Loop();
-	//HOENNISLES END
-     //   PlayTimeCounter_SetToMax(); VANILLA
 }
 
 void PlayTimeCounter_Stop()
@@ -68,9 +62,8 @@ void PlayTimeCounter_Update()
                     gSaveBlock2.playTimeMinutes = 0;
                     gSaveBlock2.playTimeHours++;
 
-					//HOENNISLES
-                    if (gSaveBlock2.playTimeHours > 65535) //VANILLA 999
-                        PlayTimeCounter_Loop(); //VANILLA PlayTimeCounter_Stop
+                    if (gSaveBlock2.playTimeHours > 65535)
+                        PlayTimeCounter_Loop();
                 }
             }
         }
@@ -81,8 +74,7 @@ void PlayTimeCounter_SetToMax()
 {
     sPlayTimeCounterState = MAXED_OUT;
 
-//HOENNISLES
-    gSaveBlock2.playTimeHours = 65535; //VANILLA 999
+    gSaveBlock2.playTimeHours = 65535;
     gSaveBlock2.playTimeMinutes = 59;
     gSaveBlock2.playTimeSeconds = 59;
     gSaveBlock2.playTimeVBlanks = 59;

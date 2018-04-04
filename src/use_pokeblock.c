@@ -742,7 +742,7 @@ static void sub_8136E40(struct Pokeblock *pokeblock, struct Pokemon *pokemon)
     u16 i;
     s16 cstat;
     u8 data;
-    if (GetMonData(pokemon, MON_DATA_48) != 255)
+    if (GetMonData(pokemon, MON_DATA_33) != 255)
     {
         sub_8136F74(pokeblock, pokemon);
         for (i=0; i<5; i++)
@@ -755,12 +755,12 @@ static void sub_8136E40(struct Pokeblock *pokeblock, struct Pokemon *pokemon)
                 cstat = 255;
             data = cstat;
         }
-        cstat = (u8)GetMonData(pokemon, MON_DATA_48);
+        cstat = (u8)GetMonData(pokemon, MON_DATA_33);
         cstat = cstat + pokeblock->feel;
         if (cstat > 255)
             cstat = 255;
         data = cstat;
-        SetMonData(pokemon, MON_DATA_48, &data);
+        SetMonData(pokemon, MON_DATA_33, &data);
     }
 }
 
@@ -814,7 +814,7 @@ static bool8 sub_8137058(void)
 {
     struct Pokemon *pokemon = gPlayerParty;
     pokemon += gUnknown_083DFEC4->unk893c[gUnknown_083DFEC4->unk87DC].partyIdx;
-    if (GetMonData(pokemon, MON_DATA_48) == 255)
+    if (GetMonData(pokemon, MON_DATA_33) == 255)
         return TRUE;
     return FALSE;
 }

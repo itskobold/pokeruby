@@ -354,11 +354,7 @@ static const struct SpriteTemplate sSpriteTemplate_83C11C0 = {
     .callback = SpriteCallbackDummy,
 };
 
-//HOENNISLES START
-//controls the palettes to be used for each type + contest type
 static const u8 sUnknown_PaletteNums[] = { 0xD, 0xD, 0xE, 0xE, 0xD, 0xD, 0xF, 0xE, 0xD, 0xD, 0xE, 0xF, 0xD, 0xE, 0xE, 0xF, 0xD, 0xF, 0xF, 0xF, 0xF, 0xD, 0xE, 0xE, 0xF, 0xD };
-//HOENNISLES END
-//static const u8 sUnknown_PaletteNums[] = { 0xD, 0xD, 0xE, 0xE, 0xD, 0xD, 0xF, 0xE, 0xD, 0xF, 0xD, 0xE, 0xF, 0xD, 0xE, 0xE, 0xF, 0xD, 0xD, 0xE, 0xE, 0xF, 0xD }; VANILLA
 
 static const struct OamData sOamData_83C11F0 = {
     .y = 0,
@@ -2449,13 +2445,11 @@ static void sub_809FC34(struct Pokemon *mon)
     u8 language;
     u16 species;
     u8 ability;
-	//HOENNISLES START
-	u8 customType1;
-	u8 customType2;
-	bool8 singleType;
-	u16 customAbility;
-	//HOENNISLES END
 
+	u8 typeIcon1;
+	u8 typeIcon2;
+	u16 customAbility = GetMonData(mon, MON_DATA_ABILITY, NULL);
+	
     for (i = 0; i < 5; i++)
         sub_80A1918(i, 1);
 
@@ -2516,25 +2510,19 @@ static void sub_809FC34(struct Pokemon *mon)
 		//load custom type icons if super random game mode
 		if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
 		{
-			singleType = (GetMonData(mon, MON_DATA_PERSONALITY, NULL)) % 3;
-			customType1 = (GetMonData(mon, MON_DATA_PERSONALITY, NULL) >> 16) % 20;
-			if (singleType != 0)
-				customType2 = (GetMonData(mon, MON_DATA_PERSONALITY, NULL)) % 20;
-			else
-				customType2 = customType1;
-		
-			sub_80A198C(customType1, 120, 48, 0);
-			if (customType1 != customType2)
-				sub_80A198C(customType2, 160, 48, 1);
+			typeIcon1 = GetMonData(mon, MON_DATA_TYPE_1, NULL);
+			typeIcon2 = GetMonData(mon, MON_DATA_TYPE_2, NULL);
 		}
 		else
 		{
-			sub_80A198C(gBaseStats[species].type1, 120, 48, 0);
-			if (gBaseStats[species].type1 != gBaseStats[species].type2)
-				sub_80A198C(gBaseStats[species].type2, 160, 48, 1);
+			typeIcon1 = gBaseStats[species].type1;
+			typeIcon2 = gBaseStats[species].type2;
 		}
+		
+		sub_80A198C(typeIcon1, 120, 48, 0);
+		if (typeIcon1 != typeIcon2)
+			sub_80A198C(typeIcon2, 160, 48, 1);
 
-		customAbility = GetBoxMonData(&mon->box, MON_DATA_ABILITY);
 		if (customAbility != 0)
 		{
 			ability = customAbility;

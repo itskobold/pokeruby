@@ -830,14 +830,12 @@ struct SaveBlock2 /* 0x02024EA4 */
              u16 optionsBattleSceneOff:1;  // whether battle animations are disabled
              u16 regionMapZoom:1;          // whether the map is zoomed in
     /*0x18*/ struct Pokedex pokedex;
-    /*0x90*/ u8 filler_90[0x8];
+    /*0x90*/ u8 filler_90[0x6];
+	/*0x96*/ u8 nuzlockeMode;			   // Normal/Nuzlocke/Hardlocke/Deadlocke
+	/*0x97*/ u8 gameMode;				   // Story/Sandbox/Random/Super Random
     /*0x98*/ struct Time localTimeOffset;
     /*0xA0*/ struct Time lastBerryTreeUpdate;
     /*0xA8*/ struct BattleTowerData battleTower;
-//HOENNISLES START
-			 u8 nuzlockeMode;			   // Normal/Nuzlocke/Hardlocke/Deadlocke
-			 u8 gameMode;				   // Story/Sandbox/Random/Super Random
-//HOENNISLES END
 };
 
 struct MapPosition

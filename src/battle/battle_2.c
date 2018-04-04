@@ -47,9 +47,7 @@
 #include "scanline_effect.h"
 #include "util.h"
 #include "ewram.h"
-//HOENNISLES START
 #include "wild_encounter.h"
-//HOENNISLES END
 
 struct UnknownStruct7
 {
@@ -3929,20 +3927,17 @@ void UndoEffectsAfterFainting(void)
     ewram16100arr2(3, gActiveBank) = 0;
 
     eFlashFireArr.arr[gActiveBank] = 0;
-//HOENNISLES START
-//super random check
+	
 	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
 	{
-		SetRandomTypesForBattleMon();
+		gBattleMons[gActiveBank].type1 = (GetBankSide(gActiveBank) == SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_1) : GetMonData(&gEnemyParty, MON_DATA_TYPE_1);
+		gBattleMons[gActiveBank].type2 = (GetBankSide(gActiveBank) == SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_2) : GetMonData(&gEnemyParty, MON_DATA_TYPE_2);
 	}
 	else
 	{
 		gBattleMons[gActiveBank].type1 = gBaseStats[gBattleMons[gActiveBank].species].type1;
 		gBattleMons[gActiveBank].type2 = gBaseStats[gBattleMons[gActiveBank].species].type2;
 	}
-//HOENNISLES END
-    /*gBattleMons[gActiveBank].type1 = gBaseStats[gBattleMons[gActiveBank].species].type1; VANILLA
-    gBattleMons[gActiveBank].type2 = gBaseStats[gBattleMons[gActiveBank].species].type2;*/
 }
 
 void bc_8012FAC(void)
@@ -3985,6 +3980,7 @@ void sub_8011384(void)
 {
     u8 *ptr;
     s32 i;
+	u16 customAbility = (GetBankSide(gActiveBank) == SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_ABILITY) : GetMonData(&gEnemyParty, MON_DATA_ABILITY);
 
     if (gBattleExecBuffer == 0)
     {
@@ -4000,21 +3996,25 @@ void sub_8011384(void)
                 u8 r0;
 
                 MEMSET_ALT(&gBattleMons[gActiveBank], gBattleBufferB[gActiveBank][4 + i], 0x58, i, ptr);
-//HOENNISLES START
-//super random check
+
 				if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
 				{
-					SetRandomTypesForBattleMon();
+					gBattleMons[gActiveBank].type1 = (GetBankSide(gActiveBank) == SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_1) : GetMonData(&gEnemyParty, MON_DATA_TYPE_1);
+					gBattleMons[gActiveBank].type2 = (GetBankSide(gActiveBank) == SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_2) : GetMonData(&gEnemyParty, MON_DATA_TYPE_2);
 				}
 				else
 				{
 					gBattleMons[gActiveBank].type1 = gBaseStats[gBattleMons[gActiveBank].species].type1;
 					gBattleMons[gActiveBank].type2 = gBaseStats[gBattleMons[gActiveBank].species].type2;
 				}
-//HOENNISLES END
-				/*gBattleMons[gActiveBank].type1 = gBaseStats[gBattleMons[gActiveBank].species].type1; VANILLA
-                gBattleMons[gActiveBank].type2 = gBaseStats[gBattleMons[gActiveBank].species].type2;*/
-                gBattleMons[gActiveBank].ability = GetAbilityBySpecies(gBattleMons[gActiveBank].species, gBattleMons[gActiveBank].altAbility);
+                if (customAbility != 0)
+				{
+					gBattleMons[gActiveBank].ability = customAbility;
+				}
+				else
+				{
+					gBattleMons[gActiveBank].ability = GetAbilityBySpecies(gBattleMons[gActiveBank].species, gBattleMons[gActiveBank].altAbility);
+				}
                 r0 = GetBankSide(gActiveBank);
                 ewram160BC[r0] = gBattleMons[gActiveBank].hp;
                 for (i = 0; i < 8; i++)
@@ -4440,8 +4440,8 @@ u8 CanRunFromBattle(void)
         }
         if (r6 != GetBankSide(i)
          && gBattleMons[gActiveBank].ability != ABILITY_LEVITATE
-         && gBattleMons[gActiveBank].type1 != 2
-         && gBattleMons[gActiveBank].type2 != 2
+         && gBattleMons[gActiveBank].type1 != TYPE_FLYING
+         && gBattleMons[gActiveBank].type2 != TYPE_FLYING
          && gBattleMons[i].ability == ABILITY_ARENA_TRAP)
         {
             ewram16003 = i;
@@ -4451,7 +4451,7 @@ u8 CanRunFromBattle(void)
         }
     }
     i = AbilityBattleEffects(15, gActiveBank, ABILITY_MAGNET_PULL, 0, 0);
-    if (i != 0 && (gBattleMons[gActiveBank].type1 == 8 || gBattleMons[gActiveBank].type2 == 8))
+    if (i != 0 && (gBattleMons[gActiveBank].type1 == TYPE_STEEL || gBattleMons[gActiveBank].type2 == TYPE_STEEL))
     {
         ewram16003 = i - 1;
         gLastUsedAbility = gBattleMons[i - 1].ability;

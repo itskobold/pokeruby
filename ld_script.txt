@@ -488,6 +488,7 @@ SECTIONS {
         src/main.o(.rodata);
         src/sprite.o(.rodata);
         . += 0x8; /* Why the gap? */
+		src/battle/battle_2.o(.rodata);
         src/text.o(.rodata);
         src/string_util.o(.rodata);
         src/link.o(.rodata);

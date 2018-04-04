@@ -15,7 +15,6 @@
 #include "script.h"
 #include "constants/species.h"
 #include "tv.h"
-//HOENNISLES START
 #include "constants/items.h"
 #include "daycare.h"
 
@@ -31,7 +30,6 @@ const u16 gBranchingEvoMons[NUM_MONS_WITH_BRANCHING_EVOS][2] =
 	{SPECIES_NINCADA, 2},
 	{SPECIES_CLAMPERL, 2},
 };
-//HOENNISLES END
 
 const struct WildPokemon PetalburgCity_WaterMons [] =
 {
