@@ -163,7 +163,7 @@
 	.macro jumpifsideaffecting bank, status, address
 	.byte 0x1f
 	.byte \bank
-	.2byte \status
+	.4byte \status
 	.4byte \address
 	.endm
 

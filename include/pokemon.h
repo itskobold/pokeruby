@@ -341,9 +341,9 @@ struct BattlePokemon
     /*0x17*/ u32 isEgg:1;
     /*0x17*/ u32 altAbility:1;
     /*0x18*/ s8 statStages[8];
-    /*0x20*/ u8 nature;
-    /*0x21*/ u8 type1;
-    /*0x22*/ u8 type2;
+    /*0x20*/ u16 ability;
+    /*0x22*/ u8 type1;
+    /*0x23*/ u8 type2;
     /*0x24*/ u8 pp[4];
     /*0x28*/ u16 hp;
     /*0x2A*/ u8 level;
@@ -355,8 +355,7 @@ struct BattlePokemon
     /*0x3C*/ u8 otName[8];
     /*0x44*/ u32 experience;
     /*0x48*/ u32 personality;
-    /*0x4C*/ u16 status1;
-	/*0x4E*/ u16 ability;
+    /*0x4C*/ u32 status1;
     /*0x50*/ u32 status2;
     /*0x54*/ u32 otId;
 };
