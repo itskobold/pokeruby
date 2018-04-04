@@ -548,6 +548,7 @@ void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move);
 
 bool8 IsRandomAbilityBanned(u16 ability);
 void SetRandomAbility(struct BoxPokemon *boxMon);
+void GenerateRandomNature(struct BoxPokemon *boxMon);
 void GenerateRandomTypes(struct BoxPokemon *boxMon);
 void GenerateSuperRandomMovesetForMon(struct Pokemon *mon, s32 level, bool8 hatched);
 void GenerateSuperRandomMovesetForBoxMon(struct BoxPokemon *boxMon, s32 level, bool8 hatched);

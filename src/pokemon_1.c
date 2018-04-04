@@ -143,6 +143,7 @@ void CreateMon(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 hasFix
 void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, u8 hasFixedPersonality, u32 fixedPersonality, u8 otIdType, u32 fixedOtId)
 {
     u8 speciesName[POKEMON_NAME_LENGTH + 1];
+	u8 nature;
     u32 personality;
     u32 value;
     u16 checksum;
@@ -155,6 +156,8 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
         personality = Random32();
 
     SetBoxMonData(boxMon, MON_DATA_PERSONALITY, &personality);
+	
+	nature = GetNatureFromPersonality(personality);
 
     //Determine original trainer ID
     if (otIdType == 2) //Pokemon cannot be shiny
@@ -197,6 +200,7 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     value = 4;
     SetBoxMonData(boxMon, MON_DATA_POKEBALL, &value);
     SetBoxMonData(boxMon, MON_DATA_OT_GENDER, &gSaveBlock2.playerGender);
+	SetBoxMonData(boxMon, MON_DATA_NATURE, &nature);
 
     if (fixedIV < 32)
     {
@@ -238,8 +242,18 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
         value = personality & 1;
         SetBoxMonData(boxMon, MON_DATA_ALT_ABILITY, &value);
     }
+	SetBoxMonData(boxMon, MON_DATA_LANGUAGE, &gGameLanguage);
 	GenerateRandomTypes(boxMon);
 	GiveBoxMonInitialMoveset(boxMon);
+}
+
+//randomizes a pokemon's nature
+//nature is obtained from PID in initial mon generation, this is used for regeneration
+void GenerateRandomNature(struct BoxPokemon *boxMon)
+{
+	u8 nature = Random() & 25; //25 natures
+	SetBoxMonData(boxMon, MON_DATA_NATURE, &nature);
+	return;
 }
 
 //returns TRUE if species is on random mon banlist
@@ -640,16 +654,6 @@ u16 CalculateBoxMonChecksum(struct BoxPokemon *boxMon)
     return checksum;
 }
 
-/*#define CALC_STAT(base, iv, ev, statIndex, field)                	\	VANILLA
-{                                                               			\
-    u8 baseStat = gBaseStats[species].base;                     			\
-    s32 n = (((2 * baseStat + iv + ev / 4) * level) / 100) + 5;  \
-    u8 nature = GetNature(mon);                                 			\
-    n = nature_stat_mod(nature, n, statIndex);                  			\
-    SetMonData(mon, field, &n);                                 			\
-}*/
-
-//HOENNISLES START
 #define CALC_STAT(base, eviolite, iv, ev, statIndex, field)                	\
 {                                                               			\
     u8 baseStat = gBaseStats[species].base;                     			\
@@ -674,7 +678,6 @@ u16 CalculateBaseStatTotal(struct Pokemon *mon)
 	bst = (bstHP + bstATK + bstDEF + bstSPD + bstSPATK + bstSPDEF);
 	return bst;
 }
-//HOENNISLES END
 
 void CalculateMonStats(struct Pokemon *mon)
 {

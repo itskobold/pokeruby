@@ -252,7 +252,8 @@ u8 *sub_803F378(u16 itemId)
 
 u8 GetNature(struct Pokemon *mon)
 {
-    return GetMonData(mon, MON_DATA_PERSONALITY, 0) % 25;
+	return GetMonData(mon, MON_DATA_NATURE, 0); //lmao
+    //return GetMonData(mon, MON_DATA_PERSONALITY, 0) % 25;
 }
 
 u8 GetNatureFromPersonality(u32 personality)
@@ -1233,7 +1234,7 @@ s8 sub_8040A54(struct Pokemon *mon, u8 a2)
     return gPokeblockFlavorCompatibilityTable[nature * 5 + a2];
 }
 
-s8 GetPokeFlavourRelation(u32 personality, u8 a2)
+s8 GetPokeFlavourRelation(u32 personality, u8 a2) //being removed, don't worry about fixing the faulty nature retrieval
 {
     u8 nature = GetNatureFromPersonality(personality);
     return gPokeblockFlavorCompatibilityTable[nature * 5 + a2];
