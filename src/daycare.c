@@ -521,6 +521,7 @@ void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, struct BoxP
 	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
 	{
 		GenerateSuperRandomMovesetForMon(egg, 1, TRUE); //eggs hatch at level 1
+		return;
 	}
 //HOENNISLES END
 

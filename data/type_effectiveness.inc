@@ -164,4 +164,3 @@ gTypeEffectiveness:: @ 81F9720
 	.byte	TYPE_STEEL,		TYPE_GHOST,		0
 	.byte	TYPE_FAIRY,		TYPE_GHOST,		0
 	.byte	0xFF,			0xFF,			0
-	

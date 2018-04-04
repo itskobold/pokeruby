@@ -251,31 +251,31 @@ gSpeciesNames:: @ 81F716C
 	.string "LUGIA$", 11
 	.string "HO-OH$", 11
 	.string "CELEBI$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
-	.string "?$", 11
+	.string "UNKb$", 11
+	.string "UNKc$", 11
+	.string "UNKd$", 11
+	.string "UNKe$", 11
+	.string "UNKf$", 11
+	.string "UNKg$", 11
+	.string "UNKh$", 11
+	.string "UNKi$", 11
+	.string "UNKj$", 11
+	.string "UNKk$", 11
+	.string "UNKl$", 11
+	.string "UNKm$", 11
+	.string "UNKn$", 11
+	.string "UNKo$", 11
+	.string "UNKp$", 11
+	.string "UNKq$", 11
+	.string "UNKr$", 11
+	.string "UNKs$", 11
+	.string "UNKt$", 11
+	.string "UNKu$", 11
+	.string "UNKv$", 11
+	.string "UNKw$", 11
+	.string "UNKx$", 11
+	.string "UNKy$", 11
+	.string "UNKz$", 11
 	.string "TREECKO$", 11
 	.string "GROVYLE$", 11
 	.string "SCEPTILE$", 11

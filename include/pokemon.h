@@ -126,14 +126,12 @@
 #define NUM_STATS 6
 #define UNOWN_FORM_COUNT 28
 
-//HOENNISLES START
 #define NUM_ABILITIES 78 //don't think this exists already. remove & replace if it does
 #define NUM_BANNED_RANDOM_ABILITIES 3 //number of abilities in random ability banlist
 #define NUM_BANNED_RANDOM_MOVES 6 //number of moves in random move banlist
-#define NUM_BANNED_RANDOM_MONS 46 //number of Pokemon in random mon banlist
+#define NUM_BANNED_RANDOM_MONS 47 //number of Pokemon in random mon banlist
 #define NUM_MAX_POSSIBLE_EVOLUTIONS 5 //this should really be in evolution.h but moving it causes problems so eh
 #define NUM_MONS_WITH_BRANCHING_EVOS 8 //number of pokemon with evolution lines that branch out (like eevee, gloom, poliwhirl etc)
-//HOENNISLES END
 
 enum {
     EGG_GROUP_NONE,
@@ -550,7 +548,7 @@ void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move);
 
 bool8 IsRandomAbilityBanned(u16 ability);
 void SetRandomAbility(struct BoxPokemon *boxMon);
-void GenerateRandomTypes(struct Pokemon *mon);
+void GenerateRandomTypes(struct BoxPokemon *boxMon);
 void GenerateSuperRandomMovesetForMon(struct Pokemon *mon, s32 level, bool8 hatched);
 void GenerateSuperRandomMovesetForBoxMon(struct BoxPokemon *boxMon, s32 level, bool8 hatched);
 u16 GenerateSuperRandomMove(u8 moveType1, u8 moveType2);

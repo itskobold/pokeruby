@@ -4017,7 +4017,6 @@ static u8 PickWildMonNature(void)
     return Random() % 25;
 }
 
-//HOENNISLES START
 u16 GenerateRandomSpecies(u8 level) //level is used to calculate evolution stages etc. has no effect on the level of the mon generated
 {
 	u16 species;
@@ -4035,10 +4034,13 @@ u16 CalculateRandomMonEvolutionStage(u16 species, u8 level)
 //gets the mon's species and calculates a suitable evolution stage
 //so if a lv80 bulbasaur is generated it will be turned into a venusaur
 //likewise, if a lv3 venusaur is generated it will be turned into a bulbasaur
-//first evolution listed has priority
 {
-	int monEvoNumber = Random() % GetRandomEvoBranch(species); //picks a random evolution chain to follow
+	int monEvoNumber;
+	u8 data;
+	
 	species = GetEggSpecies(species); //species now contains first stage
+	data = GetRandomEvoBranch(species);
+	monEvoNumber = Random() % data; //picks a random evolution chain to follow
 	
 	while (gEvolutionTable[species][monEvoNumber].targetSpecies != SPECIES_NONE) //loop until mon can no longer evolve
 	{
@@ -4064,6 +4066,8 @@ u16 CalculateRandomMonEvolutionStage(u16 species, u8 level)
 				return species;
 			}
 		}
+		data = GetRandomEvoBranch(species); //recalculate monEvoNumber to account for branching evo lines
+		monEvoNumber = Random() % data;
 	}
 	return species;
 }
@@ -4091,12 +4095,11 @@ bool8 IsLevelBasedEvolution(u8 method)
     }
     return FALSE;
 }
-//HOENNISLES END
 
-static void CreateWildMon(u16 species, u8 level) //HOENNISLES note - level was orignially called b at time of editing
+static void CreateWildMon(u16 species, u8 level)
 {	
     ZeroEnemyPartyMons();
-//HOENNISLES START
+
 //generates a random wild species for random & super random game modes
 //accounts for sensible evolutions (so no level 3 blazikens etc)
 //Pokemon on a banlist don't get generated (legendaries etc)
@@ -4104,7 +4107,6 @@ static void CreateWildMon(u16 species, u8 level) //HOENNISLES note - level was o
 	{
 		species = GenerateRandomSpecies(level);
 	}
-//HOENNISLES END
 	CreateMonWithNature(&gEnemyParty[0], species, level, 0x20, PickWildMonNature());
 }
 

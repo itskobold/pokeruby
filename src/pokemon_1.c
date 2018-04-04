@@ -134,7 +134,6 @@ void CreateMon(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 hasFix
 
     ZeroMonData(mon);
     CreateBoxMon(&mon->box, species, level, fixedIV, hasFixedPersonality, fixedPersonality, otIdType, fixedOtId);
-	GenerateRandomTypes(mon);
     SetMonData(mon, MON_DATA_LEVEL, &level);
     arg = 255;
     SetMonData(mon, MON_DATA_MAIL, &arg);
@@ -239,6 +238,7 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
         value = personality & 1;
         SetBoxMonData(boxMon, MON_DATA_ALT_ABILITY, &value);
     }
+	GenerateRandomTypes(boxMon);
 	GiveBoxMonInitialMoveset(boxMon);
 }
 
@@ -256,12 +256,12 @@ bool8 IsRandomMonBanned(u16 species)
 	
 }
 
-void GenerateRandomTypes(struct Pokemon *mon)
+void GenerateRandomTypes(struct BoxPokemon *boxMon)
 {
 	u8 customType1 = Random() % 20;
 	u8 customType2 = Random() % 20;
 	u8 singleType = Random() % 3; //1 in 3 chance of being single type
-	u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
+	u16 species = GetBoxMonData(boxMon, MON_DATA_SPECIES, NULL);
 	
 	if (gSaveBlock2.gameMode != GAME_MODE_SUPER_RANDOM) //sets type values to mon's normal types as a failsafe if not on super random
 	{
@@ -280,8 +280,8 @@ void GenerateRandomTypes(struct Pokemon *mon)
 		customType2 = customType1;
 	}
 	
-	SetMonData(mon, MON_DATA_TYPE_1, &customType1);
-	SetMonData(mon, MON_DATA_TYPE_2, &customType2);
+	SetBoxMonData(boxMon, MON_DATA_TYPE_1, &customType1);
+	SetBoxMonData(boxMon, MON_DATA_TYPE_2, &customType2);
 }
 
 void SetRandomAbility(struct BoxPokemon *boxMon)
@@ -290,11 +290,8 @@ void SetRandomAbility(struct BoxPokemon *boxMon)
 	
 	if (GetBoxMonData(boxMon, MON_DATA_SPECIES, NULL) == SPECIES_SHEDINJA) //shedninja always has wonder guard
 	{
-		SetBoxMonData(boxMon, MON_DATA_ABILITY, ABILITY_WONDER_GUARD);
-	}
-	else if (GetBoxMonData(boxMon, MON_DATA_SPECIES, NULL) == SPECIES_CASTFORM) //castform always has forecast
-	{
-		SetBoxMonData(boxMon, MON_DATA_ABILITY, ABILITY_FORECAST);
+		ability = ABILITY_WONDER_GUARD;
+		SetBoxMonData(boxMon, MON_DATA_ABILITY, &ability);
 	}
 	else
 	{
@@ -382,7 +379,7 @@ u16 GenerateSuperRandomMove(u8 moveType1, u8 moveType2)
 	
 	do
 	{
-		if (chance > 25) //75% - generate STAB move
+		if (chance > 40) //60% - generate STAB move
 		{
 			do
 			{
@@ -392,9 +389,19 @@ u16 GenerateSuperRandomMove(u8 moveType1, u8 moveType2)
 			}
 			while (moveType1 != gBattleMoves[move].type || moveType2 != gBattleMoves[move].type);
 		}
-		else //25% - generate totally random move
+		else if (chance > 15) //25% - generate totally random move
 		{
 			move = Random() % NUM_MOVES;
+		}
+		else //15% - generate normal type move
+		{
+			do
+			{
+				move = Random() % NUM_MOVES; //generate move value
+				if (TYPE_NORMAL == gBattleMoves[move].type)
+					break;
+			}
+			while (TYPE_NORMAL != gBattleMoves[move].type);
 		}
 	} while (IsRandomMoveBanned(move));
 	
