@@ -30,10 +30,9 @@
 #include "secret_base.h"
 #include "text.h"
 #include "tv.h"
-//HOENNISLES START
-#include "item.h"
+
+#include "item.h" //for starter items. remove if starter items function is removed
 #include "constants/items.h"
-//HOENNISLES END
 
 EWRAM_DATA u8 gDifferentSaveFile = 0;
 EWRAM_DATA u8 gUnknown_020297ED = 0;
@@ -95,8 +94,18 @@ void SetDefaultOptions(void)
 
 void SetDefaultGameModeAndNuzlocke(void)
 {
-	gSaveBlock2.nuzlockeMode = NUZLOCKE_MODE_OFF;		//defaults to standard, non-nuzlocke mode
-	gSaveBlock2.gameMode = GAME_MODE_STORY;			//defaults to story mode
+	gSaveBlock2.nuzlockeMode = NUZLOCKE_MODE_OFF;			//defaults to standard, non-nuzlocke mode
+	gSaveBlock2.gameMode = GAME_MODE_STORY;					//defaults to story mode
+}
+
+void SetDefaultGameTime(void)
+{
+	gSaveBlock2.timeMinute = 0;
+	gSaveBlock2.timeHour = TIME_HOUR_9AM;
+	gSaveBlock2.timeDay = TIME_DAY_TUESDAY;
+	gSaveBlock2.timeWeek = TIME_WEEK_1;
+	gSaveBlock2.timeSeason = TIME_SEASON_SPRING;
+	gSaveBlock2.timeYear = Random() % 8;
 }
 
 void GiveStarterItems(void)
@@ -233,10 +242,9 @@ void NewGameInitData(void)
     ResetLotteryCorner();
     WarpToTruck();
     ScriptContext2_RunNewScript(gUnknown_0819FA81);
-//HOENNISLES START
-	SetDefaultGameModeAndNuzlocke();
-	GiveStarterItems(); //this will probably be moved somewhere else eventually, but it's here for now
-//HOENNISLES END
+	SetDefaultGameModeAndNuzlocke();	//Story mode, Nuzlocke mode off
+	SetDefaultGameTime(); 				//Minute 0, 9AM, Tuesday, Week 1, Spring, random year between 0 and 7
+	GiveStarterItems(); 				//this will probably be moved somewhere else eventually, but it's here for now
 }
 
 #if DEBUG

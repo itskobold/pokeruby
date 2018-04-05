@@ -15,4 +15,12 @@ void ClearSav2(void);
 void sub_8052E4C(void);
 void NewGameInitData(void);
 
+void SetDefaultGameTime(void);
+void IncrementClockMinute(void);
+void IncrementClockHour(void);
+void IncrementClockDay(void);
+void IncrementClockWeek(void);
+void IncrementClockSeason(void);
+void IncrementClockYear(void);
+
 #endif // GUARD_NEW_GAME_H
