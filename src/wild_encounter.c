@@ -2114,7 +2114,7 @@ const struct WildPokemon Route116_LandMons [] =
 };
 const struct WildPokemonInfo Route116_LandMonsInfo = {20, Route116_LandMons};
 
-/*const struct WildPokemon Route117_LandMons [] =
+const struct WildPokemon Route117_LandMons [] =
 {
     {13, 13, SPECIES_ZIGZAGOON},
     {13, 13, SPECIES_ROSELIA},
@@ -2136,31 +2136,8 @@ const struct WildPokemonInfo Route116_LandMonsInfo = {20, Route116_LandMons};
     {13, 13, SPECIES_VOLBEAT},
 #endif
     {13, 13, SPECIES_SURSKIT},
-};*/
-
-const struct WildPokemon Route117_LandMons [] =
-{
-    {1, 100, SPECIES_ZIGZAGOON},
-    {1, 100, SPECIES_ROSELIA},
-    {1, 100, SPECIES_ZIGZAGOON},
-    {1, 100, SPECIES_ROSELIA},
-    {1, 100, SPECIES_MARILL},
-    {1, 100, SPECIES_ODDISH},
-#ifdef SAPPHIRE
-    {13, 13, SPECIES_VOLBEAT},
-    {13, 13, SPECIES_VOLBEAT},
-    {14, 14, SPECIES_VOLBEAT},
-    {14, 14, SPECIES_VOLBEAT},
-    {13, 13, SPECIES_ILLUMISE},
-#else
-    {1, 100, SPECIES_ILLUMISE},
-    {1, 100, SPECIES_ILLUMISE},
-    {1, 100, SPECIES_ILLUMISE},
-    {1, 100, SPECIES_ILLUMISE},
-    {1, 100, SPECIES_VOLBEAT},
-#endif
-    {1, 100, SPECIES_SURSKIT},
 };
+
 const struct WildPokemonInfo Route117_LandMonsInfo = {20, Route117_LandMons};
 
 const struct WildPokemon Route117_WaterMons [] =

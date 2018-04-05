@@ -3913,7 +3913,6 @@ gBattleMoves:: @ 81FB12C
 	.byte 0 @ priority
 	.4byte F_AFFECTED_BY_KINGS_ROCK | F_MIRROR_MOVE_COMPATIBLE | F_AFFECTED_BY_PROTECT @ misc. flags
 
-@@HOENNISLES START
 @ DEBUG FAIRY 1
 	.byte EFFECT_HIT
 	.byte 40 @ power

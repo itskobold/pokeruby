@@ -370,6 +370,22 @@ gBattleAnims_Moves:: @ 81C7168
 	.4byte Move_WATER_PULSE
 	.4byte Move_DOOM_DESIRE
 	.4byte Move_PSYCHO_BOOST
+	.4byte Move_POUND
+	.4byte Move_POUND
+	.4byte Move_POUND
+	.4byte Move_POUND
+	.4byte Move_POUND
+	.4byte Move_POUND
+	.4byte Move_POUND
+	.4byte Move_POUND
+	.4byte Move_POUND
+	.4byte Move_POUND
+	.4byte Move_POUND
+	.4byte Move_POUND
+	.4byte Move_POUND
+	.4byte Move_POUND
+	.4byte Move_POUND
+	.4byte Move_POUND
 	.4byte PoundCopy
 
 	.align 2

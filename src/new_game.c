@@ -97,11 +97,17 @@ void SetDefaultOptions(void)
 void SetDefaultGameModeAndNuzlocke(void)
 {
 	gSaveBlock2.nuzlockeMode = NUZLOCKE_MODE_OFF;		//defaults to standard, non-nuzlocke mode
-	gSaveBlock2.gameMode = GAME_MODE_SUPER_RANDOM;				//defaults to story mode
+	gSaveBlock2.gameMode = GAME_MODE_RANDOM;				//defaults to story mode
 }
 
 void GiveStarterItems(void)
 {
+	if (gSaveBlock2.nuzlockeMode != GAME_MODE_SANDBOX)
+		AddBagItem(ITEM_SUPER_ROD, 1);
+		AddBagItem(ITEM_COIN_CASE, 1);
+		gSaveBlock1.money = 10000;
+		gSaveBlock1.coins = 100;
+	}
 	if (gSaveBlock2.nuzlockeMode != NUZLOCKE_MODE_OFF)
 	{
 		AddBagItem(ITEM_NUZLOCKE_BUFF, 1);

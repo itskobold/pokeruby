@@ -12845,7 +12845,7 @@ static void atk9E_metronome(void)
     int i;
     do
     {
-        while ((gCurrentMove = (Random() & 0x1FF) + 1) > 0x162);
+        while ((gCurrentMove = (Random() & 0x1FF) + 1) > NUM_MOVES - 1);
         for (i = 0; sMovesForbiddenToCopy[i] != gCurrentMove && sMovesForbiddenToCopy[i] != 0xFFFF; i++);
     } while (sMovesForbiddenToCopy[i] != 0xFFFF);
 

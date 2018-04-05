@@ -42,3 +42,4 @@ build/
 *.sg1
 .vs/
 .projects/ARM/
+release/
