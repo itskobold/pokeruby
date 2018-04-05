@@ -202,6 +202,7 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     SetBoxMonData(boxMon, MON_DATA_POKEBALL, &value);
     SetBoxMonData(boxMon, MON_DATA_OT_GENDER, &gSaveBlock2.playerGender);
 	SetBoxMonData(boxMon, MON_DATA_NATURE, &nature);
+	SetBoxMonData(boxMon, MON_DATA_HIDDEN_TYPE, &hiddenType);
 
     if (fixedIV < 32)
     {
