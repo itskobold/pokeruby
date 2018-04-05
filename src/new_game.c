@@ -93,16 +93,16 @@ void SetDefaultOptions(void)
     gSaveBlock2.regionMapZoom = FALSE;
 }
 
-//HOENNISLES START
 void SetDefaultGameModeAndNuzlocke(void)
 {
 	gSaveBlock2.nuzlockeMode = NUZLOCKE_MODE_OFF;		//defaults to standard, non-nuzlocke mode
-	gSaveBlock2.gameMode = GAME_MODE_RANDOM;				//defaults to story mode
+	gSaveBlock2.gameMode = GAME_MODE_STORY;			//defaults to story mode
 }
 
 void GiveStarterItems(void)
 {
 	if (gSaveBlock2.nuzlockeMode != GAME_MODE_SANDBOX)
+	{
 		AddBagItem(ITEM_SUPER_ROD, 1);
 		AddBagItem(ITEM_COIN_CASE, 1);
 		gSaveBlock1.money = 10000;
@@ -118,7 +118,6 @@ void GiveStarterItems(void)
 		AddBagItem(ITEM_POTION, 1);
 	}
 }
-//HOENNISLES END
 
 void ClearPokedexFlags(void)
 {

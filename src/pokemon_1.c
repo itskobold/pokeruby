@@ -144,6 +144,7 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
 {
     u8 speciesName[POKEMON_NAME_LENGTH + 1];
 	u8 nature;
+	u8 hiddenType = Random() % 20; //hidden power type is automatically set to 1 of the 20 random types
     u32 personality;
     u32 value;
     u16 checksum;
@@ -245,6 +246,7 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
 	SetBoxMonData(boxMon, MON_DATA_LANGUAGE, &gGameLanguage);
 	GenerateRandomTypes(boxMon);
 	GiveBoxMonInitialMoveset(boxMon);
+	
 }
 
 //randomizes a pokemon's nature

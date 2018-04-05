@@ -30,6 +30,7 @@
 #include "task.h"
 #include "tv.h"
 #include "scanline_effect.h"
+#include "constants/moves.h"
 
 static void sub_809FC0C(void);
 static void sub_809FEB8(void);
@@ -2648,6 +2649,7 @@ static void sub_80A015C(struct Pokemon *mon)
     u8 ppBonuses;
     u8 maxPP;
     u8 *buffer;
+	u8 type = GetMonData(mon, MON_DATA_HIDDEN_TYPE, 0);
 
     for (i = 0; i < 4; i++)
     {
@@ -2663,7 +2665,16 @@ static void sub_80A015C(struct Pokemon *mon)
         else
         {
             if (pssData.page == PSS_PAGE_BATTLE_MOVES)
-                sub_80A198C(gBattleMoves[move].type, 87, ((2 * i) + 4) * 8, i);
+			{
+				if (move == MOVE_HIDDEN_POWER)  //displays correct hidden power type instead of just normal. lazy, lazy game freak
+				{
+					sub_80A198C(type, 87, ((2 * i) + 4) * 8, i);
+				}
+				else
+				{
+					sub_80A198C(gBattleMoves[move].type, 87, ((2 * i) + 4) * 8, i);
+				}
+			}
             else
                 sub_80A198C(gContestMoves[move].contestCategory + 18, 87, ((2 * i) + 4) * 8, i);
 
