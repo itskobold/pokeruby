@@ -94,14 +94,14 @@ void SetDefaultOptions(void)
 
 void SetDefaultGameModeAndNuzlocke(void)
 {
-	gSaveBlock2.nuzlockeMode = NUZLOCKE_MODE_OFF;			//defaults to standard, non-nuzlocke mode
-	gSaveBlock2.gameMode = GAME_MODE_STORY;					//defaults to story mode
+	gSaveBlock2.nuzlockeMode = NUZLOCKE_MODE_DEADLOCKE;			//defaults to standard, non-nuzlocke mode
+	gSaveBlock2.gameMode = GAME_MODE_SUPER_RANDOM;					//defaults to story mode
 }
 
 void SetDefaultGameTime(void)
 {
 	gSaveBlock2.timeMinute = 0;
-	gSaveBlock2.timeHour = TIME_HOUR_9AM;
+	gSaveBlock2.timeHour = TIME_HOUR_6AM; //9AM
 	gSaveBlock2.timeDay = TIME_DAY_TUESDAY;
 	gSaveBlock2.timeWeek = TIME_WEEK_1;
 	gSaveBlock2.timeSeason = TIME_SEASON_SPRING;

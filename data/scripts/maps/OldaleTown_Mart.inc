@@ -14,6 +14,9 @@ OldaleTown_Mart_EventScript_152F79:: @ 8152F79
 
 	.align 2
 OldaleTown_Mart_Items1:: @ 8152F9C
+	.2byte ITEM_MASTER_BALL
+	.2byte ITEM_EVIOLITE
+	.2byte ITEM_RARE_CANDY
 	.2byte ITEM_POTION
 	.2byte ITEM_ANTIDOTE
 	.2byte ITEM_PARALYZE_HEAL
@@ -30,6 +33,9 @@ OldaleTown_Mart_EventScript_152FA8:: @ 8152FA8
 
 	.align 2
 OldaleTown_Mart_Items2:: @ 8152FB8
+	.2byte ITEM_MASTER_BALL
+	.2byte ITEM_EVIOLITE
+	.2byte ITEM_RARE_CANDY
 	.2byte ITEM_POKE_BALL
 	.2byte ITEM_POTION
 	.2byte ITEM_ANTIDOTE

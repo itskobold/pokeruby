@@ -61,18 +61,36 @@
 
 	.set F_SUMMARY_SCREEN_FLIP_SPRITE, 0x80
 
-	.set EVO_FRIENDSHIP,       0x0001 @ Pokémon levels up with friendship ≥ 220
-	.set EVO_FRIENDSHIP_DAY,   0x0002 @ Pokémon levels up during the day with friendship ≥ 220
-	.set EVO_FRIENDSHIP_NIGHT, 0x0003 @ Pokémon levels up at night with friendship ≥ 220
-	.set EVO_LEVEL,            0x0004 @ Pokémon reaches the specified level
-	.set EVO_TRADE,            0x0005 @ Pokémon is traded
-	.set EVO_TRADE_ITEM,       0x0006 @ Pokémon is traded while it's holding the specified item
-	.set EVO_ITEM,             0x0007 @ specified item is used on Pokémon
-	.set EVO_LEVEL_ATK_GT_DEF, 0x0008 @ Pokémon reaches the specified level with attack > defense
-	.set EVO_LEVEL_ATK_EQ_DEF, 0x0009 @ Pokémon reaches the specified level with attack = defense
-	.set EVO_LEVEL_ATK_LT_DEF, 0x000a @ Pokémon reaches the specified level with attack < defense
-	.set EVO_LEVEL_SILCOON,    0x000b @ Pokémon reaches the specified level with a Silcoon personality value
-	.set EVO_LEVEL_CASCOON,    0x000c @ Pokémon reaches the specified level with a Cascoon personality value
-	.set EVO_LEVEL_NINJASK,    0x000d @ Pokémon reaches the specified level (special value for Ninjask)
-	.set EVO_LEVEL_SHEDINJA,   0x000e @ Pokémon reaches the specified level (special value for Shedinja)
-	.set EVO_BEAUTY,           0x000f @ Pokémon levels up with beauty ≥ specified value
+	.set EVO_LEVEL_FRIENDSHIP,      0x0001 @ Pokémon levels up with friendship at a certain value
+	.set EVO_LEVEL_MALE,       		0x0002 @ Pokémon reaches a certain level and is male
+	.set EVO_LEVEL_FEMALE,     		0x0003 @ Pokémon reaches a certain level and is female
+	.set EVO_LEVEL,            		0x0004 @ Pokémon reaches the specified level
+	.set EVO_LEVEL_MOVE,        	0x0005 @ Pokémon reaches a certain level knowing a move
+	.set EVO_MAP,	      	 		0x0006 @ Pokémon levels up in a map
+	.set EVO_ITEM,             		0x0007 @ specified item is used on Pokémon
+	.set EVO_LEVEL_ATK_GT_DEF, 		0x0008 @ Pokémon reaches the specified level with attack > defense
+	.set EVO_LEVEL_ATK_EQ_DEF, 		0x0009 @ Pokémon reaches the specified level with attack = defense
+	.set EVO_LEVEL_ATK_LT_DEF, 		0x000a @ Pokémon reaches the specified level with attack < defense
+	.set EVO_LEVEL_SILCOON,    		0x000b @ Pokémon reaches the specified level with a Silcoon personality value
+	.set EVO_LEVEL_CASCOON,    		0x000c @ Pokémon reaches the specified level with a Cascoon personality value
+	.set EVO_LEVEL_NINJASK,    		0x000d @ Pokémon reaches the specified level (special value for Ninjask)
+	.set EVO_LEVEL_SHEDINJA,   		0x000e @ Pokémon reaches the specified level (special value for Shedinja)
+	.set EVO_LEVEL_DAY_ONLY,   		0x000f @ Pokémon reaches a certain level during the day. Use when mon can evolve in twilight as well
+	.set EVO_LEVEL_NIGHT_ONLY, 		0x0010 @ Pokémon reaches a certain level at night. Use when mon can evolve in twilight as well
+	.set EVO_LEVEL_DAY,   	   		0x0011 @ Pokémon reaches a certain level during dawn/day
+	.set EVO_LEVEL_NIGHT, 	   		0x0012 @ Pokémon reaches a certain level at dusk/night
+	.set EVO_LEVEL_TWILIGHT,   		0x0013 @ Pokémon reaches a certain level at dawn/dusk
+	.set EVO_LEVEL_SPATK_GT_SPDEF,  0x0014 @ Pokémon reaches the specified level with special attack > special defense
+	.set EVO_LEVEL_SPATK_EQ_SPDEF,  0x0015 @ Pokémon reaches the specified level with special attack = special defense
+	.set EVO_LEVEL_SPATK_LT_SPDEF,  0x0016 @ Pokémon reaches the specified level with special attack < special defense
+	.set EVO_LEVEL_SPRING,			0x0017 @ Pokémon reaches a certain level in Spring
+	.set EVO_LEVEL_SUMMER,			0x0018 @ Pokémon reaches a certain level in Summer
+	.set EVO_LEVEL_FALL,			0x0019 @ Pokémon reaches a certain level in Fall
+	.set EVO_LEVEL_WINTER,			0x001a @ Pokémon reaches a certain level in Winter
+	.set EVO_LEVEL_HELD_ITEM,		0x001b @ Pokémon reaches a certain level holding an item
+	.set EVO_LEVEL_HP_EV,			0x001c @ Pokémon reaches a certain level with a certain EV value
+	.set EVO_LEVEL_ATK_EV,			0x001d @ Pokémon reaches a certain level with a certain EV value
+	.set EVO_LEVEL_DEF_EV,			0x001e @ Pokémon reaches a certain level with a certain EV value
+	.set EVO_LEVEL_SPEED_EV,		0x001f @ Pokémon reaches a certain level with a certain EV value
+	.set EVO_LEVEL_SPATK_EV,		0x0020 @ Pokémon reaches a certain level with a certain EV value
+	.set EVO_LEVEL_SPDEF_EV,		0x0021 @ Pokémon reaches a certain level with a certain EV value

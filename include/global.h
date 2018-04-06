@@ -665,7 +665,7 @@ struct SaveBlock1 /* 0x02025734 */
     /*0x600*/ struct ItemSlot bagPocket_PokeBalls[16];
     /*0x640*/ struct ItemSlot bagPocket_TMHM[64];
     /*0x740*/ struct ItemSlot bagPocket_Berries[46];
-    /*0x7F8*/ struct Pokeblock pokeblocks[40];
+    /*0x7F8*/ struct Pokeblock pokeblocks[40]; //turn this into another pocket for medicine maybe?
     /*0x938*/ u8 dexSeen2[DEX_FLAGS_NO];
     /*0x96C*/ u16 berryBlenderRecords[3];
     /*0x972*/ u8 filler_972[0x6];

@@ -475,27 +475,47 @@ enum {
     BODY_COLOR_PINK
 };
 
-#define EVO_FRIENDSHIP       0x0001 // Pokémon levels up with friendship ≥ 220
-#define EVO_FRIENDSHIP_DAY   0x0002 // Pokémon levels up during the day with friendship ≥ 220
-#define EVO_FRIENDSHIP_NIGHT 0x0003 // Pokémon levels up at night with friendship ≥ 220
-#define EVO_LEVEL            0x0004 // Pokémon reaches the specified level
-#define EVO_TRADE            0x0005 // Pokémon is traded
-#define EVO_TRADE_ITEM       0x0006 // Pokémon is traded while it's holding the specified item
-#define EVO_ITEM             0x0007 // specified item is used on Pokémon
-#define EVO_LEVEL_ATK_GT_DEF 0x0008 // Pokémon reaches the specified level with attack > defense
-#define EVO_LEVEL_ATK_EQ_DEF 0x0009 // Pokémon reaches the specified level with attack = defense
-#define EVO_LEVEL_ATK_LT_DEF 0x000a // Pokémon reaches the specified level with attack < defense
-#define EVO_LEVEL_SILCOON    0x000b // Pokémon reaches the specified level with a Silcoon personality value
-#define EVO_LEVEL_CASCOON    0x000c // Pokémon reaches the specified level with a Cascoon personality value
-#define EVO_LEVEL_NINJASK    0x000d // Pokémon reaches the specified level (special value for Ninjask)
-#define EVO_LEVEL_SHEDINJA   0x000e // Pokémon reaches the specified level (special value for Shedinja)
+#define EVO_LEVEL_FRIENDSHIP       	0x0001 // Pokémon levels up with friendship at a certain value
+#define EVO_LEVEL_MALE       		0x0002 // Pokémon reaches a certain level and is male
+#define EVO_LEVEL_FEMALE     		0x0003 // Pokémon reaches a certain level and is female
+#define EVO_LEVEL            		0x0004 // Pokémon reaches the specified level
+#define EVO_LEVEL_MOVE        		0x0005 // Pokémon reaches a certain level knowing a move
+#define EVO_MAP	      	 			0x0006 // Pokémon levels up in a map
+#define EVO_ITEM             		0x0007 // specified item is used on Pokémon
+#define EVO_LEVEL_ATK_GT_DEF 		0x0008 // Pokémon reaches the specified level with attack > defense
+#define EVO_LEVEL_ATK_EQ_DEF 		0x0009 // Pokémon reaches the specified level with attack = defense
+#define EVO_LEVEL_ATK_LT_DEF 		0x000a // Pokémon reaches the specified level with attack < defense
+#define EVO_LEVEL_SILCOON    		0x000b // Pokémon reaches the specified level with a Silcoon personality value
+#define EVO_LEVEL_CASCOON    		0x000c // Pokémon reaches the specified level with a Cascoon personality value
+#define EVO_LEVEL_NINJASK    		0x000d // Pokémon reaches the specified level (special value for Ninjask)
+#define EVO_LEVEL_SHEDINJA   		0x000e // Pokémon reaches the specified level (special value for Shedinja)
+#define EVO_LEVEL_DAY_ONLY   		0x000f // Pokémon reaches a certain level during the day. Use when mon can evolve in twilight as well
+#define EVO_LEVEL_NIGHT_ONLY 		0x0010 // Pokémon reaches a certain level at night. Use when mon can evolve in twilight as well
+#define EVO_LEVEL_DAY   	   		0x0011 // Pokémon reaches a certain level during dawn/day
+#define EVO_LEVEL_NIGHT 	   		0x0012 // Pokémon reaches a certain level at dusk/night
+#define EVO_LEVEL_TWILIGHT   		0x0013 // Pokémon reaches a certain level at dawn/dusk
+#define EVO_LEVEL_SPATK_GT_SPDEF 	0x0014 // Pokémon reaches the specified level with special attack > special defense
+#define EVO_LEVEL_SPATK_EQ_SPDEF 	0x0015 // Pokémon reaches the specified level with special attack = special defense
+#define EVO_LEVEL_SPATK_LT_SPDEF 	0x0016 // Pokémon reaches the specified level with special attack < special defense
+#define EVO_LEVEL_SPRING			0x0017 // Pokémon reaches a certain level in Spring
+#define EVO_LEVEL_SUMMER			0x0018 // Pokémon reaches a certain level in Summer
+#define EVO_LEVEL_FALL				0x0019 // Pokémon reaches a certain level in Fall
+#define EVO_LEVEL_WINTER			0x001a // Pokémon reaches a certain level in Winter
+#define EVO_LEVEL_HELD_ITEM			0x001b // Pokémon reaches a certain level holding an item
+#define EVO_LEVEL_HP_EV				0x001c // Pokémon reaches a certain level with a certain EV value
+#define EVO_LEVEL_ATK_EV			0x001d // Pokémon reaches a certain level with a certain EV value
+#define EVO_LEVEL_DEF_EV			0x001e // Pokémon reaches a certain level with a certain EV value
+#define EVO_LEVEL_SPEED_EV			0x001f // Pokémon reaches a certain level with a certain EV value
+#define EVO_LEVEL_SPATK_EV			0x0020 // Pokémon reaches a certain level with a certain EV value
+#define EVO_LEVEL_SPDEF_EV			0x0021 // Pokémon reaches a certain level with a certain EV value
 
-#define NUM_LEVEL_BASED_EVOS 8 //this and gLevelBasedEvoList (in wild_encounter.c) is messy as hell
+#define NUM_LEVEL_BASED_EVOS 31 //this and gLevelBasedEvoList (in wild_encounter.c) is messy as hell
 
 struct Evolution
 {
     u16 method;
     u16 param;
+	u16 param2;
     u16 targetSpecies;
 };
 
