@@ -1537,6 +1537,7 @@ static void atk06_typecalc(void)
 {
     int i = 0;
     u8 move_type;
+	u8 chance = Random() % 10;
     if (gCurrentMove != MOVE_STRUGGLE)
     {
         if (gBattleStruct->dynamicMoveType)
@@ -1560,7 +1561,21 @@ static void atk06_typecalc(void)
             gBattleCommunication[6] = move_type;
             RecordAbilityBattle(gBankTarget, gLastUsedAbility);
         }
-        else
+		if (move_type == TYPE_NULL) //if move used is null type
+		{
+			if (chance < 3) //2 in 10 chance of super effective
+				ModulateDmgByType(20);
+			else if (chance < 5) //2 in 10 chance of not very effective
+				ModulateDmgByType(5);
+		}
+		else if (gBattleMons[gBankTarget].type1 == TYPE_NULL || gBattleMons[gBankTarget].type2 == TYPE_NULL) //if move is not null type but mon is null type
+		{
+			if (chance < 3) //2 in 10 chance of super effective
+				ModulateDmgByType(20);
+			else if (chance < 5) //2 in 10 chance of not very effective
+				ModulateDmgByType(5);
+		}
+        else //nothing is null type, calculate types as normal
         {
             while (gTypeEffectiveness[i]!= TYPE_ENDTABLE)
             {
@@ -1571,8 +1586,7 @@ static void atk06_typecalc(void)
                     i += 3;
                     continue;
                 }
-
-                else if (gTypeEffectiveness[i] == move_type)
+                if (gTypeEffectiveness[i] == move_type)
                 {
                     //check type1
                     if (gTypeEffectiveness[i + 1] == gBattleMons[gBankTarget].type1)
@@ -1715,6 +1729,7 @@ u8 TypeCalc(u16 move, u8 bank_atk, u8 bank_def)
     int i = 0;
     u8 flags = 0;
     u8 move_type;
+	u8 chance = Random() % 10;
 
     if (move == MOVE_STRUGGLE)
         return 0;
@@ -1732,7 +1747,22 @@ u8 TypeCalc(u16 move, u8 bank_atk, u8 bank_def)
     {
         flags |= (MOVESTATUS_MISSED | MOVESTATUS_NOTAFFECTED);
     }
-    else
+	
+	if (move_type == TYPE_NULL) //if move used is null type
+	{
+		if (chance < 3) //2 in 10 chance of super effective
+			ModulateDmgByType2(20, move, &flags);
+		else if (chance < 5) //2 in 10 chance of not very effective
+			ModulateDmgByType2(5, move, &flags);
+	}
+	else if (gBattleMons[gBankTarget].type1 == TYPE_NULL || gBattleMons[gBankTarget].type2 == TYPE_NULL) //if move is not null type but mon is null type
+	{
+		if (chance < 3) //2 in 10 chance of super effective
+			ModulateDmgByType2(20, move, &flags);
+		else if (chance < 5) //2 in 10 chance of not very effective
+			ModulateDmgByType2(5, move, &flags);
+	}
+    else //nothing is null type, calculate types as normal
     {
         while (gTypeEffectiveness[i]!= TYPE_ENDTABLE)
         {
@@ -1743,8 +1773,7 @@ u8 TypeCalc(u16 move, u8 bank_atk, u8 bank_def)
                 i += 3;
                 continue;
             }
-
-            else if (gTypeEffectiveness[i] == move_type)
+            if (gTypeEffectiveness[i] == move_type)
             {
                 //check type1
                 if (gTypeEffectiveness[i + 1] == gBattleMons[bank_def].type1)
@@ -1773,6 +1802,7 @@ u8 AI_TypeCalc(u16 move, u16 species, u8 ability)
     int i = 0;
     u8 flags = 0;
     u8 type1 = gBaseStats[species].type1, type2 = gBaseStats[species].type2, move_type; //HOENNISLES update this
+	u8 chance = Random() % 10;
 
     if (move == MOVE_STRUGGLE)
         return 0;
@@ -1781,7 +1811,22 @@ u8 AI_TypeCalc(u16 move, u16 species, u8 ability)
 
     if (ability == ABILITY_LEVITATE && move_type == TYPE_GROUND)
         flags = MOVESTATUS_MISSED | MOVESTATUS_NOTAFFECTED;
-    else
+	
+	if (move_type == TYPE_NULL) //if move used is null type
+	{
+		if (chance < 3) //2 in 10 chance of super effective
+			ModulateDmgByType2(20, move, &flags);
+		else if (chance < 5) //2 in 10 chance of not very effective
+			ModulateDmgByType2(5, move, &flags);
+	}
+	else if (gBattleMons[gBankTarget].type1 == TYPE_NULL || gBattleMons[gBankTarget].type2 == TYPE_NULL) //if move is not null type but mon is null type
+	{
+		if (chance < 3) //2 in 10 chance of super effective
+			ModulateDmgByType2(20, move, &flags);
+		else if (chance < 5) //2 in 10 chance of not very effective
+			ModulateDmgByType2(5, move, &flags);
+	}
+    else //nothing is null type, calculate types as normal
     {
         while (gTypeEffectiveness[i]!= TYPE_ENDTABLE)
         {
@@ -8209,6 +8254,7 @@ static void atk4A_typecalc2(void)
     u8 flags = 0;
     int i = 0;
     u8 move_type = gBattleMoves[gCurrentMove].type;
+	u8 chance = Random() % 10;
 
     if (gBattleMons[gBankTarget].ability == ABILITY_LEVITATE && move_type == TYPE_GROUND)
     {
@@ -8220,47 +8266,64 @@ static void atk4A_typecalc2(void)
     }
     else
     {
-        while (gTypeEffectiveness[i]!= TYPE_ENDTABLE)
-        {
-            if (gTypeEffectiveness[i] == TYPE_FORESIGHT)
-            {
-                if (gBattleMons[gBankTarget].status2 & STATUS2_FORESIGHT) {break;}
-                else {i += 3; continue;}
-            }
+		if (move_type == TYPE_NULL) //if move used is null type
+		{
+			if (chance < 3) //2 in 10 chance of super effective
+				ModulateDmgByType(20);
+			else if (chance < 5) //2 in 10 chance of not very effective
+				ModulateDmgByType(5);
+		}
+		else if (gBattleMons[gBankTarget].type1 == TYPE_NULL || gBattleMons[gBankTarget].type2 == TYPE_NULL) //if move is not null type but mon is null type
+		{
+			if (chance < 3) //2 in 10 chance of super effective
+				ModulateDmgByType(20);
+			else if (chance < 5) //2 in 10 chance of not very effective
+				ModulateDmgByType(5);
+		}
+        else //nothing is null type, calculate types as normal
+		{
+			while (gTypeEffectiveness[i]!= TYPE_ENDTABLE)
+			{
+				if (gTypeEffectiveness[i] == TYPE_FORESIGHT)
+				{
+					if (gBattleMons[gBankTarget].status2 & STATUS2_FORESIGHT) {break;}
+					else {i += 3; continue;}
+				}
 
-            if (gTypeEffectiveness[i] == move_type)
-            {
-                //check type1
-                if (gTypeEffectiveness[i + 1] == gBattleMons[gBankTarget].type1)
-                {
-                    if (gTypeEffectiveness[i + 2] == 0)
-                    {
-                        gBattleMoveFlags |= MOVESTATUS_NOTAFFECTED;
-                        break;
-                    }
-                    if (gTypeEffectiveness[i + 2] == 5)
-                        flags |= MOVESTATUS_NOTVERYEFFECTIVE;
-                    if (gTypeEffectiveness[i + 2] == 20)
-                        flags |= MOVESTATUS_SUPEREFFECTIVE;
-                }
-                //check type2
-                if (gTypeEffectiveness[i + 1] == gBattleMons[gBankTarget].type2)
-                {
-                    if (gBattleMons[gBankTarget].type1 != gBattleMons[gBankTarget].type2
-                        && gTypeEffectiveness[i + 2] == 0)
-                    {
-                        gBattleMoveFlags |= MOVESTATUS_NOTAFFECTED;
-                        break;
-                    }
-                    if (gTypeEffectiveness[i + 1] == gBattleMons[gBankTarget].type2 && gBattleMons[gBankTarget].type1 != gBattleMons[gBankTarget].type2 && gTypeEffectiveness[i + 2] == 5)
-                        flags |= MOVESTATUS_NOTVERYEFFECTIVE;
-                    if (gTypeEffectiveness[i + 1] == gBattleMons[gBankTarget].type2
-                        && gBattleMons[gBankTarget].type1 != gBattleMons[gBankTarget].type2 && gTypeEffectiveness[i + 2] == 20)
-                            flags |= MOVESTATUS_SUPEREFFECTIVE;
-                }
-            }
-            i += 3;
-        }
+				else if (gTypeEffectiveness[i] == move_type)
+				{
+					//check type1
+					if (gTypeEffectiveness[i + 1] == gBattleMons[gBankTarget].type1)
+					{
+						if (gTypeEffectiveness[i + 2] == 0)
+						{
+							gBattleMoveFlags |= MOVESTATUS_NOTAFFECTED;
+							break;
+						}
+						if (gTypeEffectiveness[i + 2] == 5)
+							flags |= MOVESTATUS_NOTVERYEFFECTIVE;
+						if (gTypeEffectiveness[i + 2] == 20)
+							flags |= MOVESTATUS_SUPEREFFECTIVE;
+					}
+					//check type2
+					if (gTypeEffectiveness[i + 1] == gBattleMons[gBankTarget].type2)
+					{
+						if (gBattleMons[gBankTarget].type1 != gBattleMons[gBankTarget].type2
+							&& gTypeEffectiveness[i + 2] == 0)
+						{
+							gBattleMoveFlags |= MOVESTATUS_NOTAFFECTED;
+							break;
+						}
+						if (gTypeEffectiveness[i + 1] == gBattleMons[gBankTarget].type2 && gBattleMons[gBankTarget].type1 != gBattleMons[gBankTarget].type2 && gTypeEffectiveness[i + 2] == 5)
+							flags |= MOVESTATUS_NOTVERYEFFECTIVE;
+						if (gTypeEffectiveness[i + 1] == gBattleMons[gBankTarget].type2
+							&& gBattleMons[gBankTarget].type1 != gBattleMons[gBankTarget].type2 && gTypeEffectiveness[i + 2] == 20)
+								flags |= MOVESTATUS_SUPEREFFECTIVE;
+					}
+				}
+				i += 3;
+			}
+		}
     }
 
     if (gBattleMons[gBankTarget].ability == ABILITY_WONDER_GUARD && !(flags & MOVESTATUS_NOEFFECT) && AttacksThisTurn(gBankAttacker, gCurrentMove) == 2 &&

@@ -249,6 +249,11 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
 	GenerateRandomTypes(boxMon);
 	GiveBoxMonInitialMoveset(boxMon);
 	
+	checksum = MOVE_DBG_NULL_1;
+	SetBoxMonData(boxMon, MON_DATA_MOVE1, &checksum);
+	checksum = TYPE_NULL;
+	SetBoxMonData(boxMon, MON_DATA_TYPE_1, &checksum);
+	SetBoxMonData(boxMon, MON_DATA_TYPE_2, &checksum);	
 }
 
 //randomizes a pokemon's nature
