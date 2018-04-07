@@ -110,7 +110,7 @@ void SetDefaultGameTime(void)
 
 void GiveStarterItems(void)
 {
-	if (gSaveBlock2.nuzlockeMode != GAME_MODE_SANDBOX)
+	if (gSaveBlock2.nuzlockeMode == GAME_MODE_SANDBOX)
 	{
 		AddBagItem(ITEM_SUPER_ROD, 1);
 		AddBagItem(ITEM_COIN_CASE, 1);

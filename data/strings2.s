@@ -91,14 +91,20 @@ SystemText_Pokemon::
 	.string "POKéMON$"
 SystemText_BAG::
 	.string "BAG$"
-SystemText_Pokenav::
-	.string "POKéNAV$"
+SystemText_Map::
+	.string "MAP$"
 SystemText_Player::
 	.string "{PLAYER}$"
+SystemText_Wait::
+	.string "WAIT$"
 SystemText_Save::
 	.string "SAVE$"
 SystemText_Option::
-	.string "OPTION$"
+	.string "OPTIONS$"
+SystemText_Trade::
+	.string "TRADE$"
+SystemText_Battle::
+	.string "BATTLE$"
 SystemText_Exit::
 	.string "EXIT$"
 SystemText_Retire:: @ safari zone?

@@ -37,13 +37,16 @@ enum {
     MENU_ACTION_POKEDEX,
     MENU_ACTION_POKEMON,
     MENU_ACTION_BAG,
-    MENU_ACTION_POKENAV,
+    MENU_ACTION_MAP,
     MENU_ACTION_PLAYER,
+	MENU_ACTION_WAIT,
     MENU_ACTION_SAVE,
-    MENU_ACTION_OPTION,
+	MENU_ACTION_TRADE,
+	MENU_ACTION_BATTLE,
+    MENU_ACTION_OPTIONS,
     MENU_ACTION_EXIT,
     MENU_ACTION_RETIRE,
-    MENU_ACTION_PLAYER_LINK
+    MENU_ACTION_PLAYER_LINK,
 };
 
 #if DEBUG
@@ -90,9 +93,12 @@ static const struct MenuAction sStartMenuItems[] =
     { SystemText_Pokedex, StartMenu_PokedexCallback },
     { SystemText_Pokemon, StartMenu_PokemonCallback },
     { SystemText_BAG, StartMenu_BagCallback },
-    { SystemText_Pokenav, StartMenu_PokenavCallback },
+    { SystemText_Map, StartMenu_PokenavCallback },
     { SystemText_Player, StartMenu_PlayerCallback },
+	{ SystemText_Wait, StartMenu_ExitCallback }, //replace this with wait function when it's done
     { SystemText_Save, StartMenu_SaveCallback },
+	{ SystemText_Trade, StartMenu_ExitCallback }, //replace this with new trade function when it's done
+	{ SystemText_Battle, StartMenu_ExitCallback }, //replace this with link battle function when it's done
     { SystemText_Option, StartMenu_OptionCallback },
     { SystemText_Exit, StartMenu_ExitCallback },
     { SystemText_Retire, StartMenu_RetireCallback },
@@ -266,12 +272,16 @@ static void BuildStartMenuActions_Normal(void)
         AddStartMenuAction(MENU_ACTION_POKEDEX);
     if (FlagGet(FLAG_SYS_POKEMON_GET) == TRUE)
         AddStartMenuAction(MENU_ACTION_POKEMON);
-    AddStartMenuAction(MENU_ACTION_BAG);
     if (FlagGet(FLAG_SYS_POKENAV_GET) == TRUE)
-        AddStartMenuAction(MENU_ACTION_POKENAV);
+        AddStartMenuAction(MENU_ACTION_MAP);
+	AddStartMenuAction(MENU_ACTION_BAG);
     AddStartMenuAction(MENU_ACTION_PLAYER);
-    AddStartMenuAction(MENU_ACTION_SAVE);
-    AddStartMenuAction(MENU_ACTION_OPTION);
+	AddStartMenuAction(MENU_ACTION_WAIT);
+	if (gSaveBlock2.nuzlockeMode < NUZLOCKE_MODE_HARDLOCKE) //remove save option if on hardlocke or deadlocke
+		AddStartMenuAction(MENU_ACTION_SAVE);
+	AddStartMenuAction(MENU_ACTION_TRADE); //add a flag check here
+	AddStartMenuAction(MENU_ACTION_BATTLE); //add a flag check here
+    AddStartMenuAction(MENU_ACTION_OPTIONS);
     AddStartMenuAction(MENU_ACTION_EXIT);
 }
 
@@ -282,7 +292,7 @@ static void BuildStartMenuActions_SafariZone(void)
     AddStartMenuAction(MENU_ACTION_POKEMON);
     AddStartMenuAction(MENU_ACTION_BAG);
     AddStartMenuAction(MENU_ACTION_PLAYER);
-    AddStartMenuAction(MENU_ACTION_OPTION);
+    AddStartMenuAction(MENU_ACTION_OPTIONS);
     AddStartMenuAction(MENU_ACTION_EXIT);
 }
 
@@ -291,9 +301,9 @@ static void BuildStartMenuActions_Link(void)
     AddStartMenuAction(MENU_ACTION_POKEMON);
     AddStartMenuAction(MENU_ACTION_BAG);
     if (FlagGet(FLAG_SYS_POKENAV_GET) == TRUE)
-        AddStartMenuAction(MENU_ACTION_POKENAV);
+        AddStartMenuAction(MENU_ACTION_MAP);
     AddStartMenuAction(MENU_ACTION_PLAYER_LINK);
-    AddStartMenuAction(MENU_ACTION_OPTION);
+    AddStartMenuAction(MENU_ACTION_OPTIONS);
     AddStartMenuAction(MENU_ACTION_EXIT);
 }
 
@@ -334,7 +344,7 @@ static bool32 InitStartMenuMultistep(s16 *step, s16 *index)
         (*step)++;
         break;
     case 2:
-        Menu_DrawStdWindowFrame(22, 0, 29, sNumStartMenuActions * 2 + 3);
+        Menu_DrawStdWindowFrame(22, 0, 29, /*NumStartMenuActions * 2 + 3*/13);
         *index = 0;
         (*step)++;
         break;
@@ -351,7 +361,7 @@ static bool32 InitStartMenuMultistep(s16 *step, s16 *index)
         (*step)++;
         break;
     case 5:
-        sStartMenuCursorPos = InitMenu(0, 0x17, 2, sNumStartMenuActions, sStartMenuCursorPos, 6);
+        sStartMenuCursorPos = InitMenu(0, 0x17, 2, 5/*sNumStartMenuActions*/, sStartMenuCursorPos, 6);
         return TRUE;
     }
     return FALSE;
@@ -418,12 +428,12 @@ static u8 StartMenu_InputProcessCallback(void)
     if (gMain.newKeys & DPAD_UP)
     {
         PlaySE(SE_SELECT);
-        sStartMenuCursorPos = Menu_MoveCursor(-1);
+        sStartMenuCursorPos = Menu_MoveCursorNoWrap(-1);
     }
     if (gMain.newKeys & DPAD_DOWN)
     {
         PlaySE(SE_SELECT);
-        sStartMenuCursorPos = Menu_MoveCursor(1);
+        sStartMenuCursorPos = Menu_MoveCursorNoWrap(1);
     }
     if (gMain.newKeys & A_BUTTON)
     {
