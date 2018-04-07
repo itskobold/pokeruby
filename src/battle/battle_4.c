@@ -1803,6 +1803,7 @@ u8 AI_TypeCalc(u16 move, u16 species, u8 ability)
     u8 flags = 0;
     u8 type1 = gBaseStats[species].type1, type2 = gBaseStats[species].type2, move_type; //HOENNISLES update this
 	u8 chance = Random() % 10;
+	
 
     if (move == MOVE_STRUGGLE)
         return 0;
@@ -8387,16 +8388,9 @@ static void atk4D_switchindataupdate(void)
         monData[i] = gBattleBufferB[gActiveBank][4 + i];
     }
 
-	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
-	{
-		gBattleMons[gActiveBank].type1 = (GetBankSide(gActiveBank) == SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_1) : GetMonData(&gEnemyParty, MON_DATA_TYPE_1);
-		gBattleMons[gActiveBank].type2 = (GetBankSide(gActiveBank) == SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_2) : GetMonData(&gEnemyParty, MON_DATA_TYPE_2);
-	}
-	else
-	{
-		gBattleMons[gActiveBank].type1 = gBaseStats[gBattleMons[gActiveBank].species].type1;
-		gBattleMons[gActiveBank].type2 = gBaseStats[gBattleMons[gActiveBank].species].type2;
-	}
+	gBattleMons[gActiveBank].type1 = (GetBankSide(gActiveBank) == SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_1) : GetMonData(&gEnemyParty, MON_DATA_TYPE_1);
+	gBattleMons[gActiveBank].type2 = (GetBankSide(gActiveBank) == SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_2) : GetMonData(&gEnemyParty, MON_DATA_TYPE_2);
+		
 	if (customAbility != 0)
 	{
 		gBattleMons[gActiveBank].ability = customAbility;

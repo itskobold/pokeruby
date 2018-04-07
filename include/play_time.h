@@ -66,6 +66,7 @@
 //early season - week 0 and monday-wednesday
 //late season - week 1 and friday-sunday
 //mid season - week 0 thursday-sunday, week 1 monday-thursday
+//these haven't been tested!!
 #define TIME_EARLY_SPRING		((TIME_DAY_MONDAY | TIME_DAY_TUESDAY | TIME_DAY_WEDNESDAY & TIME_WEEK_0 & TIME_SEASON_SPRING))
 #define TIME_LATE_SPRING		((TIME_DAY_FRIDAY | TIME_DAY_SATURDAY | TIME_DAY_SUNDAY & TIME_WEEK_1 & TIME_SEASON_SPRING))
 #define TIME_MID_SPRING			((!TIME_EARLY_SPRING & !TIME_LATE_SPRING & TIME_SEASON_SPRING))

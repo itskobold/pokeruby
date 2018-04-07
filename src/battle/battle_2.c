@@ -3926,16 +3926,8 @@ void UndoEffectsAfterFainting(void)
 
     eFlashFireArr.arr[gActiveBank] = 0;
 	
-	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
-	{
-		gBattleMons[gActiveBank].type1 = (GetBankSide(gActiveBank) == SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_1) : GetMonData(&gEnemyParty, MON_DATA_TYPE_1);
-		gBattleMons[gActiveBank].type2 = (GetBankSide(gActiveBank) == SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_2) : GetMonData(&gEnemyParty, MON_DATA_TYPE_2);
-	}
-	else
-	{
-		gBattleMons[gActiveBank].type1 = gBaseStats[gBattleMons[gActiveBank].species].type1;
-		gBattleMons[gActiveBank].type2 = gBaseStats[gBattleMons[gActiveBank].species].type2;
-	}
+	gBattleMons[gActiveBank].type1 = (GetBankSide(gActiveBank) == SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_1) : GetMonData(&gEnemyParty, MON_DATA_TYPE_1);
+	gBattleMons[gActiveBank].type2 = (GetBankSide(gActiveBank) == SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_2) : GetMonData(&gEnemyParty, MON_DATA_TYPE_2);
 }
 
 void bc_8012FAC(void)
@@ -3995,16 +3987,9 @@ void sub_8011384(void)
 
                 MEMSET_ALT(&gBattleMons[gActiveBank], gBattleBufferB[gActiveBank][4 + i], 0x58, i, ptr);
 
-				if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
-				{
-					gBattleMons[gActiveBank].type1 = (GetBankSide(gActiveBank) == SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_1) : GetMonData(&gEnemyParty, MON_DATA_TYPE_1);
-					gBattleMons[gActiveBank].type2 = (GetBankSide(gActiveBank) == SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_2) : GetMonData(&gEnemyParty, MON_DATA_TYPE_2);
-				}
-				else
-				{
-					gBattleMons[gActiveBank].type1 = gBaseStats[gBattleMons[gActiveBank].species].type1;
-					gBattleMons[gActiveBank].type2 = gBaseStats[gBattleMons[gActiveBank].species].type2;
-				}
+				gBattleMons[gActiveBank].type1 = (GetBankSide(gActiveBank) == SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_1) : GetMonData(&gEnemyParty, MON_DATA_TYPE_1);
+				gBattleMons[gActiveBank].type2 = (GetBankSide(gActiveBank) == SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_2) : GetMonData(&gEnemyParty, MON_DATA_TYPE_2);
+
                 if (customAbility != 0)
 				{
 					gBattleMons[gActiveBank].ability = customAbility;

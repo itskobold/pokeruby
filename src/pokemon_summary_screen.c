@@ -2508,17 +2508,8 @@ static void sub_809FC34(struct Pokemon *mon)
 
         species = GetMonData(mon, MON_DATA_SPECIES);
 
-		//load custom type icons if super random game mode
-		if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
-		{
-			typeIcon1 = GetMonData(mon, MON_DATA_TYPE_1, NULL);
-			typeIcon2 = GetMonData(mon, MON_DATA_TYPE_2, NULL);
-		}
-		else
-		{
-			typeIcon1 = gBaseStats[species].type1;
-			typeIcon2 = gBaseStats[species].type2;
-		}
+		typeIcon1 = GetMonData(mon, MON_DATA_TYPE_1, NULL);
+		typeIcon2 = GetMonData(mon, MON_DATA_TYPE_2, NULL);
 		
 		sub_80A198C(typeIcon1, 120, 48, 0);
 		if (typeIcon1 != typeIcon2)

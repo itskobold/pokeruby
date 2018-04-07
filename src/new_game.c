@@ -94,8 +94,8 @@ void SetDefaultOptions(void)
 
 void SetDefaultGameModeAndNuzlocke(void)
 {
-	gSaveBlock2.nuzlockeMode = NUZLOCKE_MODE_DEADLOCKE;			//defaults to standard, non-nuzlocke mode
-	gSaveBlock2.gameMode = GAME_MODE_SUPER_RANDOM;					//defaults to story mode
+	gSaveBlock2.nuzlockeMode = NUZLOCKE_MODE_OFF;			//defaults to standard, non-nuzlocke mode
+	gSaveBlock2.gameMode = GAME_MODE_STORY;					//defaults to story mode
 }
 
 void SetDefaultGameTime(void)
