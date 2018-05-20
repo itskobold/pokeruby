@@ -1694,7 +1694,7 @@ static void Task_ClosePokedex(u8 taskId)
             gSaveBlock2.pokedex.unknown1 = 0;
         gSaveBlock2.pokedex.order = gPokedexView->dexOrder;
         DestroyTask(taskId);
-        SetMainCallback2(sub_805469C);
+        SetMainCallback2(c2_exit_to_overworld_1_sub_8080DEC);
         m4aMPlayVolumeControl(&gMPlay_BGM, 0xFFFF, 0x100);
     }
 }
@@ -3522,7 +3522,7 @@ static void sub_8090584(u8 a, u16 b)
     }
 }
 #else
-__attribute__((naked))
+NAKED
 static void sub_8090584(u8 a, u16 b)
 {
     asm(".syntax unified\n\
@@ -3666,7 +3666,7 @@ static void sub_8090644(u8 a, u16 b)
     }
 }
 #else
-__attribute__((naked))
+NAKED
 static void sub_8090644(u8 a, u16 b)
 {
     asm(".syntax unified\n\
@@ -5120,7 +5120,7 @@ void sub_8092810(u8 a, u8 b, u8 c, u8 d)
     }
 }
 #else
-__attribute__((naked))
+NAKED
 void sub_8092810(u8 a, u8 b, u8 c, u8 d)
 {
     asm(".syntax unified\n\

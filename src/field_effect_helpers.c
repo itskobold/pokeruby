@@ -2,13 +2,14 @@
 #include "sprite.h"
 #include "fieldmap.h"
 #include "metatile_behavior.h"
-#include "constants/songs.h"
 #include "sound.h"
 #include "event_object_movement.h"
 #include "field_camera.h"
 #include "field_weather.h"
 #include "field_effect.h"
 #include "field_effect_helpers.h"
+#include "constants/field_effects.h"
+#include "constants/songs.h"
 
 static void sub_81269E0(struct Sprite *);
 static void npc_pal_op(struct MapObject *mapObject, struct Sprite *sprite);
@@ -1024,7 +1025,7 @@ static void sub_812800C(struct MapObject *mapObject, struct Sprite *sprite)
     }
 }
 #else
-__attribute__((naked)) static void sub_812800C(struct MapObject *mapObject, struct Sprite *sprite)
+NAKED static void sub_812800C(struct MapObject *mapObject, struct Sprite *sprite)
 {
     asm_unified("\tpush {r4-r7,lr}\n"
                     "\tmov r7, r8\n"
@@ -1496,7 +1497,7 @@ static void sub_812882C(struct Sprite *sprite /*r6*/, u8 z, u8 offset)
     }
 }
 #else
-__attribute__((naked)) static void sub_812882C(struct Sprite *sprite /*r6*/, u8 z, u8 offset)
+NAKED static void sub_812882C(struct Sprite *sprite /*r6*/, u8 z, u8 offset)
 {
     asm_unified("\tpush {r4-r7,lr}\n"
                     "\tadds r6, r0, 0\n"

@@ -22,6 +22,7 @@
 #include "sprite.h"
 #include "string_util.h"
 #include "text.h"
+#include "trainer.h"
 #include "util.h"
 #include "ewram.h"
 #include "play_time.h"
@@ -29,7 +30,7 @@
 extern u8 gPlayerPartyCount;
 extern u8 gEnemyPartyCount;
 extern struct BattlePokemon gBattleMons[4];
-extern u8 gActiveBank;
+extern u8 gActiveBattler;
 extern struct BattleEnigmaBerry gEnigmaBerries[];
 extern u16 gSpeciesToHoennPokedexNum[];
 extern u16 gSpeciesToNationalPokedexNum[];
@@ -52,7 +53,7 @@ extern const u8 BattleText_Wally[];
 extern s8 gPokeblockFlavorCompatibilityTable[];
 extern u8 gLastUsedAbility;
 extern const u8 BattleText_PreventedSwitch[];
-extern u16 gBattlePartyID[];
+extern u16 gBattlerPartyIndexes[];
 
 extern u8 BattleText_Rose[];
 extern u8 BattleText_UnknownString3[];
@@ -96,7 +97,7 @@ u8 GetItemEffectParamOffset(u16 itemId, u8 effectByte, u8 effectBit)
 
     if (itemId == ITEM_ENIGMA_BERRY)
     {
-        temp = gEnigmaBerries[gActiveBank].itemEffect;
+        temp = gEnigmaBerries[gActiveBattler].itemEffect;
     }
 
     itemEffect = temp;
@@ -558,13 +559,13 @@ u16 HoennToNationalOrder(u16 hoennNum)
 
 u16 SpeciesToCryId(u16 species)
 {
-    if (species <= 250)
+    if (species < SPECIES_OLD_UNOWN_B - 1)
         return species;
 
-    if (species < 276)
-        return 200;
+    if (species <= SPECIES_OLD_UNOWN_Z - 1)
+        return SPECIES_UNOWN - 1;
 
-    return gSpeciesIdToCryId[species - 276];
+    return gSpeciesIdToCryId[species - ((SPECIES_OLD_UNOWN_Z + 1) - 1)];
 }
 
 void unref_sub_803F938(u16 species, u32 personality, u8 *dest)
@@ -742,18 +743,19 @@ u16 nature_stat_mod(u8 nature, u16 n, u8 statIndex)
     return n;
 }
 
-const s8 gUnknown_082082FE[][3] =
-{
-    // Happiness deltas
-    { 5,  3,   2},
-    { 5,  3,   2},
-    { 1,  1,   0},
-    { 3,  2,   1},
-    { 1,  1,   0},
-    { 1,  1,   1},
-    {-1, -1,  -1},
-    {-5, -5, -10},
-    {-5, -5, -10}
+// Friendship deltas. Each event has 3 separate values, depending on the mon's
+// current friendship value. In general, a mon's friendship grows faster if
+// its current friendship is lower. The 3 tiers are 0-99, 100-199, and 200-255.
+static const s8 sFriendshipEventDeltas[][3] = {
+    { 5,  3,   2}, // FRIENDSHIP_EVENT_GROW_LEVEL
+    { 5,  3,   2}, // FRIENDSHIP_EVENT_VITAMIN
+    { 1,  1,   0}, // FRIENDSHIP_EVENT_BATTLE_ITEM
+    { 3,  2,   1}, // FRIENDSHIP_EVENT_LEAGUE_BATTLE
+    { 1,  1,   0}, // FRIENDSHIP_EVENT_LEARN_TMHM
+    { 1,  1,   1}, // FRIENDSHIP_EVENT_WALKING
+    {-1, -1,  -1}, // FRIENDSHIP_EVENT_FAINT_SMALL
+    {-5, -5, -10}, // FRIENDSHIP_EVENT_FAINT_OUTSIDE_BATTLE
+    {-5, -5, -10}, // FRIENDSHIP_EVENT_FAINT_LARGE
 };
 
 void AdjustFriendship(struct Pokemon *mon, u8 event)
@@ -782,28 +784,32 @@ void AdjustFriendship(struct Pokemon *mon, u8 event)
             friendshipLevel++;
         if (friendship > 199)
             friendshipLevel++;
-        if ((event != 5 || !(Random() & 1))
-         && (event != 3
+
+        if ((event != FRIENDSHIP_EVENT_WALKING || !(Random() & 1))
+         && (event != FRIENDSHIP_EVENT_LEAGUE_BATTLE
           || ((gBattleTypeFlags & BATTLE_TYPE_TRAINER)
-           && (gTrainers[gTrainerBattleOpponent].trainerClass == 24
-            || gTrainers[gTrainerBattleOpponent].trainerClass == 25
-            || gTrainers[gTrainerBattleOpponent].trainerClass == 32))))
+           && (gTrainers[gTrainerBattleOpponent].trainerClass == TRAINER_CLASS_ELITE_FOUR
+            || gTrainers[gTrainerBattleOpponent].trainerClass == TRAINER_CLASS_LEADER
+            || gTrainers[gTrainerBattleOpponent].trainerClass == TRAINER_CLASS_CHAMPION))))
         {
-            s8 mod = gUnknown_082082FE[event][friendshipLevel];
-            if (mod > 0 && holdEffect == HOLD_EFFECT_HAPPINESS_UP)
-                mod = (150 * mod) / 100;
-            friendship += mod;
-            if (mod > 0)
+            s8 delta = sFriendshipEventDeltas[event][friendshipLevel];
+            if (delta > 0 && holdEffect == HOLD_EFFECT_HAPPINESS_UP)
+                delta = (150 * delta) / 100;
+
+            friendship += delta;
+            if (delta > 0)
             {
                 if (GetMonData(mon, MON_DATA_POKEBALL, 0) == ITEM_LUXURY_BALL)
                     friendship++;
                 if (GetMonData(mon, MON_DATA_MET_LOCATION, 0) == sav1_map_get_name())
                     friendship++;
             }
+
             if (friendship < 0)
                 friendship = 0;
             if (friendship > 255)
                 friendship = 255;
+
             SetMonData(mon, MON_DATA_FRIENDSHIP, &friendship);
         }
     }
@@ -1397,14 +1403,14 @@ void sub_8040B8C(void)
     gBattleTextBuff1[1] = 4;
     gBattleTextBuff1[2] = gBattleStruct->unk16054;
     gBattleTextBuff1[4] = EOS;
-    if (!GetBankSide(gBattleStruct->unk16054))
-        gBattleTextBuff1[3] = pokemon_order_func(gBattlePartyID[gBattleStruct->unk16054]);
+    if (!GetBattlerSide(gBattleStruct->unk16054))
+        gBattleTextBuff1[3] = pokemon_order_func(gBattlerPartyIndexes[gBattleStruct->unk16054]);
     else
-        gBattleTextBuff1[3] = gBattlePartyID[gBattleStruct->unk16054];
+        gBattleTextBuff1[3] = gBattlerPartyIndexes[gBattleStruct->unk16054];
     gBattleTextBuff2[0] = 0xFD;
     gBattleTextBuff2[1] = 4;
     gBattleTextBuff2[2] = gBankInMenu;
-    gBattleTextBuff2[3] = pokemon_order_func(gBattlePartyID[gBankInMenu]);
+    gBattleTextBuff2[3] = pokemon_order_func(gBattlerPartyIndexes[gBankInMenu]);
     gBattleTextBuff2[4] = EOS;
     StrCpyDecodeBattle(BattleText_PreventedSwitch, gStringVar4);
 }

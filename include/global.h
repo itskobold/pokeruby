@@ -1,6 +1,8 @@
 #ifndef GUARD_GLOBAL_H
 #define GUARD_GLOBAL_H
 
+#include <string.h>
+#include <stdlib.h>
 #include "config.h" // we need to define config before gba headers as print stuff needs the functions nulled before defines.
 #include "gba/gba.h"
 
@@ -14,10 +16,6 @@
 #define INCBIN_S8 {0}
 #define INCBIN_S16 {0}
 #define INCBIN_S32 {0}
-void *memcpy (void *, const void *, size_t);
-void *memset (void *, int, size_t);
-int strcmp (const char *, const char *);
-#define abs(a) ((a) >= 0 ? (a) : -(a))
 #endif
 
 // Prevent cross-jump optimization.
@@ -357,7 +355,7 @@ struct TVShowBravoTrainerBattleTowerSpotlight
     /*0x01*/ bool8 active;
     /*0x02*/ u8 trainerName[8];
     /*0x0A*/ u16 species;
-    /*0x0C*/ u8 pokemonName[8];
+    /*0x0C*/ u8 enemyTrainerName[8];
     /*0x14*/ u16 defeatedSpecies;
     /*0x16*/ u16 var16;
     /*0x18*/ u16 var18[1];
@@ -632,8 +630,8 @@ struct ContestWinner
     /*0x04*/ u32 otId;  // otId
     /*0x08*/ u16 species;  // species
     /*0x0A*/ u8 contestCategory;
-    /*0x0B*/ u8 nickname[0x16-0xB];
-    /*0x16*/ u8 trainerName[0x20-0x16];
+    /*0x0B*/ u8 nickname[11];
+    /*0x16*/ u8 trainerName[8];
 };
 
 // there should be enough flags for all 412 slots

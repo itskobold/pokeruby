@@ -701,7 +701,7 @@ static void Task_DoItemPurchase(u8 taskId)
         }
         else // a normal mart is only type 0, so types 1 and 2 are decoration marts.
         {
-            if (IsThereStorageSpaceForDecoration(gMartInfo.itemList[gMartInfo.choicesAbove + gMartInfo.cursor]))
+            if (GiveDecoration(gMartInfo.itemList[gMartInfo.choicesAbove + gMartInfo.cursor]))
             {
                 if (gMartInfo.martType == MART_TYPE_1)
                     DisplayItemMessageOnField(taskId, gOtherText_HereYouGo2, Shop_DoItemTransaction, 0xC3E1);
@@ -821,7 +821,7 @@ static void Shop_MoveItemListUp(void)
     }
 }
 #else
-__attribute__((naked))
+NAKED
 static void Shop_MoveItemListUp(void)
 {
     asm(".syntax unified\n\
@@ -960,7 +960,7 @@ static void Shop_MoveItemListDown(void)
     }
 }
 #else
-__attribute__((naked))
+NAKED
 static void Shop_MoveItemListDown(void)
 {
     asm(".syntax unified\n\

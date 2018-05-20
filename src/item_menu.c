@@ -1278,7 +1278,7 @@ static void sub_80A4548(u16 a, int b, int c, int d)
     }
 }
 #else
-__attribute__((naked))
+NAKED
 static void sub_80A4548(u16 a, int b, int c, int d)
 {
     asm(".syntax unified\n\
@@ -2102,7 +2102,7 @@ static void sub_80A5414(u8 taskId)
     }
 }
 #else
-__attribute__((naked))
+NAKED
 static void sub_80A5414(u8 taskId)
 {
     asm(".syntax unified\n\
@@ -2337,7 +2337,7 @@ _080A55FA:\n\
 }
 #endif
 
-__attribute__((naked))
+NAKED
 static void sub_80A5600(u8 taskId)
 {
     asm(".syntax unified\n\
@@ -2616,8 +2616,8 @@ static void sub_80A5888(u8 taskId)
 
 static void OnBagClose_Field0(u8 taskId)
 {
-    gTasks[taskId].data[8] = (u32)sub_805469C >> 16;
-    gTasks[taskId].data[9] = (u32)sub_805469C;
+    gTasks[taskId].data[8] = (u32)c2_exit_to_overworld_1_sub_8080DEC >> 16;
+    gTasks[taskId].data[9] = (u32)c2_exit_to_overworld_1_sub_8080DEC;
     gLastFieldPokeMenuOpened = 0;
     sub_80A5AE4(taskId);
 }

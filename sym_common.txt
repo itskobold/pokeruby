@@ -204,8 +204,7 @@ SYMBOL(gPokemonItemUseCallback, 4)
 SYMBOL(gMenuCallback, 4)
 
 #if DEBUG
-gUnknown_Debug_03004BD0 = .;
-. += 0x4;
+SYMBOL(gUnknown_Debug_03004BD0, 4)
 #endif
 
 // sound.c
@@ -242,7 +241,7 @@ SYMBOL(gScanlineEffectRegBuffers, 3840)
 
 // pokemon_menu.c
 SYMBOL(gLastFieldPokeMenuOpened, 4)
-SYMBOL(gUnknown_03005CE4, 4)
+SYMBOL(gPostMenuFieldCallback, 4)
 
 // pokedex.c
 SYMBOL(gUnknown_03005CE8, 4)

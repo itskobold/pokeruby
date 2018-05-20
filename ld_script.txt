@@ -55,7 +55,7 @@ SECTIONS {
         src/battle/battle_controller_player.o(.text);
         src/battle/battle_7.o(.text);
         src/battle/battle_controller_opponent.o(.text);
-        asm/battle_9.o(.text);
+        src/battle/battle_ai_switch_items.o(.text);
         src/battle/battle_controller_linkopponent.o(.text);
         src/pokemon_1.o(.text);
         src/battle/calculate_base_damage.o(.text);
@@ -116,9 +116,7 @@ SECTIONS {
         src/cable_club.o(.text);
         src/debug/tomomichi_debug_menu.o(.text);
         src/debug/nohara_debug_menu.o(.text);
-        asm/nohara_debug_menu.o(.text);
         src/debug/mori_debug_menu.o(.text);
-        asm/taya_debug_window.o(.text);
         src/debug/taya_debug_window.o(.text);
         src/trainer_see.o(.text);
         src/wild_encounter.o(.text);
@@ -363,7 +361,7 @@ SECTIONS {
         src/unused_8124F94.o(.text);
         src/save.o(.text);
         src/mystery_event_script.o(.text);
-        asm/unk_debug_menu_3.o(.text);
+        src/debug/ereader_debug_menu.o(.text);
         src/field_effect_helpers.o(.text);
         src/contest_ai.o(.text);
         src/unused_81258BC.o(.text);
@@ -393,7 +391,6 @@ SECTIONS {
         src/pokeblock_feed.o(.text);
         src/clear_save_data_menu.o(.text);
         src/debug/nakamura_debug_menu.o(.text);
-        asm/nakamura_debug_menu.o(.text);
         src/intro_credits_graphics.o(.text);
         src/evolution_graphics.o(.text);
         src/bard_music.o(.text);
@@ -504,7 +501,7 @@ SECTIONS {
         data/battle_7.o(.rodata);
         src/battle/battle_controller_opponent.o(.rodata);
         src/battle/battle_controller_linkopponent.o(.rodata);
-        data/battle_moves.o(.rodata);
+        src/data/battle_moves.o(.rodata);
         src/battle/battle_util.o(.rodata);
         src/pokemon_1.o(.rodata);
         src/pokemon_1.o(.data); /* gEvolutionTable needs to be non-const to match */
@@ -541,7 +538,6 @@ SECTIONS {
         src/start_menu.o(.rodata);
         src/debug/start_menu_debug.o(.data);
         src/debug/start_menu_debug.o(.rodata);
-        data/start_menu_debug.o(.rodata);
         src/menu.o(.rodata);
         src/tileset_anim.o(.rodata);
         src/palette.o(.rodata);
@@ -564,9 +560,9 @@ SECTIONS {
         src/battle/battle_setup.o(.rodata);
         src/cable_club.o(.rodata);
         src/debug/tomomichi_debug_menu.o(.rodata);
-        data/debug_menu_nohara.o(.rodata);
+        src/debug/nohara_debug_menu.o(.rodata);
         src/debug/mori_debug_menu.o(.rodata);
-        data/debug_menu_taya.o(.rodata);
+        src/debug/taya_debug_window.o(.rodata);
         src/trainer_see.o(.rodata);
         src/wild_encounter.o(.rodata);
         src/field_effect.o(.rodata);
@@ -650,7 +646,7 @@ SECTIONS {
         src/choose_party.o(.rodata);
         src/cable_car.o(.rodata);
         src/save.o(.rodata);
-        data/unk_debug_menu_3.o(.rodata);
+        src/debug/ereader_debug_menu.o(.rodata);
         src/field_effect_helpers.o(.rodata);
         src/contest_ai.o(.rodata);
         src/battle/battle_controller_safari.o(.rodata);
@@ -681,7 +677,7 @@ SECTIONS {
         data/strings2.o(.rodata);
         src/menu_cursor.o(.rodata);
         src/mystery_event_msg.o(.rodata);
-        data/debug_menu_3.o(.rodata);
+        data/debug_mystery_event_scripts.o(.rodata);
         src/libs/m4a_tables.o(.rodata);
         data/sound_data.o(.rodata);
     } =0

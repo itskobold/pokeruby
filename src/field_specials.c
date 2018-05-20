@@ -1172,7 +1172,7 @@ bool8 sub_810EAC8(u8 prevMenuPos, u8 dpadInput)
     return flag;
 }
 #else
-__attribute__((naked))
+NAKED
 bool8 sub_810EAC8(u8 prevMenuPos, u8 dpadInput)
 {
     asm_unified("\tpush {r4-r7,lr}\n"
@@ -1673,7 +1673,7 @@ bool8 sub_810F1F4(u8 prevCursorPos, u8 dpadInput)
     return flag;
 }
 #else
-__attribute__((naked))
+NAKED
 bool8 sub_810F1F4(u8 prevCursorPos, u8 dpadInput)
 {
     asm_unified("\tpush {r4-r7,lr}\n"
@@ -1836,7 +1836,7 @@ const u8 gUnknown_083F83E0[] = {12, 2, 4, 5, 1, 8, 7, 11, 3, 10, 9, 6};
 const u8 gUnknown_083F83EC[] = {0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 5};
 const u8 gUnknown_083F83F8[] = {3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5};
 
-u8 GetSlotMachineId(void)
+u16 GetSlotMachineId(void)
 {
     u32 v0 = gSaveBlock1.easyChatPairs[0].unk0_0 + gSaveBlock1.easyChatPairs[0].unk2 + gUnknown_083F83E0[gSpecialVar_0x8004];
     if (GetPriceReduction(2))

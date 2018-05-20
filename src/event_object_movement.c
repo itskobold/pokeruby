@@ -12,9 +12,10 @@
 #include "overworld.h"
 #include "sprite.h"
 #include "metatile_behavior.h"
+#include "trainer_see.h"
+#include "constants/field_effects.h"
 #include "constants/maps.h"
 #include "constants/map_objects.h"
-#include "trainer_see.h"
 
 // this file was known as evobjmv.c in Game Freak's original source
 
@@ -8145,7 +8146,7 @@ void sub_80634E8(struct MapObject *mapObject, struct Sprite *sprite)
     }
 }
 #else
-__attribute__((naked))
+NAKED
 void sub_80634E8(struct MapObject *mapObject, struct Sprite *sprite) {
     asm(".syntax unified\n\
     push {r4-r6,lr}\n\

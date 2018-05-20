@@ -874,7 +874,7 @@ bool8 TrainerCard_ScaleDownFlipAnimation(struct Task *task)
 }
 */
 
-__attribute__((naked))
+NAKED
 bool8 TrainerCard_ScaleDownFlipAnimation(struct Task *task)
 {
     asm(".syntax unified\n\
@@ -1038,7 +1038,7 @@ bool8 TrainerCard_SwitchToNewSide(struct Task *task)
     return TRUE;
 }
 
-__attribute__((naked))
+NAKED
 bool8 TrainerCard_ScaleUpFlipAnimation(struct Task *task)
 {
     asm(".syntax unified\n\

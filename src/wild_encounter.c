@@ -3714,7 +3714,7 @@ const u16 gRoute119WaterTileData[] =
 extern u16 gSpecialVar_Result;
 extern u8 S_RepelWoreOff[];
 
-EWRAM_DATA u8 sWildEncountersDisabled = 0;
+EWRAM_DATA u8 gWildEncountersDisabled = 0;
 EWRAM_DATA static u32 sFeebasRngValue = 0;
 
 #define NUM_FEEBAS_SPOTS 6
@@ -3728,7 +3728,7 @@ static void ApplyCleanseTagEncounterRateMod(u32 *encRate);
 
 void DisableWildEncounters(bool8 disabled)
 {
-    sWildEncountersDisabled = disabled;
+    gWildEncountersDisabled = disabled;
 }
 
 static u16 GetRoute119WaterTileNum(s16 x, s16 y, u8 section)
@@ -3819,7 +3819,7 @@ void FeebasSeedRng(u16 seed)
 }
 
 #if DEBUG
-u16 debug_sub_8092344(u8 arg0)
+u16 FeebasDebug_GetTrueNumberOfWaterTilesInMapThird(u8 arg0)
 {
     if (arg0 == 0)
         return 131;
@@ -4213,7 +4213,7 @@ bool8 StandardWildEncounter(u16 a, u16 b)
     u16 headerNum;
     struct Roamer *roamer;
 
-    if (sWildEncountersDisabled == TRUE)
+    if (gWildEncountersDisabled == TRUE)
         return 0;
     else
     {
