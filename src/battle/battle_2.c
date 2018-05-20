@@ -3928,51 +3928,6 @@ void UndoEffectsAfterFainting(void)
 	
 	gBattleMons[gActiveBattler].type1 = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_1) : GetMonData(&gEnemyParty, MON_DATA_TYPE_1);
 	gBattleMons[gActiveBattler].type2 = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_2) : GetMonData(&gEnemyParty, MON_DATA_TYPE_2);
-    gActionSelectionCursor[gActiveBattler] = 0;
-    gMoveSelectionCursor[gActiveBattler] = 0;
-
-    MEMSET_ALT(&gDisableStructs[gActiveBattler], 0, 0x1C, i, ptr);
-    gProtectStructs[gActiveBattler].protected = 0;
-    gProtectStructs[gActiveBattler].endured = 0;
-    gProtectStructs[gActiveBattler].onlyStruggle = 0;
-    gProtectStructs[gActiveBattler].helpingHand = 0;
-    gProtectStructs[gActiveBattler].bounceMove = 0;
-    gProtectStructs[gActiveBattler].stealMove = 0;
-    gProtectStructs[gActiveBattler].flag0Unknown = 0;
-    gProtectStructs[gActiveBattler].prlzImmobility = 0;
-    gProtectStructs[gActiveBattler].confusionSelfDmg = 0;
-    gProtectStructs[gActiveBattler].notEffective = 0;
-    gProtectStructs[gActiveBattler].chargingTurn = 0;
-    gProtectStructs[gActiveBattler].fleeFlag = 0;
-    gProtectStructs[gActiveBattler].usedImprisionedMove = 0;
-    gProtectStructs[gActiveBattler].loveImmobility = 0;
-    gProtectStructs[gActiveBattler].usedDisabledMove = 0;
-    gProtectStructs[gActiveBattler].usedTauntedMove = 0;
-    gProtectStructs[gActiveBattler].flag2Unknown = 0;
-    gProtectStructs[gActiveBattler].flinchImmobility = 0;
-    gProtectStructs[gActiveBattler].notFirstStrike = 0;
-
-    gDisableStructs[gActiveBattler].isFirstTurn= 2;
-    gLastUsedMove[gActiveBattler] = 0;
-    gLastLandedMoves[gActiveBattler] = 0;
-    gLastHitByType[gActiveBattler] = 0;
-    gUnknown_02024C4C[gActiveBattler] = 0;
-    gUnknown_02024C2C[gActiveBattler] = 0;
-    gLastHitBy[gActiveBattler] = 0xFF;
-
-    ewram160E8arr2(0, gActiveBattler) = 0;
-    ewram160E8arr2(1, gActiveBattler) = 0;
-    ewram160ACarr2(0, gActiveBattler) = 0;
-    ewram160ACarr2(1, gActiveBattler) = 0;
-    ewram16100arr2(0, gActiveBattler) = 0;
-    ewram16100arr2(1, gActiveBattler) = 0;
-    ewram16100arr2(2, gActiveBattler) = 0;
-    ewram16100arr2(3, gActiveBattler) = 0;
-
-    eFlashFireArr.arr[gActiveBattler] = 0;
-
-    gBattleMons[gActiveBattler].type1 = gBaseStats[gBattleMons[gActiveBattler].species].type1;
-    gBattleMons[gActiveBattler].type2 = gBaseStats[gBattleMons[gActiveBattler].species].type2;
 }
 
 void bc_8012FAC(void)
@@ -4043,12 +3998,6 @@ void sub_8011384(void)
 				{
 					gBattleMons[gActiveBattler].ability = GetAbilityBySpecies(gBattleMons[gActiveBattler].species, gBattleMons[gActiveBattler].altAbility);
 				}
-                r0 = GetBattlerSide(gActiveBattler);
-                ewram160BC[r0] = gBattleMons[gActiveBattler].hp;
-                MEMSET_ALT(&gBattleMons[gActiveBattler], gBattleBufferB[gActiveBattler][4 + i], 0x58, i, ptr);
-                gBattleMons[gActiveBattler].type1 = gBaseStats[gBattleMons[gActiveBattler].species].type1;
-                gBattleMons[gActiveBattler].type2 = gBaseStats[gBattleMons[gActiveBattler].species].type2;
-                gBattleMons[gActiveBattler].ability = GetAbilityBySpecies(gBattleMons[gActiveBattler].species, gBattleMons[gActiveBattler].altAbility);
                 r0 = GetBattlerSide(gActiveBattler);
                 ewram160BC[r0] = gBattleMons[gActiveBattler].hp;
                 for (i = 0; i < 8; i++)

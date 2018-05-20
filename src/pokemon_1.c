@@ -276,11 +276,11 @@ bool8 IsRandomMonBanned(u16 species)
 void GenerateRandomTypes(struct BoxPokemon *boxMon)
 {
 	u8 customType1 = Random() % 20;
-	u8 customType2 = Random() % 20;
+	u8 customType2;
 	u8 singleType = Random() % 3; //1 in 3 chance of being single type
 	u16 species = GetBoxMonData(boxMon, MON_DATA_SPECIES, NULL);
 	
-	if (gSaveBlock2.gameMode != GAME_MODE_SUPER_RANDOM) //sets type values to mon's normal types as a failsafe if not on super random
+	if (gSaveBlock2.gameMode != GAME_MODE_SUPER_RANDOM) //sets type values to mon's normal types if not on super random
 	{
 		customType1 = gBaseStats[species].type1;
 		customType2 = gBaseStats[species].type2;
@@ -290,7 +290,9 @@ void GenerateRandomTypes(struct BoxPokemon *boxMon)
 		do
 		{
 		customType2 = Random() % 20;
-		} while (customType2 == customType1);
+		if (customType1 == customType2)
+			break;
+		} while (customType1 == customType2);
 	}
 	else
 	{
