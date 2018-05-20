@@ -207,7 +207,7 @@ static void sub_804E1DC(void);
 static void sub_804BBCC(void);
 static void sub_804D8E4(void);
 static void sub_804C164(void);
-static void sub_804C1A8(void);
+static void SetTradeSceneStrings(void);
 #ifdef NONMATCHING
 static
 #endif
@@ -1797,7 +1797,7 @@ static bool8 sub_8048D44(void)
             }
             break;
         case 13:
-            Trade_Memcpy(gBlockSendBuffer, gSaveBlock1.giftRibbons, 11);
+            Trade_Memcpy(gBlockSendBuffer, gSaveBlock1.externalReservedData.giftRibbons, 11);
             gUnknown_03004824->unk_0075 ++;
             break;
         case 14:
@@ -3777,8 +3777,8 @@ static void sub_804AF84(void)
 {
     int i;
     for (i = 0; i < 11; i ++)
-        if (gSaveBlock1.giftRibbons[i] == 0 && gUnknown_03004824->unk_00b5[i] != 0)
-            gSaveBlock1.giftRibbons[i] = gUnknown_03004824->unk_00b5[i];
+        if (gSaveBlock1.externalReservedData.giftRibbons[i] == 0 && gUnknown_03004824->unk_00b5[i] != 0)
+            gSaveBlock1.externalReservedData.giftRibbons[i] = gUnknown_03004824->unk_00b5[i];
 }
 
 static void sub_804AFB8(const struct WindowTemplate *windowConfig, u8 *dest, const u8 *src, u8 size)
@@ -4096,7 +4096,7 @@ static void sub_804B41C(void)
         case 11:
             sub_804BBE8(5);
             sub_804BBE8(0);
-            sub_804C1A8();
+            SetTradeSceneStrings();
             BeginNormalPaletteFade(-1, 0, 16, 0, 0);
             gMain.state ++;
             break;
@@ -4451,7 +4451,7 @@ static NAKED void sub_804B41C(void)
                     "\tbl sub_804BBE8\n"
                     "\tmovs r0, 0\n"
                     "\tbl sub_804BBE8\n"
-                    "\tbl sub_804C1A8\n"
+                    "\tbl SetTradeSceneStrings\n"
                     "\tmovs r0, 0x1\n"
                     "\tnegs r0, r0\n"
                     "\tmovs r1, 0\n"
@@ -4563,7 +4563,7 @@ void sub_804B790(void)
         case 11:
             sub_804BBE8(5);
             sub_804BBE8(0);
-            sub_804C1A8();
+            SetTradeSceneStrings();
             BeginNormalPaletteFade(-1, 0, 16, 0, 0);
             gMain.state ++;
             break;
@@ -4772,8 +4772,12 @@ static void sub_804C164(void)
     LoadSpritePalette(&gUnknown_082159B4);
 }
 
-static void sub_804C1A8(void)
+static void SetTradeSceneStrings(void)
 {
+    /*Sets the variable strings printed on the
+     *actual trading screen. For use in strings
+     *like "[Pokemon] will be sent to [Trainer]."
+     */
     u8 mpId;
     u8 string[20];
     const struct InGameTrade *ingameTrade;
