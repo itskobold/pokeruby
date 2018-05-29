@@ -37,10 +37,12 @@ extern const u8 gSystemText_LR[];
 extern const u8 gSystemText_LA[];
 
 // start_menu
+extern const u8 SystemText_Dummy[];
 extern const u8 SystemText_Pokedex[];
 extern const u8 SystemText_Pokemon[];
 extern const u8 SystemText_BAG[];
 extern const u8 SystemText_Map[];
+extern const u8 SystemText_PlayerShortName[];
 extern const u8 SystemText_Player[];
 extern const u8 SystemText_Wait[];
 extern const u8 SystemText_Save[];

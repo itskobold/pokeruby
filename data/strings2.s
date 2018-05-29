@@ -85,30 +85,34 @@ gSystemText_LR:: @ 842C465
 gSystemText_LA:: @ 842C46B
 	.string "{PALETTE 15}L=A$"
 
+SystemText_Dummy::
+	.string "DUMMY$"
 SystemText_Pokedex::
-	.string "POKéDEX$"
+	.string "POKéDEX $"
 SystemText_Pokemon::
-	.string "POKéMON$"
+	.string "POKéMON $"
 SystemText_BAG::
-	.string "BAG$"
+	.string "BAG         $"
 SystemText_Map::
-	.string "MAP$"
+	.string "MAP         $"
+SystemText_PlayerShortName::
+	.string "{PLAYER}     $"
 SystemText_Player::
-	.string "{PLAYER}$"
+	.string "{PLAYER}  $"
 SystemText_Wait::
-	.string "WAIT$"
+	.string "WAIT        $"
 SystemText_Save::
-	.string "SAVE$"
+	.string "SAVE        $"
 SystemText_Option::
-	.string "OPTIONS$"
+	.string "OPTIONS $"
 SystemText_Trade::
-	.string "TRADE$"
+	.string "TRADE      $"
 SystemText_Battle::
-	.string "BATTLE$"
+	.string "BATTLE    $"
 SystemText_Exit::
-	.string "EXIT$"
+	.string "EXIT       $"
 SystemText_Retire:: @ safari zone?
-	.string "RETIRE$"
+	.string "RETIRE    $"
 
 gOtherText_SafariStock:: @ 842C4A9
 	.string "SAFARI BALLS\nStock: {STR_VAR_1}$"

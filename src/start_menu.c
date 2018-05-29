@@ -11,6 +11,7 @@
 #include "main.h"
 #include "map_obj_lock.h"
 #include "menu.h"
+#include "menu_helpers.h"
 #include "new_game.h"
 #include "option_menu.h"
 #include "palette.h"
@@ -34,6 +35,8 @@
 
 //Menu actions
 enum {
+	MENU_ACTION_DUMMY,
+	MENU_ACTION_RETIRE,
     MENU_ACTION_POKEDEX,
     MENU_ACTION_POKEMON,
     MENU_ACTION_BAG,
@@ -45,8 +48,9 @@ enum {
 	MENU_ACTION_BATTLE,
     MENU_ACTION_OPTIONS,
     MENU_ACTION_EXIT,
-    MENU_ACTION_RETIRE,
-    MENU_ACTION_PLAYER_LINK,
+	MENU_ACTION_PLAYER_LINK,
+	MENU_ACTION_PLAYER_SHORT, //this is so dumb and hacky omfg
+	MENU_ACTION_PLAYER_SHORT_LINK,
 };
 
 #if DEBUG
@@ -66,9 +70,13 @@ extern u8 gUnknown_03004860;
 
 u8 (*gMenuCallback)(void);
 
+EWRAM_DATA static u8 sStartMenuScroll = 0;
 EWRAM_DATA static u8 sStartMenuCursorPos = 0;
+EWRAM_DATA static u8 sStartMenuCursorPosBuffer = 0; //stores the last position the cursor was in
 EWRAM_DATA static u8 sNumStartMenuActions = 0;
-EWRAM_DATA static u8 sCurrentStartMenuActions[10] = {0};
+EWRAM_DATA static u8 sCurrentStartMenuActions[NUM_START_MENU_ACTIONS] = {0};
+EWRAM_DATA static u8 sStartMenuActionList[NUM_START_MENU_ACTIONS] = {0}; //different to sCurrentStartMenuActions - this holds the options available to the player before the start menu is built
+EWRAM_DATA static bool8 sHasMenuBeenOpenedBefore = FALSE;
 
 //Text strings
 extern u8 gSaveText_PlayerSavedTheGame[];
@@ -77,6 +85,8 @@ extern u8 gSaveText_ThereIsAlreadyAFile[];
 extern u8 gSaveText_ThereIsADifferentFile[];
 extern u8 gSaveText_WouldYouLikeToSave[];
 
+static u8 StartMenu_DummyCallback(void);
+static u8 StartMenu_RetireCallback(void);
 static u8 StartMenu_PokedexCallback(void);
 static u8 StartMenu_PokemonCallback(void);
 static u8 StartMenu_BagCallback(void);
@@ -85,37 +95,43 @@ static u8 StartMenu_PlayerCallback(void);
 static u8 StartMenu_SaveCallback(void);
 static u8 StartMenu_OptionCallback(void);
 static u8 StartMenu_ExitCallback(void);
-static u8 StartMenu_RetireCallback(void);
 static u8 StartMenu_PlayerLinkCallback(void);
+
+static u8 GetPlayerNameLength(u8 *playerName); //delete eventually
 
 static const struct MenuAction sStartMenuItems[] =
 {
+    { SystemText_Dummy, StartMenu_DummyCallback },
+    { SystemText_Retire, StartMenu_RetireCallback },
     { SystemText_Pokedex, StartMenu_PokedexCallback },
     { SystemText_Pokemon, StartMenu_PokemonCallback },
     { SystemText_BAG, StartMenu_BagCallback },
     { SystemText_Map, StartMenu_PokenavCallback },
     { SystemText_Player, StartMenu_PlayerCallback },
-	{ SystemText_Wait, StartMenu_ExitCallback }, //replace this with wait function when it's done
+	{ SystemText_Wait, StartMenu_PlayerCallback }, //replace this with wait function when it's done
     { SystemText_Save, StartMenu_SaveCallback },
-	{ SystemText_Trade, StartMenu_ExitCallback }, //replace this with new trade function when it's done
-	{ SystemText_Battle, StartMenu_ExitCallback }, //replace this with link battle function when it's done
+	{ SystemText_Trade, StartMenu_PlayerCallback }, //replace this with new trade function when it's done
+	{ SystemText_Battle, StartMenu_PlayerCallback }, //replace this with link battle function when it's done
     { SystemText_Option, StartMenu_OptionCallback },
     { SystemText_Exit, StartMenu_ExitCallback },
-    { SystemText_Retire, StartMenu_RetireCallback },
     { SystemText_Player, StartMenu_PlayerLinkCallback },
+	{ SystemText_PlayerShortName, StartMenu_PlayerLinkCallback },
+	{ SystemText_PlayerShortName, StartMenu_PlayerLinkCallback },
 };
 
 //Private functions
 static void BuildStartMenuActions(void);
+static void UpdateStartMenuOptions(void);
 static void AddStartMenuAction(u8 action);
-static void BuildStartMenuActions_Normal(void);
-static void BuildStartMenuActions_SafariZone(void);
-static void BuildStartMenuActions_Link(void);
 static void DisplaySafariBallsWindow(void);
 static bool32 PrintStartMenuItemsMultistep(s16 *a, u32 b);
 static bool32 InitStartMenuMultistep(s16 *a, s16 *b);
 static void Task_StartMenu(u8 taskId);
+static void BuildStartMenuActionList(void);
+static void StartMenu_CreateScrollArrows(void);
+static void StartMenu_DestroyScrollArrows(void);
 static u8 StartMenu_InputProcessCallback(void);
+static u8 GetFirstStartMenuAction(void);
 static u8 SaveCallback1(void);
 static u8 SaveCallback2(void);
 static void sub_807160C(void);
@@ -151,7 +167,8 @@ void debug_sub_8075D9C(void);
 
 u8 debug_sub_8075C30(void)
 {
-    CloseMenu();
+	StartMenu_DestroyScrollArrows();
+	CloseMenu();
     debug_sub_8075D9C();
     return 1;
 }
@@ -247,64 +264,164 @@ void unref_sub_8070F90(void)
 
 #endif
 
-static void BuildStartMenuActions(void)
-{
-    sNumStartMenuActions = 0;
-    if (is_c1_link_related_active() == TRUE)
-        BuildStartMenuActions_Link();
-    else
-    {
-        if (GetSafariZoneFlag() == TRUE)
-            BuildStartMenuActions_SafariZone();
-        else
-            BuildStartMenuActions_Normal();
-    }
-}
-
 static void AddStartMenuAction(u8 action)
 {
     AppendToList(sCurrentStartMenuActions, &sNumStartMenuActions, action);
 }
 
-static void BuildStartMenuActions_Normal(void)
+static u8 GetFirstStartMenuAction(void) //probably a much less ugly way to do this but idec at this point
 {
-    if (FlagGet(FLAG_SYS_POKEDEX_GET) == TRUE)
-        AddStartMenuAction(MENU_ACTION_POKEDEX);
-    if (FlagGet(FLAG_SYS_POKEMON_GET) == TRUE)
-        AddStartMenuAction(MENU_ACTION_POKEMON);
-    if (FlagGet(FLAG_SYS_POKENAV_GET) == TRUE)
-        AddStartMenuAction(MENU_ACTION_MAP);
-	AddStartMenuAction(MENU_ACTION_BAG);
-    AddStartMenuAction(MENU_ACTION_PLAYER);
-	AddStartMenuAction(MENU_ACTION_WAIT);
-	if (gSaveBlock2.nuzlockeMode < NUZLOCKE_MODE_HARDLOCKE) //remove save option if on hardlocke or deadlocke
-		AddStartMenuAction(MENU_ACTION_SAVE);
-	AddStartMenuAction(MENU_ACTION_TRADE); //add a flag check here
-	AddStartMenuAction(MENU_ACTION_BATTLE); //add a flag check here
-    AddStartMenuAction(MENU_ACTION_OPTIONS);
-    AddStartMenuAction(MENU_ACTION_EXIT);
+	if (GetSafariZoneFlag() == TRUE)
+		return MENU_ACTION_RETIRE;
+	else if (FlagGet(FLAG_SYS_POKEDEX_GET) == TRUE)
+		return MENU_ACTION_POKEDEX;
+	else if (FlagGet(FLAG_SYS_POKEMON_GET) == TRUE)
+		return MENU_ACTION_POKEMON;
+	else if (FlagGet(FLAG_SYS_POKENAV_GET) == TRUE)
+		return MENU_ACTION_MAP;
+	else
+		return MENU_ACTION_BAG;
 }
 
-static void BuildStartMenuActions_SafariZone(void)
+static void BuildStartMenuActionList(void)
 {
-    AddStartMenuAction(MENU_ACTION_RETIRE);
-    AddStartMenuAction(MENU_ACTION_POKEDEX);
-    AddStartMenuAction(MENU_ACTION_POKEMON);
-    AddStartMenuAction(MENU_ACTION_BAG);
-    AddStartMenuAction(MENU_ACTION_PLAYER);
-    AddStartMenuAction(MENU_ACTION_OPTIONS);
-    AddStartMenuAction(MENU_ACTION_EXIT);
+	int i, j;
+	
+	j = 0;
+	
+	for (i = 0; i < NUM_START_MENU_ACTIONS; i++)
+	{
+		switch(i)
+		{
+			case MENU_ACTION_RETIRE:
+				if (GetSafariZoneFlag() == TRUE)
+				{
+					sStartMenuActionList[j] = MENU_ACTION_RETIRE;
+					j++;
+				}
+				break;
+			case MENU_ACTION_POKEDEX:
+				if (FlagGet(FLAG_SYS_POKEDEX_GET) == TRUE)
+				{
+					sStartMenuActionList[j] = MENU_ACTION_POKEDEX;
+					j++;
+				}
+				break;
+			case MENU_ACTION_POKEMON:
+				if (FlagGet(FLAG_SYS_POKEMON_GET) == TRUE)
+				{
+					sStartMenuActionList[j] = MENU_ACTION_POKEMON;
+					j++;
+				}
+				break;
+			case MENU_ACTION_MAP:
+				if (FlagGet(FLAG_SYS_POKENAV_GET) == TRUE)
+				{
+					sStartMenuActionList[j] = MENU_ACTION_MAP;
+					j++;
+				}
+				break;
+			case MENU_ACTION_PLAYER:
+				if (GetPlayerNameLength(gSaveBlock2.playerName) < 4) //i hate this so much but i'm beyond caring
+				{
+					if (is_c1_link_related_active() == TRUE)
+					{
+						sStartMenuActionList[j] = MENU_ACTION_PLAYER_SHORT_LINK;
+					}
+					else
+					{
+						sStartMenuActionList[j] = MENU_ACTION_PLAYER_SHORT;
+					}
+				}
+				else
+				{
+					if (is_c1_link_related_active() == TRUE)
+					{
+						sStartMenuActionList[j] = MENU_ACTION_PLAYER_LINK;
+					}
+					else
+					{
+						sStartMenuActionList[j] = MENU_ACTION_PLAYER;
+					}
+				}
+				j++;
+				break;
+			case MENU_ACTION_PLAYER_LINK:
+				break;
+			case MENU_ACTION_SAVE:
+				if (gSaveBlock2.nuzlockeMode < NUZLOCKE_MODE_HARDLOCKE) //remove save option if on hardlocke or deadlocke
+				{
+					sStartMenuActionList[j] = MENU_ACTION_SAVE;
+					j++;
+				}
+				break;
+			case MENU_ACTION_TRADE:
+				if (FlagGet(FLAG_SYS_POKEMON_GET) == TRUE) //give it it's own flag check eventually
+				{
+					sStartMenuActionList[j] = MENU_ACTION_TRADE;
+					j++;
+				}
+				break;
+			case MENU_ACTION_BATTLE:
+				if (FlagGet(FLAG_SYS_POKEMON_GET) == TRUE) //give it it's own flag check eventually
+				{
+					sStartMenuActionList[j] = MENU_ACTION_BATTLE;
+					j++;
+				}
+				break;
+			default:
+				sStartMenuActionList[j] = i;
+				j++;
+				break;
+		}
+	}
 }
 
-static void BuildStartMenuActions_Link(void)
+static u8 GetPlayerNameLength(u8 *playerName)
+//this is a copy of sub_80BB8A8 in secret_base.c
+//delete this eventually & use that when it gets a proper name
 {
-    AddStartMenuAction(MENU_ACTION_POKEMON);
-    AddStartMenuAction(MENU_ACTION_BAG);
-    if (FlagGet(FLAG_SYS_POKENAV_GET) == TRUE)
-        AddStartMenuAction(MENU_ACTION_MAP);
-    AddStartMenuAction(MENU_ACTION_PLAYER_LINK);
-    AddStartMenuAction(MENU_ACTION_OPTIONS);
-    AddStartMenuAction(MENU_ACTION_EXIT);
+    u8 i;
+
+    for (i = 0; i < 7; i++)
+    {
+        if (playerName[i] == EOS)
+            return i;
+    }
+    return 7;
+}
+
+static void BuildStartMenuActions(void)
+{
+	int i, firstOption, lastOption;
+	
+	sNumStartMenuActions = 0;
+	
+	if (sHasMenuBeenOpenedBefore == FALSE)
+	{
+		sStartMenuScroll = 1; //clears the blank space at the top of the menu if it has never been opened before caused by the retire option
+		sHasMenuBeenOpenedBefore = TRUE;
+	}
+	
+	BuildStartMenuActionList();
+	
+	for (i = 0; i < 5; i++)
+	{
+		if (sStartMenuActionList[sStartMenuScroll + i] != MENU_ACTION_DUMMY)
+		{
+			if (i == 0)
+				firstOption = sStartMenuActionList[sStartMenuScroll];
+			else if (i == 4)
+				lastOption = sStartMenuActionList[sStartMenuScroll + i];
+			
+			AddStartMenuAction(sStartMenuActionList[sStartMenuScroll + i]);
+		}
+	}
+	
+	if (firstOption == GetFirstStartMenuAction())
+		SetVerticalScrollIndicators(TOP_ARROW, INVISIBLE);
+	if (lastOption == MENU_ACTION_EXIT)
+		SetVerticalScrollIndicators(BOTTOM_ARROW, INVISIBLE);
 }
 
 //Show number of safari balls left
@@ -335,26 +452,36 @@ static bool32 PrintStartMenuItemsMultistep(s16 *index, u32 n)
     return FALSE;
 }
 
+static void UpdateStartMenuOptions(void)
+{
+	s16 step = 4; //start at print menu items
+	s16 index = 0;
+	
+	BuildStartMenuActions();
+	InitStartMenuMultistep(&step, &index);
+}
+
 static bool32 InitStartMenuMultistep(s16 *step, s16 *index)
 {
     switch (*step)
     {
     case 1:
-        BuildStartMenuActions();
-        (*step)++;
+		StartMenu_CreateScrollArrows();
+		BuildStartMenuActions();
+		(*step)++;
         break;
     case 2:
-        Menu_DrawStdWindowFrame(22, 0, 29, /*NumStartMenuActions * 2 + 3*/13);
-        *index = 0;
-        (*step)++;
-        break;
-    case 3:
         if (GetSafariZoneFlag())
             DisplaySafariBallsWindow();
         (*step)++;
         break;
+    case 3:
+		Menu_DrawStdWindowFrame(22, 0, 29, /*NumStartMenuActions * 2 + 3*/13);
+        *index = 0;
+        (*step)++;
+        break;
     case 4:
-        if (PrintStartMenuItemsMultistep(index, 2))
+        if (PrintStartMenuItemsMultistep(index, 5))
             (*step)++;
         break;
     case 0:
@@ -423,17 +550,63 @@ void sub_8071310(void)
     ScriptContext2_Enable();
 }
 
+static void StartMenu_CreateScrollArrows(void)
+{
+	ClearVerticalScrollIndicatorPalettes();
+	LoadScrollIndicatorPalette();
+	CreateVerticalScrollIndicators(TOP_ARROW, 208, 12);
+	CreateVerticalScrollIndicators(BOTTOM_ARROW, 208, 100);
+	SetVerticalScrollIndicatorPriority(TOP_ARROW, 0);
+	SetVerticalScrollIndicatorPriority(BOTTOM_ARROW, 0);
+}
+
+static void StartMenu_DestroyScrollArrows(void)
+{
+	DestroyVerticalScrollIndicator(TOP_ARROW);
+	DestroyVerticalScrollIndicator(BOTTOM_ARROW);
+}
+
 static u8 StartMenu_InputProcessCallback(void)
 {
     if (gMain.newKeys & DPAD_UP)
     {
-        PlaySE(SE_SELECT);
-        sStartMenuCursorPos = Menu_MoveCursorNoWrap(-1);
+		if (sStartMenuCursorPos == 0 && sStartMenuItems[sCurrentStartMenuActions[sStartMenuCursorPos]].func != sStartMenuItems[GetFirstStartMenuAction()].func) //if cursor is at the top and item isn't first available option, the list scrolls
+		{
+			sStartMenuScroll--;
+			UpdateStartMenuOptions();
+			SetVerticalScrollIndicators(BOTTOM_ARROW, VISIBLE);
+			PlaySE(SE_SELECT);
+		}
+		else
+		{
+			sStartMenuCursorPosBuffer = sStartMenuCursorPos;
+			sStartMenuCursorPos = Menu_MoveCursorNoWrap(-1);
+			if (sStartMenuCursorPosBuffer != sStartMenuCursorPos)
+				PlaySE(SE_SELECT);
+		}
+		
+		/*if (sStartMenuCursorPos == 0 && sStartMenuItems[sCurrentStartMenuActions[sStartMenuCursorPos]].func == sStartMenuItems[GetFirstStartMenuAction()].func) //check new position - if cursor is at the top and item IS first available option, hide up arrow
+			SetVerticalScrollIndicators(TOP_ARROW, INVISIBLE);*/
     }
     if (gMain.newKeys & DPAD_DOWN)
     {
-        PlaySE(SE_SELECT);
-        sStartMenuCursorPos = Menu_MoveCursorNoWrap(1);
+		if (sStartMenuCursorPos == 4 && sStartMenuItems[sCurrentStartMenuActions[sStartMenuCursorPos]].func != StartMenu_ExitCallback)
+		{
+			sStartMenuScroll++;
+			UpdateStartMenuOptions();
+			SetVerticalScrollIndicators(TOP_ARROW, VISIBLE);
+			PlaySE(SE_SELECT);
+		}
+		else
+		{
+			sStartMenuCursorPosBuffer = sStartMenuCursorPos;
+			sStartMenuCursorPos = Menu_MoveCursorNoWrap(1);
+			if (sStartMenuCursorPosBuffer != sStartMenuCursorPos)
+				PlaySE(SE_SELECT);
+		}
+		
+		/*if (sStartMenuCursorPos == 4 && sStartMenuItems[sCurrentStartMenuActions[sStartMenuCursorPos]].func == StartMenu_ExitCallback)
+			SetVerticalScrollIndicators(BOTTOM_ARROW, INVISIBLE);*/
     }
     if (gMain.newKeys & A_BUTTON)
     {
@@ -452,7 +625,8 @@ static u8 StartMenu_InputProcessCallback(void)
     }
     if (gMain.newKeys & (START_BUTTON | B_BUTTON))
     {
-        CloseMenu();
+		StartMenu_DestroyScrollArrows();
+		CloseMenu();
         return 1;
     }
     return 0;
@@ -522,6 +696,7 @@ static u8 StartMenu_PlayerCallback(void)
 //When player selects SAVE
 static u8 StartMenu_SaveCallback(void)
 {
+	StartMenu_DestroyScrollArrows();
     Menu_DestroyCursor();
     gMenuCallback = SaveCallback1;
     return 0;
@@ -543,15 +718,25 @@ static u8 StartMenu_OptionCallback(void)
 //When player selects EXIT
 static u8 StartMenu_ExitCallback(void)
 {
-    CloseMenu();
+	StartMenu_DestroyScrollArrows();
+	CloseMenu();
     return 1;
 }
 
 //When player selects RETIRE
 static u8 StartMenu_RetireCallback(void)
 {
-    CloseMenu();
+	StartMenu_DestroyScrollArrows();
+	CloseMenu();
     SafariZoneRetirePrompt();
+    return 1;
+}
+
+//Not supposed to be used, functionally the same as Exit
+static u8 StartMenu_DummyCallback(void)
+{
+	StartMenu_DestroyScrollArrows();
+	CloseMenu();
     return 1;
 }
 

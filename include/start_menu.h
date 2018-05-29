@@ -1,6 +1,8 @@
 #ifndef GUARD_STARTER_CHOOSE_H
 #define GUARD_STARTER_CHOOSE_H
 
+#define NUM_START_MENU_ACTIONS 16
+
 extern u8 (*gMenuCallback)(void);
 
 //Public functions
