@@ -346,7 +346,7 @@ static void sub_81365C8(void)
     switch (gUnknown_02039304->unk50)
     {
         case 0:
-            BeginNormalPaletteFade(-1, 0, 16, 0, 0);
+            BeginNormalPaletteFade(0xFFFFFFFF, 0, 16, 0, RGB(0, 0, 0));
             SetVBlankCallback(sub_8136264);
             gUnknown_02039304->unk50++;
             break;
@@ -459,7 +459,7 @@ static void sub_8136808(void)
             gPokeblockMonID = sub_81370A4(gUnknown_083DFEC4->unk87DC);
             gUnknown_02039308 = gUnknown_02039304->callback;
             gUnknown_0203930C = gUnknown_02039304->pokeblock;
-            BeginNormalPaletteFade(-1, 0, 0, 16, 0);
+            BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB(0, 0, 0));
             gUnknown_02039304->unk50++;
             break;
         case 1:
@@ -501,7 +501,7 @@ static void sub_81368A4(void)
             }
             break;
         case 3:
-            BlendPalettes(-1, 16, 0);
+            BlendPalettes(0xFFFFFFFF, 16, RGB(0, 0, 0));
             gUnknown_02039304->unk50++;
             break;
         case 4:
@@ -510,7 +510,7 @@ static void sub_81368A4(void)
             break;
         case 5:
             SetVBlankCallback(sub_8136264);
-            BeginNormalPaletteFade(-1, 0, 16, 0, 0);
+            BeginNormalPaletteFade(0xFFFFFFFF, 0, 16, 0, RGB(0, 0, 0));
             gUnknown_02039304->unk50++;
             break;
         case 6:
@@ -577,7 +577,7 @@ static void sub_8136B44(void)
     switch (gUnknown_02039304->unk50)
     {
         case 0:
-            BeginNormalPaletteFade(-1, 0, 0, 16, 0);
+            BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB(0, 0, 0));
             gUnknown_02039304->unk50++;
             break;
         case 1:

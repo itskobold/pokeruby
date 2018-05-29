@@ -2661,7 +2661,7 @@ void PlayerHandlecmd10(void)
 
 void PlayerHandlecmd11(void)
 {
-    BeginNormalPaletteFade(0xFFFFFFFF, 2, 0, 16, 0);
+    BeginNormalPaletteFade(0xFFFFFFFF, 2, 0, 16, RGB(0, 0, 0));
     PlayerBufferExecCompleted();
 }
 
@@ -2841,7 +2841,7 @@ void PlayerHandleOpenBag(void)
 {
     s32 i;
 
-    BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, 0);
+    BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB(0, 0, 0));
     gBattleBankFunc[gActiveBattler] = sub_802E004;
     gBankInMenu = gActiveBattler;
     for (i = 0; i < 3; i++)
@@ -2859,7 +2859,7 @@ void PlayerHandlecmd22(void)
     ewram160C0 = gBattleBufferA[gActiveBattler][3];
     for (i = 0; i < 3; i++)
         gUnknown_02038470[i] = gBattleBufferA[gActiveBattler][4 + i];
-    BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, 0);
+    BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB(0, 0, 0));
     gBattleBankFunc[gActiveBattler] = sub_802DF30;
     gBankInMenu = gActiveBattler;
 }
@@ -2867,7 +2867,7 @@ void PlayerHandlecmd22(void)
 void PlayerHandlecmd23(void)
 {
     BattleStopLowHpSound();
-    BeginNormalPaletteFade(0xFFFFFFFF, 2, 0, 16, 0);
+    BeginNormalPaletteFade(0xFFFFFFFF, 2, 0, 16, RGB(0, 0, 0));
     PlayerBufferExecCompleted();
 }
 
