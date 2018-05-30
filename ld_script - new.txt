@@ -1205,9 +1205,9 @@ SECTIONS {
         src/libs/agb_flash_mx.o(.rodata);
         src/libs/agb_flash_le.o(.rodata);
         src/libs/siirtc.o(.rodata);
-        tools/agbcc/lib/libgcc.a:_udivdi3.o(.rodata);
-        tools/agbcc/lib/libc.a(.rodata);
-		tools/agbcc/lib/libc.a(.data);
+        *libgcc.a:_udivdi3.o(.rodata);
+        *libc.a(.rodata);
+        *libc.a(.data);
         src/libs/libisagbprn.o(.rodata);
     } =0
 
