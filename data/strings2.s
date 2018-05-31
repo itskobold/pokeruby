@@ -88,34 +88,138 @@ gSystemText_LA:: @ 842C46B
 SystemText_Dummy::
 	.string "DUMMY$"
 SystemText_Pokedex::
-	.string "POKéDEX $"
+	.string "POKéDEX$"
 SystemText_Pokemon::
-	.string "POKéMON $"
+	.string "POKéMON$"
 SystemText_BAG::
-	.string "BAG         $"
+	.string "BAG$"
 SystemText_Map::
-	.string "MAP         $"
-SystemText_PlayerShortName::
-	.string "{PLAYER}     $"
+	.string "MAP$"
 SystemText_Player::
-	.string "{PLAYER}  $"
+	.string "{PLAYER}$"
 SystemText_Wait::
-	.string "WAIT        $"
+	.string "WAIT$"
 SystemText_Save::
-	.string "SAVE        $"
+	.string "SAVE$"
 SystemText_Option::
-	.string "OPTIONS $"
+	.string "OPTIONS$"
 SystemText_Trade::
-	.string "TRADE      $"
+	.string "TRADE$"
 SystemText_Battle::
-	.string "BATTLE    $"
+	.string "BATTLE$"
 SystemText_Exit::
-	.string "EXIT       $"
+	.string "EXIT$"
 SystemText_Retire:: @ safari zone?
-	.string "RETIRE    $"
-
+	.string "RETIRE$"
+	
+TimeText_PrintTimeString::
+	.string "{STR_VAR_1}), {STR_VAR_2}{COLOR DARK_GREY}, {STR_VAR_3}$"
+TimeText_Spacer:: @@in between the hour & dawn/day/dusk/night
+	.string "{COLOR DARK_GREY} ($"
+	
+TimeText_Dawn::
+	.string "dawn$"
+TimeText_Day::
+	.string "day$"
+TimeText_Dusk::
+	.string "dusk$"
+TimeText_Night::
+	.string "night$"
+	
+TimeText_12AM::
+	.string "{COLOR RED}12AM$"
+TimeText_1AM::
+	.string "{COLOR RED}1AM$"
+TimeText_2AM::
+	.string "{COLOR RED}2AM$"
+TimeText_3AM::
+	.string "{COLOR RED}3AM$"
+TimeText_4AM::
+	.string "{COLOR RED}4AM$"
+TimeText_5AM::
+	.string "{COLOR RED}5AM$"
+TimeText_6AM::
+	.string "{COLOR RED}6AM$"
+TimeText_7AM::
+	.string "{COLOR RED}7AM$"
+TimeText_8AM::
+	.string "{COLOR RED}8AM$"
+TimeText_9AM::
+	.string "{COLOR RED}9AM$"
+TimeText_10AM::
+	.string "{COLOR RED}10AM$"
+TimeText_11AM::
+	.string "{COLOR RED}11AM$"
+TimeText_12PM::
+	.string "{COLOR RED}12PM$"
+TimeText_1PM::
+	.string "{COLOR RED}1PM$"
+TimeText_2PM::
+	.string "{COLOR RED}2PM$"
+TimeText_3PM::
+	.string "{COLOR RED}3PM$"
+TimeText_4PM::
+	.string "{COLOR RED}4PM$"
+TimeText_5PM::
+	.string "{COLOR RED}5PM$"
+TimeText_6PM::
+	.string "{COLOR RED}6PM$"
+TimeText_7PM::
+	.string "{COLOR RED}7PM$"
+TimeText_8PM::
+	.string "{COLOR RED}8PM$"
+TimeText_9PM::
+	.string "{COLOR RED}9PM$"
+TimeText_10PM::
+	.string "{COLOR RED}10PM$"
+TimeText_11PM::
+	.string "{COLOR RED}11PM$"
+	
+TimeText_Monday::
+	.string "{COLOR RED}MONDAY$"
+TimeText_Tuesday::
+	.string "{COLOR RED}TUESDAY$"
+TimeText_Wednesday::
+	.string "{COLOR RED}WEDNESDAY$"
+TimeText_Thursday::
+	.string "{COLOR RED}THURSDAY$"
+TimeText_Friday::
+	.string "{COLOR RED}FRIDAY$"
+TimeText_Saturday::
+	.string "{COLOR RED}SATURDAY$"
+TimeText_Sunday::
+	.string "{COLOR RED}SUNDAY$"
+	
+TimeText_EarlySpring::
+	.string "EARLY SPRING$"
+TimeText_Spring::
+	.string "SPRING$"
+TimeText_LateSpring::
+	.string "LATE SPRING$"
+TimeText_EarlySummer::
+	.string "EARLY SUMMER$"
+TimeText_Summer::
+	.string "SUMMER$"
+TimeText_LateSummer::
+	.string "LATE SUMMER$"
+TimeText_EarlyFall::
+	.string "EARLY FALL$"
+TimeText_Fall::
+	.string "FALL$"
+TimeText_LateFall::
+	.string "LATE FALL$"
+TimeText_EarlyWinter::
+	.string "EARLY WINTER$"
+TimeText_Winter::
+	.string "WINTER$"
+TimeText_LateWinter::
+	.string "LATE WINTER$"
+	
 gOtherText_SafariStock:: @ 842C4A9
-	.string "SAFARI BALLS\nStock: {STR_VAR_1}$"
+	.string "SAFARI BALLS remaining: {STR_VAR_1}$"
+
+gOtherText_WeatherForecastPlaceholder::
+	.string "Weather forecast placeholder text$"
 
 gSystemText_LinkStandby:: @ 842C4C0
 	.string "Link standby...\n... ... B Button: Cancel$"

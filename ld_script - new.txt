@@ -1,3 +1,7 @@
+DON'T JUST COPY THIS
+THIS TEXT ISN'T COMMENTED OUT JUST SO IT WON'T COMPILE AND YOU'LL PAY ATTENTION
+the changes are around lib_text. look there
+
 ENTRY(Start)
 
 gNumMusicPlayers = 4;

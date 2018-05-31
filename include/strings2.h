@@ -42,7 +42,6 @@ extern const u8 SystemText_Pokedex[];
 extern const u8 SystemText_Pokemon[];
 extern const u8 SystemText_BAG[];
 extern const u8 SystemText_Map[];
-extern const u8 SystemText_PlayerShortName[];
 extern const u8 SystemText_Player[];
 extern const u8 SystemText_Wait[];
 extern const u8 SystemText_Save[];
@@ -52,6 +51,62 @@ extern const u8 SystemText_Option[];
 extern const u8 SystemText_Exit[];
 extern const u8 SystemText_Retire[];
 extern const u8 gOtherText_SafariStock[];
+extern const u8 gOtherText_WeatherForecastPlaceholder[];
+
+//start menu clock text
+extern const u8 TimeText_PrintTimeString[];
+extern const u8 TimeText_Spacer[];
+
+extern const u8 TimeText_Dawn[];
+extern const u8 TimeText_Day[];
+extern const u8 TimeText_Dusk[];
+extern const u8 TimeText_Night[];
+
+extern const u8 TimeText_12AM[];
+extern const u8 TimeText_1AM[];
+extern const u8 TimeText_2AM[];
+extern const u8 TimeText_3AM[];
+extern const u8 TimeText_4AM[];
+extern const u8 TimeText_5AM[];
+extern const u8 TimeText_6AM[];
+extern const u8 TimeText_7AM[];
+extern const u8 TimeText_8AM[];
+extern const u8 TimeText_9AM[];
+extern const u8 TimeText_10AM[];
+extern const u8 TimeText_11AM[];
+extern const u8 TimeText_12PM[];
+extern const u8 TimeText_1PM[];
+extern const u8 TimeText_2PM[];
+extern const u8 TimeText_3PM[];
+extern const u8 TimeText_4PM[];
+extern const u8 TimeText_5PM[];
+extern const u8 TimeText_6PM[];
+extern const u8 TimeText_7PM[];
+extern const u8 TimeText_8PM[];
+extern const u8 TimeText_9PM[];
+extern const u8 TimeText_10PM[];
+extern const u8 TimeText_11PM[];
+
+extern const u8 TimeText_Monday[];
+extern const u8 TimeText_Tuesday[];
+extern const u8 TimeText_Wednesday[];
+extern const u8 TimeText_Thursday[];
+extern const u8 TimeText_Friday[];
+extern const u8 TimeText_Saturday[];
+extern const u8 TimeText_Sunday[];
+
+extern const u8 TimeText_EarlySpring[];
+extern const u8 TimeText_Spring[];
+extern const u8 TimeText_LateSpring[];
+extern const u8 TimeText_EarlySummer[];
+extern const u8 TimeText_Summer[];
+extern const u8 TimeText_LateSummer[];
+extern const u8 TimeText_EarlyFall[];
+extern const u8 TimeText_Fall[];
+extern const u8 TimeText_LateFall[];
+extern const u8 TimeText_EarlyWinter[];
+extern const u8 TimeText_Winter[];
+extern const u8 TimeText_LateWinter[];
 
 // mystery_event_menu
 extern const u8 gSystemText_LinkStandby[];

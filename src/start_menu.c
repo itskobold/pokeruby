@@ -15,6 +15,7 @@
 #include "new_game.h"
 #include "option_menu.h"
 #include "palette.h"
+#include "play_time.h"
 #include "pokedex.h"
 #include "pokemon_menu.h"
 #include "pokenav.h"
@@ -49,9 +50,13 @@ enum {
     MENU_ACTION_OPTIONS,
     MENU_ACTION_EXIT,
 	MENU_ACTION_PLAYER_LINK,
-	MENU_ACTION_PLAYER_SHORT, //this is so dumb and hacky omfg
-	MENU_ACTION_PLAYER_SHORT_LINK,
 };
+
+//Clock related things
+const u8 *gHourLookup[24] = { TimeText_12AM, TimeText_1AM, TimeText_2AM, TimeText_3AM, TimeText_4AM, TimeText_5AM, TimeText_6AM, TimeText_7AM, TimeText_8AM, TimeText_9AM, TimeText_10AM, TimeText_11AM, TimeText_12PM, TimeText_1PM, TimeText_2PM, TimeText_3PM, TimeText_4PM, TimeText_5PM, TimeText_6PM, TimeText_7PM, TimeText_8PM, TimeText_9PM, TimeText_10PM, TimeText_11PM };
+const u8 *gDayLookup[7] = { TimeText_Monday, TimeText_Tuesday, TimeText_Wednesday, TimeText_Thursday, TimeText_Friday, TimeText_Saturday, TimeText_Sunday };
+const u8 *gSeasonLookup[12] = { TimeText_EarlySpring, TimeText_Spring, TimeText_LateSpring, TimeText_EarlySummer, TimeText_Summer, TimeText_LateSummer, TimeText_EarlyFall, TimeText_Fall, TimeText_LateFall, TimeText_EarlyWinter, TimeText_Winter, TimeText_LateWinter };
+const u8 *gDNStatusLookup[4] = { TimeText_Dawn, TimeText_Day, TimeText_Dusk, TimeText_Night };
 
 #if DEBUG
 static u32 _debugStartMenu_0  __attribute__((unused));
@@ -97,8 +102,6 @@ static u8 StartMenu_OptionCallback(void);
 static u8 StartMenu_ExitCallback(void);
 static u8 StartMenu_PlayerLinkCallback(void);
 
-static u8 GetPlayerNameLength(u8 *playerName); //delete eventually
-
 static const struct MenuAction sStartMenuItems[] =
 {
     { SystemText_Dummy, StartMenu_DummyCallback },
@@ -115,15 +118,13 @@ static const struct MenuAction sStartMenuItems[] =
     { SystemText_Option, StartMenu_OptionCallback },
     { SystemText_Exit, StartMenu_ExitCallback },
     { SystemText_Player, StartMenu_PlayerLinkCallback },
-	{ SystemText_PlayerShortName, StartMenu_PlayerLinkCallback },
-	{ SystemText_PlayerShortName, StartMenu_PlayerLinkCallback },
 };
 
 //Private functions
 static void BuildStartMenuActions(void);
 static void UpdateStartMenuOptions(void);
 static void AddStartMenuAction(u8 action);
-static void DisplaySafariBallsWindow(void);
+static void DisplayDateAndWeatherWindow(void);
 static bool32 PrintStartMenuItemsMultistep(s16 *a, u32 b);
 static bool32 InitStartMenuMultistep(s16 *a, s16 *b);
 static void Task_StartMenu(u8 taskId);
@@ -161,6 +162,10 @@ static bool32 sub_80719FC(u8 *ptr);
 static void sub_8071B54(void);
 static void Task_8071B64(u8 taskId);
 
+static void CopyClockStrings(void);
+static void ShowTimeAndDate(void);
+static void ShowWeatherOrSafariBalls(void);
+
 #if DEBUG
 
 void debug_sub_8075D9C(void);
@@ -168,6 +173,7 @@ void debug_sub_8075D9C(void);
 u8 debug_sub_8075C30(void)
 {
 	StartMenu_DestroyScrollArrows();
+	gSaveBlock2.statusStartMenuClock = FALSE;
 	CloseMenu();
     debug_sub_8075D9C();
     return 1;
@@ -322,27 +328,13 @@ static void BuildStartMenuActionList(void)
 				}
 				break;
 			case MENU_ACTION_PLAYER:
-				if (GetPlayerNameLength(gSaveBlock2.playerName) < 4) //i hate this so much but i'm beyond caring
+				if (is_c1_link_related_active() == TRUE)
 				{
-					if (is_c1_link_related_active() == TRUE)
-					{
-						sStartMenuActionList[j] = MENU_ACTION_PLAYER_SHORT_LINK;
-					}
-					else
-					{
-						sStartMenuActionList[j] = MENU_ACTION_PLAYER_SHORT;
-					}
+					sStartMenuActionList[j] = MENU_ACTION_PLAYER_LINK;
 				}
 				else
 				{
-					if (is_c1_link_related_active() == TRUE)
-					{
-						sStartMenuActionList[j] = MENU_ACTION_PLAYER_LINK;
-					}
-					else
-					{
-						sStartMenuActionList[j] = MENU_ACTION_PLAYER;
-					}
+					sStartMenuActionList[j] = MENU_ACTION_PLAYER;
 				}
 				j++;
 				break;
@@ -375,20 +367,6 @@ static void BuildStartMenuActionList(void)
 				break;
 		}
 	}
-}
-
-static u8 GetPlayerNameLength(u8 *playerName)
-//this is a copy of sub_80BB8A8 in secret_base.c
-//delete this eventually & use that when it gets a proper name
-{
-    u8 i;
-
-    for (i = 0; i < 7; i++)
-    {
-        if (playerName[i] == EOS)
-            return i;
-    }
-    return 7;
 }
 
 static void BuildStartMenuActions(void)
@@ -424,18 +402,64 @@ static void BuildStartMenuActions(void)
 		SetVerticalScrollIndicators(BOTTOM_ARROW, INVISIBLE);
 }
 
-//Show number of safari balls left
-static void DisplaySafariBallsWindow(void)
+static void CopyClockStrings(void)
 {
-    sub_8072C44(gStringVar1, gNumSafariBalls, 12, 1);
-    Menu_DrawStdWindowFrame(0, 0, 10, 5);
-    Menu_PrintText(gOtherText_SafariStock, 1, 1);
+	StringCopy(gStringVar1, gHourLookup[gSaveBlock2.timeHour]);
+	StringAppend(gStringVar1, TimeText_Spacer);
+	StringAppend(gStringVar1, gDNStatusLookup[gSaveBlock2.dayNightStatus]);
+	StringCopy(gStringVar2, gDayLookup[gSaveBlock2.timeDay]);
+	StringCopy(gStringVar3, gSeasonLookup[CalculateSubSeason()]);
+}
+
+//Show hour & date
+//Also shows weather forecast or safari ball count (if in safari zone)
+static void DisplayDateAndWeatherWindow(void)
+{
+	gSaveBlock2.statusStartMenuClock = TRUE; 
+	
+    Menu_DrawStdWindowFrame(2, 14, 28, 19);
+	
+	CopyClockStrings();
+	ShowTimeAndDate();
+	ShowWeatherOrSafariBalls();
+}
+
+static void ShowTimeAndDate(void)
+{
+	Menu_PrintText(TimeText_PrintTimeString, 3, 15);
+}
+
+void UpdateTimeAndDate(void) //called every minute from play_time.c
+{
+	CopyClockStrings();
+	ShowTimeAndDate();
+}
+
+static void ShowWeatherOrSafariBalls(void)
+{
+	if (GetSafariZoneFlag()) //print safari ball count if in safari zone
+	{
+		sub_8072C44(gStringVar1, gNumSafariBalls, 12, 1);
+		Menu_PrintText(gOtherText_SafariStock, 3, 17);
+	}
+	else //display weather forecast if else - this will need to be implemented later
+	{
+		Menu_PrintText(gOtherText_WeatherForecastPlaceholder, 3, 17);
+	}
+}
+
+void UpdateWeatherOrSafariBalls(void) //called every minute from play_time.c
+{
+	CopyClockStrings();
+	ShowWeatherOrSafariBalls();
 }
 
 //Prints n menu items starting at *index
 static bool32 PrintStartMenuItemsMultistep(s16 *index, u32 n)
 {
     int _index = *index;
+	
+	Menu_BlankWindowRect(23, 2, 28, 11); //clears the menu first
 
     do
     {
@@ -471,8 +495,7 @@ static bool32 InitStartMenuMultistep(s16 *step, s16 *index)
 		(*step)++;
         break;
     case 2:
-        if (GetSafariZoneFlag())
-            DisplaySafariBallsWindow();
+        DisplayDateAndWeatherWindow();
         (*step)++;
         break;
     case 3:
@@ -584,9 +607,6 @@ static u8 StartMenu_InputProcessCallback(void)
 			if (sStartMenuCursorPosBuffer != sStartMenuCursorPos)
 				PlaySE(SE_SELECT);
 		}
-		
-		/*if (sStartMenuCursorPos == 0 && sStartMenuItems[sCurrentStartMenuActions[sStartMenuCursorPos]].func == sStartMenuItems[GetFirstStartMenuAction()].func) //check new position - if cursor is at the top and item IS first available option, hide up arrow
-			SetVerticalScrollIndicators(TOP_ARROW, INVISIBLE);*/
     }
     if (gMain.newKeys & DPAD_DOWN)
     {
@@ -604,9 +624,6 @@ static u8 StartMenu_InputProcessCallback(void)
 			if (sStartMenuCursorPosBuffer != sStartMenuCursorPos)
 				PlaySE(SE_SELECT);
 		}
-		
-		/*if (sStartMenuCursorPos == 4 && sStartMenuItems[sCurrentStartMenuActions[sStartMenuCursorPos]].func == StartMenu_ExitCallback)
-			SetVerticalScrollIndicators(BOTTOM_ARROW, INVISIBLE);*/
     }
     if (gMain.newKeys & A_BUTTON)
     {
@@ -616,6 +633,7 @@ static u8 StartMenu_InputProcessCallback(void)
             if (GetNationalPokedexCount(0) == 0)
                 return 0;
         }
+		gSaveBlock2.statusStartMenuClock = FALSE;
         gMenuCallback = sStartMenuItems[sCurrentStartMenuActions[sStartMenuCursorPos]].func;
         if (gMenuCallback != StartMenu_SaveCallback &&
            gMenuCallback != StartMenu_ExitCallback &&
@@ -626,6 +644,7 @@ static u8 StartMenu_InputProcessCallback(void)
     if (gMain.newKeys & (START_BUTTON | B_BUTTON))
     {
 		StartMenu_DestroyScrollArrows();
+		gSaveBlock2.statusStartMenuClock = FALSE;
 		CloseMenu();
         return 1;
     }
@@ -697,6 +716,7 @@ static u8 StartMenu_PlayerCallback(void)
 static u8 StartMenu_SaveCallback(void)
 {
 	StartMenu_DestroyScrollArrows();
+	gSaveBlock2.statusStartMenuClock = FALSE;
     Menu_DestroyCursor();
     gMenuCallback = SaveCallback1;
     return 0;
@@ -719,6 +739,7 @@ static u8 StartMenu_OptionCallback(void)
 static u8 StartMenu_ExitCallback(void)
 {
 	StartMenu_DestroyScrollArrows();
+	gSaveBlock2.statusStartMenuClock = FALSE;
 	CloseMenu();
     return 1;
 }
@@ -727,6 +748,7 @@ static u8 StartMenu_ExitCallback(void)
 static u8 StartMenu_RetireCallback(void)
 {
 	StartMenu_DestroyScrollArrows();
+	gSaveBlock2.statusStartMenuClock = FALSE;
 	CloseMenu();
     SafariZoneRetirePrompt();
     return 1;
@@ -736,6 +758,7 @@ static u8 StartMenu_RetireCallback(void)
 static u8 StartMenu_DummyCallback(void)
 {
 	StartMenu_DestroyScrollArrows();
+	gSaveBlock2.statusStartMenuClock = FALSE;
 	CloseMenu();
     return 1;
 }

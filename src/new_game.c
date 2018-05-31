@@ -101,7 +101,8 @@ void SetDefaultGameModeAndNuzlocke(void)
 void SetDefaultGameTime(void)
 {
 	gSaveBlock2.timeMinute = 0;
-	gSaveBlock2.timeHour = TIME_HOUR_6AM; //9AM
+	gSaveBlock2.timeHour = TIME_HOUR_9AM;
+	UpdateDayNightStatus();
 	gSaveBlock2.timeDay = TIME_DAY_TUESDAY;
 	gSaveBlock2.timeWeek = TIME_WEEK_1;
 	gSaveBlock2.timeSeason = TIME_SEASON_SPRING;

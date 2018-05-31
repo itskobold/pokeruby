@@ -1,5 +1,7 @@
 #include "global.h"
+#include "menu.h"
 #include "play_time.h"
+#include "start_menu.h"
 
 const u8 gSunriseTimes[8] = {TIME_HOUR_8AM, TIME_HOUR_7AM, TIME_HOUR_6AM, TIME_HOUR_7AM, TIME_HOUR_8AM, TIME_HOUR_9AM, TIME_HOUR_10AM, TIME_HOUR_9AM};
 const u8 gSunsetTimes[8] = {TIME_HOUR_6PM, TIME_HOUR_7PM, TIME_HOUR_8PM, TIME_HOUR_7PM, TIME_HOUR_6PM, TIME_HOUR_5PM, TIME_HOUR_4PM, TIME_HOUR_5PM};
@@ -93,7 +95,21 @@ void IncrementClockMinute(void) //adds 1 minute to game time
 		gSaveBlock2.timeMinute = TIME_MINUTE_0;
 		IncrementClockHour();
 	}
+	
+	//minute routines
+	UpdateStartMenuClock();
+	
 	gSaveBlock2.timeMinute++;
+}
+
+void UpdateStartMenuClock(void)
+{
+	if (gSaveBlock2.statusStartMenuClock == FALSE)
+		return;
+	
+	Menu_BlankWindowRect(3, 15, 27, 18);
+	UpdateTimeAndDate();
+	UpdateWeatherOrSafariBalls();
 }
 
 void IncrementClockHour(void) //adds 1 hour to game time
@@ -143,6 +159,21 @@ void IncrementClockYear(void) //adds 1 year to game time
 		gSaveBlock2.timeYear = TIME_YEAR_0;
 	}
 	gSaveBlock2.timeYear++;
+}
+
+u8 CalculateSubSeason(void)
+{
+	int i = 1;
+	u8 month = (gSaveBlock2.timeSeason * 3);
+	
+	if (gSaveBlock2.timeWeek == TIME_WEEK_1 && gSaveBlock2.timeDay > TIME_DAY_THURSDAY)
+		i++;
+	else if (gSaveBlock2.timeWeek == TIME_WEEK_0 && gSaveBlock2.timeDay < TIME_DAY_THURSDAY)
+		i--;
+	
+	month = month + i;
+	
+	return month;
 }
 
 void UpdateDayNightStatus(void)

@@ -63,23 +63,6 @@
 #define TIME_DAY_ANY			((TIME_DAWN | TIME_DAY))
 #define TIME_NIGHT_ANY			((TIME_DUSK | TIME_NIGHT))
 
-//early season - week 0 and monday-wednesday
-//late season - week 1 and friday-sunday
-//mid season - week 0 thursday-sunday, week 1 monday-thursday
-//these haven't been tested!!
-#define TIME_EARLY_SPRING		((TIME_DAY_MONDAY | TIME_DAY_TUESDAY | TIME_DAY_WEDNESDAY & TIME_WEEK_0 & TIME_SEASON_SPRING))
-#define TIME_LATE_SPRING		((TIME_DAY_FRIDAY | TIME_DAY_SATURDAY | TIME_DAY_SUNDAY & TIME_WEEK_1 & TIME_SEASON_SPRING))
-#define TIME_MID_SPRING			((!TIME_EARLY_SPRING & !TIME_LATE_SPRING & TIME_SEASON_SPRING))
-#define TIME_EARLY_SUMMER		((TIME_DAY_MONDAY | TIME_DAY_TUESDAY | TIME_DAY_WEDNESDAY & TIME_WEEK_0 & TIME_SEASON_SUMMER))
-#define TIME_LATE_SUMMER		((TIME_DAY_FRIDAY | TIME_DAY_SATURDAY | TIME_DAY_SUNDAY & TIME_WEEK_1 & TIME_SEASON_SUMMER))
-#define TIME_MID_SUMMER			((!TIME_EARLY_SUMMER & !TIME_LATE_SUMMER & TIME_SEASON_SUMMER))
-#define TIME_EARLY_FALL			((TIME_DAY_MONDAY | TIME_DAY_TUESDAY | TIME_DAY_WEDNESDAY & TIME_WEEK_0 & TIME_SEASON_FALL))
-#define TIME_LATE_FALL			((TIME_DAY_FRIDAY | TIME_DAY_SATURDAY | TIME_DAY_SUNDAY & TIME_WEEK_1 & TIME_SEASON_FALL))
-#define TIME_MID_FALL			((!TIME_EARLY_FALL & !TIME_LATE_FALL & TIME_SEASON_FALL))
-#define TIME_EARLY_WINTER		((TIME_DAY_MONDAY | TIME_DAY_TUESDAY | TIME_DAY_WEDNESDAY & TIME_WEEK_0 & TIME_SEASON_WINTER))
-#define TIME_LATE_WINTER		((TIME_DAY_FRIDAY | TIME_DAY_SATURDAY | TIME_DAY_SUNDAY & TIME_WEEK_1 & TIME_SEASON_WINTER))
-#define TIME_MID_WINTER			((!TIME_EARLY_WINTER & !TIME_LATE_WINTER & TIME_SEASON_WINTER))
-
 void PlayTimeCounter_Reset(void);
 void PlayTimeCounter_Start(void);
 void PlayTimeCounter_Stop(void);
@@ -93,5 +76,9 @@ void IncrementClockWeek(void);
 void IncrementClockSeason(void);
 void IncrementClockYear(void);
 void UpdateDayNightStatus(void);
+u8 CalculateSubSeason(void);
+
+//minute routines
+void UpdateStartMenuClock(void);
 
 #endif // GUARD_PLAY_TIME_H

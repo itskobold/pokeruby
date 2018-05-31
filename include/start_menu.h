@@ -1,7 +1,7 @@
 #ifndef GUARD_STARTER_CHOOSE_H
 #define GUARD_STARTER_CHOOSE_H
 
-#define NUM_START_MENU_ACTIONS 16
+#define NUM_START_MENU_ACTIONS 14
 
 extern u8 (*gMenuCallback)(void);
 
@@ -13,6 +13,9 @@ void ScrSpecial_DoSaveDialog(void);
 void sub_8071B28(void);
 void debug_sub_8075DB4(struct BattleTowerEReaderTrainer *ereaderTrainer, const u8 *b, u32 trainerId);
 bool8 debug_sub_8075C30(void);
+
+void UpdateTimeAndDate(void);
+void UpdateWeatherOrSafariBalls(void);
 
 #if DEBUG
 extern u32 gUnknown_Debug_03004BD0;
