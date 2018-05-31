@@ -15,6 +15,9 @@ enum
 
 static u8 sPlayTimeCounterState;
 
+static void RunMinuteRoutines(void);
+static void RunHourRoutines(void);
+
 void PlayTimeCounter_Reset()
 {
     sPlayTimeCounterState = STOPPED;
@@ -63,7 +66,6 @@ void PlayTimeCounter_Update()
                 gSaveBlock2.playTimeMinutes++;
 				
 				IncrementClockMinute();
-				UpdateDayNightStatus();
 
                 if (gSaveBlock2.playTimeMinutes > 59)
                 {
@@ -88,20 +90,6 @@ void PlayTimeCounter_SetToMax(void)
     gSaveBlock2.playTimeVBlanks = 59;
 }
 
-void IncrementClockMinute(void) //adds 1 minute to game time
-{
-	if (gSaveBlock2.timeMinute + 1 > TIME_MINUTE_2)
-	{
-		gSaveBlock2.timeMinute = TIME_MINUTE_0;
-		IncrementClockHour();
-	}
-	
-	//minute routines
-	UpdateStartMenuClock();
-	
-	gSaveBlock2.timeMinute++;
-}
-
 void UpdateStartMenuClock(void)
 {
 	if (gSaveBlock2.statusStartMenuClock == FALSE)
@@ -112,14 +100,41 @@ void UpdateStartMenuClock(void)
 	UpdateWeatherOrSafariBalls();
 }
 
+static void RunMinuteRoutines(void) //called every minute
+{
+	UpdateStartMenuClock();
+}
+
+static void RunHourRoutines(void) //called every hour
+{
+	UpdateDayNightStatus();
+}
+
+void IncrementClockMinute(void) //adds 1 minute to game time
+{
+	if (gSaveBlock2.timeMinute + 1 > TIME_MINUTE_2)
+	{
+		gSaveBlock2.timeMinute = TIME_MINUTE_0;
+		RunMinuteRoutines();
+		IncrementClockHour();
+		return;
+	}
+	
+	gSaveBlock2.timeMinute++;
+	RunMinuteRoutines();
+}
+
 void IncrementClockHour(void) //adds 1 hour to game time
 {
 	if (gSaveBlock2.timeHour + 1 > TIME_HOUR_11PM)
 	{
 		gSaveBlock2.timeHour = TIME_HOUR_MIDNIGHT;
+		RunHourRoutines();
 		IncrementClockDay();
+		return;
 	}
 	gSaveBlock2.timeHour++;
+	RunHourRoutines();
 }
 
 void IncrementClockDay(void) //adds 1 day to game time
@@ -128,6 +143,7 @@ void IncrementClockDay(void) //adds 1 day to game time
 	{
 		gSaveBlock2.timeDay = TIME_DAY_MONDAY;
 		IncrementClockWeek();
+		return;
 	}
 	gSaveBlock2.timeDay++;
 }
@@ -138,6 +154,7 @@ void IncrementClockWeek(void) //adds 1 week to game time
 	{
 		gSaveBlock2.timeWeek = TIME_WEEK_0;
 		IncrementClockSeason();
+		return;
 	}
 	gSaveBlock2.timeWeek++;
 }
@@ -148,6 +165,7 @@ void IncrementClockSeason(void) //adds 1 season to game time
 	{
 		gSaveBlock2.timeSeason = TIME_SEASON_SPRING;
 		IncrementClockYear();
+		return;
 	}
 	gSaveBlock2.timeSeason++;
 }
@@ -157,6 +175,7 @@ void IncrementClockYear(void) //adds 1 year to game time
 	if (gSaveBlock2.timeYear + 1 > TIME_YEAR_7)
 	{
 		gSaveBlock2.timeYear = TIME_YEAR_0;
+		return;
 	}
 	gSaveBlock2.timeYear++;
 }
