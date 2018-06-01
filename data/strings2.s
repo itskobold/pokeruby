@@ -20,7 +20,7 @@ gMultiText_LinkError:: @ 842C34C
 	.string "{HIGHLIGHT TRANSPARENT}{COLOR WHITE2}Link error...\nCheck your Game Link cable connection,\nand turn the power off and on.$"
 
 gSystemText_OptionMenu:: @ 842C3A6
-	.string "{PALETTE 9}OPTION$"
+	.string "{PALETTE 9}GAME OPTIONS$"
 
 gSystemText_TextSpeed:: @ 842C3B0
 	.string "{PALETTE 9}TEXT SPEED$"
@@ -33,14 +33,38 @@ gSystemText_BattleStyle:: @ 842C3CE
 
 gSystemText_Sound:: @ 842C3DE
 	.string "{PALETTE 9}SOUND$"
+	
+gSystemText_BikeMode::
+	.string "{PALETTE 9}BIKE MODE$"
+	
+gSystemText_FullParty::
+	.string "{PALETTE 9}FULL PARTY$"
+	
+gSystemText_Keyboard::
+	.string "{PALETTE 9}KEYBOARD$"
 
+gSystemText_Font::
+	.string "{PALETTE 9}SOUND$"
+	
 gSystemText_Frame:: @ 842C3E7
 	.string "{PALETTE 9}FRAME$"
+	
+gSystemText_DowngradeToHardlockeMode::
+	.string "{PALETTE 9}DOWNGRADE TO HARDLOCKE MODE$"
+	
+gSystemText_DowngradeToNuzlockeMode::
+	.string "{PALETTE 9}DOWNGRADE TO HARDLOCKE MODE$"
+	
+gSystemText_DisableNuzlockeMode::
+	.string "{PALETTE 9}DISABLE NUZLOCKE MODE$"
+	
+gSystemText_ResetToDefault::
+	.string "{PALETTE 9}RESET TO DEFAULT$"
 
 gSystemText_Cancel:: @ 842C3F0
-	.string "{PALETTE 9}CANCEL$"
+	.string "{PALETTE 9}EXIT$"
 
-gSystemText_ButtonMode:: @ 842C3FA
+gSystemText_ButtonMode:: @ 842C3FA @@UNUSED
 	.string "{PALETTE 9}BUTTON MODE$"
 
 gSystemText_Slow:: @ 842C409
@@ -69,9 +93,66 @@ gSystemText_Mono:: @ 842C43D
 
 gSystemText_Stereo:: @ 842C445
 	.string "{PALETTE 15}STEREO$"
+	
+gSystemText_HoldB::
+	.string "{PALETTE 15}HOLD B$"
+	
+gSystemText_Auto::
+	.string "{PALETTE 15}AUTO$"
+	
+gSystemText_Swap::
+	.string "{PALETTE 15}SWAP$"
+	
+gSystemText_SendToPC::
+	.string "{PALETTE 15}SEND TO PC$"
+	
+gSystemText_QWERTY::
+	.string "{PALETTE 15}QWERTY$"
+	
+gSystemText_QWERTYPlus::
+	.string "{PALETTE 15}QWERTY+$"
+	
+gSystemText_ABC::
+	.string "{PALETTE 15}ABC$"
+	
+gSystemText_ABCPlus::
+	.string "{PALETTE 15}ABC+$"
+	
+gSystemText_AZERTY::
+	.string "{PALETTE 15}AZERTY$"
+	
+gSystemText_AZERTYPlus::
+	.string "{PALETTE 15}AZERTY+$"
+	
+gSystemText_Dvorak::
+	.string "{PALETTE 15}DVORAK$"
+	
+gSystemText_DvorakPlus::
+	.string "{PALETTE 15}DVORAK+$"
+	
+gSystemText_Colemak::
+	.string "{PALETTE 15}COLEMAK$"
+	
+gSystemText_ColemakPlus::
+	.string "{PALETTE 15}COLEMAK+$"
+	
+gSystemText_Vanilla::
+	.string "{PALETTE 15}VANILLA$"
+	
+gSystemText_Rocket::
+	.string "{PALETTE 15}ROCKET$"
+	
+gSystemText_Magma::
+	.string "{PALETTE 15}MAGMA$"
+	
+gSystemText_Aqua::
+	.string "{PALETTE 15}AQUA$"
+	
+gSystemText_Galactic::
+	.string "{PALETTE 15}GALACTIC$"
 
 gSystemText_Type:: @ 842C44F
-	.string "{PALETTE 15}TYPE$"
+	.string "{PALETTE 15}STYLE: $"
 
 gSystemText_Terminator:: @ 842C457
 	.string "{PALETTE 8}$"

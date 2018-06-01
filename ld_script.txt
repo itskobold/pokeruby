@@ -125,6 +125,7 @@ SECTIONS {
         src/scanline_effect.o(.text);
         src/pokemon_menu.o(.text);
         src/option_menu.o(.text);
+		src/option_menu.o(.data);
         src/pokedex.o(.text);
         src/trainer_card.o(.text);
         src/save_menu_util.o(.text);

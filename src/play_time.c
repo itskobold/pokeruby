@@ -190,7 +190,7 @@ u8 CalculateSubSeason(void)
 	else if (gSaveBlock2.timeWeek == TIME_WEEK_0 && gSaveBlock2.timeDay < TIME_DAY_THURSDAY)
 		i--;
 	
-	month = month + i;
+	month += i;
 	
 	return month;
 }

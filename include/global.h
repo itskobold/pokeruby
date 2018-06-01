@@ -115,7 +115,7 @@ enum
     FEMALE
 };
 
-enum
+enum //REMOVE THIS!
 {
     OPTIONS_BUTTON_MODE_NORMAL,
     OPTIONS_BUTTON_MODE_LR,
@@ -141,7 +141,41 @@ enum
     OPTIONS_BATTLE_STYLE_SET
 };
 
-//HOENNISLES START
+enum
+{
+	OPTIONS_BIKE_MODE_HOLD_B,
+	OPTIONS_BIKE_MODE_AUTO
+};
+
+enum
+{
+	OPTIONS_FULL_PARTY_SWAP,
+	OPTIONS_FULL_PARTY_SEND_TO_PC,
+};
+
+enum
+{
+	OPTIONS_KEYBOARD_QWERTY,
+	OPTIONS_KEYBOARD_QWERTY_PLUS,
+	OPTIONS_KEYBOARD_ABC,
+	OPTIONS_KEYBOARD_ABC_PLUS,
+	OPTIONS_KEYBOARD_AZERTY,
+	OPTIONS_KEYBOARD_AZERTY_PLUS,
+	OPTIONS_KEYBOARD_DVORAK,
+	OPTIONS_KEYBOARD_DVORAK_PLUS,
+	OPTIONS_KEYBOARD_COLEMAK,
+	OPTIONS_KEYBOARD_COLEMAK_PLUS,
+	OPTIONS_KEYBOARD_VANILLA
+};
+
+enum
+{
+	OPTIONS_FONT_ROCKET,
+	OPTIONS_FONT_MAGMA,
+	OPTIONS_FONT_AQUA,
+	OPTIONS_FONT_GALACTIC
+};
+
 enum
 {
 	NUZLOCKE_MODE_OFF,
@@ -157,7 +191,6 @@ enum
 	GAME_MODE_RANDOM,
 	GAME_MODE_SUPER_RANDOM
 };
-//HOENNISLES END
 
 enum
 {
@@ -844,7 +877,7 @@ struct SaveBlock2 /* 0x02024EA4 */
     /*0x10*/ u8 playTimeMinutes;
     /*0x11*/ u8 playTimeSeconds;
     /*0x12*/ u8 playTimeVBlanks;
-    /*0x13*/ u8 optionsButtonMode;         // OPTIONS_BUTTON_MODE_[NORMAL/LR/L_EQUALS_A]
+    /*0x13*/ u8 optionsButtonMode;         // OPTIONS_BUTTON_MODE_[NORMAL/LR/L_EQUALS_A] (unused)
     /*0x14*/ u16 optionsTextSpeed:3;       // OPTIONS_TEXT_SPEED_[SLOW/MID/FAST]
              u16 optionsWindowFrameType:5; // Specifies one of the 20 decorative borders for text boxes
              u16 optionsSound:1;           // OPTIONS_SOUND_[MONO/STEREO]
@@ -852,19 +885,23 @@ struct SaveBlock2 /* 0x02024EA4 */
              u16 optionsBattleSceneOff:1;  // whether battle animations are disabled
              u16 regionMapZoom:1;          // whether the map is zoomed in
     /*0x18*/ struct Pokedex pokedex;
-    /*0x90*/ u8 filler_90[0x4];
+    /*0x90*/ u8 filler_90[0x3];
+	/*0x93*/ u8 optionsBikeMode:1;		   // 0 = HOLD B, 1 = AUTO
+	/*0x93*/ u8 optionsFullParty:1;		   // 0 = SWAP, 1 = SEND TO PC
+	/*0x93*/ u8 optionsFont:2;			   // 0 = ROCKET, 1 = MAGMA, 2 = AQUA, 3 = GALACTIC
+	/*0x93*/ u8 optionsKeyboard:4;		   // 0 = QWERTY, 1 = QWERTY+, 2 = ABC, 3 = ABC+, 4 = AZERTY, 5 = AZERTY+, 6 = DVORAK, 7 = DVORAK+, 8 = COLEMAK, 9 = COLEMAK+, 10 = VANILLA
 	/*0x94*/ u8 statusStartMenuClock:1;	   // is the clock in the start menu being displayed? (used to make it update)
 	/*0x94*/ u8 statusFiller7b:7;
-	/*0x95*/ u8 timeYear:3;			   // 0-7. Randomised at the start of the game. Different world events happen depending on the current year. Rolls over to 0
+	/*0x95*/ u8 timeYear:3;			       // 0-7. Randomised at the start of the game. Different world events happen depending on the current year. Rolls over to 0
 	/*0x95*/ u8 timeSeason:2;			   // 0 = SPRING, 1 = SUMMER, 2 = FALL, 3 = WINTER
-	/*0x95*/ u8 timeWeek:1;			   // 0 = First half of season, 1 = second half of season
+	/*0x95*/ u8 timeWeek:1;			       // 0 = First half of season, 1 = second half of season
 	/*0x95*/ u8 timeMinute:2;			   // 0-2. 3 real minutes in 1 hour
-	/*0x96*/ u8 timeHour:5;			   // 0-23 for 12AM to 11PM
+	/*0x96*/ u8 timeHour:5;			       // 0-23 for 12AM to 11PM
 	/*0x96*/ u8 timeDay:3;				   // 0-6 for Monday to Sunday
 	/*0x97*/ u8 nuzlockeMode:2;			   // 0-3 Normal/Nuzlocke/Hardlocke/Deadlocke
 	/*0x97*/ u8 gameMode:2;				   // 0-3 Story/Sandbox/Random/Super Random
 	/*0x97*/ u8 dayNightStatus:2;		   // 0 = DAWN, 1 = DAY, 2 = DUSK, 3 = NIGHT
-	/*0x97*/ u8 filler_2b:2;		  	   // usable for something
+	/*0x97*/ u8 filler2b:2;
     /*0x98*/ struct Time localTimeOffset;
     /*0xA0*/ struct Time lastBerryTreeUpdate;
     /*0xA8*/ struct BattleTowerData battleTower;
