@@ -153,8 +153,8 @@ gSpecials::
 	def_special DrawWholeMapView
 	def_special StorePlayerCoordsInVars
 	def_special MauvilleGymSpecial3
-	def_special PetalburgGymSpecial1
-	def_special PetalburgGymSpecial2
+	def_special PetalburgGymSlideOpenDoors
+	def_special PetalburgGymOpenDoorsInstantly
 	def_special GetPlayerTrainerIdOnesDigit
 	def_special GetPlayerBigGuyGirlString
 	def_special GetRivalSonDaughterString
@@ -232,7 +232,7 @@ gSpecials::
 	def_special DeleteMonMove
 	def_special ScrSpecial_GetPokemonNicknameAndMoveName
 	def_special ScrSpecial_CountPokemonMoves
-	def_special TeachMoveTutorMove
+	def_special DisplayMoveTutorMenu
 	def_special GetRecordedCyclingRoadResults
 	def_special ScrSpecial_BeginCyclingRoadChallenge
 	def_special GetPlayerAvatarBike

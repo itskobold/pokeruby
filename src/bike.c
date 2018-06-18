@@ -577,7 +577,7 @@ static void AcroBikeTransition_Moving(u8 direction)
     }
     else
     {
-        npc_use_some_d2s(direction);
+        PlayerRideWaterCurrent(direction);
     }
 }
 
@@ -675,7 +675,7 @@ static void AcroBikeTransition_SideJump(u8 direction)
     playerEventObj = &gEventObjects[gPlayerAvatar.eventObjectId];
     PlaySE(SE_JITE_PYOKO);
     playerEventObj->facingDirectionLocked = 1;
-    PlayerSetAnimId(sub_80608A4(direction), 2);
+    PlayerSetAnimId(GetJumpMovementAction(direction), 2);
 }
 
 static void AcroBikeTransition_TurnJump(u8 direction)

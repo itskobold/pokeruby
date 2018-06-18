@@ -18,6 +18,7 @@
 #include "event_object_movement.h"
 #include "metatile_behavior.h"
 #include "field_camera.h"
+#include "field_control_avatar.h"
 #include "field_effect.h"
 #include "field_fadetransition.h"
 #include "fieldmap.h"
@@ -1623,8 +1624,7 @@ bool8 sub_8087058(struct Task *task, struct EventObject *eventObject)
     return FALSE;
 }
 
-void Task_Dive(u8);
-extern int dive_warp(struct MapPosition *, u16);
+static void Task_Dive(u8);
 
 bool8 FldEff_UseDive(void)
 {
@@ -1834,7 +1834,7 @@ bool8 sub_8087548(struct Task *task, struct EventObject *eventObject, struct Spr
         eventObject->invisible = 0;
         CameraObjectReset1();
         PlaySE(SE_W091);
-        EventObjectSetHeldMovement(eventObject, sub_80608A4(DIR_EAST));
+        EventObjectSetHeldMovement(eventObject, GetJumpMovementAction(DIR_EAST));
     }
     return FALSE;
 }
@@ -2438,8 +2438,8 @@ void sub_8088380(struct Task *task)
     IntrCallback callback;
     LoadWordFromTwoHalfwords((u16 *)&task->data[13], (u32 *)&callback);
     SetVBlankCallback(callback);
-    Text_LoadWindowTemplate(&gWindowTemplate_81E6CE4);
-    InitMenuWindow(&gWindowTemplate_81E6CE4);
+    Text_LoadWindowTemplate(&gMenuTextWindowTemplate);
+    InitMenuWindow(&gMenuTextWindowTemplate);
     FreeResourcesAndDestroySprite(&gSprites[task->data[15]]);
     FieldEffectActiveListRemove(FLDEFF_FIELD_MOVE_SHOW_MON);
     DestroyTask(FindTaskIdByFunc(sub_8088120));
@@ -2561,8 +2561,8 @@ void sub_808862C(struct Task *task)
     CpuFill32(0, (void *)VRAM + bg0cnt, 0x800);
     LoadWordFromTwoHalfwords((u16 *)&task->data[13], (u32 *)&intrCallback);
     SetVBlankCallback(intrCallback);
-    Text_LoadWindowTemplate(&gWindowTemplate_81E6CE4);
-    InitMenuWindow(&gWindowTemplate_81E6CE4);
+    Text_LoadWindowTemplate(&gMenuTextWindowTemplate);
+    InitMenuWindow(&gMenuTextWindowTemplate);
     FreeResourcesAndDestroySprite(&gSprites[task->data[15]]);
     FieldEffectActiveListRemove(FLDEFF_FIELD_MOVE_SHOW_MON);
     DestroyTask(FindTaskIdByFunc(sub_808847C));
@@ -2836,7 +2836,7 @@ void sub_80889E4(struct Task *task)
     if (!EventObjectIsMovementOverridden(eventObject) || EventObjectClearHeldMovementIfFinished(eventObject))
     {
         sub_8059BF4();
-        EventObjectSetHeldMovement(eventObject, 0x39);
+        EventObjectSetHeldMovement(eventObject, MOVEMENT_ACTION_START_ANIM_IN_DIRECTION);
         task->data[0]++;
     }
 }
@@ -2968,7 +2968,7 @@ void sub_8088CA0(struct Task *task)
         gPlayerAvatar.preventStep = TRUE;
         SetPlayerAvatarStateMask(1);
         sub_8059BF4();
-        EventObjectSetHeldMovement(eventObject, 0x39);
+        EventObjectSetHeldMovement(eventObject, MOVEMENT_ACTION_START_ANIM_IN_DIRECTION);
         task->data[0]++;
     }
 }
@@ -3008,7 +3008,7 @@ void sub_8088D94(struct Task *task)
         task->data[0]++;
         task->data[2] = 16;
         SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_ON_FOOT);
-        EventObjectSetHeldMovement(&gEventObjects[gPlayerAvatar.eventObjectId], 0x02);
+        EventObjectSetHeldMovement(&gEventObjects[gPlayerAvatar.eventObjectId], MOVEMENT_ACTION_FACE_LEFT);
     }
 }
 
@@ -3033,7 +3033,7 @@ void sub_8088E2C(struct Task *task)
         sub_805B980(eventObject, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_SURFING));
         StartSpriteAnim(&gSprites[eventObject->spriteId], 0x16);
         eventObject->inanimate = 1;
-        EventObjectSetHeldMovement(eventObject, 0x48);
+        EventObjectSetHeldMovement(eventObject, MOVEMENT_ACTION_JUMP_IN_PLACE_LEFT);
         if (task->data[15] & 0x08)
         {
             DestroySprite(&gSprites[eventObject->fieldEffectSpriteId]);
@@ -3343,7 +3343,7 @@ void sub_8089414(struct Task *task)
         sprite->pos2.y = 0;
         sprite->coordOffsetEnabled = 1;
         sub_8059BF4();
-        EventObjectSetHeldMovement(eventObject, 0x39);
+        EventObjectSetHeldMovement(eventObject, MOVEMENT_ACTION_START_ANIM_IN_DIRECTION);
         task->data[0]++;
     }
 }

@@ -819,11 +819,11 @@ const u8 gJumpInPlaceTurnAroundMovementActions[] = {
     MOVEMENT_ACTION_JUMP_IN_PLACE_LEFT_RIGHT,
 };
 const u8 gJumpMovementActions[] = {
-    MOVEMENT_ACITON_JUMP_DOWN,
-    MOVEMENT_ACITON_JUMP_DOWN,
-    MOVEMENT_ACITON_JUMP_UP,
-    MOVEMENT_ACITON_JUMP_LEFT,
-    MOVEMENT_ACITON_JUMP_RIGHT,
+    MOVEMENT_ACTION_JUMP_DOWN,
+    MOVEMENT_ACTION_JUMP_DOWN,
+    MOVEMENT_ACTION_JUMP_UP,
+    MOVEMENT_ACTION_JUMP_LEFT,
+    MOVEMENT_ACTION_JUMP_RIGHT,
 };
 const u8 gJumpSpecialMovementActions[] = {
     MOVEMENT_ACTION_JUMP_SPECIAL_DOWN,
@@ -1182,19 +1182,17 @@ void RemoveEventObject(struct EventObject *eventObject)
 void RemoveEventObjectByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup)
 {
     u8 eventObjectId;
-
-    if (TryGetEventObjectIdByLocalIdAndMap(localId, mapNum, mapGroup, &eventObjectId))
-        return;
-    FlagSet(GetEventObjectFlagIdByEventObjectId(eventObjectId));
-    RemoveEventObject(&gEventObjects[eventObjectId]);
+    if (!TryGetEventObjectIdByLocalIdAndMap(localId, mapNum, mapGroup, &eventObjectId))
+    {
+        FlagSet(GetEventObjectFlagIdByEventObjectId(eventObjectId));
+        RemoveEventObject(&gEventObjects[eventObjectId]);
+    }
 }
 
 void RemoveEventObjectInternal(struct EventObject *eventObject)
 {
     struct SpriteFrameImage image;
-    const struct EventObjectGraphicsInfo *gfxInfo = GetEventObjectGraphicsInfo(eventObject->graphicsId);
-
-    image.size = gfxInfo->size;
+    image.size = GetEventObjectGraphicsInfo(eventObject->graphicsId)->size;
     gSprites[eventObject->spriteId].images = &image;
     DestroySprite(&gSprites[eventObject->spriteId]);
 }
@@ -1949,12 +1947,12 @@ void UpdateEventObjectsForCameraUpdate(s16 cameraDeltaX, s16 cameraDeltaY)
     RemoveEventObjectsOutsideView();
 }
 
-u8 AddCameraObject(u8 a)
+u8 AddCameraObject(u8 trackedSpriteId)
 {
     u8 spriteId = CreateSprite(&gCameraSpriteTemplate, 0, 0, 4);
 
     gSprites[spriteId].invisible = TRUE;
-    gSprites[spriteId].data[0] = a;
+    gSprites[spriteId].data[0] = trackedSpriteId;
     return spriteId;
 }
 
@@ -4028,7 +4026,7 @@ bool8 CopyablePlayerMovement_GoSpeed4(struct EventObject *eventObject, struct Sp
     direction = playerDirection;
     direction = state_to_direction(gInitialMovementTypeFacingDirections[eventObject->movementType], eventObject->directionSequenceIndex, direction);
     EventObjectMoveDestCoords(eventObject, direction, &x, &y);
-    EventObjectSetSingleMovement(eventObject, sprite, sub_80608A4(direction));
+    EventObjectSetSingleMovement(eventObject, sprite, GetJumpMovementAction(direction));
     if (GetCollisionAtCoords(eventObject, x, y, direction) || (tileCallback != NULL && !tileCallback(MapGridGetMetatileBehaviorAt(x, y))))
     {
         EventObjectSetSingleMovement(eventObject, sprite, GetFaceDirectionMovementAction(direction));
@@ -4079,7 +4077,7 @@ void MovementType_TreeDisguise(struct Sprite *sprite)
         EventObjectGetLocalIdAndMap(eventObject, &gFieldEffectArguments[0], &gFieldEffectArguments[1], &gFieldEffectArguments[2]);
         eventObject->fieldEffectSpriteId = FieldEffectStart(FLDEFF_TREE_DISGUISE);
         eventObject->directionSequenceIndex = 1;
-        sprite->data[7] ++;
+        sprite->data[7]++;
     }
     UpdateEventObjectCurrentMovement(&gEventObjects[sprite->data[0]], sprite, MovementType_Disguise_Callback);
 }
@@ -4099,7 +4097,7 @@ void MovementType_MountainDisguise(struct Sprite *sprite)
         EventObjectGetLocalIdAndMap(eventObject, &gFieldEffectArguments[0], &gFieldEffectArguments[1], &gFieldEffectArguments[2]);
         eventObject->fieldEffectSpriteId = FieldEffectStart(FLDEFF_MOUNTAIN_DISGUISE);
         eventObject->directionSequenceIndex = 1;
-        sprite->data[7] ++;
+        sprite->data[7]++;
     }
     UpdateEventObjectCurrentMovement(&gEventObjects[sprite->data[0]], sprite, MovementType_Disguise_Callback);
 }
@@ -4111,7 +4109,7 @@ void MovementType_Hidden(struct Sprite *sprite)
         gEventObjects[sprite->data[0]].fixedPriority = 1;
         sprite->subspriteMode = 2;
         sprite->oam.priority = 3;
-        sprite->data[7] ++;
+        sprite->data[7]++;
     }
     UpdateEventObjectCurrentMovement(&gEventObjects[sprite->data[0]], sprite, MovementType_Hidden_Callback);
 }
@@ -4127,7 +4125,7 @@ u8 MovementType_Hidden_Step0(struct EventObject *eventObject, struct Sprite *spr
     return 0;
 }
 
-u8 MovementType_WalkInPlace_Step1(struct EventObject *eventObject, struct Sprite *sprite)
+u8 MovementType_MoveInPlace_Step1(struct EventObject *eventObject, struct Sprite *sprite)
 {
     if (EventObjectExecSingleMovementAction(eventObject, sprite))
     {
@@ -4476,29 +4474,29 @@ void sub_8060388(s16 x1, s16 y1, s16 *x2, s16 *y2)
 {
     *x2 = (x1 - gSaveBlock1.pos.x) << 4;
     *y2 = (y1 - gSaveBlock1.pos.y) << 4;
-    *x2 -= gUnknown_0300489C;
-    *y2 -= gUnknown_03004898;
+    *x2 -= gTotalCameraPixelOffsetX;
+    *y2 -= gTotalCameraPixelOffsetY;
 }
 
 void sub_80603CC(s16 x1, s16 y1, s16 *x2, s16 *y2)
 {
     s16 x3;
     s16 y3;
-    x3 = -gUnknown_0300489C - gUnknown_03004880.unk10;
-    y3 = -gUnknown_03004898 - gUnknown_03004880.unk14;
-    if (gUnknown_03004880.unk10 > 0)
+    x3 = -gTotalCameraPixelOffsetX - gFieldCamera.curMovementOffsetX;
+    y3 = -gTotalCameraPixelOffsetY - gFieldCamera.curMovementOffsetY;
+    if (gFieldCamera.curMovementOffsetX > 0)
     {
         x3 += 0x10;
     }
-    if (gUnknown_03004880.unk10 < 0)
+    if (gFieldCamera.curMovementOffsetX < 0)
     {
         x3 -= 0x10;
     }
-    if (gUnknown_03004880.unk14 > 0)
+    if (gFieldCamera.curMovementOffsetY > 0)
     {
         y3 += 0x10;
     }
-    if (gUnknown_03004880.unk14 < 0)
+    if (gFieldCamera.curMovementOffsetY < 0)
     {
         y3 -= 0x10;
     }
@@ -4517,19 +4515,19 @@ void GetEventObjectMovingCameraOffset(s16 *x, s16 *y)
 {
     *x = 0;
     *y = 0;
-    if (gUnknown_03004880.unk10 > 0)
+    if (gFieldCamera.curMovementOffsetX > 0)
     {
         (*x)++;
     }
-    if (gUnknown_03004880.unk10 < 0)
+    if (gFieldCamera.curMovementOffsetX < 0)
     {
         (*x)--;
     }
-    if (gUnknown_03004880.unk14 > 0)
+    if (gFieldCamera.curMovementOffsetY > 0)
     {
         (*y)++;
     }
-    if (gUnknown_03004880.unk14 < 0)
+    if (gFieldCamera.curMovementOffsetY < 0)
     {
         (*y)--;
     }
@@ -4603,8 +4601,7 @@ bool8 EventObjectCheckHeldMovementStatus(struct EventObject *eventObject)
 
 bool8 EventObjectClearHeldMovementIfFinished(struct EventObject *eventObject)
 {
-    u8 heldMovementStatus;
-    heldMovementStatus = EventObjectCheckHeldMovementStatus(eventObject);
+    u8 heldMovementStatus = EventObjectCheckHeldMovementStatus(eventObject);
     if (heldMovementStatus != 0 && heldMovementStatus != 16)
         EventObjectClearHeldMovementIfActive(eventObject);
 
@@ -4661,7 +4658,7 @@ dirn_to_anim(GetPlayerRunMovementAction, gPlayerRunMovementActions)
 dirn_to_anim(GetJump2MovementAction, gJump2MovementActions)
 dirn_to_anim(GetJumpInPlaceMovementAction, gJumpInPlaceMovementActions)
 dirn_to_anim(GetJumpInPlaceTurnAroundMovementAction, gJumpInPlaceTurnAroundMovementActions)
-dirn_to_anim(sub_80608A4, gJumpMovementActions)
+dirn_to_anim(GetJumpMovementAction, gJumpMovementActions)
 dirn_to_anim(GetJumpSpecialMovementAction, gJumpSpecialMovementActions)
 dirn_to_anim(GetWalkInPlaceSlowMovementAction, gWalkInPlaceSlowMovementActions)
 dirn_to_anim(GetWalkInPlaceNormalMovementAction, gWalkInPlaceNormalMovementActions)
@@ -6365,17 +6362,17 @@ bool8 MovementAction_ClearAffineAnim_Step0(struct EventObject *eventObject, stru
     return TRUE;
 }
 
-bool8 MovementAction_WalkDownAffine0_Step1(struct EventObject *, struct Sprite *);
+bool8 MovementAction_WalkDownStartAffine_Step1(struct EventObject *, struct Sprite *);
 
-bool8 MovementAction_WalkDownAffine0_Step0(struct EventObject *eventObject, struct Sprite *sprite)
+bool8 MovementAction_WalkDownStartAffine_Step0(struct EventObject *eventObject, struct Sprite *sprite)
 {
     sub_8060ED8(eventObject, sprite, DIR_SOUTH);
     sprite->affineAnimPaused = 0;
     StartSpriteAffineAnimIfDifferent(sprite, 0);
-    return MovementAction_WalkDownAffine0_Step1(eventObject, sprite);
+    return MovementAction_WalkDownStartAffine_Step1(eventObject, sprite);
 }
 
-bool8 MovementAction_WalkDownAffine0_Step1(struct EventObject *eventObject, struct Sprite *sprite)
+bool8 MovementAction_WalkDownStartAffine_Step1(struct EventObject *eventObject, struct Sprite *sprite)
 {
     if (an_walk_any_2(eventObject, sprite))
     {
@@ -6386,17 +6383,17 @@ bool8 MovementAction_WalkDownAffine0_Step1(struct EventObject *eventObject, stru
     return FALSE;
 }
 
-bool8 MovementAction_WalkDownAffine1_Step1(struct EventObject *, struct Sprite *);
+bool8 MovementAction_WalkDownAffine_Step1(struct EventObject *, struct Sprite *);
 
-bool8 MovementAction_WalkDownAffine1_Step0(struct EventObject *eventObject, struct Sprite *sprite)
+bool8 MovementAction_WalkDownAffine_Step0(struct EventObject *eventObject, struct Sprite *sprite)
 {
     sub_8060ED8(eventObject, sprite, DIR_SOUTH);
     sprite->affineAnimPaused = 0;
     ChangeSpriteAffineAnimIfDifferent(sprite, 1);
-    return MovementAction_WalkDownAffine1_Step1(eventObject, sprite);
+    return MovementAction_WalkDownAffine_Step1(eventObject, sprite);
 }
 
-bool8 MovementAction_WalkDownAffine1_Step1(struct EventObject *eventObject, struct Sprite *sprite)
+bool8 MovementAction_WalkDownAffine_Step1(struct EventObject *eventObject, struct Sprite *sprite)
 {
     if (an_walk_any_2(eventObject, sprite))
     {
@@ -7175,7 +7172,7 @@ void GetGroundEffectFlags_Tracks(struct EventObject *eventObj, u32 *flags)
         *flags |= GROUND_EFFECT_FLAG_DEEP_SAND;
     }
     else if (MetatileBehavior_IsSandOrDeepSand(eventObj->previousMetatileBehavior)
-             || MetatileBehavior_IsUnusedFootprintMetatile(eventObj->previousMetatileBehavior))
+             || MetatileBehavior_IsFootprints(eventObj->previousMetatileBehavior))
     {
         *flags |= GROUND_EFFECT_FLAG_SAND;
     }
