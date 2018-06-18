@@ -44,7 +44,7 @@ gSystemText_Keyboard::
 	.string "{PALETTE 9}KEYBOARD$"
 
 gSystemText_Font::
-	.string "{PALETTE 9}SOUND$"
+	.string "{PALETTE 9}FONT$"
 	
 gSystemText_Frame:: @ 842C3E7
 	.string "{PALETTE 9}FRAME$"
