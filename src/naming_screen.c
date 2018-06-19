@@ -714,6 +714,12 @@ static void HandleDpadMovement(struct Task *task)
     s16 cursorY;
     u16 dpadDir;
     s16 prevCursorX;
+	int columnCount;
+	
+	if (gSaveBlock2.optionsKeyboard == OPTIONS_KEYBOARD_VANILLA)
+		columnCount = COLUMN_COUNT;
+	else
+		columnCount = COLUMN_COUNT + 2;
 
     GetCursorPos(&cursorX, &cursorY);
     dpadDir = 0;
@@ -733,8 +739,8 @@ static void HandleDpadMovement(struct Task *task)
 
     //Wrap cursor position in the X direction
     if (cursorX < 0)
-        cursorX = COLUMN_COUNT - 1;
-    if (cursorX > COLUMN_COUNT - 1)
+        cursorX = columnCount - 1;
+    if (cursorX > columnCount - 1)
         cursorX = 0;
 
     //Handle cursor movement in X direction
@@ -748,18 +754,18 @@ static void HandleDpadMovement(struct Task *task)
 #endif
         {
             if (sDpadDeltaX[dpadDir] > 0)
-                cursorX = COLUMN_COUNT - 1;
+                cursorX = columnCount - 1;
             else
                 cursorX = 5;
         }
 
-        if (cursorX == COLUMN_COUNT - 1)
+        if (cursorX == columnCount - 1)
         {
             //We are now on the last column
             task->tKbFunctionKey = cursorY;
             cursorY = s4RowTo3RowTableY[cursorY];
         }
-        else if (prevCursorX == COLUMN_COUNT - 1)
+        else if (prevCursorX == columnCount - 1)
         {
             if (cursorY == 1)
                 cursorY = task->tKbFunctionKey;
@@ -768,7 +774,7 @@ static void HandleDpadMovement(struct Task *task)
         }
     }
 
-    if (cursorX == COLUMN_COUNT - 1)
+    if (cursorX == columnCount - 1)
     {
         //There are only 3 keys on the last column, unlike the others,
         //so wrap Y accordingly
@@ -994,7 +1000,13 @@ static void CursorInit(void)
     SetCursorPos(0, 0);
 }
 
-static const u8 sKeyboardSymbolPositions[][COLUMN_COUNT] = {
+static const u8 sKeyboardSymbolPositions[][COLUMN_COUNT + 1] = {
+    {0,  2,  4,  6,  8, 10, 12, 14, 16, 18},  //Upper page
+    {0,  2,  4,  6,  8, 10, 12, 14, 16, 18},  //Lower page
+    {0,  2,  4,  6,  8, 10, 12, 14, 16, 18},  //Others page
+};
+
+static const u8 sKeyboardSymbolPositionsVanilla[][COLUMN_COUNT] = {
 #if ENGLISH
     {1,  3,  5,  8, 10, 12, 14, 17, 19},  //Upper page
     {1,  3,  5,  8, 10, 12, 14, 17, 19},  //Lower page
@@ -1008,7 +1020,10 @@ static const u8 sKeyboardSymbolPositions[][COLUMN_COUNT] = {
 
 static u8 CursorColToKeyboardCol(s16 x)
 {
-    return sKeyboardSymbolPositions[namingScreenDataPtr->currentPage][x];
+	if (gSaveBlock2.optionsKeyboard == OPTIONS_KEYBOARD_VANILLA)
+		return sKeyboardSymbolPositionsVanilla[namingScreenDataPtr->currentPage][x];
+	else
+		return sKeyboardSymbolPositions[namingScreenDataPtr->currentPage][x];
 }
 
 static void SetCursorPos(s16 x, s16 y)
@@ -1033,7 +1048,14 @@ static void GetCursorPos(s16 *x, s16 *y)
 
 static void MoveCursorToOKButton(void)
 {
-    SetCursorPos(COLUMN_COUNT - 1, 2);
+	int columnCount;
+	
+	if (gSaveBlock2.optionsKeyboard == OPTIONS_KEYBOARD_VANILLA)
+		columnCount = COLUMN_COUNT;
+	else
+		columnCount = COLUMN_COUNT + 2;
+	
+    SetCursorPos(columnCount - 1, 2);
 }
 
 static void sub_80B6888(u8 a)
@@ -1063,10 +1085,16 @@ static u8 GetKeyRoleAtCursorPos(void)
 {
     const u8 keyRoles[] = {KEY_ROLE_PAGE, KEY_ROLE_BACKSPACE, KEY_ROLE_OK};
     s16 cursorX;
-    s16 cursorY;
+    s16 cursorY;	
+	int columnCount;
+	
+	if (gSaveBlock2.optionsKeyboard == OPTIONS_KEYBOARD_VANILLA)
+		columnCount = COLUMN_COUNT;
+	else
+		columnCount = COLUMN_COUNT + 2;
 
     GetCursorPos(&cursorX, &cursorY);
-    if (cursorX < COLUMN_COUNT - 1)
+    if (cursorX < columnCount - 1)
         return KEY_ROLE_CHAR;
     else
         return keyRoles[cursorY];
@@ -1074,10 +1102,17 @@ static u8 GetKeyRoleAtCursorPos(void)
 
 void sub_80B6998(struct Sprite *sprite)
 {
+	int columnCount;
+	
+	if (gSaveBlock2.optionsKeyboard == OPTIONS_KEYBOARD_VANILLA)
+		columnCount = COLUMN_COUNT;
+	else
+		columnCount = COLUMN_COUNT + 2;
+	
     if (sprite->animEnded)
         StartSpriteAnim(sprite, 0);
     sprite->invisible = (sprite->data[4] & 0xFF);
-    if (sprite->data[0] == COLUMN_COUNT - 1)
+    if (sprite->data[0] == columnCount - 1)
         sprite->invisible = TRUE;
     if (sprite->invisible || (sprite->data[4] & 0xFF00) == 0
      || sprite->data[0] != sprite->data[2] || sprite->data[1] != sprite->data[3])
@@ -1767,11 +1802,11 @@ static void (*const gUnknown_083CE368[])(void) =
     sub_80B7924,
 };
 
-static const u8 sKeyboardCharacters[][4][20];  //forward declaration
+static const u8 sKeyboardCharacters[][3][4][20];  //forward declaration
 
 static u8 GetCharAtKeyboardPos(s16 a, s16 b)
 {
-    return sKeyboardCharacters[namingScreenDataPtr->currentPage][b][a];
+    return sKeyboardCharacters[gSaveBlock2.optionsKeyboard][namingScreenDataPtr->currentPage][b][a];
 }
 
 static void sub_80B7794(void)
@@ -1808,11 +1843,13 @@ static void sub_80B7850(void)
 
 static void PrintKeyboardCharacters(u8 page)  //print letters on page
 {
-    s16 i;
+    s16 i, j;
     s16 r5;
+	
+	j = gSaveBlock2.optionsKeyboard;
 
     for (i = 0, r5 = 9; i < 4; i++, r5 += 2)
-        Menu_PrintText(sKeyboardCharacters[page][i], 3, r5);
+        Menu_PrintText(sKeyboardCharacters[j][page][i], 3, r5);
 }
 
 static void sub_80B78A8(void)
@@ -1906,41 +1943,228 @@ static const struct NamingScreenTemplate *const sNamingScreenTemplates[] =
     &monNamingScreenTemplate,
 };
 
-static const u8 sKeyboardCharacters[][4][20] =
+static const u8 sKeyboardCharacters[][3][4][20] =
 {
-#if ENGLISH
-    {
-        _(" A B C  D E F    . "),
-        _(" G H I  J K L    , "),
-        _(" M N O  P Q R S    "),
-        _(" T U V  W X Y Z    "),
-    },
-    {
-        _(" a b c  d e f    . "),
-        _(" g h i  j k l    , "),
-        _(" m n o  p q r s    "),
-        _(" t u v  w x y z    "),
-    },
-#elif GERMAN
-    {
-        _("  ABCD   EFGH   .  "),
-        _("  IJKL   MNOP   ,  "),
-        _("  QRST   UVWX      "),
-        _("  YZ     ÄÖÜ       "),
-    },
-    {
-        _("  abcd   efgh   .  "),
-        _("  ijkl   mnop   ,  "),
-        _("  qrst   uvwx      "),
-        _("  yz     äöü       "),
-    },
-#endif
-    {
-        _(" 0  1  2  3  4     "),
-        _(" 5  6  7  8  9     "),
-        _(" !  ?  ♂  ♀  /  -  "),
-        _(" …  “  ”  ‘  ’     "),
-    },
+	{	//QWERTY
+		{
+			_("0 1 2 3 4 5 6 7 8 9"),
+			_("Q W E R T Y U I O P"),
+			_("A S D F G H J K L  "),
+			_("Z X C V B N M É    "),
+		},
+		{
+			_("0 1 2 3 4 5 6 7 8 9"),
+			_("q w e r t y u i o p"),
+			_("a s d f g h j k l  "),
+			_("z x c v b n m é    "),
+		},
+		{
+			_("0 1 2 3 4 5 6 7 8 9"),
+			_(". , ( ) & + - × / ="),
+			_("! ? ‘ ’ “ ” º ª % ¥"),
+			_("¡ ¿ ♂ ♀ X X X X …  "),
+		},
+	},
+	{	//QWERTY+
+		{
+			_("Q W E R T Y U I O P"),
+			_("A S D F G H J K L ß"),
+			_("Z X C V B N M Ç Ñ Œ"),
+			_("À Á Ä È É Ë Ö Ú Ü  "),
+		},
+		{
+			_("q w e r t y u i o p"),
+			_("a s d f g h j k l ß"),
+			_("z x c v b n m ç ñ œ"),
+			_("à á ä è é ë ö ú ü  "),
+		},
+		{
+			_("0 1 2 3 4 5 6 7 8 9"),
+			_(". , ( ) & + - × / ="),
+			_("! ? ‘ ’ “ ” º ª % ¥"),
+			_("¡ ¿ ♂ ♀ X X X X …  "),
+		},
+	},
+	{	//ABC
+		{
+			_("0 1 2 3 4 5 6 7 8 9"),
+			_("A B C D E F G H I J"),
+			_("K L M N O P Q R S  "),
+			_("T U V W X Y Z É    "),
+		},
+		{
+			_("0 1 2 3 4 5 6 7 8 9"),
+			_("a b c d e f g h i j"),
+			_("k l m n o p q r s  "),
+			_("t u v w x y z é    "),
+		},
+		{
+			_("0 1 2 3 4 5 6 7 8 9"),
+			_(". , ( ) & + - × / ="),
+			_("! ? ‘ ’ “ ” º ª % ¥"),
+			_("¡ ¿ ♂ ♀ X X X X …  "),
+		},
+	},
+	{	//ABC+
+		{
+			_("A B C D E F G H I J"),
+			_("K L M N O P Q R S T"),
+			_("U V W X Y Z ß Ç Ñ Œ"),
+			_("À Á Ä È É Ë Ö Ú Ü  "),
+		},
+		{
+			_("a b c d e f g h i j"),
+			_("k l m n o p q r s t"),
+			_("u v w x y z ß ç ñ œ"),
+			_("à á ä è é ë ö ú ü  "),
+		},
+		{
+			_("0 1 2 3 4 5 6 7 8 9"),
+			_(". , ( ) & + - × / ="),
+			_("! ? ‘ ’ “ ” º ª % ¥"),
+			_("¡ ¿ ♂ ♀ X X X X …  "),
+		},
+	},
+	{	//AZERTY
+		{
+			_("0 1 2 3 4 5 6 7 8 9"),
+			_("A Z E R T Y U I O P"),
+			_("Q S D F G H J K L M"),
+			_("W X C V B N É      "),
+		},
+		{
+			_("0 1 2 3 4 5 6 7 8 9"),
+			_("a z e r t y u i o p"),
+			_("q s d f g h j k l m"),
+			_("w x c v b n é      "),
+		},
+		{
+			_("0 1 2 3 4 5 6 7 8 9"),
+			_(". , ( ) & + - × / ="),
+			_("! ? ‘ ’ “ ” º ª % ¥"),
+			_("¡ ¿ ♂ ♀ X X X X …  "),
+		},
+	},
+	{	//AZERTY+
+		{
+			_("A Z E R T Y U I O P"),
+			_("Q S D F G H J K L M"),
+			_("W X C V B N ß Ç Ñ Œ"),
+			_("À Á Ä È É Ë Ö Ú Ü  "),
+		},
+		{
+			_("a z e r t y u i o p"),
+			_("q s d f g h j k l m"),
+			_("w x c v b n ß ç ñ œ"),
+			_("à á ä è é ë ö ú ü  "),
+		},
+		{
+			_("0 1 2 3 4 5 6 7 8 9"),
+			_(". , ( ) & + - × / ="),
+			_("! ? ‘ ’ “ ” º ª % ¥"),
+			_("¡ ¿ ♂ ♀ X X X X …  "),
+		},
+	},
+	{	//Dvorak
+		{
+			_("0 1 2 3 4 5 6 7 8 9"),
+			_("    P Y F G C R L É"),
+			_("A O E U I D H T N S"),
+			_("  Q J K X B M W V Z"),
+		},
+		{
+			_("0 1 2 3 4 5 6 7 8 9"),
+			_("    p y f g c r l é"),
+			_("a o e u i d h t n s"),
+			_("  q j k x b m w v z"),
+		},
+		{
+			_("0 1 2 3 4 5 6 7 8 9"),
+			_(". , ( ) & + - × / ="),
+			_("! ? ‘ ’ “ ” º ª % ¥"),
+			_("¡ ¿ ♂ ♀ X X X X …  "),
+		},
+	},
+	{	//Dvorak+
+		{
+			_("P Y F G C R L Ç Ñ ß"),
+			_("A O E U I D H T N S"),
+			_("Q J K X B M W V Z Œ"),
+			_("À Á Ä È É Ë Ö Ú Ü  "),
+		},
+		{
+			_("p y f g c r l ç ñ ß"),
+			_("a o e u i d h t n s"),
+			_("q j k x b m w v z œ"),
+			_("à á ä è é ë ö ú ü  "),
+		},
+		{
+			_("0 1 2 3 4 5 6 7 8 9"),
+			_(". , ( ) & + - × / ="),
+			_("! ? ‘ ’ “ ” º ª % ¥"),
+			_("¡ ¿ ♂ ♀ X X X X …  "),
+		},
+	},
+	{	//Colemak
+		{
+			_("0 1 2 3 4 5 6 7 8 9"),
+			_("Q W F P G J L U Y  "),
+			_("A R S T D H N E I O"),
+			_("Z X C V B K M É    "),
+		},
+		{
+			_("0 1 2 3 4 5 6 7 8 9"),
+			_("q w f p g j l u y  "),
+			_("a r s t d h n e i o"),
+			_("z x c v b k m é    "),
+		},
+		{
+			_("0 1 2 3 4 5 6 7 8 9"),
+			_(". , ( ) & + - × / ="),
+			_("! ? ‘ ’ “ ” º ª % ¥"),
+			_("¡ ¿ ♂ ♀ X X X X …  "),
+		},
+	},
+	{	//Colemak+
+		{
+			_("Q W F P G J L U Y Œ"),
+			_("A R S T D H N E I O"),
+			_("Z X C V B K M ß Ç Ñ"),
+			_("À Á Ä È É Ë Ö Ú Ü  "),
+		},
+		{
+			_("q w f p g j l u y œ"),
+			_("a r s t d h n e i o"),
+			_("z x c v b k m ß ç ñ"),
+			_("à á ä è é ë ö ú ü  "),
+		},
+		{
+			_("0 1 2 3 4 5 6 7 8 9"),
+			_(". , ( ) & + - × / ="),
+			_("! ? ‘ ’ “ ” º ª % ¥"),
+			_("¡ ¿ ♂ ♀ X X X X …  "),
+		},
+	},
+	{	//Vanilla
+		{
+			_(" A B C  D E F    . "),
+			_(" G H I  J K L É  , "),
+			_(" M N O  P Q R S    "),
+			_(" T U V  W X Y Z    "),
+		},
+		{
+			_(" a b c  d e f    . "),
+			_(" g h i  j k l é  , "),
+			_(" m n o  p q r s    "),
+			_(" t u v  w x y z    "),
+		},
+		{
+			_(" 0  1  2  3  4     "),
+			_(" 5  6  7  8  9     "),
+			_(" !  ?  ♂  ♀  /  -  "),
+			_(" …  “  ”  ‘  ’     "),
+		},
+	}
 };
 
 const struct OamData gOamData_83CE498 =

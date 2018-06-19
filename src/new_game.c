@@ -89,6 +89,10 @@ void SetDefaultOptions(void)
     gSaveBlock2.optionsSound = OPTIONS_SOUND_MONO;
     gSaveBlock2.optionsBattleStyle = OPTIONS_BATTLE_STYLE_SHIFT;
     gSaveBlock2.optionsBattleSceneOff = FALSE;
+	gSaveBlock2.optionsBikeMode = OPTIONS_BIKE_MODE_HOLD_B;
+	gSaveBlock2.optionsFullParty = OPTIONS_FULL_PARTY_SWAP;
+	gSaveBlock2.optionsKeyboard = OPTIONS_KEYBOARD_QWERTY;
+	gSaveBlock2.optionsFont = OPTIONS_FONT_ROCKET;
     gSaveBlock2.regionMapZoom = FALSE;
 }
 

@@ -4,17 +4,17 @@
 //Dvorak upper page
     {
         _("0 1 2 3 4 5 6 7 8 9"),
-        _("P Y F G C R L É    "),
+        _("    P Y F G C R L É"),
         _("A O E U I D H T N S"),
-        _("Q J K X B M W V Z  "),
+        _("  Q J K X B M W V Z"),
     },
 	
 //Dvorak lower page
     {
         _("0 1 2 3 4 5 6 7 8 9"),
-        _("p y f g c r l é    "),
+        _("    p y f g c r l é"),
         _("a o e u i d h t n s"),
-        _("q j k x b m w v z  "),
+        _("  q j k x b m w v z"),
     },
 	
 //Dvorak others page
