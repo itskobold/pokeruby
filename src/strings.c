@@ -324,6 +324,13 @@ const u8 OtherText_NoEntry[] = _("NO ENTRY");
 const u8 OtherText_Take[] = _("TAKE");
 const u8 OtherText_Read2[] = _("READ");
 
+const u8 FieldMove_Teleport[] = _("{COLOR BLUE}TELEPORT");
+const u8 FieldMove_Dig[] = _("{COLOR BLUE}DIG");
+const u8 FieldMove_SecretPower[] = _("{COLOR BLUE}SECRET POWER");
+const u8 FieldMove_MilkDrink[] = _("{COLOR BLUE}MILK DRINK");
+const u8 FieldMove_SoftBoiled[] = _("{COLOR BLUE}SOFTBOILED");
+const u8 FieldMove_SweetScent[] = _("{COLOR BLUE}SWEET SCENT");
+
 const u8 gOtherText_Hp2[] = _("HP");
 const u8 gOtherText_SpAtk2[] = _("SP. ATK");
 const u8 gOtherText_SpDef2[] = _("SP. DEF");

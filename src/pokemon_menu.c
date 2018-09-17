@@ -71,7 +71,7 @@ bool8 SetUpFieldMove_SoftBoiled(void);
 bool8 SetUpFieldMove_SoftBoiled(void);
 bool8 SetUpFieldMove_SweetScent(void);
 
-#define sFieldMovesTerminator 0xFF // note: should be changed to 0xFFFF, because currently it makes it impossible to add a field move with 0xFF index
+#define sFieldMovesTerminator 0xFFFF // (>>DONE THIS, was 0xFF originally) note: should be changed to 0xFFFF, because currently it makes it impossible to add a field move with 0xFF index
 
 // this file's functions
 static void sub_808A8A8(void);
@@ -82,7 +82,7 @@ static void sub_808A5BC(u8 taskID);
 static void sub_808A8D4(u8 taskID);
 static void sub_808A73C(u8 taskID);
 static void sub_808A848(u8 taskID);
-static void sub_808AAF0(u8 taskID);
+//static void sub_808AAF0(u8 taskID);
 static void sub_808ABF4(u8 taskID);
 static void sub_808AB34(u8 taskID);
 static void FieldCallback_AfterFadeInFromMenu(u8 taskID);
@@ -106,10 +106,10 @@ static void PokemonMenu_Mail(u8 taskID);
 static void PokemonMenu_ReadMail(u8 taskID);
 static void PokemonMenu_CancelSubmenu(u8 taskID);
 static void PokemonMenu_FieldMove(u8 taskID);
-static bool8 SetUpFieldMove_Waterfall(void);
+/*static bool8 SetUpFieldMove_Waterfall(void);
 static bool8 SetUpFieldMove_Surf(void);
 static bool8 SetUpFieldMove_Fly(void);
-static bool8 SetUpFieldMove_Dive(void);
+static bool8 SetUpFieldMove_Dive(void);*/
 
 // ewram data
 
@@ -135,26 +135,16 @@ static const struct MenuAction2 sPokemonMenuActions[] =
     {OtherText_Mail,                PokemonMenu_Mail},
     {OtherText_Read2,               PokemonMenu_ReadMail},
     {gOtherText_CancelNoTerminator, PokemonMenu_CancelSubmenu},
-    {gMoveNames[MOVE_CUT],          PokemonMenu_FieldMove},
-    {gMoveNames[MOVE_FLASH],        PokemonMenu_FieldMove},
-    {gMoveNames[MOVE_ROCK_SMASH],   PokemonMenu_FieldMove},
-    {gMoveNames[MOVE_STRENGTH],     PokemonMenu_FieldMove},
-    {gMoveNames[MOVE_SURF],         PokemonMenu_FieldMove},
-    {gMoveNames[MOVE_FLY],          PokemonMenu_FieldMove},
-    {gMoveNames[MOVE_DIVE],         PokemonMenu_FieldMove},
-    {gMoveNames[MOVE_WATERFALL],    PokemonMenu_FieldMove},
-    {gMoveNames[MOVE_TELEPORT],     PokemonMenu_FieldMove},
-    {gMoveNames[MOVE_DIG],          PokemonMenu_FieldMove},
-    {gMoveNames[MOVE_SECRET_POWER], PokemonMenu_FieldMove},
-    {gMoveNames[MOVE_MILK_DRINK],   PokemonMenu_FieldMove},
-    {gMoveNames[MOVE_SOFT_BOILED],  PokemonMenu_FieldMove},
-    {gMoveNames[MOVE_SWEET_SCENT],  PokemonMenu_FieldMove},
+    {FieldMove_Teleport,     		PokemonMenu_FieldMove},
+    {FieldMove_Dig,         		PokemonMenu_FieldMove},
+    {FieldMove_SecretPower, 		PokemonMenu_FieldMove},
+    {FieldMove_MilkDrink,   		PokemonMenu_FieldMove},
+    {FieldMove_SoftBoiled,  		PokemonMenu_FieldMove},
+    {FieldMove_SweetScent,  		PokemonMenu_FieldMove},
 };
 
 static const u16 sPokeMenuFieldMoves[] =
 {
-    MOVE_CUT, MOVE_FLASH, MOVE_ROCK_SMASH, MOVE_STRENGTH,
-    MOVE_SURF, MOVE_FLY, MOVE_DIVE, MOVE_WATERFALL,
     MOVE_TELEPORT, MOVE_DIG, MOVE_SECRET_POWER, MOVE_MILK_DRINK,
     MOVE_SOFT_BOILED, MOVE_SWEET_SCENT, sFieldMovesTerminator,
 };
@@ -167,14 +157,6 @@ static const struct PartyPopupMenu sUnknown_0839F584 = {3, 9, sUnknown_39F580};
 
 static const struct PokeMenuFieldMoveFunc sFieldMoveFuncs[] =
 {
-    {SetUpFieldMove_Cut,            0x6},
-    {SetUpFieldMove_Flash,          0x9},
-    {SetUpFieldMove_RockSmash,      0x9},
-    {SetUpFieldMove_Strength,       0x9},
-    {SetUpFieldMove_Surf,           0x7},
-    {SetUpFieldMove_Fly,            0x9},
-    {SetUpFieldMove_Dive,           0x9},
-    {SetUpFieldMove_Waterfall,      0x9},
     {SetUpFieldMove_Teleport,       0x9},
     {SetUpFieldMove_Dig,            0x9},
     {SetUpFieldMove_SecretPower,    0x9},
@@ -705,8 +687,8 @@ static void PokemonMenu_CancelSubmenu(u8 taskID)
 }
 
 #define IS_SOFTBOILED_MILKDRINK(ID)((ID == (POKEMENU_MILK_DRINK - POKEMENU_FIRST_FIELD_MOVE_ID) || ID == (POKEMENU_SOFT_BOILED - POKEMENU_FIRST_FIELD_MOVE_ID)))
-#define IS_SURF(ID)((ID == (POKEMENU_SURF - POKEMENU_FIRST_FIELD_MOVE_ID)))
-#define IS_FLY(ID)((ID == (POKEMENU_FLY - POKEMENU_FIRST_FIELD_MOVE_ID)))
+//#define IS_SURF(ID)((ID == (POKEMENU_SURF - POKEMENU_FIRST_FIELD_MOVE_ID)))
+//#define IS_FLY(ID)((ID == (POKEMENU_FLY - POKEMENU_FIRST_FIELD_MOVE_ID)))
 
 #define tFieldMoveId data[11]
 
@@ -725,14 +707,14 @@ static void PokemonMenu_FieldMove(u8 taskID)
             PrintPartyMenuPromptText(sFieldMoveFuncs[tFieldMoveId].field_1, 0);
         gTasks[taskID].func = sub_808ABF4;
     }
-    else if (tFieldMoveId <= 7 && FlagGet(FLAG_BADGE01_GET + tFieldMoveId) != TRUE)
+    /*else if (tFieldMoveId <= 7 && FlagGet(FLAG_BADGE01_GET + tFieldMoveId) != TRUE)
     {
         // can't use a field HM move without a proper badge
         Menu_EraseWindowRect(19, 0, 29, 19);
         sub_806D5A4();
         sub_806E834(gOtherText_CantBeUsedBadge, 1);
         gTasks[taskID].func = sub_808AAF0;
-    }
+    }*/
     else
     {
         if (sFieldMoveFuncs[tFieldMoveId].func() == TRUE)
@@ -746,7 +728,7 @@ static void PokemonMenu_FieldMove(u8 taskID)
             else
                 sub_8133D28(taskID);
         }
-        else
+        /*else
         {
             Menu_EraseWindowRect(19, 0, 29, 19);
             if (IS_SURF(tFieldMoveId) && TestPlayerAvatarFlags(8))
@@ -754,28 +736,36 @@ static void PokemonMenu_FieldMove(u8 taskID)
             else
                 PrintPartyMenuPromptText(sFieldMoveFuncs[tFieldMoveId].field_1, 0);
             gTasks[taskID].func = sub_808ABF4;
-        }
+        }*/
+		
+		else
+		{
+			PrintPartyMenuPromptText(sFieldMoveFuncs[tFieldMoveId].field_1, 0);
+			gTasks[taskID].func = sub_808ABF4;
+		}
     }
 }
 
-static void sub_808AAF0(u8 taskID)
+/*static void sub_808AAF0(u8 taskID)
 {
     if (gUnknown_0202E8F6 != 1 && (gMain.newKeys & A_BUTTON || gMain.newKeys & B_BUTTON))
     {
         Menu_EraseWindowRect(0, 14, 29, 19);
         PokemonMenu_Cancel(taskID);
     }
-}
+}*/
 
 static void sub_808AB34(u8 taskID)
 {
     if (!gPaletteFade.active)
     {
-        if (!IS_FLY(gTasks[taskID].tFieldMoveId) || ShouldDoBrailleFlyEffect())
+        /*if (!IS_FLY(gTasks[taskID].tFieldMoveId) || ShouldDoBrailleFlyEffect())
             SetMainCallback2(c2_exit_to_overworld_2_switch);
         else
             SetMainCallback2(CB2_InitFlyRegionMap);
-        DestroyTask(taskID);
+        DestroyTask(taskID);*/
+		SetMainCallback2(c2_exit_to_overworld_2_switch);
+		DestroyTask(taskID);
     }
 }
 
@@ -806,7 +796,7 @@ static void sub_808ABF4(u8 taskID)
     }
 }
 
-static void sub_808AC2C(void)
+/*static void sub_808AC2C(void)
 {
     gFieldEffectArguments[0] = gLastFieldPokeMenuOpened;
     FieldEffectStart(FLDEFF_USE_SURF);
@@ -845,7 +835,7 @@ static bool8 SetUpFieldMove_Fly(void)
         return TRUE;
     }
     return FALSE;
-}
+}*/
 
 static void sub_808AD0C(void)
 {
@@ -875,7 +865,7 @@ u16 unref_sub_808AD88(void)
     return GetMonData(&gPlayerParty[gLastFieldPokeMenuOpened], MON_DATA_SPECIES);
 }
 
-static void sub_808ADAC(void)
+/*static void sub_808ADAC(void)
 {
     gFieldEffectArguments[0] = gLastFieldPokeMenuOpened;
     FieldEffectStart(FLDEFF_USE_DIVE);
@@ -914,7 +904,7 @@ static bool8 SetUpFieldMove_Waterfall(void)
     }
     else
         return FALSE;
-}
+}*/
 
 #if DEBUG
 void debug_sub_80986AC(void)

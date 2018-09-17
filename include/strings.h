@@ -306,6 +306,13 @@ extern const u8 OtherText_NoEntry[];
 extern const u8 OtherText_Take[];
 extern const u8 OtherText_Read2[];
 
+extern const u8 FieldMove_Teleport[];
+extern const u8 FieldMove_Dig[];
+extern const u8 FieldMove_SecretPower[];
+extern const u8 FieldMove_MilkDrink[];
+extern const u8 FieldMove_SoftBoiled[];
+extern const u8 FieldMove_SweetScent[];
+
 extern const u8 gOtherText_Hp2[];
 extern const u8 gOtherText_SpAtk2[];
 extern const u8 gOtherText_SpDef2[];

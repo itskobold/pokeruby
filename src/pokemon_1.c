@@ -1383,6 +1383,9 @@ void CreateMon(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 hasFix
     SetMonData(mon, MON_DATA_LEVEL, &level);
     arg = 255;
     SetMonData(mon, MON_DATA_MAIL, &arg);
+	
+	//SetMonData(mon, MON_DATA_MOVE1, 19);
+	
     CalculateMonStats(mon);
 }
 
