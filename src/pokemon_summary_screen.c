@@ -35,6 +35,7 @@
 #include "daycare.h"
 
 static void SummaryScreen_PrintPokemonInfoLabels(void);
+static void SummaryScreen_CreateTypeIcons(struct Pokemon *);
 static void SummaryScreen_PrintPokemonSkillsLabels(void);
 static void sub_809F63C(struct Pokemon *);
 static void sub_809F650(struct Pokemon *);
@@ -2258,8 +2259,6 @@ static void SummaryScreen_PrintPokemonInfo(struct Pokemon *mon)
     u16 species;
     u8 ability;
 
-	u8 typeIcon1;
-	u8 typeIcon2;
 	u16 customAbility = GetMonData(mon, MON_DATA_ABILITY, NULL);
 	
     for (i = 0; i < 5; i++)
@@ -2281,7 +2280,7 @@ static void SummaryScreen_PrintPokemonInfo(struct Pokemon *mon)
         SummaryScreen_PrintColoredTextPixelCoords(gOtherText_FiveQuestions, 13, 193, 32, 1);
 		
 		//draws egg type
-        SummaryScreen_DrawTypeIcon(TYPE_NORMAL, 120, 48, 0);
+        SummaryScreen_CreateTypeIcons(mon);
 
         friendship = GetMonData(mon, MON_DATA_FRIENDSHIP);
         if (friendship <= 5)
@@ -2321,12 +2320,14 @@ static void SummaryScreen_PrintPokemonInfo(struct Pokemon *mon)
 
         species = GetMonData(mon, MON_DATA_SPECIES);
 
-		typeIcon1 = GetMonData(mon, MON_DATA_TYPE_1, NULL);
+		/*typeIcon1 = GetMonData(mon, MON_DATA_TYPE_1, NULL);
 		typeIcon2 = GetMonData(mon, MON_DATA_TYPE_2, NULL);
 		
 		SummaryScreen_DrawTypeIcon(typeIcon1, 120, 48, 0);
 		if (typeIcon1 != typeIcon2)
-			SummaryScreen_DrawTypeIcon(typeIcon2, 160, 48, 1);
+			SummaryScreen_DrawTypeIcon(typeIcon2, 160, 48, 1);*/
+		
+		SummaryScreen_CreateTypeIcons(mon);
 
 		if (customAbility != 0)
 		{
@@ -2342,6 +2343,8 @@ static void SummaryScreen_PrintPokemonInfo(struct Pokemon *mon)
         PokemonSummaryScreen_PrintTrainerMemo(mon, 11, 14);
     }
 }
+
+
 
 static void sub_809FE6C(struct Pokemon *mon)
 {
@@ -2369,6 +2372,19 @@ static void SummaryScreen_PrintPokemonSkillsLabels(void)
     SummaryScreen_PrintColoredTextCentered(gOtherText_SpAtk, 13, 22, 7, 36);
     SummaryScreen_PrintColoredTextCentered(gOtherText_SpDef, 13, 22, 9, 36);
     SummaryScreen_PrintColoredTextCentered(gOtherText_Speed, 13, 22, 11, 36);
+}
+
+static void SummaryScreen_CreateTypeIcons(struct Pokemon *mon)
+{
+	u8 typeIcon1;
+	u8 typeIcon2;
+	
+	typeIcon1 = GetMonData(mon, MON_DATA_TYPE_1, NULL);
+	typeIcon2 = GetMonData(mon, MON_DATA_TYPE_2, NULL);
+		
+	SummaryScreen_DrawTypeIcon(typeIcon1, 120, 48, 0);
+	if (typeIcon1 != typeIcon2)
+		SummaryScreen_DrawTypeIcon(typeIcon2, 160, 48, 1);
 }
 
 static void SummaryScreen_PrintPokemonSkills(struct Pokemon *mon)
