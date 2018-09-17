@@ -451,7 +451,7 @@ static bool8 sub_8141E64(void)
         if (!gPaletteFade.active)
         {
             SetMainCallback2(CB2_HallOfFame);
-            PlayBGM(BGM_DENDOU);
+            PlayBGM(MUS_DENDOU);
             return 0;
         }
         break;
@@ -1047,7 +1047,7 @@ static void sub_814302C(u8 taskID)
 
 static void sub_8143068(u8 a0, u8 a1)
 {
-    sub_8072BD8(gMenuText_WelcomeToHOFAndDexRating, 0, a1 + 1, 0xF0);
+    MenuPrint_Centered(gMenuText_WelcomeToHOFAndDexRating, 0, a1 + 1, 0xF0);
 }
 
 static void HallOfFame_PrintMonInfo(struct HallofFameMon* currMon, u8 a1, u8 a2)

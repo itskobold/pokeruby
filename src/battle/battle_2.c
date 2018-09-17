@@ -122,22 +122,10 @@ extern u16 gUnknown_02024DE8;
 extern u8 gActionSelectionCursor[];
 extern u8 gMoveSelectionCursor[];
 extern u8 gUnknown_02038470[];
-extern u16 gBattle_BG3_X;
-extern u16 gBattle_BG1_Y;
-extern u16 gBattle_BG3_Y;
 extern struct Window gUnknown_030041D0;
-extern u16 gBattle_WIN1H;
 extern struct Window gUnknown_03004210;
-extern u16 gBattle_WIN1V;
 extern struct Window gUnknown_03004250;
-extern u16 gBattle_WIN0V;
-extern u16 gBattle_BG2_Y;
 extern u32 gUnknown_03004284;
-extern u16 gBattle_BG2_X;
-extern u16 gBattle_BG0_Y;
-extern u16 gBattle_BG0_X;
-extern u16 gBattle_BG1_X;
-extern u16 gBattle_WIN0H;
 extern MainCallback gPreBattleCallback1;
 extern void (*gBattleMainFunc)(void);
 extern u8 gLeveledUpInBattle;
@@ -1057,7 +1045,7 @@ u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
 			u16 randomSpecies;
 			
 			//just to get the level
-			const struct TrainerPartyMember0 *partyData = gTrainers[trainerNum].party;
+			const struct TrainerMonNoItemDefaultMoves *partyData = gTrainers[trainerNum].party.NoItemDefaultMoves;
 			
 			if (gSaveBlock2.gameMode >= GAME_MODE_RANDOM)
 			{
@@ -1079,7 +1067,7 @@ u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
             {
             case 0:
             {
-                const struct TrainerPartyMember0 *partyData = gTrainers[trainerNum].party;
+                const struct TrainerMonNoItemDefaultMoves *partyData = gTrainers[trainerNum].party.NoItemDefaultMoves;
 
                 for (j = 0; gSpeciesNames[partyData[i].species][j] != 0xFF; j++)
                     nameHash += gSpeciesNames[partyData[i].species][j];
@@ -1098,9 +1086,9 @@ u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                 //CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0); VANILLA
                 break;
             }
-            case 1:
+            case F_TRAINER_PARTY_CUSTOM_MOVESET:
             {
-                const struct TrainerPartyMember1 *partyData = gTrainers[trainerNum].party;
+                const struct TrainerMonNoItemCustomMoves *partyData = gTrainers[trainerNum].party.NoItemCustomMoves;
 
                 for (j = 0; gSpeciesNames[partyData[i].species][j] != 0xFF; j++)
                     nameHash += gSpeciesNames[partyData[i].species][j];
@@ -1125,9 +1113,9 @@ u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                 }
                 break;
             }
-            case 2:
+            case F_TRAINER_PARTY_HELD_ITEM:
             {
-                const struct TrainerPartyMember2 *partyData = gTrainers[trainerNum].party;
+                const struct TrainerMonItemDefaultMoves *partyData = gTrainers[trainerNum].party.ItemDefaultMoves;
 
                 for (j = 0; gSpeciesNames[partyData[i].species][j] != 0xFF; j++)
                     nameHash += gSpeciesNames[partyData[i].species][j];
@@ -1148,9 +1136,9 @@ u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
                 break;
             }
-            case 3:
+            case F_TRAINER_PARTY_CUSTOM_MOVESET | F_TRAINER_PARTY_HELD_ITEM:
             {
-                const struct TrainerPartyMember3 *partyData = gTrainers[trainerNum].party;
+                const struct TrainerMonItemCustomMoves *partyData = gTrainers[trainerNum].party.ItemCustomMoves;
 
                 for (j = 0; gSpeciesNames[partyData[i].species][j] != 0xFF; j++)
                     nameHash += gSpeciesNames[partyData[i].species][j];
@@ -6401,7 +6389,7 @@ void HandleEndTurn_BattleWon(void)
         {
         case TRAINER_CLASS_ELITE_FOUR:
         case TRAINER_CLASS_CHAMPION:
-            PlayBGM(BGM_KACHI5);
+            PlayBGM(MUS_KACHI5);
             break;
         case TRAINER_CLASS_TEAM_AQUA:
         case TRAINER_CLASS_TEAM_MAGMA:
@@ -6409,13 +6397,13 @@ void HandleEndTurn_BattleWon(void)
         case TRAINER_CLASS_AQUA_LEADER:
         case TRAINER_CLASS_MAGMA_ADMIN:
         case TRAINER_CLASS_MAGMA_LEADER:
-            PlayBGM(BGM_KACHI4);
+            PlayBGM(MUS_KACHI4);
             break;
         case TRAINER_CLASS_LEADER:
-            PlayBGM(BGM_KACHI3);
+            PlayBGM(MUS_KACHI3);
             break;
         default:
-            PlayBGM(BGM_KACHI1);
+            PlayBGM(MUS_KACHI1);
             break;
         }
     }

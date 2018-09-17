@@ -38,14 +38,13 @@
 #include "ewram.h"
 
 // External stuff
-extern void gpu_pal_allocator_reset__manage_upper_four(void);
+extern void FreeAndReserveObjectSpritePalettes(void);
 extern void SetVerticalScrollIndicatorPriority();
 extern void sub_809D104(u16 *, u16, u16, const u8 *, u16, u16, u16, u16);
 extern void PauseVerticalScrollIndicator();
 extern u8 sub_80F9284(void);
 extern void sub_808B5B4();
 extern u8 sub_80F92F4();
-extern void sub_80C9C7C(u8);
 extern void pal_fill_black(void);
 extern bool8 IsWeatherNotFadingIn(void);
 extern u8 sub_80F931C();
@@ -140,7 +139,7 @@ EWRAM_DATA static s8 gUnknown_0203855B = 0;
 EWRAM_DATA static s8 gUnknown_0203855C = 0;
 EWRAM_DATA u16 gSpecialVar_ItemId = 0;
 EWRAM_DATA u8 gCurSelectedItemSlotIndex = 0;
-EWRAM_DATA u8 gUnknown_02038561 = 0;
+EWRAM_DATA u8 gPokemonItemUseType = 0;
 EWRAM_DATA static u8 gUnknown_02038562 = 0;
 EWRAM_DATA static u8 gUnknown_02038563 = 0;
 EWRAM_DATA static u8 gUnknown_02038564 = 0;
@@ -392,7 +391,7 @@ static bool8 SetupBagMultistep(void)
         gMain.state++;
         break;
     case 2:
-        gpu_pal_allocator_reset__manage_upper_four();
+        FreeAndReserveObjectSpritePalettes();
         gMain.state++;
         break;
     case 3:
@@ -539,7 +538,7 @@ static bool8 LoadBagGraphicsMultistep(void)
         ewramBagSetupStep++;
         break;
     case 1:
-        CpuCopy16(gUnknown_08E77004, gBGTilemapBuffers[2], 0x800);
+        CpuCopy16(gBagScreen_Tilemap, gBGTilemapBuffers[2], 0x800);
         ewramBagSetupStep++;
         break;
     case 2:
@@ -743,7 +742,7 @@ static void sub_80A37F8(u8 taskId)
 
 static void sub_80A3954(u16 *a)
 {
-    CpuCopy16(gUnknown_08E77004, a, 0x800);
+    CpuCopy16(gBagScreen_Tilemap, a, 0x800);
 }
 
 static void sub_80A396C(u16 *a, u8 b, u8 c, u8 d)
@@ -763,7 +762,7 @@ static void sub_80A39B8(u16 *a, u8 b)
 {
     u8 var = b * 2;
 
-    sub_809D104(a, 4, 10, gUnknown_08E96EC8, 0, var, 8, 2);
+    sub_809D104(a, 4, 10, gBagScreenLabels_Tilemap, 0, var, 8, 2);
 }
 
 static void sub_80A39E4(u16 *a, u8 b, u8 c, s8 d)
@@ -777,8 +776,8 @@ static void sub_80A39E4(u16 *a, u8 b, u8 c, s8 d)
         if (b == 5)
             r7 = 2;
 
-        sub_809D104(a, 4, 10, gUnknown_08E96EC8, 8 - c, r2, c, 2);
-        sub_809D104(a, c + 4, 10, gUnknown_08E96EC8, 0, r7, 8 - c, 2);
+        sub_809D104(a, 4, 10, gBagScreenLabels_Tilemap, 8 - c, r2, c, 2);
+        sub_809D104(a, c + 4, 10, gBagScreenLabels_Tilemap, 0, r7, 8 - c, 2);
     }
     else if (d == 1)
     {
@@ -786,8 +785,8 @@ static void sub_80A39E4(u16 *a, u8 b, u8 c, s8 d)
         if (b == 1)
             r7 = 10;
 
-        sub_809D104(a, 4, 10, gUnknown_08E96EC8, c, r7, 8 - c, 2);
-        sub_809D104(a, 12 - c, 10, gUnknown_08E96EC8, 0, r2, c, 2);
+        sub_809D104(a, 4, 10, gBagScreenLabels_Tilemap, c, r7, 8 - c, 2);
+        sub_809D104(a, 12 - c, 10, gBagScreenLabels_Tilemap, 0, r2, c, 2);
     }
 }
 
@@ -2666,7 +2665,7 @@ void HandleItemMenuPaletteFade(u8 taskId)
         MainCallback cb = (MainCallback)((u16)taskData[8] << 16 | (u16)taskData[9]);
 
         SetMainCallback2(cb);
-        gpu_pal_allocator_reset__manage_upper_four();
+        FreeAndReserveObjectSpritePalettes();
         DestroyTask(taskId);
     }
 }
@@ -2701,7 +2700,7 @@ static void HandlePopupMenuAction_UseOnField(u8 taskId)
             if (sCurrentBagPocket != BAG_POCKET_BERRIES)
                 ItemId_GetFieldFunc(gSpecialVar_ItemId)(taskId);
             else
-                sub_80C9C7C(taskId);
+                ItemUseOutOfBattle_Berry(taskId);
         }
     }
 }
@@ -2925,7 +2924,7 @@ static void HandlePopupMenuAction_Give(u8 taskId)
             gTasks[taskId].data[8] = (u32)sub_808B020 >> 16;
             gTasks[taskId].data[9] = (u32)sub_808B020;
             gTasks[taskId].func = HandleItemMenuPaletteFade;
-            gUnknown_02038561 = 1;
+            gPokemonItemUseType = ITEM_USE_GIVE_ITEM;
             BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB(0, 0, 0));
         }
     }
@@ -4025,7 +4024,7 @@ static int sub_80A7988(void)
 }
 
 static const u16 gPalette_83C170C[] = INCBIN_U16("graphics/unknown/83C170C.gbapal");
-static const u8 gSpriteImage_83C172C[] = INCBIN_U8("graphics/unknown_sprites/83C172C.4bpp");
+static const u8 gSpriteImage_BagSpinner[] = INCBIN_U8("graphics/interface/bag_spinner.4bpp");
 
 const u8 gSpriteImage_UnusedCherry[] = INCBIN_U8("graphics/unused/cherry.4bpp");
 const u16 gSpritePalette_UnusedCherry[] = INCBIN_U16("graphics/unused/cherry.gbapal");
@@ -4259,7 +4258,7 @@ static const union AffineAnimCmd *const gSpriteAffineAnimTable_83C1D20[] =
 
 static const struct SpriteFrameImage gSpriteImageTable_83C1D28[] =
 {
-    {gSpriteImage_83C172C, sizeof(gSpriteImage_83C172C)},
+    {gSpriteImage_BagSpinner, sizeof(gSpriteImage_BagSpinner)},
 };
 
 static const struct SpritePalette sPokeballSpritePalette = {gPalette_83C170C, 8};

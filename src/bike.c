@@ -7,8 +7,9 @@
 #include "global.fieldmap.h"
 #include "metatile_behavior.h"
 #include "overworld.h"
-#include "constants/songs.h"
 #include "sound.h"
+#include "constants/map_types.h"
+#include "constants/songs.h"
 
 extern bool8 gBikeCyclingChallenge;
 extern u8 gBikeCollisions;
@@ -1001,8 +1002,8 @@ void GetOnOffBike(u8 var)
     else
     {
         SetPlayerAvatarTransitionFlags(var);
-        Overworld_SetSavedMusic(BGM_CYCLING);
-        Overworld_ChangeMusicTo(BGM_CYCLING);
+        Overworld_SetSavedMusic(MUS_CYCLING);
+        Overworld_ChangeMusicTo(MUS_CYCLING);
     }
 }
 

@@ -2,6 +2,7 @@
 #include "data2.h"
 #include "battle.h"
 #include "battle_anim.h"
+#include "battle_anim_813F0F4.h"
 #include "battle_interface.h"
 #include "battle_message.h"
 #include "item.h"
@@ -34,9 +35,6 @@ struct MovePpInfo
 #elif GERMAN
 #define SUB_803037C_TILE_DATA_OFFSET 444
 #endif
-
-extern u16 gBattle_BG0_X;
-extern u16 gBattle_BG0_Y;
 
 extern struct Window gUnknown_03004210;
 
@@ -71,13 +69,6 @@ extern u8 gUnknown_02024E68[];
 extern struct SpriteTemplate gUnknown_02024E8C;
 extern u8 gAnimMoveTurn;
 extern u8 gUnknown_02038470[];
-extern u16 gBattle_BG3_X;
-extern u16 gBattle_BG1_Y;
-extern u16 gBattle_BG3_Y;
-extern u16 gBattle_BG2_Y;
-extern u16 gBattle_BG2_X;
-extern u16 gBattle_BG0_X;
-extern u16 gBattle_BG1_X;
 extern u8 gUnknown_03004344;
 extern u8 gUnknown_0300434C[];
 
@@ -104,7 +95,7 @@ extern void sub_8047858();
 extern u8 GetBattlerSide(u8);
 extern void StartBattleIntroAnim();
 extern void oamt_add_pos2_onto_pos1();
-extern void StartTranslateAnimSpriteByDeltas(struct Sprite *);
+extern void StartAnimLinearTranslation(struct Sprite *);
 extern void StoreSpriteCallbackInData();
 extern void BattleLoadPlayerMonSprite();
 extern bool8 IsDoubleBattle(void);
@@ -135,7 +126,7 @@ extern void sub_802DEAC(void);
 extern void sub_80312F0(struct Sprite *);
 extern u8 GetBattlerSpriteCoord();
 extern u8 sub_8077F68();
-extern u8 sub_8046400();
+extern u8 StartSendOutMonAnimation();
 extern void sub_802D798(void);
 extern void bx_0802E404(void);
 extern u8 gActiveBattler;
@@ -151,8 +142,6 @@ extern u8 gAbsentBattlerFlags;
 extern u8 gUnknown_03004344;
 extern u8 gBattlersCount;
 extern u16 gBattlerPartyIndexes[];
-extern u16 gBattle_BG0_Y;
-extern u16 gBattle_BG0_X;
 extern struct Window gUnknown_03004210;
 extern const u8 BattleText_SwitchWhich[];
 extern u8 gUnknown_03004348;
@@ -176,7 +165,6 @@ extern void sub_8010520(struct Sprite *);
 extern void sub_8010574(struct Sprite *);
 extern bool8 IsDoubleBattle();
 extern void sub_804777C();
-extern void sub_8141828();
 extern void sub_8094E20(u8);
 extern void nullsub_14(void);
 extern void sub_80A6DCC(void);
@@ -2541,7 +2529,7 @@ void sub_802F934(u8 bank, u8 b)
     StartSpriteAnim(&gSprites[gBankSpriteIds[bank]], gBattleMonForms[bank]);
     gSprites[gBankSpriteIds[bank]].invisible = TRUE;
     gSprites[gBankSpriteIds[bank]].callback = SpriteCallbackDummy;
-    gSprites[gUnknown_0300434C[bank]].data[0] = sub_8046400(0, 0xFF);
+    gSprites[gUnknown_0300434C[bank]].data[0] = StartSendOutMonAnimation(0, 0xFF);
 }
 
 void PlayerHandleReturnPokeToBall(void)
@@ -2630,7 +2618,7 @@ void PlayerHandleTrainerSlideBack(void)
     gSprites[gBankSpriteIds[gActiveBattler]].data[0] = 50;
     gSprites[gBankSpriteIds[gActiveBattler]].data[2] = -40;
     gSprites[gBankSpriteIds[gActiveBattler]].data[4] = gSprites[gBankSpriteIds[gActiveBattler]].pos1.y;
-    gSprites[gBankSpriteIds[gActiveBattler]].callback = StartTranslateAnimSpriteByDeltas;
+    gSprites[gBankSpriteIds[gActiveBattler]].callback = StartAnimLinearTranslation;
     StoreSpriteCallbackInData(&gSprites[gBankSpriteIds[gActiveBattler]], SpriteCallbackDummy);
     StartSpriteAnim(&gSprites[gBankSpriteIds[gActiveBattler]], 1);
     gBattleBankFunc[gActiveBattler] = sub_802D274;
@@ -3085,7 +3073,7 @@ void PlayerHandleTrainerBallThrow(void)
     gSprites[gBankSpriteIds[gActiveBattler]].data[0] = 50;
     gSprites[gBankSpriteIds[gActiveBattler]].data[2] = -40;
     gSprites[gBankSpriteIds[gActiveBattler]].data[4] = gSprites[gBankSpriteIds[gActiveBattler]].pos1.y;
-    gSprites[gBankSpriteIds[gActiveBattler]].callback = StartTranslateAnimSpriteByDeltas;
+    gSprites[gBankSpriteIds[gActiveBattler]].callback = StartAnimLinearTranslation;
     gSprites[gBankSpriteIds[gActiveBattler]].data[5] = gActiveBattler;
     StoreSpriteCallbackInData(&gSprites[gBankSpriteIds[gActiveBattler]], sub_8030E38);
     StartSpriteAnim(&gSprites[gBankSpriteIds[gActiveBattler]], 1);

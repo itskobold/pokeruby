@@ -22,6 +22,7 @@
 #include "tv.h"
 #include "wild_encounter.h"
 #include "constants/field_effects.h"
+#include "constants/event_object_movement_constants.h"
 #include "constants/event_objects.h"
 
 EWRAM_DATA struct PlayerAvatar gPlayerAvatar = {0};
@@ -1142,7 +1143,7 @@ void InitPlayerAvatar(s16 x, s16 y, u8 direction, u8 gender)
     eventObjectId = SpawnSpecialEventObject(&playerEventObjTemplate);
     eventObject = &gEventObjects[eventObjectId];
     eventObject->isPlayer = 1;
-    eventObject->warpArrowSpriteId = sub_8126B54();
+    eventObject->warpArrowSpriteId = CreateWarpArrowSprite();
     EventObjectTurn(eventObject, direction);
     ClearPlayerAvatarInfo();
     gPlayerAvatar.runningState = NOT_MOVING;
@@ -1199,11 +1200,11 @@ static void sub_8059D60(struct EventObject *eventObject)
             x = eventObject->currentCoords.x;
             y = eventObject->currentCoords.y;
             MoveCoords(direction, &x, &y);
-            sub_8126BC4(eventObject->warpArrowSpriteId, direction, x, y);
+            ShowWarpArrowSprite(eventObject->warpArrowSpriteId, direction, x, y);
             return;
         }
     }
-    objid_set_invisible(eventObject->warpArrowSpriteId);
+    SetSpriteInvisible(eventObject->warpArrowSpriteId);
 }
 
 /* Strength */

@@ -96,12 +96,15 @@ enum LanguageId
 // capacities of various saveblock objects
 #define DAYCARE_MON_COUNT   2
 #define POKEBLOCKS_COUNT    40
-#define EVENT_OBJECTS_COUNT   16
+#define PARTY_SIZE          6
+#define EVENT_OBJECTS_COUNT 16
 #define BERRY_TREES_COUNT   128
 #define FLAGS_COUNT         288
 #define VARS_COUNT          256
 #define MAIL_COUNT          16
 #define SECRET_BASES_COUNT  20
+#define TV_SHOWS_COUNT      25
+#define POKE_NEWS_COUNT     16
 #define PC_ITEMS_COUNT      50
 #define BAG_ITEMS_COUNT     20
 #define BAG_KEYITEMS_COUNT  20
@@ -227,7 +230,7 @@ struct SecretBaseRecord
     /*0x1A19*/ u8 sbr_field_11;
     /*0x1A1A*/ u8 decorations[16];
     /*0x1A2A*/ u8 decorationPos[16];
-    /*0x1A3A*/ u32 partyPersonality[6];
+    /*0x1A3C*/ u32 partyPersonality[6];
     /*0x1A54*/ u16 partyMoves[6 * 4];
     /*0x1A84*/ u16 partySpecies[6];
     /*0x1A90*/ u16 partyHeldItems[6];
@@ -700,7 +703,7 @@ struct SaveBlock1 /* 0x02025734 */
     /*0x2E*/ u8 weather;
     /*0x2F*/ u8 weatherCycleStage;
     /*0x30*/ u8 flashLevel;  // flash level on current map, 0 being normal and 4 being the darkest
-    /*0x32*/ u16 mapDataId;
+    /*0x32*/ u16 mapLayoutId;
     /*0x34*/ u16 mapView[0x100];
     /*0x234*/ u8 playerPartyCount;
     /*0x238*/ struct Pokemon playerParty[6];
@@ -737,8 +740,8 @@ struct SaveBlock1 /* 0x02025734 */
     /*0x2704*/ u8 decorDoll[40];
     /*0x272C*/ u8 decorCushion[10];
     /*0x2736*/ u8 padding_2736[2];
-    /*0x2738*/ TVShow tvShows[25];
-    /*0x2ABC*/ struct PokeNews pokeNews[16];
+    /*0x2738*/ TVShow tvShows[TV_SHOWS_COUNT];
+    /*0x2ABC*/ struct PokeNews pokeNews[POKE_NEWS_COUNT];
     /*0x2AFC*/ u16 outbreakPokemonSpecies;
     /*0x2AFE*/ u8 outbreakLocationMapNum;
     /*0x2AFF*/ u8 outbreakLocationMapGroup;
@@ -859,7 +862,7 @@ struct BattleTowerData
     /*0x04BC, 0x0564*/ u8 battleTowerTrainerId; // index for gBattleTowerTrainers table
     /*0x04BD, 0x0565*/ u8 selectedPartyMons[0x3]; // indices of the 3 selected player party mons.
     /*0x04C0, 0x0568*/ u16 prizeItem;
-    /*0x04C2, 0x056A*/ u8 filler_4C2[0x6];
+    /*0x04C2, 0x056A*/ u8 battledTrainerIds[6];
     /*0x04C8, 0x0570*/ u16 totalBattleTowerWins;
     /*0x04CA, 0x0572*/ u16 bestBattleTowerWinStreak;
     /*0x04CC, 0x0574*/ u16 currentWinStreaks[2];

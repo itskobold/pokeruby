@@ -18,9 +18,6 @@
 #include "string_util.h"
 #include "strings.h"
 #include "pokeblock.h"
-#include "constants/species.h"
-#include "constants/abilities.h"
-#include "constants/moves.h"
 #include "text.h"
 #include "wallclock.h"
 #include "tv.h"
@@ -35,6 +32,11 @@
 #include "field_weather.h"
 #include "pokemon_summary_screen.h"
 #include "random.h"
+#include "constants/abilities.h"
+#include "constants/event_object_movement_constants.h"
+#include "constants/moves.h"
+#include "constants/species.h"
+#include "constants/weather.h"
 
 #if ENGLISH
 #define CHAR_DECIMAL_SEPARATOR CHAR_PERIOD
@@ -42,7 +44,7 @@
 #define CHAR_DECIMAL_SEPARATOR CHAR_COMMA
 #endif
 
-extern struct WarpData gUnknown_020297F0;
+extern struct WarpData gLastUsedWarp;
 extern u8 gBattleOutcome;
 extern u16 gSpecialVar_0x8004;
 extern u16 gSpecialVar_0x8005;
@@ -207,7 +209,7 @@ u16 GetRecordedCyclingRoadResults(void) {
 }
 
 void UpdateCyclingRoadState(void) {
-    if (gUnknown_020297F0.mapNum == MAP_NUM(ROUTE110_SEASIDE_CYCLING_ROAD_NORTH_ENTRANCE) && gUnknown_020297F0.mapGroup == MAP_GROUP(ROUTE110_SEASIDE_CYCLING_ROAD_NORTH_ENTRANCE))
+    if (gLastUsedWarp.mapNum == MAP_NUM(ROUTE110_SEASIDE_CYCLING_ROAD_NORTH_ENTRANCE) && gLastUsedWarp.mapGroup == MAP_GROUP(ROUTE110_SEASIDE_CYCLING_ROAD_NORTH_ENTRANCE))
     {
         return;
     }
@@ -1088,8 +1090,8 @@ static void sub_810E874(void)
 void DisplayCurrentElevatorFloor(void)
 {
     Menu_DrawStdWindowFrame(20, 0, 29, 5);
-    sub_8072BD8(gOtherText_NowOn, 21, 1, 64);
-    sub_8072BD8(gUnknown_083F8380[gSpecialVar_0x8005], 21, 3, 64);
+    MenuPrint_Centered(gOtherText_NowOn, 21, 1, 64);
+    MenuPrint_Centered(gUnknown_083F8380[gSpecialVar_0x8005], 21, 3, 64);
 }
 
 void sub_810E984(u8 taskId)
@@ -2052,17 +2054,17 @@ bool8 FoundBlackGlasses(void)
 
 void SetRoute119Weather(void)
 {
-    if (is_map_type_1_2_3_5_or_6(get_map_type_from_warp0()) != TRUE)
+    if (is_map_type_1_2_3_5_or_6(GetLastUsedWarpMapType()) != TRUE)
     {
-        SetSav1Weather(0x14);
+        SetSav1Weather(WEATHER_ROUTE119_CYCLE);
     }
 }
 
 void SetRoute123Weather(void)
 {
-    if (is_map_type_1_2_3_5_or_6(get_map_type_from_warp0()) != TRUE)
+    if (is_map_type_1_2_3_5_or_6(GetLastUsedWarpMapType()) != TRUE)
     {
-        SetSav1Weather(0x15);
+        SetSav1Weather(WEATHER_ROUTE123_CYCLE);
     }
 }
 
@@ -2070,13 +2072,12 @@ u8 GetLeadMonIndex(void)
 {
     u8 i;
     u8 partyCount = CalculatePlayerPartyCount();
-    for (i=0; i<partyCount; i++)
+    for (i = 0; i < partyCount; i++)
     {
         if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES2, NULL) != SPECIES_EGG && GetMonData(&gPlayerParty[i], MON_DATA_SPECIES2, NULL) != 0)
-        {
             return i;
-        }
     }
+
     return 0;
 }
 

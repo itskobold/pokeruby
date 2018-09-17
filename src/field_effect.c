@@ -24,6 +24,7 @@
 #include "fieldmap.h"
 #include "util.h"
 #include "pokemon_storage_system.h"
+#include "constants/event_object_movement_constants.h"
 #include "constants/field_effects.h"
 #include "constants/songs.h"
 
@@ -306,9 +307,11 @@ bool8 (*const gUnknown_0839F364[])(struct Task *, struct EventObject *, struct S
     sub_80877D4
 };
 
-void (*const gUnknown_0839F378[])(struct Task *) = {
-    sub_80878F4,
-    sub_8087914
+static void EscapeRopeFieldEffect_Step0(struct Task *);
+static void EscapeRopeFieldEffect_Step1(struct Task *);
+void (*const gEscapeRopeFieldEffectFuncs[])(struct Task *) = {
+    EscapeRopeFieldEffect_Step0,
+    EscapeRopeFieldEffect_Step1
 };
 
 static u8 sActiveList[32];
@@ -918,7 +921,7 @@ void PokeballGlowEffect_1(struct Sprite *sprite)
         sprite->data[3] = 0;
         if (sprite->data[5])
         {
-            PlayFanfare(BGM_ME_ASA);
+            PlayFanfare(MUS_ME_ASA);
         }
     }
 }
@@ -1107,7 +1110,7 @@ void task00_8084310(u8 taskId)
     if (!FieldEffectActiveListContains(FLDEFF_USE_FLY))
     {
         Overworld_ResetStateAfterFly();
-        warp_in();
+        WarpIntoMap();
         SetMainCallback2(CB2_LoadMap);
         gFieldCallback = mapldr_08084390;
         DestroyTask(taskId);
@@ -1150,7 +1153,6 @@ void c3_080843F8(u8 taskId)
     }
 }
 
-extern void pal_fill_for_map_transition(void);
 void sub_8086774(u8);
 extern void CameraObjectReset2(void);
 extern void CameraObjectReset1(void);
@@ -1286,14 +1288,13 @@ bool8 sub_80869F8(struct Task *task)
 
 void sub_8086A68(u8);
 extern void sub_80B4824(u8);
-extern void sub_8053FF8(void);
-extern void fade_8080918(void);
+extern void TryFadeOutOldMapMusic(void);
 
 void sub_8086B98(struct Task *);
 void sub_8086BE4(struct Task *);
 void sub_8086C30(void);
 void sub_8086C40(void);
-bool8 sub_8054034(void);
+bool8 BGMusicStopped(void);
 void sub_8086C94(void);
 void sub_80B483C(void);
 void sub_8086CBC(u8);
@@ -1408,16 +1409,16 @@ void sub_8086BE4(struct Task *task)
 
 void sub_8086C30(void)
 {
-    sub_8053FF8();
-    fade_8080918();
+    TryFadeOutOldMapMusic();
+    WarpFadeScreen();
 }
 
 void sub_8086C40(void)
 {
-    if (!gPaletteFade.active && sub_8054034() == TRUE)
+    if (!gPaletteFade.active && BGMusicStopped() == TRUE)
     {
         sub_80B483C();
-        warp_in();
+        WarpIntoMap();
         gFieldCallback = sub_8086C94;
         SetMainCallback2(CB2_LoadMap);
         DestroyTask(FindTaskIdByFunc(sub_8086A68));
@@ -1767,17 +1768,17 @@ bool8 sub_80872E4(struct Task *task, struct EventObject *eventObject, struct Spr
 
 bool8 sub_80873D8(struct Task *task, struct EventObject *eventObject, struct Sprite *sprite)
 {
-    sub_8053FF8();
-    fade_8080918();
+    TryFadeOutOldMapMusic();
+    WarpFadeScreen();
     task->data[0]++;
     return FALSE;
 }
 
 bool8 sub_80873F4(struct Task *task, struct EventObject *eventObject, struct Sprite *sprite)
 {
-    if (!gPaletteFade.active && sub_8054034() == TRUE)
+    if (!gPaletteFade.active && BGMusicStopped() == TRUE)
     {
-        warp_in();
+        WarpIntoMap();
         gFieldCallback = mapldr_080851BC;
         SetMainCallback2(CB2_LoadMap);
         DestroyTask(FindTaskIdByFunc(sub_80871D0));
@@ -1930,21 +1931,21 @@ bool8 sub_80877AC(struct Task *task, struct EventObject *eventObject, struct Spr
 {
     if (!FieldEffectActiveListContains(FLDEFF_POP_OUT_OF_ASH))
     {
-        sub_8053FF8();
-        fade_8080918();
+        TryFadeOutOldMapMusic();
+        WarpFadeScreen();
         task->data[0]++;
     }
     return FALSE;
 }
 
-void sub_80878C4(u8);
+static void DoEscapeRopeFieldEffect(u8);
 void mapldr_080859D4(void);
 
 bool8 sub_80877D4(struct Task *task, struct EventObject *eventObject, struct Sprite *sprite)
 {
-    if (!gPaletteFade.active && sub_8054034() == TRUE)
+    if (!gPaletteFade.active && BGMusicStopped() == TRUE)
     {
-        warp_in();
+        WarpIntoMap();
         gFieldCallback = sub_8086748;
         SetMainCallback2(CB2_LoadMap);
         DestroyTask(FindTaskIdByFunc(sub_808766C));
@@ -1970,52 +1971,60 @@ void sub_808788C(struct Sprite *sprite)
     }
 }
 
-void sub_80878A8(void)
+void StartEscapeRopeFieldEffect(void)
 {
     ScriptContext2_Enable();
     FreezeEventObjects();
-    CreateTask(sub_80878C4, 0x50);
+    CreateTask(DoEscapeRopeFieldEffect, 0x50);
 }
 
-void sub_80878C4(u8 taskId)
+static void DoEscapeRopeFieldEffect(u8 taskId)
 {
-    gUnknown_0839F378[gTasks[taskId].data[0]](&gTasks[taskId]);
+    gEscapeRopeFieldEffectFuncs[gTasks[taskId].data[0]](&gTasks[taskId]);
 }
 
-void sub_80878F4(struct Task *task)
+static void EscapeRopeFieldEffect_Step0(struct Task *task)
 {
     task->data[0]++;
     task->data[14] = 64;
     task->data[15] = GetPlayerFacingDirection();
 }
 
-void sub_8087914(struct Task *task)
+static void EscapeRopeFieldEffect_Step1(struct Task *task)
 {
     struct EventObject *eventObject;
-    u8 unknown_0839F380[5] = {1, 3, 4, 2, 1};
+    u8 clockwiseDirections[5] = {
+        DIR_SOUTH,
+        DIR_WEST,
+        DIR_EAST,
+        DIR_NORTH,
+        DIR_SOUTH,
+    };
+
     if (task->data[14] != 0 && (--task->data[14]) == 0)
     {
-        sub_8053FF8();
-        fade_8080918();
+        TryFadeOutOldMapMusic();
+        WarpFadeScreen();
     }
+
     eventObject = &gEventObjects[gPlayerAvatar.eventObjectId];
     if (!EventObjectIsMovementOverridden(eventObject) || EventObjectClearHeldMovementIfFinished(eventObject))
     {
-        if (task->data[14] == 0 && !gPaletteFade.active && sub_8054034() == TRUE)
+        if (task->data[14] == 0 && !gPaletteFade.active && BGMusicStopped() == TRUE)
         {
             SetEventObjectDirection(eventObject, task->data[15]);
             sub_8053678();
-            warp_in();
+            WarpIntoMap();
             gFieldCallback = mapldr_080859D4;
             SetMainCallback2(CB2_LoadMap);
-            DestroyTask(FindTaskIdByFunc(sub_80878C4));
-        } else if (task->data[1] == 0 || (--task->data[1]) == 0)
+            DestroyTask(FindTaskIdByFunc(DoEscapeRopeFieldEffect));
+        }
+        else if (task->data[1] == 0 || (--task->data[1]) == 0)
         {
-            EventObjectSetHeldMovement(eventObject, GetFaceDirectionMovementAction(unknown_0839F380[eventObject->facingDirection]));
+            EventObjectSetHeldMovement(eventObject, GetFaceDirectionMovementAction(clockwiseDirections[eventObject->facingDirection]));
             if (task->data[2] < 12)
-            {
                 task->data[2]++;
-            }
+
             task->data[1] = 8 >> (task->data[2] >> 2);
         }
     }
@@ -2157,17 +2166,17 @@ static void TeleportFieldEffectTask3(struct Task *task)
     if (task->data[4] >= 0xa8)
     {
         task->data[0]++;
-        sub_8053FF8();
-        fade_8080918();
+        TryFadeOutOldMapMusic();
+        WarpFadeScreen();
     }
 }
 
 static void TeleportFieldEffectTask4(struct Task *task)
 {
-    if (!gPaletteFade.active && sub_8054034() == TRUE)
+    if (!gPaletteFade.active && BGMusicStopped() == TRUE)
     {
         Overworld_SetWarpDestToLastHealLoc();
-        warp_in();
+        WarpIntoMap();
         SetMainCallback2(CB2_LoadMap);
         gFieldCallback = mapldr_08085D88;
         DestroyTask(FindTaskIdByFunc(ExecuteTeleportFieldEffectTask));
@@ -3062,7 +3071,7 @@ void sub_8088F10(struct Task *task)
 {
     if (sub_8088FA4(task->data[1]))
     {
-        fade_8080918();
+        WarpFadeScreen();
         task->data[0]++;
     }
 }

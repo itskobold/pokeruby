@@ -1,6 +1,7 @@
 #include "global.h"
 #include "tv.h"
 #include "battle_tower.h"
+#include "contest.h"
 #include "contest_painting.h"
 #include "data2.h"
 #include "easy_chat.h"
@@ -68,10 +69,9 @@ struct UnkTvStruct gUnknown_03005D38;
 
 extern u16 gSpecialVar_LastTalked;
 
-extern u8 gSpecialVar_ContestCategory;
-extern u8 gSpecialVar_ContestRank;
+extern u16 gSpecialVar_ContestCategory;
+extern u16 gSpecialVar_ContestRank;
 extern u8 gBattleOutcome;
-
 extern u16 gLastUsedItem;
 
 static EWRAM_DATA u16 gUnknown_020387E0 = 0;
@@ -432,7 +432,7 @@ void ClearTVShowData(void)
 {
     u8 showidx;
     u8 extradataidx;
-    for (showidx=0; showidx<25; showidx++) {
+    for (showidx=0; showidx<TV_SHOWS_COUNT; showidx++) {
         gSaveBlock1.tvShows[showidx].common.kind = 0;
         gSaveBlock1.tvShows[showidx].common.active = 0;
         for (extradataidx=0; extradataidx<34; extradataidx++) {
@@ -444,9 +444,6 @@ void ClearTVShowData(void)
 
 bool8 sub_80BF1B4(u8);
 void sub_80BF20C(void);
-extern u8 gSpecialVar_ContestCategory;
-extern u8 gSpecialVar_ContestRank;
-extern u8 gBattleOutcome;
 
 void InterviewBefore_FanClubLetter(void);
 void InterviewBefore_RecentHappenings(void);
@@ -456,21 +453,9 @@ void InterviewBefore_NameRater(void);
 void InterviewBefore_BravoTrainerPkmnProfile(void);
 void InterviewBefore_BravoTrainerBTProfile(void);
 
-void sub_80BE028(void);
-void sub_80BE074(void);
-void sub_80BE778(void);
-void sub_80BEB20(void);
 
 u8 GetTVChannelByShowType(u8);
 
-s8 sub_80BF74C(TVShow tvShow[]);
-
-void sub_80BF55C(TVShow tvShow[], u8 showidx);
-void sub_80BEA88(void);
-
-void sub_80BE138(TVShow *show);
-void sub_80BE160(TVShow *show);
-extern u16 gLastUsedItem;
 
 void InterviewAfter_FanClubLetter(void);
 void InterviewAfter_RecentHappenings(void);
@@ -980,16 +965,16 @@ void sub_80BE23C(u16 a0)
     }
 }
 
-void sub_80BE284(u8 a0)
+void sub_80BE284(u8 contestResult)
 {
     struct TVShowBravoTrainerPokemonProfiles *bravoTrainer = &gSaveBlock1.tvShows[24].bravoTrainer;
 
     gUnknown_03005D38.var0 = sub_80BF720(gSaveBlock1.tvShows);
     if (gUnknown_03005D38.var0 != -1)
     {
-        bravoTrainer->contestResult = a0;
+        bravoTrainer->contestResult = contestResult;
         bravoTrainer->contestCategory = gSpecialVar_ContestCategory;
-        bravoTrainer->contestRank = gSpecialVar_ContestRank;
+        bravoTrainer->contestRank = (u8)gSpecialVar_ContestRank;
         bravoTrainer->species = GetMonData(&gPlayerParty[gUnknown_02038694], MON_DATA_SPECIES, NULL);
         GetMonData(&gPlayerParty[gUnknown_02038694], MON_DATA_NICKNAME, bravoTrainer->pokemonNickname);
     }
@@ -1356,7 +1341,7 @@ int sub_80BEBC8(struct PokeNews *pokeNews)
 {
     s8 i;
 
-    for (i = 0; i < 16; i++)
+    for (i = 0; i < POKE_NEWS_COUNT; i++)
     {
         if (pokeNews[i].kind == 0)
             return i;
@@ -1368,7 +1353,7 @@ void sub_80BEBF4(void)
 {
     u8 i;
 
-    for (i = 0; i < 16; i++)
+    for (i = 0; i < POKE_NEWS_COUNT; i++)
         sub_80BEC10(i);
 }
 
@@ -1387,7 +1372,7 @@ void sub_80BEC40(void)
     {
         if (gSaveBlock1.pokeNews[i].kind == 0)
         {
-            for (j = i + 1; j < 16; j++)
+            for (j = i + 1; j < POKE_NEWS_COUNT; j++)
             {
                 if (gSaveBlock1.pokeNews[j].kind != 0)
                 {
@@ -1403,7 +1388,7 @@ void sub_80BEC40(void)
 u8 FindAnyTVNewsOnTheAir(void)
 {
     u8 i;
-    for (i = 0; i < 16; i++)
+    for (i = 0; i < POKE_NEWS_COUNT; i++)
     {
         if (gSaveBlock1.pokeNews[i].kind != 0
          && gSaveBlock1.pokeNews[i].state == 1
@@ -1447,7 +1432,7 @@ bool8 GetPriceReduction(u8 arg0)
 
     if (arg0 == 0)
         return FALSE;
-    for (i=0; i<16; i++)
+    for (i=0; i<POKE_NEWS_COUNT; i++)
     {
         if (gSaveBlock1.pokeNews[i].kind == arg0)
         {
@@ -1490,7 +1475,7 @@ bool8 sub_80BEE48(u8 arg0)
 
     if (arg0 == 0)
         return TRUE;
-    for (i=0; i<16; i++)
+    for (i=0; i<POKE_NEWS_COUNT; i++)
     {
         if (gSaveBlock1.pokeNews[i].kind == arg0)
             return TRUE;
@@ -1502,7 +1487,7 @@ void sub_80BEE84(u16 var0)
 {
     u8 i;
 
-    for (i=0; i<16; i++)
+    for (i=0; i<POKE_NEWS_COUNT; i++)
     {
         if (gSaveBlock1.pokeNews[i].kind)
         {
@@ -2204,11 +2189,11 @@ void sub_80BFD20(void)
 
 typedef union ewramStruct_02007000
 {
-    TVShow tvshows[4][25];
-    struct PokeNews pokeNews[4][16];
+    TVShow tvshows[4][TV_SHOWS_COUNT];
+    struct PokeNews pokeNews[4][POKE_NEWS_COUNT];
 } ewramStruct_02007000;
 
-void sub_80BFE24(TVShow arg0[25], TVShow arg1[25], TVShow arg2[25], TVShow arg3[25]);
+void sub_80BFE24(TVShow arg0[TV_SHOWS_COUNT], TVShow arg1[TV_SHOWS_COUNT], TVShow arg2[TV_SHOWS_COUNT], TVShow arg3[TV_SHOWS_COUNT]);
 
 void sub_80C04A0(void);
 void sub_80C01D4(void);
@@ -2220,7 +2205,7 @@ void sub_80BFD44(u8 *arg0, u32 arg1, u8 arg2)
     ewramStruct_02007000 *ewramTVShows;
 
     for (i = 0; i < 4; i++)
-        memcpy(&gUnknown_02007000.tvshows[i], &arg0[i * arg1], 25 * sizeof(TVShow));
+        memcpy(&gUnknown_02007000.tvshows[i], &arg0[i * arg1], TV_SHOWS_COUNT * sizeof(TVShow));
     ewramTVShows = &gUnknown_02007000;
     switch (arg2)
     {
@@ -2245,12 +2230,12 @@ void sub_80BFD44(u8 *arg0, u32 arg1, u8 arg2)
 }
 
 s8 sub_80C019C(TVShow tvShows[]);
-bool8 sub_80BFF68(TVShow * tv1[25], TVShow * tv2[25], u8 idx);
+bool8 sub_80BFF68(TVShow * tv1[TV_SHOWS_COUNT], TVShow * tv2[TV_SHOWS_COUNT], u8 idx);
 u8 sub_80C004C(TVShow *tv1, TVShow *tv2, u8 idx);
 u8 sub_80C00B4(TVShow *tv1, TVShow *tv2, u8 idx);
 u8 sub_80C0134(TVShow *tv1, TVShow *tv2, u8 idx);
 
-void sub_80BFE24(TVShow arg0[25], TVShow arg1[25], TVShow arg2[25], TVShow arg3[25])
+void sub_80BFE24(TVShow arg0[TV_SHOWS_COUNT], TVShow arg1[TV_SHOWS_COUNT], TVShow arg2[TV_SHOWS_COUNT], TVShow arg3[TV_SHOWS_COUNT])
 {
     u8 i, j;
     TVShow **argslist[4];
@@ -2289,7 +2274,7 @@ void sub_80BFE24(TVShow arg0[25], TVShow arg1[25], TVShow arg2[25], TVShow arg3[
     }
 }
 
-bool8 sub_80BFF68(TVShow * arg1[25], TVShow * arg2[25], u8 idx)
+bool8 sub_80BFF68(TVShow * arg1[TV_SHOWS_COUNT], TVShow * arg2[TV_SHOWS_COUNT], u8 idx)
 {
     u8 value;
     u8 switchval;
@@ -2692,11 +2677,11 @@ void sub_80C04A0(void)
         sub_80BF55C(gSaveBlock1.tvShows, showIdx+5);
 }
 
-void sub_80C05C4(struct PokeNews[16], struct PokeNews[16], struct PokeNews[16], struct PokeNews[16]);
+void sub_80C05C4(struct PokeNews[POKE_NEWS_COUNT], struct PokeNews[POKE_NEWS_COUNT], struct PokeNews[POKE_NEWS_COUNT], struct PokeNews[POKE_NEWS_COUNT]);
 void sub_80C0750(void);
 void sub_80C0788(void);
-s8 sub_80C0730(struct PokeNews[16], u8);
-void sub_80C06BC(struct PokeNews *[16], struct PokeNews *[16]);
+s8 sub_80C0730(struct PokeNews[POKE_NEWS_COUNT], u8);
+void sub_80C06BC(struct PokeNews *[POKE_NEWS_COUNT], struct PokeNews *[POKE_NEWS_COUNT]);
 
 void sub_80C0514(void *a0, u32 a1, u8 a2)
 {
@@ -2725,7 +2710,7 @@ void sub_80C0514(void *a0, u32 a1, u8 a2)
     sub_80C0788();
 }
 
-void sub_80C05C4(struct PokeNews a0[16], struct PokeNews a1[16], struct PokeNews a2[16], struct PokeNews a3[16])
+void sub_80C05C4(struct PokeNews a0[POKE_NEWS_COUNT], struct PokeNews a1[POKE_NEWS_COUNT], struct PokeNews a2[POKE_NEWS_COUNT], struct PokeNews a3[POKE_NEWS_COUNT])
 {
     u8 i;
     u8 j;
@@ -2737,7 +2722,7 @@ void sub_80C05C4(struct PokeNews a0[16], struct PokeNews a1[16], struct PokeNews
     arglist[2] = &a2;
     arglist[3] = &a3;
     gUnknown_03000721 = GetLinkPlayerCount();
-    for (i = 0; i < 16; i++)
+    for (i = 0; i < POKE_NEWS_COUNT; i++)
     {
         for (j = 0; j < gUnknown_03000721; j++)
         {
@@ -2755,7 +2740,7 @@ void sub_80C05C4(struct PokeNews a0[16], struct PokeNews a1[16], struct PokeNews
     }
 }
 
-void sub_80C06BC(struct PokeNews *arg0[16], struct PokeNews *arg1[16])
+void sub_80C06BC(struct PokeNews *arg0[POKE_NEWS_COUNT], struct PokeNews *arg1[POKE_NEWS_COUNT])
 {
     struct PokeNews *str0;
     struct PokeNews *str1;
@@ -2772,7 +2757,7 @@ bool8 sub_80C06E8(struct PokeNews *arg0, struct PokeNews *arg1, s8 arg2)
 
     if (arg1->kind == 0)
         return FALSE;
-    for (i = 0; i < 16; i++)
+    for (i = 0; i < POKE_NEWS_COUNT; i++)
     {
         if (arg0[i].kind == arg1->kind)
             return FALSE;
@@ -2794,7 +2779,7 @@ void sub_80C0750(void)
 {
     u8 i;
 
-    for (i = 0; i < 16; i++)
+    for (i = 0; i < POKE_NEWS_COUNT; i++)
     {
         if (gSaveBlock1.pokeNews[i].kind > 3)
             sub_80BEC10(i);
@@ -2808,7 +2793,7 @@ void sub_80C0788(void)
 
     if (FlagGet(FLAG_SYS_GAME_CLEAR) != 1)
     {
-        for (i = 0; i < 16; i++)
+        for (i = 0; i < POKE_NEWS_COUNT; i++)
             gSaveBlock1.pokeNews[i].state = 0;
     }
 }

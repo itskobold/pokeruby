@@ -497,7 +497,7 @@ void sub_81439D0(void)
 
 
     SetVBlankCallback(vblank_8143948);
-    m4aSongNumStart(BGM_THANKFOR);
+    m4aSongNumStart(MUS_THANKFOR);
     SetMainCallback2(sub_814395C);
     gUnknown_02039325 = 0;
 
@@ -741,7 +741,7 @@ static void task_a_8144080(u8 taskIdA)
         }
 
         if (gTasks[taskIdA].data[TDA_0] == 6840)
-            m4aSongNumStart(BGM_END);
+            m4aSongNumStart(MUS_END);
 
         gTasks[taskIdA].data[TDA_0] -= 1;
     }
@@ -810,7 +810,7 @@ static void task_b_81441B8(u8 taskIdB)
             if (gTasks[taskIdB].data[TDB_CURRENT_PAGE] < PAGE_COUNT)
             {
                 for (i = 0; i < 5; i++)
-                    sub_8072BD8(gCreditsEntryPointerTable[gTasks[taskIdB].data[TDB_CURRENT_PAGE]][i]->text, 0, 9 + i * 2, 240);
+                    MenuPrint_Centered(gCreditsEntryPointerTable[gTasks[taskIdB].data[TDB_CURRENT_PAGE]][i]->text, 0, 9 + i * 2, 240);
 
                 gTasks[taskIdB].data[TDB_CURRENT_PAGE] += 1;
                 gTasks[taskIdB].data[TDB_0] += 1;

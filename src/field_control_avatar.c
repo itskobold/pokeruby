@@ -24,6 +24,8 @@
 #include "trainer_see.h"
 #include "constants/vars.h"
 #include "wild_encounter.h"
+#include "constants/bg_event_constants.h"
+#include "constants/map_types.h"
 
 struct Coords32
 {
@@ -100,12 +102,12 @@ static bool8 CheckStandardWildEncounter(u16);
 static bool8 mapheader_run_first_tag2_script_list_match_conditionally(struct MapPosition *, u16, u8);
 static bool8 IsWarpMetatileBehavior(u16);
 static bool8 IsArrowWarpMetatileBehavior(u16, u8);
-static s8 FindWarpEventByPosition(struct MapHeader *, struct MapPosition *);
+static s8 GetWarpEventAtMapPosition(struct MapHeader *, struct MapPosition *);
 static void sub_8068C30(struct MapHeader *, s8, struct MapPosition *);
 static bool8 map_warp_consider_2_to_inside(struct MapPosition *, u16, u8);
-static s8 FindWarpEventByCoordsAndId(struct MapHeader *, u16, u16, u8);
+static s8 GetWarpEventAtPosition(struct MapHeader *, u16, u16, u8);
 static u8 *GetCoordEventScriptAtPosition(struct MapHeader *, u16, u16, u8);
-static struct BgEvent *FindBackgroundEventByPosition(struct MapHeader *, u16, u16, u8);
+static struct BgEvent *GetBackgroundEventAtPosition(struct MapHeader *, u16, u16, u8);
 static bool8 TryStartCoordEventScript(struct MapPosition *);
 static bool8 TryStartWarpEventScript(struct MapPosition *, u16);
 static bool8 TryStartCrackedFloorHoleScript(u16);
@@ -356,7 +358,7 @@ u8 *GetInteractedLinkPlayerScript(struct MapPosition *position, u8 metatileBehav
     if (!MetatileBehavior_IsCounter(MapGridGetMetatileBehaviorAt(position->x, position->y)))
         eventObjectId = GetEventObjectIdByXYZ(position->x, position->y, position->height);
     else
-        eventObjectId = GetEventObjectIdByXYZ(position->x + gUnknown_0821664C[direction].x, position->y + gUnknown_0821664C[direction].y, position->height);
+        eventObjectId = GetEventObjectIdByXYZ(position->x + gDirectionToVectors[direction].x, position->y + gDirectionToVectors[direction].y, position->height);
 
     if (eventObjectId == 16 || gEventObjects[eventObjectId].localId == 0xFF)
         return NULL;
@@ -385,7 +387,7 @@ static u8 *GetInteractedEventObjectScript(struct MapPosition *position, u8 metat
             return NULL;
 
         // Look for an event object on the other side of the counter.
-        eventObjectId = GetEventObjectIdByXYZ(position->x + gUnknown_0821664C[direction].x, position->y + gUnknown_0821664C[direction].y, position->height);
+        eventObjectId = GetEventObjectIdByXYZ(position->x + gDirectionToVectors[direction].x, position->y + gDirectionToVectors[direction].y, position->height);
         if (eventObjectId == 16 || gEventObjects[eventObjectId].localId == 0xFF)
             return NULL;
     }
@@ -400,7 +402,7 @@ static u8 *GetInteractedEventObjectScript(struct MapPosition *position, u8 metat
 
 static u8 *GetInteractedBackgroundEventScript(struct MapPosition *position, u8 metatileBehavior, u8 direction)
 {
-    struct BgEvent *bgEvent = FindBackgroundEventByPosition(&gMapHeader, position->x - 7, position->y - 7, position->height);
+    struct BgEvent *bgEvent = GetBackgroundEventAtPosition(&gMapHeader, position->x - 7, position->y - 7, position->height);
 
     if (bgEvent == NULL)
         return NULL;
@@ -409,34 +411,34 @@ static u8 *GetInteractedBackgroundEventScript(struct MapPosition *position, u8 m
 
     switch (bgEvent->kind)
     {
-    case 0:
+    case BG_EVENT_PLAYER_FACING_ANY:
     default:
         return bgEvent->bgUnion.script;
-    case 1:
+    case BG_EVENT_PLAYER_FACING_NORTH:
         if (direction != DIR_NORTH)
             return NULL;
         break;
-    case 2:
+    case BG_EVENT_PLAYER_FACING_SOUTH:
         if (direction != DIR_SOUTH)
             return NULL;
         break;
-    case 3:
+    case BG_EVENT_PLAYER_FACING_EAST:
         if (direction != DIR_EAST)
             return NULL;
         break;
-    case 4:
+    case BG_EVENT_PLAYER_FACING_WEST:
         if (direction != DIR_WEST)
             return NULL;
         break;
     case 5:
     case 6:
-    case 7:
+    case BG_EVENT_HIDDEN_ITEM:
         gSpecialVar_0x8004 = ((u32)bgEvent->bgUnion.script >> 16) + FLAG_HIDDEN_ITEMS_START;
         gSpecialVar_0x8005 = (u32)bgEvent->bgUnion.script;
         if (FlagGet(gSpecialVar_0x8004) == TRUE)
             return NULL;
         return HiddenItemScript;
-    case 8:
+    case BG_EVENT_SECRET_BASE:
         if (direction == DIR_NORTH)
         {
             gSpecialVar_0x8004 = bgEvent->bgUnion.secretBaseId;
@@ -676,11 +678,11 @@ static bool8 CheckStandardWildEncounter(u16 metatileBehavior)
 
 static bool8 mapheader_run_first_tag2_script_list_match_conditionally(struct MapPosition *position, u16 metatileBehavior, u8 direction)
 {
-    s8 warpEventId = FindWarpEventByPosition(&gMapHeader, position);
+    s8 warpEventId = GetWarpEventAtMapPosition(&gMapHeader, position);
 
     if (IsArrowWarpMetatileBehavior(metatileBehavior, direction) == TRUE && warpEventId != -1)
     {
-        walkrun_find_lowest_active_bit_in_bitfield();
+        StoreInitialPlayerAvatarState();
         sub_8068C30(&gMapHeader, warpEventId, position);
         sub_8080E88();
         return TRUE;
@@ -690,11 +692,11 @@ static bool8 mapheader_run_first_tag2_script_list_match_conditionally(struct Map
 
 bool8 TryStartWarpEventScript(struct MapPosition *position, u16 metatileBehavior)
 {
-    s8 warpEventId = FindWarpEventByPosition(&gMapHeader, position);
+    s8 warpEventId = GetWarpEventAtMapPosition(&gMapHeader, position);
 
     if (warpEventId != -1 && IsWarpMetatileBehavior(metatileBehavior) == TRUE)
     {
-        walkrun_find_lowest_active_bit_in_bitfield();
+        StoreInitialPlayerAvatarState();
         sub_8068C30(&gMapHeader, warpEventId, position);
         if (MetatileBehavior_IsEscalator(metatileBehavior) == TRUE)
         {
@@ -757,9 +759,9 @@ static bool8 IsArrowWarpMetatileBehavior(u16 metatileBehavior, u8 direction)
     return FALSE;
 }
 
-static s8 FindWarpEventByPosition(struct MapHeader *mapHeader, struct MapPosition *position)
+static s8 GetWarpEventAtMapPosition(struct MapHeader *mapHeader, struct MapPosition *position)
 {
-    return FindWarpEventByCoordsAndId(mapHeader, position->x - 7, position->y - 7, position->height);
+    return GetWarpEventAtPosition(mapHeader, position->x - 7, position->y - 7, position->height);
 }
 
 static void sub_8068C30(struct MapHeader *unused, s8 warpEventId, struct MapPosition *position)
@@ -768,17 +770,17 @@ static void sub_8068C30(struct MapHeader *unused, s8 warpEventId, struct MapPosi
 
     if (warpEvent->mapNum == 0x7F)
     {
-        copy_saved_warp2_bank_and_enter_x_to_warp1(warpEvent->mapGroup);
+        copy_saved_warp2_bank_and_enter_x_to_warp1(warpEvent->warpId);
     }
     else
     {
         struct MapHeader *mapHeader;
 
-        warp1_set_2(warpEvent->unk7, warpEvent->mapNum, warpEvent->mapGroup);
+        warp1_set_2(warpEvent->mapGroup, warpEvent->mapNum, warpEvent->warpId);
         sub_80535C4(position->x, position->y);
-        mapHeader = Overworld_GetMapHeaderByGroupAndId(warpEvent->unk7, warpEvent->mapNum);
-        if (mapHeader->events->warps[warpEvent->mapGroup].mapNum == 0x7F)
-            saved_warp2_set(mapHeader->events->warps[warpEventId].mapGroup, gSaveBlock1.location.mapGroup, gSaveBlock1.location.mapNum, warpEventId);
+        mapHeader = Overworld_GetMapHeaderByGroupAndId(warpEvent->mapGroup, warpEvent->mapNum);
+        if (mapHeader->events->warps[warpEvent->warpId].mapNum == 0x7F)
+            saved_warp2_set(mapHeader->events->warps[warpEventId].warpId, gSaveBlock1.location.mapGroup, gSaveBlock1.location.mapNum, warpEventId);
     }
 }
 
@@ -795,10 +797,10 @@ static bool8 map_warp_consider_2_to_inside(struct MapPosition *position, u16 met
         }
         if (MetatileBehavior_IsWarpDoor(metatileBehavior) == TRUE)
         {
-            warpEventId = FindWarpEventByPosition(&gMapHeader, position);
+            warpEventId = GetWarpEventAtMapPosition(&gMapHeader, position);
             if (warpEventId != -1 && IsWarpMetatileBehavior(metatileBehavior) == TRUE)
             {
-                walkrun_find_lowest_active_bit_in_bitfield();
+                StoreInitialPlayerAvatarState();
                 sub_8068C30(&gMapHeader, warpEventId, position);
                 sub_8080EF0();
                 return TRUE;
@@ -808,7 +810,7 @@ static bool8 map_warp_consider_2_to_inside(struct MapPosition *position, u16 met
     return FALSE;
 }
 
-static s8 FindWarpEventByCoordsAndId(struct MapHeader *mapHeader, u16 x, u16 y, u8 warpId)
+static s8 GetWarpEventAtPosition(struct MapHeader *mapHeader, u16 x, u16 y, u8 elevation)
 {
     s32 i;
     struct WarpEvent *warpEvent = mapHeader->events->warps;
@@ -818,7 +820,7 @@ static s8 FindWarpEventByCoordsAndId(struct MapHeader *mapHeader, u16 x, u16 y, 
     {
         if ((u16)warpEvent->x == x && (u16)warpEvent->y == y)
         {
-            if ((u8)warpEvent->warpId == warpId || (u8)warpEvent->warpId == 0)
+            if (warpEvent->elevation == elevation || warpEvent->elevation == 0)
                 return i;
         }
     }
@@ -871,7 +873,7 @@ u8 *GetCoordEventScriptAtMapPosition(struct MapPosition *position)
     return GetCoordEventScriptAtPosition(&gMapHeader, position->x - 7, position->y - 7, position->height);
 }
 
-static struct BgEvent *FindBackgroundEventByPosition(struct MapHeader *mapHeader, u16 x, u16 y, u8 elevation)
+static struct BgEvent *GetBackgroundEventAtPosition(struct MapHeader *mapHeader, u16 x, u16 y, u8 elevation)
 {
     u8 i;
     struct BgEvent *bgEvents = mapHeader->events->bgEvents;
@@ -894,7 +896,7 @@ bool8 dive_warp(struct MapPosition *position, u16 metatileBehavior)
     {
         if (SetDiveWarpEmerge(position->x - 7, position->y - 7))
         {
-            walkrun_find_lowest_active_bit_in_bitfield();
+            StoreInitialPlayerAvatarState();
             sp13E_warp_to_last_warp();
             PlaySE(SE_W291);
             return TRUE;
@@ -904,7 +906,7 @@ bool8 dive_warp(struct MapPosition *position, u16 metatileBehavior)
     {
         if (SetDiveWarpDive(position->x - 7, position->y - 7))
         {
-            walkrun_find_lowest_active_bit_in_bitfield();
+            StoreInitialPlayerAvatarState();
             sp13E_warp_to_last_warp();
             PlaySE(SE_W291);
             return TRUE;
@@ -950,6 +952,6 @@ int SetCableClubWarp(void)
     GetPlayerMovementDirection();  //unnecessary
     GetPlayerPosition(&position);
     MapGridGetMetatileBehaviorAt(position.x, position.y);  //unnecessary
-    sub_8068C30(&gMapHeader, FindWarpEventByPosition(&gMapHeader, &position), &position);
+    sub_8068C30(&gMapHeader, GetWarpEventAtMapPosition(&gMapHeader, &position), &position);
     return 0;
 }

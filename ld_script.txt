@@ -135,8 +135,6 @@ SECTIONS {
         src/pokemon_storage_system_2.o(.text);
         src/pokemon_storage_system_3.o(.text);
         src/pokemon_storage_system_4.o(.text);
-        src/pokemon_storage_system_5.o(.text);
-        asm/pokemon_storage_system.o(.text);
         src/pokemon_icon.o(.text);
         src/pokemon_summary_screen.o(.text);
         src/script_movement.o(.text);
@@ -162,6 +160,7 @@ SECTIONS {
         src/debug/sound_check_menu.o(.text);
         src/secret_base.o(.text);
         src/tv.o(.text);
+        src/battle/contest_link_80C2020.o(.text);
         asm/contest_link_80C2020.o(.text);
         src/script_pokemon_util_80C4BF0.o(.text);
         src/field_poison.o(.text);
@@ -286,18 +285,14 @@ SECTIONS {
         src/battle/anim/fight.o(.text);
         src/battle/anim/poison.o(.text);
         src/battle/anim/flying.o(.text);
-        asm/flying.o(.text);
         src/battle/anim/psychic.o(.text);
         src/battle/anim/bug.o(.text);
         src/battle/anim/rock.o(.text);
         src/battle/anim/ghost.o(.text);
-        asm/ghost.o(.text);
         src/battle/anim/dragon.o(.text);
         src/battle/anim/dark.o(.text);
         src/battle/anim/ground.o(.text);
-        asm/ground.o(.text);
         src/battle/anim/normal.o(.text);
-        asm/normal.o(.text);
         src/battle/anim/battle_intro.o(.text);
         src/bike.o(.text);
         src/easy_chat_1.o(.text);
@@ -368,7 +363,7 @@ SECTIONS {
         src/player_pc.o(.text);
         src/intro.o(.text);
         src/field_region_map.o(.text);
-        asm/battle_anim_813F0F4.o(.text);
+        src/battle/battle_anim_813F0F4.o(.text);
         src/hall_of_fame.o(.text);
         src/credits.o(.text);
         src/lottery_corner.o(.text);
@@ -564,7 +559,6 @@ SECTIONS {
         src/pokemon_storage_system_2.o(.rodata);
         src/pokemon_storage_system_3.o(.rodata);
         src/pokemon_storage_system_4.o(.rodata);
-        src/pokemon_storage_system_5.o(.rodata);
         data/pokemon_storage_system.o(.rodata);
         src/pokemon_icon.o(.rodata);
         src/pokemon_summary_screen.o(.rodata);
@@ -589,7 +583,7 @@ SECTIONS {
         src/debug/sound_check_menu.o(.rodata);
         src/secret_base.o(.rodata);
         src/tv.o(.rodata);
-        data/contest_link_80C2020.o(.rodata);
+        src/battle/contest_link_80C2020.o(.rodata);
         src/pokemon_size_record.o(.rodata);
         src/pc_screen_effect.o(.rodata);
         src/pc_screen_effect.o(.data);
