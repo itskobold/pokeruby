@@ -111,5 +111,6 @@ void sub_80BFD20(void);
 void PutPokemonTodayCaughtOnAir(void);
 u8 GetTVChannelByShowType(u8);
 void sub_80BEC40(void);
+void RenamePokemon(void);
 
 #endif // GUARD_TV_H

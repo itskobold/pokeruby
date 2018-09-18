@@ -2054,6 +2054,29 @@ bool8 TV_PutNameRaterShowOnTheAirIfNicnkameChanged(void)
     return TRUE;
 }
 
+void RenamePokemon_CB(void); //used to rename mons from party menu, will likely replace vanilla ChangePokemonNickname routines in future
+
+void RenamePokemon(void)
+{
+    u16 spec;
+    u16 gender;
+    u32 pval;
+
+    GetMonData(&(gPlayerParty[gSpecialVar_0x8004]), MON_DATA_NICKNAME, &gStringVar3);
+    GetMonData(&(gPlayerParty[gSpecialVar_0x8004]), MON_DATA_NICKNAME, &gStringVar2);
+    spec = GetMonData(&(gPlayerParty[gSpecialVar_0x8004]), MON_DATA_SPECIES, 0);
+    gender = GetMonGender(&(gPlayerParty[gSpecialVar_0x8004]));
+    pval = GetMonData(&(gPlayerParty[gSpecialVar_0x8004]), MON_DATA_PERSONALITY, 0);
+    DoNamingScreen(3, gStringVar2, spec, gender, pval, RenamePokemon_CB);
+}
+
+void RenamePokemon_CB(void)
+{
+	SetMonData(&(gPlayerParty[gSpecialVar_0x8004]), MON_DATA_NICKNAME, gStringVar2);
+	//HOENNBUG this needs to close to the pokemon menu instead of the overworld
+    c2_exit_to_overworld_1_continue_scripts_restart_music();
+}
+
 void ChangePokemonNickname_CB(void);
 
 void ChangePokemonNickname(void)

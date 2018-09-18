@@ -165,6 +165,7 @@ extern const u8 gOtherText_CancelNoTerminator[];
 extern const u8 gOtherText_CancelWithTerminator[];
 
 extern const u8 OtherText_Item[];
+extern const u8 OtherText_Rename[];
 extern const u8 OtherText_Mail[];
 extern const u8 OtherText_Take2[];
 extern const u8 OtherText_Store[];

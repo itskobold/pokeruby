@@ -173,6 +173,7 @@ const u8 gOtherText_CancelNoTerminator[] = _("CANCEL");
 const u8 gOtherText_CancelWithTerminator[] = _("$CANCEL"); // with terminator at beginning?
 
 const u8 OtherText_Item[] = _("ITEM");
+const u8 OtherText_Rename[] = _("RENAME");
 const u8 OtherText_Mail[] = _("MAIL");
 const u8 OtherText_Take2[] = _("TAKE");
 const u8 OtherText_Store[] = _("STORE");

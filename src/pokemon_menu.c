@@ -33,6 +33,7 @@
 #include "constants/field_effects.h"
 #include "constants/moves.h"
 #include "constants/songs.h"
+#include "tv.h"
 
 /*
 Pokemon menu:
@@ -80,7 +81,7 @@ static void sub_8089D94(u8 taskID);
 static void sub_8089E4C(u8 taskID);
 static void sub_808A5BC(u8 taskID);
 static void sub_808A8D4(u8 taskID);
-static void sub_808A73C(u8 taskID);
+//static void sub_808A73C(u8 taskID);
 static void sub_808A848(u8 taskID);
 //static void sub_808AAF0(u8 taskID);
 static void sub_808ABF4(u8 taskID);
@@ -98,11 +99,12 @@ static void sub_808B5E4(u8 taskID);
 static void PokemonMenu_Summary(u8 taskID);
 static void PokemonMenu_Switch(u8 taskID);
 static void PokemonMenu_Item(u8 taskID);
+static void PokemonMenu_Rename(u8 taskID);
 static void PokemonMenu_Cancel(u8 taskID);
 static void PokemonMenu_GiveItem(u8 taskID);
 static void PokemonMenu_TakeItem(u8 taskID);
 static void PokemonMenu_TakeMail(u8 taskID);
-static void PokemonMenu_Mail(u8 taskID);
+//static void PokemonMenu_Mail(u8 taskID);
 static void PokemonMenu_ReadMail(u8 taskID);
 static void PokemonMenu_CancelSubmenu(u8 taskID);
 static void PokemonMenu_FieldMove(u8 taskID);
@@ -115,7 +117,7 @@ static bool8 SetUpFieldMove_Dive(void);*/
 
 EWRAM_DATA static u8 sPokeMenuCursorPos = 0;
 EWRAM_DATA static u8 sPokeMenuOptionsNo = 0;
-EWRAM_DATA static u8 sPokeMenuOptionsOrder[8] = {0}; // 4 possible field moves and 4 default options
+EWRAM_DATA static u8 sPokeMenuOptionsOrder[9] = {0}; // 4 possible field moves and 5 default options
 
 // iwram common
 u8 gLastFieldPokeMenuOpened;
@@ -132,7 +134,7 @@ static const struct MenuAction2 sPokemonMenuActions[] =
     {OtherText_Give2,               PokemonMenu_GiveItem},
     {OtherText_Take2,               PokemonMenu_TakeItem},
     {OtherText_Take,                PokemonMenu_TakeMail},
-    {OtherText_Mail,                PokemonMenu_Mail},
+    {OtherText_Rename,              PokemonMenu_Rename},
     {OtherText_Read2,               PokemonMenu_ReadMail},
     {gOtherText_CancelNoTerminator, PokemonMenu_CancelSubmenu},
     {FieldMove_Teleport,     		PokemonMenu_FieldMove},
@@ -202,11 +204,12 @@ static void sub_8089A8C(void)
         if (GetMonData(&gPlayerParty[1], MON_DATA_SPECIES) != 0)
             AppendToList(sPokeMenuOptionsOrder, &sPokeMenuOptionsNo, POKEMENU_SWITCH);
 
-        if (ItemIsMail(GetMonData(&gPlayerParty[gLastFieldPokeMenuOpened], MON_DATA_HELD_ITEM)))
+        /*if (ItemIsMail(GetMonData(&gPlayerParty[gLastFieldPokeMenuOpened], MON_DATA_HELD_ITEM)))
             AppendToList(sPokeMenuOptionsOrder, &sPokeMenuOptionsNo, POKEMENU_MAIL);
-        else
+        else*/
             AppendToList(sPokeMenuOptionsOrder, &sPokeMenuOptionsNo, POKEMENU_ITEM);
 
+		AppendToList(sPokeMenuOptionsOrder, &sPokeMenuOptionsNo, POKEMENU_RENAME);
         AppendToList(sPokeMenuOptionsOrder, &sPokeMenuOptionsNo, POKEMENU_CANCEL);
     }
 }
@@ -396,6 +399,22 @@ static void PokemonMenu_Item(u8 taskID)
     sPokeMenuCursorPos = 0;
     Menu_EraseWindowRect(19, 0, 29, 19);
     gTasks[taskID].func = sub_808A100;
+}
+
+static void PokemonMenu_RenamePostFade(u8 taskID)
+{
+    if (!gPaletteFade.active)
+    {
+		sPokeMenuCursorPos = 0;
+		gSpecialVar_0x8004 = sub_806CA38(taskID);
+		RenamePokemon();
+    }
+}
+
+static void PokemonMenu_Rename(u8 taskID)
+{
+    BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB(0, 0, 0));
+    gTasks[taskID].func = PokemonMenu_RenamePostFade;
 }
 
 static void sub_808A180(u8 taskID)
@@ -599,16 +618,16 @@ static void PokemonMenu_TakeMail(u8 taskID)
     DoTakeMail(taskID, sub_808A678);
 }
 
-static void PokemonMenu_Mail(u8 taskID)
+/*static void PokemonMenu_Mail(u8 taskID)
 {
     Menu_DestroyCursor();
     sPokeMenuCursorPos = 0;
     Menu_EraseWindowRect(19, 0, 29, 19);
     ShowPartyPopupMenu(0, &sUnknown_0839F584, (void*) sPokemonMenuActions, 0);
     gTasks[taskID].func = sub_808A73C;
-}
+}*/
 
-static void sub_808A73C(u8 taskID)
+/*static void sub_808A73C(u8 taskID)
 {
     if (gMain.newAndRepeatedKeys == DPAD_UP)
     {
@@ -636,7 +655,7 @@ static void sub_808A73C(u8 taskID)
         ClosePartyPopupMenu(0, &sUnknown_0839F584);
         PokemonMenu_Cancel(taskID);
     }
-}
+}*/
 
 static void PokemonMenu_ReadMail(u8 taskID)
 {

@@ -14,7 +14,7 @@ enum
     POKEMENU_GIVE_ITEM,         // 4
     POKEMENU_TAKE_ITEM,         // 5
     POKEMENU_TAKE_MAIL,         // 6
-    POKEMENU_MAIL,              // 7
+    POKEMENU_RENAME,              // 7
     POKEMENU_READ_MAIL,         // 8
     POKEMENU_CANCEL_SUBMENU,    // 9
     POKEMENU_CUT,               // 10
@@ -31,6 +31,7 @@ enum
 	POKEMENU_MILK_DRINK,        // 21
 	POKEMENU_SOFT_BOILED,       // 22
 	POKEMENU_SWEET_SCENT,       // 23
+	//POKEMENU_RENAME,			// 24
 };
 
 extern u8 gLastFieldPokeMenuOpened;
