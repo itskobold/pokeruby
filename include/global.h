@@ -181,6 +181,12 @@ enum
 
 enum
 {
+	WAIT_UNABLE,		//player is unable to wait
+	WAIT_ABLE,			//player is able to wait normally
+};
+
+enum
+{
 	NUZLOCKE_MODE_OFF,
 	NUZLOCKE_MODE_NUZLOCKE,
 	NUZLOCKE_MODE_HARDLOCKE,
@@ -888,23 +894,26 @@ struct SaveBlock2 /* 0x02024EA4 */
              u16 optionsBattleSceneOff:1;  // whether battle animations are disabled
              u16 regionMapZoom:1;          // whether the map is zoomed in
     /*0x18*/ struct Pokedex pokedex;
-    /*0x90*/ u8 filler_90[0x3];
-	/*0x93*/ u8 optionsBikeMode:1;		   // 0 = HOLD B, 1 = AUTO
-	/*0x93*/ u8 optionsFullParty:1;		   // 0 = SWAP, 1 = SEND TO PC
-	/*0x93*/ u8 optionsFont:2;			   // 0 = ROCKET, 1 = MAGMA, 2 = AQUA, 3 = GALACTIC
-	/*0x93*/ u8 optionsKeyboard:4;		   // 0 = QWERTY, 1 = QWERTY+, 2 = ABC, 3 = ABC+, 4 = AZERTY, 5 = AZERTY+, 6 = DVORAK, 7 = DVORAK+, 8 = COLEMAK, 9 = COLEMAK+, 10 = VANILLA
-	/*0x94*/ u8 statusStartMenuClock:1;	   // is the clock in the start menu being displayed? (used to make it update)
-	/*0x94*/ u8 statusFiller7b:7;
-	/*0x95*/ u8 timeYear:3;			       // 0-7. Randomised at the start of the game. Different world events happen depending on the current year. Rolls over to 0
-	/*0x95*/ u8 timeSeason:2;			   // 0 = SPRING, 1 = SUMMER, 2 = FALL, 3 = WINTER
-	/*0x95*/ u8 timeWeek:1;			       // 0 = First half of season, 1 = second half of season
-	/*0x95*/ u8 timeMinute:2;			   // 0-2. 3 real minutes in 1 hour
-	/*0x96*/ u8 timeHour:5;			       // 0-23 for 12AM to 11PM
+
+    /*0x90*/ u8 filler_90[0x2];	
+	/*0x92*/ u8 optionsBikeMode:1;		   // 0 = HOLD B, 1 = AUTO
+	/*0x92*/ u8 optionsFullParty:1;		   // 0 = SWAP, 1 = SEND TO PC
+	/*0x92*/ u8 optionsFont:2;			   // 0 = ROCKET, 1 = MAGMA, 2 = AQUA, 3 = GALACTIC
+	/*0x92*/ u8 optionsKeyboard:4;		   // 0 = QWERTY, 1 = QWERTY+, 2 = ABC, 3 = ABC+, 4 = AZERTY, 5 = AZERTY+, 6 = DVORAK, 7 = DVORAK+, 8 = COLEMAK, 9 = COLEMAK+, 10 = VANILLA
+	/*0x93*/ u8 filler1b:1;
+	/*0x93*/ u8 waitStatus:1;			   // 0 = WAIT_UNABLE, 1 = WAIT_ABLE
+	/*0x93*/ u8 waitTime:6;
+	/*0x94*/ u8 timeYear:3;			       // 0-7. Randomised at the start of the game. Different world events happen depending on the current year. Rolls over to 0
+	/*0x94*/ u8 timeSeason:2;			   // 0 = SPRING, 1 = SUMMER, 2 = FALL, 3 = WINTER
+	/*0x94*/ u8 timeWeek:1;			       // 0 = First half of season, 1 = second half of season
+	/*0x94*/ u8 timeMinute:2;			   // 0-2. 3 real minutes in 1 hour
+	/*0x95*/ u8 timeHour:5;			       // 0-23 for 12AM to 11PM
 	/*0x96*/ u8 timeDay:3;				   // 0-6 for Monday to Sunday
-	/*0x97*/ u8 nuzlockeMode:2;			   // 0-3 Normal/Nuzlocke/Hardlocke/Deadlocke
-	/*0x97*/ u8 gameMode:2;				   // 0-3 Story/Sandbox/Random/Super Random
-	/*0x97*/ u8 dayNightStatus:2;		   // 0 = DAWN, 1 = DAY, 2 = DUSK, 3 = NIGHT
-	/*0x97*/ u8 filler2b:2;
+    /*0x97*/ u8 timeSeconds;			   // 0-59
+	/*0x98*/ u8 nuzlockeMode:2;			   // 0-3 Normal/Nuzlocke/Hardlocke/Deadlocke
+	/*0x98*/ u8 gameMode:2;				   // 0-3 Story/Sandbox/Random/Super Random
+	/*0x98*/ u8 dayNightStatus:2;		   // 0 = DAWN, 1 = DAY, 2 = DUSK, 3 = NIGHT
+	/*0x98*/ u8 filler2b:2;
     /*0x98*/ struct Time localTimeOffset;
     /*0xA0*/ struct Time lastBerryTreeUpdate;
     /*0xA8*/ struct BattleTowerData battleTower;

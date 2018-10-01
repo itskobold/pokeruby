@@ -94,6 +94,8 @@ void SetDefaultOptions(void)
 	gSaveBlock2.optionsKeyboard = OPTIONS_KEYBOARD_QWERTY;
 	gSaveBlock2.optionsFont = OPTIONS_FONT_ROCKET;
     gSaveBlock2.regionMapZoom = FALSE;
+	gSaveBlock2.waitStatus = WAIT_UNABLE;
+	gSaveBlock2.waitTime = 60;
 }
 
 void SetDefaultGameModeAndNuzlocke(void)

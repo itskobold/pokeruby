@@ -17,11 +17,5 @@ void NewGameInitData(void);
 void debug_sub_8057508(bool32 arg0);
 
 void SetDefaultGameTime(void);
-void IncrementClockMinute(void);
-void IncrementClockHour(void);
-void IncrementClockDay(void);
-void IncrementClockWeek(void);
-void IncrementClockSeason(void);
-void IncrementClockYear(void);
 
 #endif // GUARD_NEW_GAME_H

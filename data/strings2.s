@@ -192,6 +192,17 @@ SystemText_Exit::
 	.string "EXIT$"
 SystemText_Retire:: @ safari zone?
 	.string "RETIRE$"
+
+WaitText_1Hour::
+	.string "1 HOUR$"
+WaitText_3Hours::
+	.string "3 HOURS$"
+WaitText_6Hours::
+	.string "6 HOURS$"
+WaitText_12Hours::
+	.string "12 HOURS$"
+WaitText_Cancel::
+	.string "CANCEL$"
 	
 TimeText_PrintTimeString::
 	.string "{STR_VAR_1}), {STR_VAR_2}{COLOR DARK_GREY}, {STR_VAR_3}$"

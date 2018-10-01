@@ -69,16 +69,16 @@ void PlayTimeCounter_Stop(void);
 void PlayTimeCounter_Update(void);
 void PlayTimeCounter_SetToMax(void);
 
-void IncrementClockMinute(void);
-void IncrementClockHour(void);
-void IncrementClockDay(void);
-void IncrementClockWeek(void);
-void IncrementClockSeason(void);
-void IncrementClockYear(void);
+void IncrementClockMinute(bool8 runRoutines);
+void IncrementClockHour(bool8 runRoutines);
+void IncrementClockDay(bool8 runRoutines);
+void IncrementClockWeek(bool8 runRoutines);
+void IncrementClockSeason(bool8 runRoutines);
+void IncrementClockYear(bool8 runRoutines);
 void UpdateDayNightStatus(void);
 u8 CalculateSubSeason(void);
 
-//minute routines
-void UpdateStartMenuClock(void);
+//hour routines
+void TryIncrementWaitTime(void);
 
 #endif // GUARD_PLAY_TIME_H

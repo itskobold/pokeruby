@@ -33,6 +33,7 @@
 #include "task.h"
 #include "trainer_card.h"
 #include "scanline_effect.h"
+#include "script.h"
 
 //Menu actions
 enum {
@@ -52,18 +53,36 @@ enum {
 	MENU_ACTION_PLAYER_LINK,
 };
 
+//Wait dialog status
+enum
+{
+    WAIT_IN_PROGRESS,
+	WAIT_CANT,
+};
+
+//Save dialog status
+enum
+{
+    SAVE_IN_PROGRESS,
+    SAVE_SUCCESS,
+    SAVE_CANCELED,
+    SAVE_ERROR,
+};
+
 //Clock related things
 const u8 *gHourLookup[24] = { TimeText_12AM, TimeText_1AM, TimeText_2AM, TimeText_3AM, TimeText_4AM, TimeText_5AM, TimeText_6AM, TimeText_7AM, TimeText_8AM, TimeText_9AM, TimeText_10AM, TimeText_11AM, TimeText_12PM, TimeText_1PM, TimeText_2PM, TimeText_3PM, TimeText_4PM, TimeText_5PM, TimeText_6PM, TimeText_7PM, TimeText_8PM, TimeText_9PM, TimeText_10PM, TimeText_11PM };
 const u8 *gDayLookup[7] = { TimeText_Monday, TimeText_Tuesday, TimeText_Wednesday, TimeText_Thursday, TimeText_Friday, TimeText_Saturday, TimeText_Sunday };
 const u8 *gSeasonLookup[12] = { TimeText_EarlySpring, TimeText_Spring, TimeText_LateSpring, TimeText_EarlySummer, TimeText_Summer, TimeText_LateSummer, TimeText_EarlyFall, TimeText_Fall, TimeText_LateFall, TimeText_EarlyWinter, TimeText_Winter, TimeText_LateWinter };
 const u8 *gDNStatusLookup[4] = { TimeText_Dawn, TimeText_Day, TimeText_Dusk, TimeText_Night };
 
+const u8 gWaitTimeLookup[4] = { 1, 3, 6, 12 };
+
 #if DEBUG
 static u32 _debugStartMenu_0  __attribute__((unused));
 static u32 _debugStartMenu_1 __attribute__((unused));
 #endif
 
-static u8 (*saveDialogCallback)(void);
+static u8 (*dialogCallback)(void);
 static u8 saveDialogTimer;    //Number of frames to keep the window on screen after save was completed
 static bool8 savingComplete;
 
@@ -77,7 +96,9 @@ u8 (*gMenuCallback)(void);
 
 EWRAM_DATA static u8 sStartMenuScroll = 0;
 EWRAM_DATA static u8 sStartMenuCursorPos = 0;
+EWRAM_DATA static u8 sWaitMenuCursorPos = 0;
 EWRAM_DATA static u8 sStartMenuCursorPosBuffer = 0; //stores the last position the cursor was in
+EWRAM_DATA static u8 sWaitMenuCursorPosBuffer = 0; //stores the last position the cursor was in
 EWRAM_DATA static u8 sNumStartMenuActions = 0;
 EWRAM_DATA static u8 sCurrentStartMenuActions[NUM_START_MENU_ACTIONS] = {0};
 EWRAM_DATA static u8 sStartMenuActionList[NUM_START_MENU_ACTIONS] = {0}; //different to sCurrentStartMenuActions - this holds the options available to the player before the start menu is built
@@ -90,6 +111,15 @@ extern u8 gSaveText_ThereIsAlreadyAFile[];
 extern u8 gSaveText_ThereIsADifferentFile[];
 extern u8 gSaveText_WouldYouLikeToSave[];
 
+extern u8 gWaitText_HowLongToWait[];
+extern u8 gWaitText_YouCantWaitNow[];
+extern u8 gWaitText_WaitingTooOften[];
+extern u8 gWaitText_HoursRemaining[];
+extern u8 gWaitText_Hour[];
+extern u8 gWaitText_Space[];
+extern u8 gWaitText_S[];
+extern u8 gWaitText_NotEnoughTime[];
+
 static u8 StartMenu_DummyCallback(void);
 static u8 StartMenu_RetireCallback(void);
 static u8 StartMenu_PokedexCallback(void);
@@ -97,10 +127,27 @@ static u8 StartMenu_PokemonCallback(void);
 static u8 StartMenu_BagCallback(void);
 static u8 StartMenu_PokenavCallback(void);
 static u8 StartMenu_PlayerCallback(void);
+static u8 StartMenu_WaitCallback(void);
 static u8 StartMenu_SaveCallback(void);
 static u8 StartMenu_OptionCallback(void);
 static u8 StartMenu_ExitCallback(void);
 static u8 StartMenu_PlayerLinkCallback(void);
+
+//Wait functions
+static u8 WaitCallback1(void);
+static u8 WaitCallback2(void);
+static u8 RunWaitDialogCallback(void);
+static void DisplayWaitMessageWithCallback(const u8 *ptr, u8 (*func)(void));
+static u8 WaitMenu_InputProcessCallback(void);
+static u8 WaitMenu_DoWaitCallback(void);
+static u8 WaitMenu_CancelCallback(void);
+static void WaitMenu_Close(void);
+static void WaitMenu_ResetCursor(void);
+static u8 WaitDialogCB_DoWaitMenu(void);
+static u8 WaitDialogCB_TryToWait(void);
+static u8 WaitDialogCB_CantWait(void);
+static u8 WaitDialogCB_DisplayConfirmYesNoMenu(void);
+static u8 WaitDialogCB_ProcessConfirmYesNoMenu(void);
 
 static const struct MenuAction sStartMenuItems[] =
 {
@@ -111,7 +158,7 @@ static const struct MenuAction sStartMenuItems[] =
     { SystemText_BAG, StartMenu_BagCallback },
     { SystemText_Map, StartMenu_PokenavCallback },
     { SystemText_Player, StartMenu_PlayerCallback },
-	{ SystemText_Wait, StartMenu_PlayerCallback }, //replace this with wait function when it's done
+	{ SystemText_Wait, StartMenu_WaitCallback },
     { SystemText_Save, StartMenu_SaveCallback },
 	{ SystemText_Trade, StartMenu_PlayerCallback }, //replace this with new trade function when it's done
 	{ SystemText_Battle, StartMenu_PlayerCallback }, //replace this with link battle function when it's done
@@ -120,12 +167,21 @@ static const struct MenuAction sStartMenuItems[] =
     { SystemText_Player, StartMenu_PlayerLinkCallback },
 };
 
+static const struct MenuAction sWaitMenuItems[] =
+{
+    { WaitText_1Hour, WaitMenu_DoWaitCallback },
+    { WaitText_3Hours, WaitMenu_DoWaitCallback },
+    { WaitText_6Hours, WaitMenu_DoWaitCallback },
+    { WaitText_12Hours, WaitMenu_DoWaitCallback },
+    { WaitText_Cancel, WaitMenu_CancelCallback },
+};
+
 //Private functions
 static void BuildStartMenuActions(void);
 static void UpdateStartMenuOptions(void);
 static void AddStartMenuAction(u8 action);
 static void DisplayDateAndWeatherWindow(void);
-static bool32 PrintStartMenuItemsMultistep(s16 *a, u32 b);
+static bool32 PrintStartMenuItemsMultistep(s16 *a);
 static bool32 InitStartMenuMultistep(s16 *a, s16 *b);
 static void Task_StartMenu(u8 taskId);
 static void BuildStartMenuActionList(void);
@@ -161,7 +217,6 @@ static void sub_80719F0(void);
 static bool32 sub_80719FC(u8 *ptr);
 static void sub_8071B54(void);
 static void Task_8071B64(u8 taskId);
-
 static void CopyClockStrings(void);
 static void ShowTimeAndDate(void);
 static void ShowWeatherOrSafariBalls(void);
@@ -173,7 +228,6 @@ void debug_sub_8075D9C(void);
 u8 debug_sub_8075C30(void)
 {
 	StartMenu_DestroyScrollArrows();
-	gSaveBlock2.statusStartMenuClock = FALSE;
 	CloseMenu();
     debug_sub_8075D9C();
     return 1;
@@ -415,8 +469,6 @@ static void CopyClockStrings(void)
 //Also shows weather forecast or safari ball count (if in safari zone)
 static void DisplayDateAndWeatherWindow(void)
 {
-	gSaveBlock2.statusStartMenuClock = TRUE; 
-	
     Menu_DrawStdWindowFrame(2, 14, 28, 19);
 	
 	CopyClockStrings();
@@ -455,14 +507,15 @@ void UpdateWeatherOrSafariBalls(void) //called every minute from play_time.c
 }
 
 //Prints n menu items starting at *index
-static bool32 PrintStartMenuItemsMultistep(s16 *index, u32 n)
+static bool32 PrintStartMenuItemsMultistep(s16 *index)
 {
+	int i;
     int _index = *index;
 	
-	Menu_BlankWindowRect(23, 2, 28, 11); //clears the menu first
+	Menu_BlankWindowRect(23, 1, 28, 11); //clears the menu first
 
-    do
-    {
+	for (i = 0; i < 5; i++)
+	{
         Menu_PrintText(sStartMenuItems[sCurrentStartMenuActions[_index]].text, 23, 2 + _index * 2);
         _index++;
         if (_index >= sNumStartMenuActions)
@@ -470,10 +523,19 @@ static bool32 PrintStartMenuItemsMultistep(s16 *index, u32 n)
             *index = _index;
             return TRUE;
         }
-    }
-    while (--n != 0);
+	}
+
     *index = _index;
     return FALSE;
+}
+
+static void InitStartMenu(void)
+{
+    s16 step = 0;
+    s16 index = 0;
+
+    while (InitStartMenuMultistep(&step, &index) == FALSE)
+        ;
 }
 
 static void UpdateStartMenuOptions(void)
@@ -499,31 +561,22 @@ static bool32 InitStartMenuMultistep(s16 *step, s16 *index)
         (*step)++;
         break;
     case 3:
-		Menu_DrawStdWindowFrame(22, 0, 29, /*NumStartMenuActions * 2 + 3*/13);
+		Menu_DrawStdWindowFrame(22, 0, 29, 13);
         *index = 0;
         (*step)++;
         break;
     case 4:
-        if (PrintStartMenuItemsMultistep(index, 5))
+        if (PrintStartMenuItemsMultistep(index))
             (*step)++;
         break;
     case 0:
         (*step)++;
         break;
     case 5:
-        sStartMenuCursorPos = InitMenu(0, 0x17, 2, 5/*sNumStartMenuActions*/, sStartMenuCursorPos, 6);
+        sStartMenuCursorPos = InitMenu(0, 0x17, 2, 5, sStartMenuCursorPos, 6);
         return TRUE;
     }
     return FALSE;
-}
-
-static void InitStartMenu(void)
-{
-    s16 step = 0;
-    s16 index = 0;
-
-    while (InitStartMenuMultistep(&step, &index) == FALSE)
-        ;
 }
 
 static void Task_StartMenu(u8 taskId)
@@ -633,9 +686,9 @@ static u8 StartMenu_InputProcessCallback(void)
             if (GetNationalPokedexCount(0) == 0)
                 return 0;
         }
-		gSaveBlock2.statusStartMenuClock = FALSE;
         gMenuCallback = sStartMenuItems[sCurrentStartMenuActions[sStartMenuCursorPos]].func;
         if (gMenuCallback != StartMenu_SaveCallback &&
+		   gMenuCallback != StartMenu_WaitCallback &&
            gMenuCallback != StartMenu_ExitCallback &&
            gMenuCallback != StartMenu_RetireCallback)
             FadeScreen(1, 0);
@@ -644,7 +697,6 @@ static u8 StartMenu_InputProcessCallback(void)
     if (gMain.newKeys & (START_BUTTON | B_BUTTON))
     {
 		StartMenu_DestroyScrollArrows();
-		gSaveBlock2.statusStartMenuClock = FALSE;
 		CloseMenu();
         return 1;
     }
@@ -712,11 +764,19 @@ static u8 StartMenu_PlayerCallback(void)
     return 0;
 }
 
+//When player chooses WAIT
+static u8 StartMenu_WaitCallback(void)
+{
+    StartMenu_DestroyScrollArrows();
+    Menu_DestroyCursor();
+    gMenuCallback = WaitCallback1;
+    return 0;
+}
+
 //When player selects SAVE
 static u8 StartMenu_SaveCallback(void)
 {
 	StartMenu_DestroyScrollArrows();
-	gSaveBlock2.statusStartMenuClock = FALSE;
     Menu_DestroyCursor();
     gMenuCallback = SaveCallback1;
     return 0;
@@ -739,7 +799,6 @@ static u8 StartMenu_OptionCallback(void)
 static u8 StartMenu_ExitCallback(void)
 {
 	StartMenu_DestroyScrollArrows();
-	gSaveBlock2.statusStartMenuClock = FALSE;
 	CloseMenu();
     return 1;
 }
@@ -748,7 +807,6 @@ static u8 StartMenu_ExitCallback(void)
 static u8 StartMenu_RetireCallback(void)
 {
 	StartMenu_DestroyScrollArrows();
-	gSaveBlock2.statusStartMenuClock = FALSE;
 	CloseMenu();
     SafariZoneRetirePrompt();
     return 1;
@@ -758,7 +816,6 @@ static u8 StartMenu_RetireCallback(void)
 static u8 StartMenu_DummyCallback(void)
 {
 	StartMenu_DestroyScrollArrows();
-	gSaveBlock2.statusStartMenuClock = FALSE;
 	CloseMenu();
     return 1;
 }
@@ -774,15 +831,6 @@ static u8 StartMenu_PlayerLinkCallback(void)
     }
     return 0;
 }
-
-//Save dialog status
-enum
-{
-    SAVE_IN_PROGRESS,
-    SAVE_SUCCESS,
-    SAVE_CANCELED,
-    SAVE_ERROR,
-};
 
 static u8 SaveCallback1(void)
 {
@@ -816,7 +864,7 @@ static u8 SaveCallback2(void)
 static void sub_807160C(void)
 {
     save_serialize_map();
-    saveDialogCallback = SaveDialogCB_DisplayConfirmMessage;
+    dialogCallback = SaveDialogCB_DisplayConfirmMessage;
     savingComplete = FALSE;
 }
 
@@ -828,7 +876,7 @@ static u8 RunSaveDialogCallback(void)
             return 0;
     }
     savingComplete = FALSE;
-    return saveDialogCallback();
+    return dialogCallback();
 }
 
 void ScrSpecial_DoSaveDialog(void)
@@ -843,7 +891,7 @@ static void DisplaySaveMessageWithCallback(const u8 *ptr, u8 (*func)(void))
     Menu_DisplayDialogueFrame();
     MenuPrintMessageDefaultCoords(gStringVar4);
     savingComplete = TRUE;
-    saveDialogCallback = func;
+    dialogCallback = func;
 }
 
 static void Task_SaveDialog(u8 taskId)
@@ -914,7 +962,7 @@ static u8 SaveDialogCB_DisplayConfirmMessage(void)
 static u8 SaveDialogCB_DisplayConfirmYesNoMenu(void)
 {
     DisplayYesNoMenu(20, 8, 1);
-    saveDialogCallback = SaveDialogCB_ProcessConfirmYesNoMenu;
+    dialogCallback = SaveDialogCB_ProcessConfirmYesNoMenu;
     return SAVE_IN_PROGRESS;
 }
 
@@ -930,13 +978,13 @@ static u8 SaveDialogCB_ProcessConfirmYesNoMenu(void)
         case 2:
             if (gDifferentSaveFile == FALSE)
             {
-                saveDialogCallback = SaveDialogCB_SaveFileExists;
+                dialogCallback = SaveDialogCB_SaveFileExists;
                 return SAVE_IN_PROGRESS;
             }
-            saveDialogCallback = SaveDialogCB_DisplaySavingMessage;
+            dialogCallback = SaveDialogCB_DisplaySavingMessage;
             return SAVE_IN_PROGRESS;
         default:
-            saveDialogCallback = SaveDialogCB_SaveFileExists;
+            dialogCallback = SaveDialogCB_SaveFileExists;
             return SAVE_IN_PROGRESS;
         }
         break;
@@ -960,7 +1008,7 @@ static u8 SaveDialogCB_SaveFileExists(void)
 static u8 SaveDialogCB_DisplayOverwriteYesNoMenu(void)
 {
     DisplayYesNoMenu(20, 8, 1);
-    saveDialogCallback = SaveDialogCB_ProcessOverwriteYesNoMenu;
+    dialogCallback = SaveDialogCB_ProcessOverwriteYesNoMenu;
     return SAVE_IN_PROGRESS;
 }
 
@@ -970,7 +1018,7 @@ static u8 SaveDialogCB_ProcessOverwriteYesNoMenu(void)
     {
     case 0:     //YES
         HideSaveDialog();
-        saveDialogCallback = SaveDialogCB_DisplaySavingMessage;
+        dialogCallback = SaveDialogCB_DisplaySavingMessage;
         break;
     case -1:    //B button
     case 1:     //NO
@@ -1023,7 +1071,7 @@ static u8 SaveDialogCB_SaveSuccess(void)
     if (Menu_UpdateWindowText())
     {
         PlaySE(SE_SAVE);
-        saveDialogCallback = SaveDialogCB_ReturnSuccess;
+        dialogCallback = SaveDialogCB_ReturnSuccess;
     }
     return SAVE_IN_PROGRESS;
 }
@@ -1044,7 +1092,7 @@ static u8 SaveDialogCB_SaveError(void)
     if (Menu_UpdateWindowText())
     {
         PlaySE(SE_BOO);
-        saveDialogCallback = SaveDialogCB_ReturnError;
+        dialogCallback = SaveDialogCB_ReturnError;
     }
     return SAVE_IN_PROGRESS;
 }
@@ -1156,4 +1204,198 @@ static void Task_8071B64(u8 taskId)
             break;
         }
     }
+}
+
+//WAIT FUNCTIONS
+
+static u8 WaitCallback1(void)
+{
+    dialogCallback = WaitDialogCB_TryToWait;
+    gMenuCallback = WaitCallback2;
+    return FALSE;
+}
+
+static u8 WaitCallback2(void)
+{
+    switch (RunWaitDialogCallback())
+    {
+    case WAIT_IN_PROGRESS:
+        return FALSE;
+    case WAIT_CANT:
+        //Go back to start menu
+        Menu_EraseScreen();
+        InitStartMenu();
+        gMenuCallback = StartMenu_InputProcessCallback;
+        return FALSE;
+    }
+    return FALSE;
+}
+
+static u8 RunWaitDialogCallback(void)
+{
+    if (!Menu_UpdateWindowText())
+        return 0;
+    return dialogCallback();
+}
+
+static void DisplayWaitMessageWithCallback(const u8 *ptr, u8 (*func)(void))
+{
+    StringExpandPlaceholders(gStringVar4, ptr);
+    Menu_DisplayDialogueFrame();
+    MenuPrintMessageDefaultCoords(gStringVar4);
+    dialogCallback = func;
+}
+
+static u8 WaitMenu_InputProcessCallback(void)
+{
+    if (gMain.newKeys & DPAD_UP)
+    {
+		sWaitMenuCursorPosBuffer = sWaitMenuCursorPos;
+		sWaitMenuCursorPos = Menu_MoveCursor(-1);
+		if (sWaitMenuCursorPosBuffer != sWaitMenuCursorPos)
+			PlaySE(SE_SELECT);
+    }
+    if (gMain.newKeys & DPAD_DOWN)
+    {
+		sWaitMenuCursorPosBuffer = sWaitMenuCursorPos;
+		sWaitMenuCursorPos = Menu_MoveCursor(1);
+		if (sWaitMenuCursorPosBuffer != sWaitMenuCursorPos)
+			PlaySE(SE_SELECT);
+    }
+    if (gMain.newKeys & A_BUTTON)
+    {
+        PlaySE(SE_SELECT);
+		if (gWaitTimeLookup[sWaitMenuCursorPos] > gSaveBlock2.waitTime)
+		{
+			Menu_DestroyCursor();
+			Menu_EraseScreen();
+			DisplayWaitMessageWithCallback(gWaitText_NotEnoughTime, WaitDialogCB_DisplayConfirmYesNoMenu);
+			return WAIT_IN_PROGRESS;
+		}
+        gMenuCallback = sWaitMenuItems[sWaitMenuCursorPos].func;
+        return 0;
+    }
+    if (gMain.newKeys & B_BUTTON)
+    {
+		WaitMenu_Close();
+        return 0;
+    }
+    return 0;
+}
+
+static u8 WaitMenu_DoWaitCallback(void)
+{
+	int i;
+	
+	//palette fade goes here
+	
+	gSaveBlock2.timeSeconds = 0; //resets seconds to 0
+	gSaveBlock2.timeMinute = 0; //resets minutes to 0
+	
+	for (i = gWaitTimeLookup[sWaitMenuCursorPos]; i != 0; i--)
+	{
+		gSaveBlock2.waitTime--;
+		IncrementClockHour(FALSE);
+		
+		if (gSaveBlock2.waitTime == 0)
+			break;
+	}
+	
+	WaitMenu_ResetCursor();
+	gMenuCallback = StartMenu_ExitCallback;
+    return;
+}
+
+static u8 WaitMenu_CancelCallback(void)
+{
+	WaitMenu_Close();
+    return;
+}
+
+static void WaitMenu_Close(void)
+{
+	Menu_EraseScreen();
+	InitStartMenu();
+    gMenuCallback = StartMenu_InputProcessCallback;
+}
+
+static void WaitMenu_ResetCursor(void)
+{
+	sWaitMenuCursorPos = 0;
+	sWaitMenuCursorPosBuffer = 0;
+}
+
+static u8 WaitDialogCB_DoWaitMenu(void)
+{
+	int i;
+	
+	StringCopy(gStringVar1, gHourLookup[gSaveBlock2.timeHour]);
+	AlignInt2InMenuWindow(gStringVar2, gSaveBlock2.waitTime, 12, 0);
+	
+	if (gSaveBlock2.waitTime >= 10) //does there need to be a space added?
+		StringAppend(gStringVar2, gWaitText_Space); //space
+		
+	StringAppend(gStringVar2, gWaitText_Hour);
+	
+	if (gSaveBlock2.waitTime != 1) //does there need to be an S added?
+		StringAppend(gStringVar2, gWaitText_S); //S
+	
+	Menu_DrawStdWindowFrame(22, 0, 29, 11);
+	Menu_DrawStdWindowFrame(0, 0, 8, 5);
+	Menu_PrintText(gWaitText_HoursRemaining, 1, 1);
+	
+	for (i = 0; i < 5; i++)
+	{
+		Menu_PrintText(sWaitMenuItems[i].text, 23, 1 + i * 2);
+	}
+	
+	sWaitMenuCursorPos = InitMenu(0, 0x17, 1, 5, 0, 6);
+	
+	dialogCallback = WaitMenu_InputProcessCallback;
+	return WAIT_IN_PROGRESS;
+}
+
+static u8 WaitDialogCB_TryToWait(void)
+{
+    Menu_EraseScreen();
+	switch(gSaveBlock2.waitStatus)
+	{
+	case WAIT_ABLE:
+		if (gSaveBlock2.waitTime == 0) //no wait time left
+			DisplayWaitMessageWithCallback(gWaitText_WaitingTooOften, WaitDialogCB_CantWait);
+		else
+			DisplayWaitMessageWithCallback(gWaitText_HowLongToWait, WaitDialogCB_DoWaitMenu);
+		break;
+	default:
+	case WAIT_UNABLE:
+		DisplayWaitMessageWithCallback(gWaitText_YouCantWaitNow, WaitDialogCB_CantWait);
+		break;
+	}
+}
+
+static u8 WaitDialogCB_CantWait(void) //returns to start menu
+{
+	if (gMain.newKeys & (A_BUTTON | B_BUTTON))
+		return WAIT_CANT;
+}
+
+static u8 WaitDialogCB_DisplayConfirmYesNoMenu(void)
+{
+    DisplayYesNoMenu(20, 8, 1);
+    dialogCallback = WaitDialogCB_ProcessConfirmYesNoMenu;
+    return WAIT_IN_PROGRESS;
+}
+
+static u8 WaitDialogCB_ProcessConfirmYesNoMenu(void)
+{
+    switch (Menu_ProcessInputNoWrap_())
+    {
+    case 0:     //YES
+		WaitMenu_DoWaitCallback();
+        break;
+    case -1:    //B button
+    case 1:     //NO
+        return WAIT_CANT;
+    }
+    return WAIT_IN_PROGRESS;
 }

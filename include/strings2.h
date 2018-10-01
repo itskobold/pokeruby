@@ -63,6 +63,13 @@ extern const u8 gSystemText_Normal[];
 extern const u8 gSystemText_LR[];
 extern const u8 gSystemText_LA[];
 
+//wait menu
+extern const u8 WaitText_1Hour[];
+extern const u8 WaitText_3Hours[];
+extern const u8 WaitText_6Hours[];
+extern const u8 WaitText_12Hours[];
+extern const u8 WaitText_Cancel[];
+
 // start_menu
 extern const u8 SystemText_Dummy[];
 extern const u8 SystemText_Pokedex[];

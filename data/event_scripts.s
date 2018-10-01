@@ -4932,4 +4932,5 @@ Text_1C6C62: @ 81C6C62
 	.string "$"
 
 	.include "data/text/save.inc"
+	.include "data/text/wait.inc"
 	.include "data/text/birch_speech.inc"

@@ -65,7 +65,7 @@ void PlayTimeCounter_Update()
                 gSaveBlock2.playTimeSeconds = 0;
                 gSaveBlock2.playTimeMinutes++;
 				
-				IncrementClockMinute();
+				IncrementClockMinute(TRUE);
 
                 if (gSaveBlock2.playTimeMinutes > 59)
                 {
@@ -90,87 +90,105 @@ void PlayTimeCounter_SetToMax(void)
     gSaveBlock2.playTimeVBlanks = 59;
 }
 
-void UpdateStartMenuClock(void)
+static void RunMinuteRoutines(void) //called every minute outside of battles/menus
 {
-	if (gSaveBlock2.statusStartMenuClock == FALSE)
-		return;
-	
-	Menu_BlankWindowRect(3, 15, 27, 18);
-	UpdateTimeAndDate();
-	UpdateWeatherOrSafariBalls();
 }
 
-static void RunMinuteRoutines(void) //called every minute
+static void RunHourRoutines(void) //called every hour outside of battles/menus
 {
-	UpdateStartMenuClock();
+	TryIncrementWaitTime();
 }
 
-static void RunHourRoutines(void) //called every hour
+static void RunDayRoutines(void) //called every day outside of battles/menus
 {
-	UpdateDayNightStatus();
 }
 
-void IncrementClockMinute(void) //adds 1 minute to game time
+static void RunWeekRoutines(void) //called every week outside of battles/menus
+{
+}
+
+static void RunSeasonRoutines(void) //called every season outside of battles/menus
+{
+}
+
+static void RunYearRoutines(void) //called every year outside of battles/menus
+{
+}
+
+void IncrementClockMinute(bool8 runRoutines) //adds 1 minute to game time
 {
 	if (gSaveBlock2.timeMinute + 1 > TIME_MINUTE_2)
 	{
 		gSaveBlock2.timeMinute = TIME_MINUTE_0;
-		RunMinuteRoutines();
-		IncrementClockHour();
+		IncrementClockHour(TRUE);
 		return;
 	}
 	
 	gSaveBlock2.timeMinute++;
-	RunMinuteRoutines();
+	
+	if (runRoutines == TRUE)
+		RunMinuteRoutines();
 }
 
-void IncrementClockHour(void) //adds 1 hour to game time
+void IncrementClockHour(bool8 runRoutines) //adds 1 hour to game time
 {
 	if (gSaveBlock2.timeHour + 1 > TIME_HOUR_11PM)
 	{
 		gSaveBlock2.timeHour = TIME_HOUR_MIDNIGHT;
-		RunHourRoutines();
-		IncrementClockDay();
+		IncrementClockDay(TRUE);
 		return;
 	}
 	gSaveBlock2.timeHour++;
-	RunHourRoutines();
+	
+	UpdateDayNightStatus(); //called seperately from hour routines as it's always needed
+	
+	if (runRoutines == TRUE)
+		RunHourRoutines();
 }
 
-void IncrementClockDay(void) //adds 1 day to game time
+void IncrementClockDay(bool8 runRoutines) //adds 1 day to game time
 {
 	if (gSaveBlock2.timeDay + 1 > TIME_DAY_SUNDAY)
 	{
 		gSaveBlock2.timeDay = TIME_DAY_MONDAY;
-		IncrementClockWeek();
+		IncrementClockWeek(TRUE);
 		return;
 	}
 	gSaveBlock2.timeDay++;
+	
+	if (runRoutines == TRUE)
+		RunDayRoutines();
 }
 
-void IncrementClockWeek(void) //adds 1 week to game time
+void IncrementClockWeek(bool8 runRoutines) //adds 1 week to game time
 {
 	if (gSaveBlock2.timeWeek + 1 > TIME_WEEK_1)
 	{
 		gSaveBlock2.timeWeek = TIME_WEEK_0;
-		IncrementClockSeason();
+		IncrementClockSeason(TRUE);
 		return;
 	}
 	gSaveBlock2.timeWeek++;
+	
+	if (runRoutines == TRUE)
+		RunWeekRoutines();
 }
 
-void IncrementClockSeason(void) //adds 1 season to game time
+void IncrementClockSeason(bool8 runRoutines) //adds 1 season to game time
 {
 	if (gSaveBlock2.timeSeason + 1 > TIME_SEASON_WINTER)
 	{
 		gSaveBlock2.timeSeason = TIME_SEASON_SPRING;
-		IncrementClockYear();
+		IncrementClockYear(TRUE);
 		return;
 	}
 	gSaveBlock2.timeSeason++;
+	
+	if (runRoutines == TRUE)
+		RunSeasonRoutines();
 }
 
-void IncrementClockYear(void) //adds 1 year to game time
+void IncrementClockYear(bool8 runRoutines) //adds 1 year to game time
 {
 	if (gSaveBlock2.timeYear + 1 > TIME_YEAR_7)
 	{
@@ -178,6 +196,9 @@ void IncrementClockYear(void) //adds 1 year to game time
 		return;
 	}
 	gSaveBlock2.timeYear++;
+	
+	if (runRoutines == TRUE)
+		RunYearRoutines();
 }
 
 u8 CalculateSubSeason(void)
@@ -214,4 +235,10 @@ void UpdateDayNightStatus(void)
 		status = TIME_DAY;
 	
 	gSaveBlock2.dayNightStatus = status;
+}
+
+void TryIncrementWaitTime(void)
+{
+	if (gSaveBlock2.waitTime < 60)
+		gSaveBlock2.waitTime++;
 }
