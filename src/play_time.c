@@ -126,7 +126,7 @@ void IncrementClockSecond(bool8 runRoutines) //adds 1 second to game time
 	if (gSaveBlock2.timeSeconds + 1 > 59)
 	{
 		gSaveBlock2.timeSeconds = 0;
-		IncrementClockMinute(TRUE);
+		IncrementClockMinute(runRoutines);
 		return;
 	}
 	
@@ -141,7 +141,7 @@ void IncrementClockMinute(bool8 runRoutines) //adds 1 minute to game time
 	if (gSaveBlock2.timeMinute + 1 > TIME_MINUTE_2)
 	{
 		gSaveBlock2.timeMinute = TIME_MINUTE_0;
-		IncrementClockHour(TRUE);
+		IncrementClockHour(runRoutines);
 		return;
 	}
 	
@@ -156,7 +156,7 @@ void IncrementClockHour(bool8 runRoutines) //adds 1 hour to game time
 	if (gSaveBlock2.timeHour + 1 > TIME_HOUR_11PM)
 	{
 		gSaveBlock2.timeHour = TIME_HOUR_MIDNIGHT;
-		IncrementClockDay(TRUE);
+		IncrementClockDay(runRoutines);
 		return;
 	}
 	gSaveBlock2.timeHour++;
@@ -172,7 +172,7 @@ void IncrementClockDay(bool8 runRoutines) //adds 1 day to game time
 	if (gSaveBlock2.timeDay + 1 > TIME_DAY_SUNDAY)
 	{
 		gSaveBlock2.timeDay = TIME_DAY_MONDAY;
-		IncrementClockWeek(TRUE);
+		IncrementClockWeek(runRoutines);
 		return;
 	}
 	gSaveBlock2.timeDay++;
@@ -186,7 +186,7 @@ void IncrementClockWeek(bool8 runRoutines) //adds 1 week to game time
 	if (gSaveBlock2.timeWeek + 1 > TIME_WEEK_1)
 	{
 		gSaveBlock2.timeWeek = TIME_WEEK_0;
-		IncrementClockSeason(TRUE);
+		IncrementClockSeason(runRoutines);
 		return;
 	}
 	gSaveBlock2.timeWeek++;
