@@ -1,10 +1,11 @@
 #include "global.h"
 #include "menu.h"
+#include "main.h"
 #include "play_time.h"
 #include "start_menu.h"
 
-const u8 gSunriseTimes[8] = {TIME_HOUR_8AM, TIME_HOUR_7AM, TIME_HOUR_6AM, TIME_HOUR_7AM, TIME_HOUR_8AM, TIME_HOUR_9AM, TIME_HOUR_10AM, TIME_HOUR_9AM};
-const u8 gSunsetTimes[8] = {TIME_HOUR_6PM, TIME_HOUR_7PM, TIME_HOUR_8PM, TIME_HOUR_7PM, TIME_HOUR_6PM, TIME_HOUR_5PM, TIME_HOUR_4PM, TIME_HOUR_5PM};
+const u8 gSunriseTimes[8] = {TIME_HOUR_6AM, TIME_HOUR_5AM, TIME_HOUR_4AM, TIME_HOUR_5AM, TIME_HOUR_6AM, TIME_HOUR_7AM, TIME_HOUR_8AM, TIME_HOUR_7AM};
+const u8 gSunsetTimes[8] = {TIME_HOUR_7PM, TIME_HOUR_8PM, TIME_HOUR_9PM, TIME_HOUR_8PM, TIME_HOUR_7PM, TIME_HOUR_6PM, TIME_HOUR_5PM, TIME_HOUR_6PM};
 
 enum
 {
@@ -59,13 +60,14 @@ void PlayTimeCounter_Update()
         {
             gSaveBlock2.playTimeVBlanks = 0;
             gSaveBlock2.playTimeSeconds++;
+			
+			if (gMain.stopClockUpdating == FALSE) //stops clock updating in battle & in start menu/submenus such as bag
+				IncrementClockSecond(TRUE);
 
             if (gSaveBlock2.playTimeSeconds > 59)
             {
                 gSaveBlock2.playTimeSeconds = 0;
                 gSaveBlock2.playTimeMinutes++;
-				
-				IncrementClockMinute(TRUE);
 
                 if (gSaveBlock2.playTimeMinutes > 59)
                 {
@@ -88,6 +90,10 @@ void PlayTimeCounter_SetToMax(void)
     gSaveBlock2.playTimeMinutes = 59;
     gSaveBlock2.playTimeSeconds = 59;
     gSaveBlock2.playTimeVBlanks = 59;
+}
+
+static void RunSecondRoutines(void) //called every second outside of battles/menus
+{
 }
 
 static void RunMinuteRoutines(void) //called every minute outside of battles/menus
@@ -113,6 +119,21 @@ static void RunSeasonRoutines(void) //called every season outside of battles/men
 
 static void RunYearRoutines(void) //called every year outside of battles/menus
 {
+}
+
+void IncrementClockSecond(bool8 runRoutines) //adds 1 second to game time
+{
+	if (gSaveBlock2.timeSeconds + 1 > 59)
+	{
+		gSaveBlock2.timeSeconds = 0;
+		IncrementClockMinute(TRUE);
+		return;
+	}
+	
+	gSaveBlock2.timeSeconds++;
+	
+	if (runRoutines == TRUE)
+		RunSecondRoutines();
 }
 
 void IncrementClockMinute(bool8 runRoutines) //adds 1 minute to game time
@@ -218,18 +239,18 @@ u8 CalculateSubSeason(void)
 
 void UpdateDayNightStatus(void)
 {
-	u8 hour = gSaveBlock2.timeHour;
-	u8 season = (gSaveBlock2.timeSeason * 2);
+	//u8 hour = gSaveBlock2.timeHour;
+	u8 season = gSaveBlock2.timeSeason * 2;
 	u8 status;
 	
 	if (gSaveBlock2.timeWeek == TIME_WEEK_1)
 		season++;
 	
-	if (hour == gSunriseTimes[season] || hour == (gSunriseTimes[season] + 1)) //if 1 hour before/after sunrise time, it is dawn
+	if (gSaveBlock2.timeHour == gSunriseTimes[season] || gSaveBlock2.timeHour == (gSunriseTimes[season] + 1)) //if 1 hour before/after sunrise time, it is dawn
 		status = TIME_DAWN;
-	else if (hour == gSunsetTimes[season] || hour == (gSunsetTimes[season] - 1)) //if 1 hour before/after sunset time, it is dusk
+	else if (gSaveBlock2.timeHour == gSunsetTimes[season] || gSaveBlock2.timeHour == (gSunsetTimes[season] - 1)) //if 1 hour before/after sunset time, it is dusk
 		status = TIME_DUSK;
-	else if (hour < gSunriseTimes[season] || hour > gSunsetTimes[season]) //if hour is lower than sunrise or after sunset time, it is night
+	else if (gSaveBlock2.timeHour < gSunriseTimes[season] || gSaveBlock2.timeHour > gSunsetTimes[season]) //if hour is lower than sunrise or after sunset time, it is night
 		status = TIME_NIGHT;
 	else //if not any of these, it is day
 		status = TIME_DAY;

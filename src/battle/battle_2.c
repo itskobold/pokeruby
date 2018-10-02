@@ -208,6 +208,8 @@ void sub_800E7C4(void)
 void InitBattle(void)
 {
     s32 i;
+	
+	gMain.stopClockUpdating = TRUE;
 
     SetHBlankCallback(NULL);
     SetVBlankCallback(NULL);

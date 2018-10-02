@@ -41,6 +41,8 @@ struct Main
 
     /*0x43D*/ u8 oamLoadDisabled:1;
     /*0x43D*/ u8 inBattle:1;
+	/*0x43D*/ u8 stopClockUpdating:1;
+	/*0x43D*/ u8 Filler5B:5;
 };
 
 extern u8 gLinkTransferringData;
@@ -48,8 +50,8 @@ extern struct Main gMain;
 extern bool8 gSoftResetDisabled;
 
 extern bool8 gLinkVSyncDisabled;
-extern const u8 gGameVersion;
-extern const u8 gGameLanguage;
+extern const u8 gGameVersion; //GET RID OF THIS EVENTUALLY
+extern const u8 gGameLanguage; //AND THIS
 
 extern u16 gKeyRepeatStartDelay;
 

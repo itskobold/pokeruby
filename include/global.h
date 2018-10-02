@@ -909,7 +909,8 @@ struct SaveBlock2 /* 0x02024EA4 */
 	/*0x94*/ u8 timeMinute:2;			   // 0-2. 3 real minutes in 1 hour
 	/*0x95*/ u8 timeHour:5;			       // 0-23 for 12AM to 11PM
 	/*0x96*/ u8 timeDay:3;				   // 0-6 for Monday to Sunday
-    /*0x97*/ u8 timeSeconds;			   // 0-59
+    /*0x97*/ u8 timeSeconds:6;			   // 0-59
+	/*0x97*/ u8 filler2b2:2;
 	/*0x98*/ u8 nuzlockeMode:2;			   // 0-3 Normal/Nuzlocke/Hardlocke/Deadlocke
 	/*0x98*/ u8 gameMode:2;				   // 0-3 Story/Sandbox/Random/Super Random
 	/*0x98*/ u8 dayNightStatus:2;		   // 0 = DAWN, 1 = DAY, 2 = DUSK, 3 = NIGHT

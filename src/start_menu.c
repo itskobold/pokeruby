@@ -177,6 +177,7 @@ static const struct MenuAction sWaitMenuItems[] =
 };
 
 //Private functions
+static void CloseStartMenu(void);
 static void BuildStartMenuActions(void);
 static void UpdateStartMenuOptions(void);
 static void AddStartMenuAction(u8 action);
@@ -429,6 +430,7 @@ static void BuildStartMenuActions(void)
 	
 	sNumStartMenuActions = 0;
 	
+	//review this later
 	if (sHasMenuBeenOpenedBefore == FALSE)
 	{
 		sStartMenuScroll = 1; //clears the blank space at the top of the menu if it has never been opened before caused by the retire option
@@ -533,6 +535,8 @@ static void InitStartMenu(void)
 {
     s16 step = 0;
     s16 index = 0;
+	
+	gMain.stopClockUpdating = TRUE;
 
     while (InitStartMenuMultistep(&step, &index) == FALSE)
         ;
@@ -574,6 +578,7 @@ static bool32 InitStartMenuMultistep(s16 *step, s16 *index)
         break;
     case 5:
         sStartMenuCursorPos = InitMenu(0, 0x17, 2, 5, sStartMenuCursorPos, 6);
+		gMain.stopClockUpdating = TRUE;
         return TRUE;
     }
     return FALSE;
@@ -696,8 +701,7 @@ static u8 StartMenu_InputProcessCallback(void)
     }
     if (gMain.newKeys & (START_BUTTON | B_BUTTON))
     {
-		StartMenu_DestroyScrollArrows();
-		CloseMenu();
+		CloseStartMenu();
         return 1;
     }
     return 0;
@@ -795,19 +799,24 @@ static u8 StartMenu_OptionCallback(void)
     return 0;
 }
 
+static void CloseStartMenu(void)
+{
+	gMain.stopClockUpdating = FALSE;
+	StartMenu_DestroyScrollArrows();
+	CloseMenu();
+}
+
 //When player selects EXIT
 static u8 StartMenu_ExitCallback(void)
 {
-	StartMenu_DestroyScrollArrows();
-	CloseMenu();
+	CloseStartMenu();
     return 1;
 }
 
 //When player selects RETIRE
 static u8 StartMenu_RetireCallback(void)
 {
-	StartMenu_DestroyScrollArrows();
-	CloseMenu();
+	CloseStartMenu();
     SafariZoneRetirePrompt();
     return 1;
 }
@@ -815,8 +824,7 @@ static u8 StartMenu_RetireCallback(void)
 //Not supposed to be used, functionally the same as Exit
 static u8 StartMenu_DummyCallback(void)
 {
-	StartMenu_DestroyScrollArrows();
-	CloseMenu();
+	CloseStartMenu();
     return 1;
 }
 
@@ -1206,7 +1214,9 @@ static void Task_8071B64(u8 taskId)
     }
 }
 
+//=================================================================================================
 //WAIT FUNCTIONS
+//=================================================================================================
 
 static u8 WaitCallback1(void)
 {

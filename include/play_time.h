@@ -69,6 +69,7 @@ void PlayTimeCounter_Stop(void);
 void PlayTimeCounter_Update(void);
 void PlayTimeCounter_SetToMax(void);
 
+void IncrementClockSecond(bool8 runRoutines);
 void IncrementClockMinute(bool8 runRoutines);
 void IncrementClockHour(bool8 runRoutines);
 void IncrementClockDay(bool8 runRoutines);

@@ -621,6 +621,8 @@ static void CB2_EndWildBattle(void)
     CpuFill16(0, (void *)BG_PLTT, BG_PLTT_SIZE);
     ResetOamRange(0, 128);
 
+	gMain.stopClockUpdating = FALSE;
+	
     if (IsPlayerDefeated(gBattleOutcome) == TRUE)
     {
         SetMainCallback2(CB2_WhiteOut);
@@ -636,6 +638,8 @@ void CB2_EndScriptedWildBattle(void)
 {
     CpuFill16(0, (void *)BG_PLTT, BG_PLTT_SIZE);
     ResetOamRange(0, 128);
+	
+	gMain.stopClockUpdating = FALSE;
 
     if (IsPlayerDefeated(gBattleOutcome) == TRUE)
         SetMainCallback2(CB2_WhiteOut);
@@ -1105,6 +1109,8 @@ void BattleSetup_StartTrainerBattle(void)
 
 void CB2_EndTrainerBattle(void)
 {
+	gMain.stopClockUpdating = FALSE;
+	
     if (gTrainerBattleOpponent == SECRET_BASE_OPPONENT)
     {
         SetMainCallback2(c2_exit_to_overworld_1_continue_scripts_restart_music);
@@ -1122,6 +1128,8 @@ void CB2_EndTrainerBattle(void)
 
 void CB2_EndTrainerEyeRematchBattle(void)
 {
+	gMain.stopClockUpdating = FALSE;
+	
     if (gTrainerBattleOpponent == SECRET_BASE_OPPONENT)
     {
         SetMainCallback2(c2_exit_to_overworld_1_continue_scripts_restart_music);
