@@ -239,23 +239,19 @@ u8 CalculateSubSeason(void)
 
 void UpdateDayNightStatus(void)
 {
-	//u8 hour = gSaveBlock2.timeHour;
 	u8 season = gSaveBlock2.timeSeason * 2;
-	u8 status;
 	
 	if (gSaveBlock2.timeWeek == TIME_WEEK_1)
 		season++;
 	
 	if (gSaveBlock2.timeHour == gSunriseTimes[season] || gSaveBlock2.timeHour == (gSunriseTimes[season] + 1)) //if 1 hour before/after sunrise time, it is dawn
-		status = TIME_DAWN;
+		gSaveBlock2.dayNightStatus = TIME_DAWN;
 	else if (gSaveBlock2.timeHour == gSunsetTimes[season] || gSaveBlock2.timeHour == (gSunsetTimes[season] - 1)) //if 1 hour before/after sunset time, it is dusk
-		status = TIME_DUSK;
+		gSaveBlock2.dayNightStatus = TIME_DUSK;
 	else if (gSaveBlock2.timeHour < gSunriseTimes[season] || gSaveBlock2.timeHour > gSunsetTimes[season]) //if hour is lower than sunrise or after sunset time, it is night
-		status = TIME_NIGHT;
+		gSaveBlock2.dayNightStatus = TIME_NIGHT;
 	else //if not any of these, it is day
-		status = TIME_DAY;
-	
-	gSaveBlock2.dayNightStatus = status;
+		gSaveBlock2.dayNightStatus = TIME_DAY;
 }
 
 void TryIncrementWaitTime(void)
