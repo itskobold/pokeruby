@@ -75,6 +75,7 @@ const u8 *gHourLookup[24] = { TimeText_12AM, TimeText_1AM, TimeText_2AM, TimeTex
 const u8 *gDayLookup[7] = { TimeText_Monday, TimeText_Tuesday, TimeText_Wednesday, TimeText_Thursday, TimeText_Friday, TimeText_Saturday, TimeText_Sunday };
 const u8 *gSeasonLookup[12] = { TimeText_EarlySpring, TimeText_Spring, TimeText_LateSpring, TimeText_EarlySummer, TimeText_Summer, TimeText_LateSummer, TimeText_EarlyFall, TimeText_Fall, TimeText_LateFall, TimeText_EarlyWinter, TimeText_Winter, TimeText_LateWinter };
 const u8 *gDNStatusLookup[4] = { TimeText_Dawn, TimeText_Day, TimeText_Dusk, TimeText_Night };
+const u8 *gWaitMenuText[5] = { WaitText_1Hour, WaitText_3Hours, WaitText_6Hours, WaitText_12Hours, WaitText_Cancel };
 
 const u8 gWaitTimeLookup[4] = { 1, 3, 6, 12 };
 
@@ -146,9 +147,7 @@ static u8 RunWaitDialogCallback(void);
 static void DisplayWaitMessageWithCallback(const u8 *ptr, u8 (*func)(void));
 static u8 WaitMenu_InputProcessCallback(void);
 static u8 WaitMenu_DoWaitCallback(void);
-static u8 WaitMenu_CancelCallback(void);
 static void WaitMenu_Close(void);
-static void WaitMenu_ResetCursor(void);
 static u8 WaitDialogCB_DoWaitMenu(void);
 static u8 WaitDialogCB_TryToWait(void);
 static u8 WaitDialogCB_CantWait(void);
@@ -173,15 +172,6 @@ static const struct MenuAction sStartMenuItems[] =
     { SystemText_Option, StartMenu_OptionCallback },
     { SystemText_Exit, StartMenu_ExitCallback },
     { SystemText_Player, StartMenu_PlayerLinkCallback },
-};
-
-static const struct MenuAction sWaitMenuItems[] =
-{
-    { WaitText_1Hour, WaitMenu_DoWaitCallback },
-    { WaitText_3Hours, WaitMenu_DoWaitCallback },
-    { WaitText_6Hours, WaitMenu_DoWaitCallback },
-    { WaitText_12Hours, WaitMenu_DoWaitCallback },
-    { WaitText_Cancel, WaitMenu_CancelCallback },
 };
 
 //Private functions
@@ -1332,21 +1322,17 @@ static u8 WaitMenu_InputProcessCallback(void)
     if (gMain.newKeys & A_BUTTON)
     {
         PlaySE(SE_SELECT);
-		if (gWaitTimeLookup[sWaitMenuCursorPos] > gSaveBlock2.waitTime)
+		if (gWaitMenuText[sWaitMenuCursorPos] == WaitText_Cancel)
+			WaitMenu_Close();
+		else if (gWaitTimeLookup[sWaitMenuCursorPos] > gSaveBlock2.waitTime)
 		{
 			Menu_DestroyCursor();
 			Menu_EraseScreen();
 			DisplayWaitMessageWithCallback(gWaitText_NotEnoughTime, WaitDialogCB_DisplayConfirmYesNoMenu);
 			return WAIT_IN_PROGRESS;
 		}
-		
-		if (sWaitMenuCursorPos == 4)
-		{
-			WaitMenu_Close();
-			return 0;
-		}
-		
-        gMenuCallback = sWaitMenuItems[sWaitMenuCursorPos].func;
+		else
+			WaitMenu_DoWaitCallback();
         return 0;
     }
     if (gMain.newKeys & B_BUTTON)
@@ -1363,9 +1349,6 @@ static u8 WaitMenu_DoWaitCallback(void)
 	
 	//palette fade goes here
 	
-	gSaveBlock2.timeSeconds = 0; //resets seconds to 0
-	gSaveBlock2.timeMinute = 0; //resets minutes to 0
-	
 	for (i = gWaitTimeLookup[sWaitMenuCursorPos]; i != 0; i--)
 	{
 		gSaveBlock2.waitTime--;
@@ -1375,14 +1358,7 @@ static u8 WaitMenu_DoWaitCallback(void)
 			break;
 	}
 	
-	WaitMenu_ResetCursor();
 	gMenuCallback = StartMenu_ExitCallback;
-    return;
-}
-
-static u8 WaitMenu_CancelCallback(void)
-{
-	WaitMenu_Close();
     return;
 }
 
@@ -1392,12 +1368,6 @@ static void WaitMenu_Close(void)
 	PlaySE(SE_SELECT);
 	InitStartMenu();
 	gMenuCallback = StartMenu_InputProcessCallback;
-}
-
-static void WaitMenu_ResetCursor(void)
-{
-	sWaitMenuCursorPos = 0;
-	sWaitMenuCursorPosBuffer = 0;
 }
 
 static u8 WaitDialogCB_DoWaitMenu(void)
@@ -1421,7 +1391,7 @@ static u8 WaitDialogCB_DoWaitMenu(void)
 	
 	for (i = 0; i < 5; i++)
 	{
-		Menu_PrintText(sWaitMenuItems[i].text, 23, 1 + i * 2);
+		Menu_PrintText(gWaitMenuText[i], 23, 1 + i * 2);
 	}
 	
 	sWaitMenuCursorPos = InitMenu(0, 0x17, 1, 5, 0, 6);
@@ -1463,8 +1433,6 @@ static u8 WaitDialogCB_DisplayConfirmYesNoMenu(void)
 
 static u8 WaitDialogCB_ProcessConfirmYesNoMenu(void)
 {
-	//u8 print = Menu_ProcessInputNoWrap_();
-	//AGBPrint(&(print));
     switch (Menu_ProcessInputNoWrap_())
     {
     case 0:     //YES
