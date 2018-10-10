@@ -42,7 +42,8 @@ struct Main
     /*0x43D*/ u8 oamLoadDisabled:1;
     /*0x43D*/ u8 inBattle:1;
 	/*0x43D*/ u8 stopClockUpdating:1;
-	/*0x43D*/ u8 Filler5B:5;
+	/*0x43D*/ u8 isOptionBeingUsedThroughRegister:1;
+	/*0x43D*/ u8 Filler4B:4;
 };
 
 extern u8 gLinkTransferringData;

@@ -106,6 +106,7 @@ void SetDefaultGameModeAndNuzlocke(void)
 
 void SetDefaultGameTime(void)
 {
+	gSaveBlock2.timeSeconds = 0;
 	gSaveBlock2.timeMinute = 0;
 	gSaveBlock2.timeHour = TIME_HOUR_9AM;
 	UpdateDayNightStatus();
@@ -117,12 +118,10 @@ void SetDefaultGameTime(void)
 
 void GiveStarterItems(void)
 {
-	if (gSaveBlock2.nuzlockeMode == GAME_MODE_SANDBOX)
+	if (gSaveBlock2.gameMode == GAME_MODE_SANDBOX)
 	{
 		AddBagItem(ITEM_SUPER_ROD, 1);
 		AddBagItem(ITEM_COIN_CASE, 1);
-		gSaveBlock1.money = 10000;
-		gSaveBlock1.coins = 100;
 	}
 	if (gSaveBlock2.nuzlockeMode != NUZLOCKE_MODE_OFF)
 	{
@@ -189,7 +188,7 @@ void WarpToTruck(void)
 void ClearSav2(void)
 {
     CpuFill16(0, &gSaveBlock2, sizeof(gSaveBlock2));
-    SetDefaultOptions();
+    SetDefaultOptions(); //doesn't work for some reason. Bug even in vanilla
 }
 
 void sub_8052E4C(void)
@@ -247,11 +246,12 @@ void NewGameInitData(void)
     InitDewfordTrend();
     ResetFanClub();
     ResetLotteryCorner();
+	SetDefaultGameModeAndNuzlocke();	//Story mode, Nuzlocke mode off
+	SetDefaultGameTime(); 				//Second/minute 0, 9AM, Tuesday, Week 1, Spring, random year between 0 and 7
+	GiveStarterItems(); 				//this will probably be moved somewhere else eventually, but it's here for now
+	SetDefaultOptions();				//also called in ClearSav2 but it doesn't work there for some reason?? Appears to be a bug even in vanilla
     WarpToTruck();
     ScriptContext2_RunNewScript(gUnknown_0819FA81);
-	SetDefaultGameModeAndNuzlocke();	//Story mode, Nuzlocke mode off
-	SetDefaultGameTime(); 				//Minute 0, 9AM, Tuesday, Week 1, Spring, random year between 0 and 7
-	GiveStarterItems(); 				//this will probably be moved somewhere else eventually, but it's here for now
 }
 
 #if DEBUG

@@ -24,7 +24,7 @@ const u8 gSystemText_Pokemon2[] = _("POKéMON");
 
 // main menu text
 const u8 gMainMenuString_NewGame[] = _("NEW GAME");
-const u8 gMainMenuString_Continue[] = _("CONTINUE - {STR_VAR_1}{STR_VAR_2}"); //VANILLA "CONTINUE"
+const u8 gMainMenuString_Continue[] = _("CONTINUE - {STR_VAR_1}{STR_VAR_2}");
 const u8 gMainMenuString_Option[] = _("OPTION");
 const u8 gMainMenuString_MysteryEvents[] = _("MYSTERY EVENTS");
 const u8 gMainMenuString_Story[] = _("STORY$");

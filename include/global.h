@@ -895,7 +895,9 @@ struct SaveBlock2 /* 0x02024EA4 */
              u16 regionMapZoom:1;          // whether the map is zoomed in
     /*0x18*/ struct Pokedex pokedex;
 
-    /*0x90*/ u8 filler_90[0x2];	
+    /*0x90*/ u8 filler_90;	
+	/*0x91*/ u8 registeredMenuItem:4;	   // Holds the registered start menu item that is used when the player presses SELECT
+	/*0x91*/ u8 filler4b:4;
 	/*0x92*/ u8 optionsBikeMode:1;		   // 0 = HOLD B, 1 = AUTO
 	/*0x92*/ u8 optionsFullParty:1;		   // 0 = SWAP, 1 = SEND TO PC
 	/*0x92*/ u8 optionsFont:2;			   // 0 = ROCKET, 1 = MAGMA, 2 = AQUA, 3 = GALACTIC

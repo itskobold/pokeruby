@@ -3160,8 +3160,12 @@ Route111_Text_1A0F93:: @ 81A0F93
 	.string "It’s impossible to keep going.$"
 
 Text_NoRegisteredItem: @ 81A0FCC
-	.string "An item in the BAG can be registered\n"
-	.string "on SELECT for convenience.$"
+	.string "Press L and R on items in the bag to\n"
+	.string "register them to L and R for quick use.$"
+	
+Text_NoRegisteredStartMenuItem:
+	.string "Press SELECT on an option in the start\n"
+	.string "menu to bind it to SELECT for quick use.$"
 
 LittlerootTown_BrendansHouse_2F_Text_1A100C:: @ 81A100C
 LittlerootTown_MaysHouse_2F_Text_1A100C:: @ 81A100C
@@ -3242,6 +3246,10 @@ FallarborTown_House1_Text_1A1498:: @ 81A1498
 	.string "{PLAYER} handed over the\n"
 	.string "{STR_VAR_1}.$"
 
+Event_NoRegisteredStartMenuItem:: @ 81A14AF
+	msgbox Text_NoRegisteredStartMenuItem, 3
+	end
+	
 Event_NoRegisteredItem:: @ 81A14AF
 	msgbox Text_NoRegisteredItem, 3
 	end

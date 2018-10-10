@@ -17,8 +17,8 @@ struct FieldInput
     u8 input_field_1_3:1;
     u8 input_field_1_4:1;
     u8 input_field_1_5:1;
-    u8 input_field_1_6:1;
-    u8 input_field_1_7:1;
+    u8 pressedLButton:1; //originally input_field_1_6, seems to be unused
+    u8 pressedRButton:1; //originally input_field_1_7, seems to be unused
     u8 dpadDirection;
     u8 input_field_3;
 };

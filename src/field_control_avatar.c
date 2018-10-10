@@ -13,6 +13,7 @@
 #include "fieldmap.h"
 #include "constants/flags.h"
 #include "item_menu.h"
+#include "main.h"
 #include "metatile_behavior.h"
 #include "overworld.h"
 #include "safari_zone.h"
@@ -127,6 +128,8 @@ void ClearPlayerFieldInput(struct FieldInput *input)
     input->input_field_1_1 = 0;
     input->input_field_1_2 = 0;
     input->input_field_1_3 = 0;
+	input->pressedLButton = 0;
+	input->pressedRButton = 0;
     input->dpadDirection = 0;
 }
 
@@ -148,6 +151,10 @@ void GetPlayerFieldInput(struct FieldInput *input, u16 newKeys, u16 heldKeys)
                 input->pressedAButton = TRUE;
             if (newKeys & B_BUTTON)
                 input->pressedBButton = TRUE;
+			if (newKeys & L_BUTTON)
+                input->pressedLButton = TRUE;
+            if (newKeys & R_BUTTON)
+                input->pressedRButton = TRUE;
         }
 
         if (heldKeys & (DPAD_UP | DPAD_DOWN | DPAD_LEFT | DPAD_RIGHT))
@@ -265,9 +272,14 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
         sub_8071310();
         return TRUE;
     }
-    if (input->pressedSelectButton && UseRegisteredKeyItem() == TRUE)
+	//LR remapped to the single current registered item. Will be able to register 2 items in future
+	if (input->pressedLButton && UseRegisteredKeyItem() == TRUE)
         return TRUE;
-
+	if (input->pressedRButton && UseRegisteredKeyItem() == TRUE)
+        return TRUE;
+    if (input->pressedSelectButton && UseRegisteredStartOption() == TRUE)
+        return TRUE;
+	
 #if DEBUG
     if (input->input_field_1_0)
     {

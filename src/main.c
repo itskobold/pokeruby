@@ -83,9 +83,9 @@ static void WaitForVBlank(void);
 
 #define B_START_SELECT (B_BUTTON | START_BUTTON | SELECT_BUTTON)
 
-#ifndef NDEBUG
+//#ifndef NDEBUG
     #include <stdlib.h> // don't include if not needed.
-#endif
+//#endif
 
 void AgbMain()
 {
@@ -105,10 +105,10 @@ void AgbMain()
 // In Fire Red, AGBPrintInit is called at this spot. For user convenience, I
 // opt to initialize the print area here. It is up to the user where they choose
 // to print stuff from, as anything else declared is NOT authoritative.
-#ifndef NDEBUG
+//#ifndef NDEBUG
     AGBPrintInit();
     __mb_cur_max = 1; // fix for AGBPrintf
-#endif
+//#endif
 
     if (gFlashMemoryPresent != TRUE)
         SetMainCallback2(NULL);

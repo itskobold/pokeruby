@@ -165,7 +165,9 @@ gSystemText_LR:: @ 842C465
 
 gSystemText_LA:: @ 842C46B
 	.string "{PALETTE 15}L=A$"
-
+	
+SystemText_BlueText::
+	.string "{COLOR BLUE}$"
 SystemText_Dummy::
 	.string "DUMMY$"
 SystemText_Pokedex::
