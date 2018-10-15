@@ -1384,8 +1384,6 @@ void CreateMon(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 hasFix
     arg = 255;
     SetMonData(mon, MON_DATA_MAIL, &arg);
 	
-	//SetMonData(mon, MON_DATA_MOVE1, 19);
-	
     CalculateMonStats(mon);
 }
 
@@ -1951,14 +1949,11 @@ void CalculateMonStats(struct Pokemon *mon)
     u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
     s32 level = GetLevelFromMonExp(mon);
     s32 newMaxHP;
-	//HOENNISLES START
 	u16 item = GetMonData(mon, MON_DATA_HELD_ITEM, NULL);
 	u16 evioliteBoost = 0;
-	//HOENNISLES END
 
     SetMonData(mon, MON_DATA_LEVEL, &level);
 	
-	//HOENNISLES START
 	if (item == ITEM_EVIOLITE && gEvolutionTable[species][0].targetSpecies != SPECIES_NONE)	//if mon is holding eviolite & can evolve
 	{
 		u16 statTotal = CalculateBaseStatTotal(mon);
@@ -1971,7 +1966,6 @@ void CalculateMonStats(struct Pokemon *mon)
 			evioliteBoost = ((512 - statTotal) / 6);
 		}
 	}
-	//HOENNISLES END
 	
     if (species == SPECIES_SHEDINJA)
     {
@@ -1979,10 +1973,7 @@ void CalculateMonStats(struct Pokemon *mon)
     }
     else
     {
-		//HOENNISLES START
 		s32 n = 2 * gBaseStats[species].baseHP + evioliteBoost + hpIV;
-		//HOENNISLES END
-        //s32 n = 2 * gBaseStats[species].baseHP + hpIV;	VANILLA
         newMaxHP = (((n + hpEV / 4) * level) / 100) + level + 10;
     }
 
@@ -2021,15 +2012,6 @@ void CalculateMonStats(struct Pokemon *mon)
 		else
             return;
     }
-    /*else			VANILLA
-    {
-        if (currentHP == 0 && oldMaxHP == 0)
-            currentHP = newMaxHP;
-        else if (currentHP != 0)
-            currentHP += newMaxHP - oldMaxHP;
-        else
-            return;
-    }*/
 
     SetMonData(mon, MON_DATA_HP, &currentHP);
 }

@@ -125,7 +125,7 @@ enum //REMOVE THIS!
     OPTIONS_BUTTON_MODE_L_EQUALS_A
 };
 
-enum
+enum //REMOVE THIS!
 {
     OPTIONS_TEXT_SPEED_SLOW,
     OPTIONS_TEXT_SPEED_MID,
@@ -725,7 +725,8 @@ struct SaveBlock1 /* 0x02025734 */
     /*0x7F8*/ struct Pokeblock pokeblocks[POKEBLOCKS_COUNT]; //turn this into another pocket for medicine maybe?
     /*0x938*/ u8 dexSeen2[DEX_FLAGS_NO];
     /*0x96C*/ u16 berryBlenderRecords[3];
-    /*0x972*/ u8 filler_972[0x6];
+    /*0x972*/ u8 filler_972[0x4];
+	/*0x972*/ u16 nuzlockeCounter; //how many Pokemon have fainted in a nuzlocke game
     /*0x978*/ u16 trainerRematchStepCounter;
     /*0x97A*/ u8 trainerRematches[100];
     /*0x9E0*/ struct EventObject eventObjects[EVENT_OBJECTS_COUNT];
@@ -886,7 +887,7 @@ struct SaveBlock2 /* 0x02024EA4 */
     /*0x10*/ u8 playTimeMinutes;
     /*0x11*/ u8 playTimeSeconds;
     /*0x12*/ u8 playTimeVBlanks;
-    /*0x13*/ u8 optionsButtonMode;         // OPTIONS_BUTTON_MODE_[NORMAL/LR/L_EQUALS_A] (unused)
+    /*0x13*/ u8 optionsButtonMode;
     /*0x14*/ u16 optionsTextSpeed:3;       // OPTIONS_TEXT_SPEED_[SLOW/MID/FAST]
              u16 optionsWindowFrameType:5; // Specifies one of the 20 decorative borders for text boxes
              u16 optionsSound:1;           // OPTIONS_SOUND_[MONO/STEREO]
@@ -913,7 +914,7 @@ struct SaveBlock2 /* 0x02024EA4 */
 	/*0x96*/ u8 timeDay:3;				   // 0-6 for Monday to Sunday
     /*0x97*/ u8 timeSeconds:6;			   // 0-59
 	/*0x97*/ u8 filler2b2:2;
-	/*0x98*/ u8 nuzlockeMode:2;			   // 0-3 Normal/Nuzlocke/Hardlocke/Deadlocke
+	/*0x98*/ u8 nuzlockeMode:2;			   // 0-3 Off/Nuzlocke/Hardlocke/Deadlocke
 	/*0x98*/ u8 gameMode:2;				   // 0-3 Story/Sandbox/Random/Super Random
 	/*0x98*/ u8 dayNightStatus:2;		   // 0 = DAWN, 1 = DAY, 2 = DUSK, 3 = NIGHT
 	/*0x98*/ u8 filler2b:2;

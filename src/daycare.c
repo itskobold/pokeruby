@@ -21,9 +21,7 @@
 #include "strings2.h"
 #include "text.h"
 #include "trade.h"
-//HOENNISLES START
 #include "wild_encounter.h"
-//HOENNISLES END
 
 // RAM buffers used to assist with BuildEggMoveset()
 IWRAM_DATA u16 gHatchedEggLevelUpMoves[52];
@@ -173,28 +171,31 @@ static void ApplyDaycareExperience(struct Pokemon * mon)
     bool8 firstMove;
     u16 learnedMove;
 
-    for (i = 0; i < MAX_LEVEL; i++)
+	if (gSaveBlock2.nuzlockeMode == NUZLOCKE_MODE_OFF)
     {
-        // Add the mon's gained daycare experience level by level until it can't level up anymore.
-        if (TryIncrementMonLevel(mon))
-        {
-            // Teach the mon new moves it learned while in the daycare.
-            firstMove = TRUE;
-            while ((learnedMove = MonTryLearningNewMove(mon, firstMove)) != 0)
-            {
-                firstMove = FALSE;
-                if (learnedMove == 0xffff)
-                {
-                    // Mon already knows 4 moves.
-                    DeleteFirstMoveAndGiveMoveToMon(mon, gMoveToLearn);
-                }
-            }
-        }
-        else
-        {
-            break;
-        }
-    }
+		for (i = 0; i < MAX_LEVEL; i++)
+		{
+			// Add the mon's gained daycare experience level by level until it can't level up anymore.
+			if (TryIncrementMonLevel(mon))
+			{
+				// Teach the mon new moves it learned while in the daycare.
+				firstMove = TRUE;
+				while ((learnedMove = MonTryLearningNewMove(mon, firstMove)) != 0)
+				{
+					firstMove = FALSE;
+					if (learnedMove == 0xffff)
+					{
+						// Mon already knows 4 moves.
+						DeleteFirstMoveAndGiveMoveToMon(mon, gMoveToLearn);
+					}
+				}
+			}
+			else
+			{
+				break;
+			}
+		}
+	}
 
     // Re-calculate the mons stats at its new level.
     CalculateMonStats(mon);
@@ -210,12 +211,12 @@ static u16 TakeSelectedPokemonFromDaycare(struct DayCare * daycare, u8 slot)
     species = GetBoxMonData(&daycare->mons[slot], MON_DATA_SPECIES);
     ExpandBoxMon(&daycare->mons[slot], &pokemon);
 
-    if (GetMonData(&pokemon, MON_DATA_LEVEL) != MAX_LEVEL)
+	if (GetMonData(&pokemon, MON_DATA_LEVEL) != MAX_LEVEL)
     {
-        experience = GetMonData(&pokemon, MON_DATA_EXP) + daycare->misc.countersEtc.steps[slot];
-        SetMonData(&pokemon, MON_DATA_EXP, &experience);
-        ApplyDaycareExperience(&pokemon);
-    }
+		experience = GetMonData(&pokemon, MON_DATA_EXP) + daycare->misc.countersEtc.steps[slot];
+		SetMonData(&pokemon, MON_DATA_EXP, &experience);
+		ApplyDaycareExperience(&pokemon);
+	}
 
     gPlayerParty[PARTY_SIZE - 1] = pokemon;
     if (daycare->misc.mail[slot].message.itemId)
@@ -241,9 +242,12 @@ static u8 GetLevelAfterDaycareSteps(struct BoxPokemon * mon, u32 steps)
 {
     struct BoxPokemon tempMon = *mon;
 
-    u32 experience = GetBoxMonData(mon, MON_DATA_EXP) + steps;
-    SetBoxMonData(&tempMon, MON_DATA_EXP,  &experience);
-    return GetLevelFromBoxMonExp(&tempMon);
+	if (gSaveBlock2.nuzlockeMode == NUZLOCKE_MODE_OFF)
+	{
+		u32 experience = GetBoxMonData(mon, MON_DATA_EXP) + steps;
+		SetBoxMonData(&tempMon, MON_DATA_EXP,  &experience);
+	}
+	return GetLevelFromBoxMonExp(&tempMon);
 }
 
 static u8 GetNumLevelsGainedFromSteps(struct DayCare *daycare, u8 slot)
@@ -259,18 +263,26 @@ static u8 GetNumLevelsGainedFromSteps(struct DayCare *daycare, u8 slot)
 static u8 GetNumLevelsGainedForDaycareSlot(struct DayCare *daycare, u8 slot)
 {
     u8 numLevelsGained = GetNumLevelsGainedFromSteps(daycare, slot);
-    GetBoxMonNick(&daycare->mons[slot], gStringVar1);
-    ConvertIntToDecimalStringN(gStringVar2, numLevelsGained, STR_CONV_MODE_LEFT_ALIGN, 2);
-    return numLevelsGained;
+	
+	GetBoxMonNick(&daycare->mons[slot], gStringVar1);
+	
+	ConvertIntToDecimalStringN(gStringVar2, numLevelsGained, STR_CONV_MODE_LEFT_ALIGN, 2);
+	return numLevelsGained;
 }
 
 static u16 GetDaycareCostForSelectedMon(struct DayCare *daycare, u8 slot)
 {
-    u16 cost;
+	u8 numLevelsGained = GetNumLevelsGainedFromSteps(daycare, slot);
+	u16 cost = 100 + 100 * numLevelsGained;
 
-    u8 numLevelsGained = GetNumLevelsGainedFromSteps(daycare, slot);
-    GetBoxMonNick(&daycare->mons[slot], gStringVar1);
-    cost = 100 + 100 * numLevelsGained;
+	GetBoxMonNick(&daycare->mons[slot], gStringVar1);
+	
+	if (gSaveBlock2.nuzlockeMode != NUZLOCKE_MODE_OFF)
+	{
+		ConvertIntToDecimalStringN(gStringVar2, 100, STR_CONV_MODE_LEFT_ALIGN, 5);
+		return 100;
+	}
+
     ConvertIntToDecimalStringN(gStringVar2, cost, STR_CONV_MODE_LEFT_ALIGN, 5);
     return cost;
 }
@@ -288,10 +300,11 @@ void Debug_AddDaycareSteps(u16 numSteps)
 
 u8 GetNumLevelsGainedFromDaycare(void)
 {
+	if (gSaveBlock2.nuzlockeMode != NUZLOCKE_MODE_OFF)
+		return 0;
+	
     if (GetBoxMonData(&gSaveBlock1.daycare.mons[gSpecialVar_0x8004], MON_DATA_SPECIES) != 0)
         return GetNumLevelsGainedForDaycareSlot(&gSaveBlock1.daycare, gSpecialVar_0x8004);
-
-    return 0;
 }
 
 static void ClearDaycareMail(struct DayCareMail *mail)
@@ -342,7 +355,6 @@ u16 GetEggSpecies(u16 species)
         found = FALSE;
         for (j = 1; j < NUM_SPECIES; j++)
         {
-//HOENNISLES
             for (k = 0; k < NUM_MAX_POSSIBLE_EVOLUTIONS; k++) //VANILLA for (k = 0; k < 5; k++)
             {
                 if (gEvolutionTable[j][k].targetSpecies == species)
@@ -513,13 +525,11 @@ void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, struct BoxP
     u32 numEggMoves;
     u16 i, j;
 	
-//HOENNISLES START
 	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
 	{
 		GenerateSuperRandomMovesetForMon(egg, 1, TRUE); //eggs hatch at level 1
 		return;
 	}
-//HOENNISLES END
 
     numSharedParentMoves = 0;
     for (i = 0; i < 4; i++)

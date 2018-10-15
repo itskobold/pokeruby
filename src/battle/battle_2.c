@@ -48,6 +48,7 @@
 #include "util.h"
 #include "ewram.h"
 #include "wild_encounter.h"
+#include "pokemon_storage_system.h" //
 
 struct UnknownStruct7
 {
@@ -3702,8 +3703,11 @@ void sub_8010874(void)
     gHitMarker = 0;
     if ((gBattleTypeFlags & BATTLE_TYPE_LINK) == 0 && gSaveBlock2.optionsBattleSceneOff == TRUE)
         gHitMarker = HITMARKER_NO_ANIMATIONS;
-    ewram16084 = gSaveBlock2.optionsBattleStyle;
-    gMultiHitCounter = 0;
+	if (gSaveBlock2.nuzlockeMode != NUZLOCKE_MODE_OFF)
+		ewram16084 = OPTIONS_BATTLE_STYLE_SET;
+	else
+		ewram16084 = gSaveBlock2.optionsBattleStyle;
+	gMultiHitCounter = 0;
     gBattleOutcome = 0;
     gBattleExecBuffer = 0;
     gPaydayMoney = 0;
@@ -3918,6 +3922,14 @@ void UndoEffectsAfterFainting(void)
 	
 	gBattleMons[gActiveBattler].type1 = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_1) : GetMonData(&gEnemyParty, MON_DATA_TYPE_1);
 	gBattleMons[gActiveBattler].type2 = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_2) : GetMonData(&gEnemyParty, MON_DATA_TYPE_2);
+	
+	/*if (gSaveBlock2.nuzlockeMode != NUZLOCKE_MODE_OFF)
+	{
+		gSaveBlock1.nuzlockeCounter++;
+		ZeroMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]]);
+		party_compaction();
+		CalculatePlayerPartyCount();
+	}*/
 }
 
 void bc_8012FAC(void)

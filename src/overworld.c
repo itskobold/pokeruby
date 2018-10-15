@@ -34,6 +34,7 @@
 #include "roamer.h"
 #include "rotating_gate.h"
 #include "safari_zone.h"
+#include "save.h"
 #include "script.h"
 #include "script_pokemon_80C4.h"
 #include "secret_base.h"
@@ -1304,16 +1305,30 @@ void CB2_WhiteOut(void)
         FieldClearVBlankHBlankCallbacks();
         StopMapMusic();
         ResetSafariZoneFlag_();
-        DoWhiteOut();
-        ResetInitialPlayerAvatarState();
-        ScriptContext1_Init();
-        ScriptContext2_Disable();
-        gFieldCallback = sub_8080B60;
-        val = 0;
-        do_load_map_stuff_loop(&val);
-        SetFieldVBlankCallback();
-        set_callback1(c1_overworld);
-        SetMainCallback2(c2_overworld);
+		
+		switch (gSaveBlock2.nuzlockeMode)
+		{
+			case NUZLOCKE_MODE_DEADLOCKE:
+				Save_EraseAllData();
+			default:
+			{
+				DoSoftReset();
+				break;
+			}
+			case NUZLOCKE_MODE_OFF:
+			{
+				DoWhiteOut();
+				ResetInitialPlayerAvatarState();
+				ScriptContext1_Init();
+				ScriptContext2_Disable();
+				gFieldCallback = sub_8080B60;
+				val = 0;
+				do_load_map_stuff_loop(&val);
+				SetFieldVBlankCallback();
+				set_callback1(c1_overworld);
+				SetMainCallback2(c2_overworld);
+			}
+		}
     }
 }
 

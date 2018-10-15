@@ -1478,6 +1478,15 @@ static void atk05_damagecalc(void)
         gBattleMoveDamage *= 2;
     if (gProtectStructs[gBankAttacker].helpingHand)
         gBattleMoveDamage = gBattleMoveDamage * 15 / 10;
+	
+	//Nuzlocke buff damage boost
+	if (GetBattlerSide(gBankAttacker) == B_SIDE_PLAYER && gBattleMons[gBankAttacker].item == ITEM_NUZLOCKE_BUFF && gSaveBlock2.nuzlockeMode != NUZLOCKE_MODE_OFF)
+		gBattleMoveDamage += gBattleMoveDamage / 100 * 20;
+	
+	//Nuzlocke buff damage reduction
+	if (GetBattlerSide(gBankAttacker) == B_SIDE_OPPONENT && gBattleMons[gBankTarget].item == ITEM_NUZLOCKE_BUFF && gSaveBlock2.nuzlockeMode != NUZLOCKE_MODE_OFF)
+		gBattleMoveDamage -= gBattleMoveDamage / 100 * 20;
+		
 
     gBattlescriptCurrInstr++;
 }

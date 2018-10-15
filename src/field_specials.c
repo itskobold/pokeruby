@@ -2105,8 +2105,7 @@ u16 GetNumMovedLilycoveFanClubMembers(void)
 void UpdateMovedLilycoveFanClubMembers(void)
 {
     u8 i = 0;
-	//HOENNISLES
-    if (gSaveBlock2.playTimeHours < 65535) //VANILLA 999
+    if (gSaveBlock2.playTimeHours < 65535)
     {
         while (1)
         {
@@ -2250,4 +2249,9 @@ void sub_810FF48(void)
 u8 sub_810FF60(void)
 {
     return sub_810FB10(gSpecialVar_0x8004);
+}
+
+u8 GetNuzlockeMode(void)
+{
+	return gSaveBlock2.nuzlockeMode;
 }

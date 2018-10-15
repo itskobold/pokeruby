@@ -1416,7 +1416,6 @@ void sub_8040B8C(void)
     StrCpyDecodeBattle(BattleText_PreventedSwitch, gStringVar4);
 }
 
-//HOENNISLES START
 static const u16 sWildTreasureMap[] =
 {
 	ITEM_TREASURE_MAP
@@ -1450,29 +1449,6 @@ void SetWildMonHeldItem(void)
         }
     }
 }
-//HOENNISLES END
-
-/*void SetWildMonHeldItem(void) VANILLA
-{
-    if (!(gBattleTypeFlags & (BATTLE_TYPE_LEGENDARY | BATTLE_TYPE_TRAINER)))
-    {
-        u16 rnd = Random() % 100;
-        u16 species = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, 0);
-        if (gBaseStats[species].item1 == gBaseStats[species].item2)
-        {
-            SetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, &gBaseStats[species].item1);
-            return;
-        }
-
-        if (rnd > 44)
-        {
-            if (rnd <= 94)
-                SetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, &gBaseStats[species].item1);
-            else
-                SetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, &gBaseStats[species].item2);
-        }
-    }
-}*/
 
 bool8 IsShinyOtIdPersonality(u32, u32);
 

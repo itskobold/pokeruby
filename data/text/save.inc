@@ -1,6 +1,11 @@
 gSaveText_WouldYouLikeToSave:: @ 81C6C85
 UnknownString_81C6C85: @ 81C6C85
 	.string "Would you like to save the game?$"
+	
+gSaveText_WouldYouLikeToSaveNuzlocke::
+	.string "Hello, and welcome to the POKéMON\n"
+	.string "CENTER.\p"
+	.string "Would you like to save the game?$"
 
 gSaveText_ThereIsAlreadyAFile:: @ 81C6CA6
 UnknownString_81C6CA6: @ 81C6CA6

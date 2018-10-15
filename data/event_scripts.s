@@ -1433,13 +1433,27 @@ SootopolisCity_PokemonCenter_1F_EventScript_19FD5B:: @ 819FD5B
 VerdanturfTown_PokemonCenter_1F_EventScript_19FD5B:: @ 819FD5B
 	lock
 	faceplayer
-	msgbox gText_NurseJoy_Welcome, MSGBOX_YESNO
+	specialvar RESULT, GetNuzlockeMode
+	
+	@add less than command, use here to optimise
+	
+	compare RESULT, 0
+	goto_if_eq nurse_joy_heal
+	compare RESULT, 1
+	goto_if_eq nurse_joy_heal
+	call S_DoSaveDialog
+	msgbox gText_NurseJoy_WeHopeToSeeYouAgain
+	release
+	end
+
+nurse_joy_heal::
+	msgbox gText_NurseJoy_Welcome_Heal, MSGBOX_YESNO
 	compare RESULT, YES
 	goto_if_eq do_heal_party
 	compare RESULT, NO
 	goto_if_eq dont_heal_party
 	end
-
+	
 do_heal_party:: @ 819FD7C
 	incrementgamestat GAME_STAT_USED_POKECENTER
 	message gText_NurseJoy_OkayIllTakeYourPokemon
@@ -1677,9 +1691,18 @@ gUnknown_081A0009:: @ 81A0009
 	special DoPCTurnOnEffect
 	playse SE_PC_ON
 	msgbox UnknownString_81A09EC, 4
+	specialvar RESULT, GetNuzlockeMode
+	compare RESULT, 3 @deadlocke
+	goto_if_eq PC_Deadlocke
 	goto EventScript_1A0023
 	end
 
+PC_Deadlocke:
+	special PlayerPC
+	waitstate
+	goto EventScript_1A00BE
+	end
+	
 EventScript_1A0023:
 	message gPCText_WhichPCShouldBeAccessed
 	waitmessage
@@ -2977,7 +3000,7 @@ UnknownString_81A0A54: @ 81A0A54
 UnknownString_81A0A66: @ 81A0A66
 	.string "Accessed LANETTE’s PC.$"
 
-gText_NurseJoy_Welcome:: @ 81A0A7D
+gText_NurseJoy_Welcome_Heal:: @ 81A0A7D
 	.string "Hello, and welcome to the POKéMON\n"
 	.string "CENTER.\p"
 	.string "We restore your tired POKéMON to\n"

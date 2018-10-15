@@ -112,6 +112,7 @@ extern u8 gSaveText_DontTurnOff[];
 extern u8 gSaveText_ThereIsAlreadyAFile[];
 extern u8 gSaveText_ThereIsADifferentFile[];
 extern u8 gSaveText_WouldYouLikeToSave[];
+extern u8 gSaveText_WouldYouLikeToSaveNuzlocke[];
 
 extern u8 gWaitText_HowLongToWait[];
 extern u8 gWaitText_YouCantWaitNow[];
@@ -936,6 +937,12 @@ void ScrSpecial_DoSaveDialog(void)
     CreateTask(Task_SaveDialog, 0x50);
 }
 
+void ScrSpecial_DoSaveDialogNuzlocke(void)
+{
+    sub_807160C();
+    CreateTask(Task_SaveDialog, 0x50);
+}
+
 static void DisplaySaveMessageWithCallback(const u8 *ptr, u8 (*func)(void))
 {
     StringExpandPlaceholders(gStringVar4, ptr);
@@ -1010,13 +1017,18 @@ static bool8 SaveDialogCheckForTimeoutAndKeypress(void)
 static u8 SaveDialogCB_DisplayConfirmMessage(void)
 {
     Menu_EraseScreen();
-    HandleDrawSaveWindowInfo(0, 0);
-    DisplaySaveMessageWithCallback(gSaveText_WouldYouLikeToSave, SaveDialogCB_DisplayConfirmYesNoMenu);
+	
+	if (gSaveBlock2.nuzlockeMode < NUZLOCKE_MODE_HARDLOCKE)
+		DisplaySaveMessageWithCallback(gSaveText_WouldYouLikeToSave, SaveDialogCB_DisplayConfirmYesNoMenu);
+	else
+		DisplaySaveMessageWithCallback(gSaveText_WouldYouLikeToSaveNuzlocke, SaveDialogCB_DisplayConfirmYesNoMenu);
+
     return SAVE_IN_PROGRESS;
 }
 
 static u8 SaveDialogCB_DisplayConfirmYesNoMenu(void)
 {
+	HandleDrawSaveWindowInfo(0, 0);
     DisplayYesNoMenu(20, 8, 1);
     dialogCallback = SaveDialogCB_ProcessConfirmYesNoMenu;
     return SAVE_IN_PROGRESS;

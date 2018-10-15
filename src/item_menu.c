@@ -1114,7 +1114,7 @@ static void sub_80A41E0(u8 *a, u16 b, const u8 *c, u16 d, u8 e)
     a[1] = 0x13;
     a[2] = 0x18;
     a += 3;
-    a = AlignStringInMenuWindow(a, c, 0x78 - (e + 1) * 6, 0);
+    a = AlignStringInMenuWindow(a, c, 0x72 - (e + 1) * 6, 0);
     *a++ = CHAR_MULT_SIGN;
     AlignInt1InMenuWindow(a, d, 0x78, 1);
 }
@@ -1178,7 +1178,7 @@ static void sub_80A4380(u16 a, int b, int c, int d)
         r5 = i * 2 + 2;
         text = gStringVar1;
         text = sub_80A425C(a, text, i);
-        text = AlignStringInMenuWindow(text, ItemId_GetName(gCurrentBagPocketItemSlots[r4].itemId), 0x66, 0);
+        text = AlignStringInMenuWindow(text, ItemId_GetName(gCurrentBagPocketItemSlots[r4].itemId), 0x60, 0);
         *text++ = CHAR_MULT_SIGN;
         AlignInt1InMenuWindow(text, gCurrentBagPocketItemSlots[r4].quantity, 0x78, 1);
         Menu_PrintText(gStringVar1, 14, r5);

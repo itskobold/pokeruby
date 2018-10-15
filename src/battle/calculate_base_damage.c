@@ -69,11 +69,9 @@ const u8 gHoldEffectToType[][2] =
     {HOLD_EFFECT_FIRE_POWER,     TYPE_FIRE},
     {HOLD_EFFECT_DRAGON_POWER,   TYPE_DRAGON},
     {HOLD_EFFECT_NORMAL_POWER,   TYPE_NORMAL},
-//HOENNISLES START
 	{HOLD_EFFECT_AUDIO_POWER,    TYPE_AUDIO},
 	{HOLD_EFFECT_COSMIC_POWER,   TYPE_COSMIC},
 	{HOLD_EFFECT_FAIRY_POWER,    TYPE_FAIRY}
-//HOENNISLES END
 };
 
 u8 GetBattlerSide(u8 bank);
@@ -170,9 +168,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
             spDefense = (110 * spDefense) / 100;
     }
 
-	//HOENNISLES START
-	for (i = 0; i < 21; i++)
-	//HOENNISLES END
+	for (i = 0; i < 20; i++)
 
     //for (i = 0; i < 17; i++) VANILLA
     {
