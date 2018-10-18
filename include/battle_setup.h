@@ -7,7 +7,7 @@
 // IV + LEVEL + SPECIES + RARITY
 struct TrainerMonNoItemDefaultMoves
 {
-    u8 iv;
+    u16 iv;
     u8 level;
     u16 species;
 	u8 rarity;
@@ -16,7 +16,7 @@ struct TrainerMonNoItemDefaultMoves
 // IV + LEVEL + SPECIES + MOVES + RARITY
 struct TrainerMonNoItemCustomMoves
 {
-    u8 iv;
+    u16 iv;
     u8 level;
     u16 species;
 	u8 rarity;
@@ -26,7 +26,7 @@ struct TrainerMonNoItemCustomMoves
 // IV + LEVEL + SPECIES + ITEMS + RARITY
 struct TrainerMonItemDefaultMoves
 {
-    u8 iv;
+    u16 iv;
     u8 level;
     u16 species;
 	u8 rarity;
@@ -36,7 +36,7 @@ struct TrainerMonItemDefaultMoves
 // IV + LEVEL + SPECIES + ITEMS + MOVES + RARITY
 struct TrainerMonItemCustomMoves
 {
-    u8 iv;
+    u16 iv;
     u8 level;
     u16 species;
 	u8 rarity;
