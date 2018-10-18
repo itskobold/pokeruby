@@ -1,4 +1,8 @@
-//HOENNISLES START
+static const u8 gItemDescription_ShinyCharm[] = _(
+    "Rare POKéMON\n"
+    "appear more\n"
+    "often when held.");
+
 static const u8 gItemDescription_NuzlockeBuff[] = _(
     "A small charm that\n"
     "defends and powers\n"
@@ -108,8 +112,7 @@ static const u8 gItemDescription_ShinyStone[] = _(
     "Makes certain\n"
     "species of POKéMON\n"
     "evolve.");
-//HOENNISLES END
-
+	
 static const u8 gItemDescription_MasterBall[] = _(
     "The best BALL that\n"
     "catches a POKéMON\n"

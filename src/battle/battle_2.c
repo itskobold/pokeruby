@@ -1044,17 +1044,13 @@ u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
             u32 personalityValue;
             s32 j;
             u8 fixedIV;
-			//HOENNISLES START
 			u16 randomSpecies;
 			
 			//just to get the level
 			const struct TrainerMonNoItemDefaultMoves *partyData = gTrainers[trainerNum].party.NoItemDefaultMoves;
 			
 			if (gSaveBlock2.gameMode >= GAME_MODE_RANDOM)
-			{
 				randomSpecies = GenerateRandomSpecies(partyData[i].level);
-			}
-			//HOENNISLES END
 
             if (gTrainers[trainerNum].doubleBattle == TRUE)
                 personalityValue = 0x80;
@@ -1076,17 +1072,14 @@ u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                     nameHash += gSpeciesNames[partyData[i].species][j];
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * 31 / 255;
-				//HOENNISLES START
 				if (gSaveBlock2.gameMode >= GAME_MODE_RANDOM)
 				{
-					CreateMon(&party[i], randomSpecies, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0);
+					CreateMon(&party[i], randomSpecies, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0, 0, 0);
 				}
 				else
 				{
-					CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0);
+					CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0, 0, 0);
 				}
-				//HOENNISLES END
-                //CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0); VANILLA
                 break;
             }
             case F_TRAINER_PARTY_CUSTOM_MOVESET:
@@ -1097,17 +1090,14 @@ u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                     nameHash += gSpeciesNames[partyData[i].species][j];
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * 31 / 255;
-                //HOENNISLES START
 				if (gSaveBlock2.gameMode >= GAME_MODE_RANDOM)
 				{
-					CreateMon(&party[i], randomSpecies, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0);
+					CreateMon(&party[i], randomSpecies, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0, 0, 0);
 				}
 				else
 				{
-					CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0);
+					CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0, 0, 0);
 				}
-				//HOENNISLES END
-                //CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0); VANILLA
 
                 for (j = 0; j < 4; j++)
                 {
@@ -1124,17 +1114,14 @@ u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                     nameHash += gSpeciesNames[partyData[i].species][j];
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * 31 / 255;
-                //HOENNISLES START
 				if (gSaveBlock2.gameMode >= GAME_MODE_RANDOM)
 				{
-					CreateMon(&party[i], randomSpecies, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0);
+					CreateMon(&party[i], randomSpecies, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0, 0, 0);
 				}
 				else
 				{
-					CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0);
+					CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0, 0, 0);
 				}
-				//HOENNISLES END
-                //CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0); VANILLA
 
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
                 break;
@@ -1147,17 +1134,15 @@ u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                     nameHash += gSpeciesNames[partyData[i].species][j];
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * 31 / 255;
-                //HOENNISLES START
+				
 				if (gSaveBlock2.gameMode >= GAME_MODE_RANDOM)
 				{
-					CreateMon(&party[i], randomSpecies, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0);
+					CreateMon(&party[i], randomSpecies, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0, 0, 0);
 				}
 				else
 				{
-					CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0);
+					CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0, 0, 0);
 				}
-				//HOENNISLES END
-                //CreateMon(&party[i], partyData[i].species, partyData[i].level, fixedIV, TRUE, personalityValue, 2, 0); VANILLA
 
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
                 for (j = 0; j < 4; j++)
@@ -1168,6 +1153,8 @@ u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                 break;
             }
             }
+			
+			SetMonData(&party[i], MON_DATA_RARITY, &partyData[i].rarity);
         }
         gBattleTypeFlags |= gTrainers[trainerNum].doubleBattle;
     }
@@ -1631,7 +1618,7 @@ void debug_sub_8010CAC(void)
               gUnknown_Debug_2023A76[0][0 * 5 + 0],
               gUnknown_Debug_2023A76[0][0 * 5 + 1],
               32,
-              0, 0, 0, 0);
+              0, 0, 0, 0, 0, 0);
             for (r5 = 0; r5 < 4; r5++)
             {
                 SetMonData(&gPlayerParty[0], MON_DATA_MOVE1 + r5, &gUnknown_Debug_2023B02[0][0][r5]);
@@ -1933,7 +1920,7 @@ void debug_sub_8010CAC(void)
               gUnknown_Debug_2023A76_[0][0][0],
               gUnknown_Debug_2023A76_[0][0][1],
               32,
-              0, 0, 0, 0);
+              0, 0, 0, 0, 0, 0);
             for (r5 = 0; r5 < 4; r5++)
             {
                 SetMonData(&gPlayerParty[0], MON_DATA_MOVE1 + r5, &gUnknown_Debug_2023B02[0][0][r5]);
@@ -2341,7 +2328,7 @@ void debug_sub_801174C(void)
 				0,
 				r6,
 				0,
-				r9);
+				r9, 0);
 		}
 		SetMonData(&gEnemyParty[i / 5], MON_DATA_HELD_ITEM, &gUnknown_Debug_2023A76[0][i + 2]);
 		sp10 = gUnknown_Debug_2023A76[0][i + 2] - 1;
@@ -2383,7 +2370,7 @@ void debug_sub_801174C(void)
 				0,
 				r6,
 				0,
-				r9);
+				r9, 0);
 			gPlayerPartyCount++;
 		}
 		SetMonData(&gPlayerParty[i / 5], MON_DATA_HELD_ITEM, &gUnknown_Debug_2023A76[1][i + 2]);

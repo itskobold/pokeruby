@@ -234,7 +234,6 @@
 #define ITEM_THICK_CLUB 224
 #define ITEM_STICK 225
 
-//HOENNISLES START
 #define ITEM_POTPOURRI 226
 #define ITEM_TIN_WHISTLE 227
 #define ITEM_SPACE_ROCK 228
@@ -249,22 +248,6 @@
 #define ITEM_SWAMP_BALL 237
 #define ITEM_NEUTRON_BALL 238
 #define ITEM_LAIR_BALL 239
-//HOENNISLES END
-
-//#define ITEM_0E2 226
-//#define ITEM_0E3 227
-//#define ITEM_0E4 228
-//#define ITEM_0E5 229
-//#define ITEM_0E6 230
-//#define ITEM_0E7 231
-//#define ITEM_0E8 232
-//#define ITEM_0E9 233
-//#define ITEM_0EA 234
-//#define ITEM_0EB 235
-//#define ITEM_0EC 236
-//#define ITEM_0ED 237
-//#define ITEM_0EE 238
-//#define ITEM_0EF 239
 #define ITEM_0F0 240
 #define ITEM_0F1 241
 #define ITEM_0F2 242
@@ -275,15 +258,10 @@
 #define ITEM_0F7 247
 #define ITEM_0F8 248
 #define ITEM_0F9 249
-#define ITEM_0FA 250
-//HOENNISLES START
+#define ITEM_SHINY_CHARM 250
 #define ITEM_NUZLOCKE_BUFF 251
 #define ITEM_TREASURE_MAP 252
 #define ITEM_EVIOLITE 253
-//HOENNISLES END
-//#define ITEM_0FB 251
-//#define ITEM_0FC 252
-//#define ITEM_0FD 253
 #define ITEM_RED_SCARF 254
 #define ITEM_BLUE_SCARF 255
 #define ITEM_PINK_SCARF 256

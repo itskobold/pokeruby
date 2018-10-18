@@ -2170,7 +2170,7 @@ static void SummaryScreen_PlaceTextTile_White(u8 tile, u8 x, u8 y)
     SummaryScreen_PlaceTextTile(tile, 15, x, y);
 }
 
-bool8 sub_809FA94(struct Pokemon *mon)
+/*bool8 sub_809FA94(struct Pokemon *mon)
 {
     if (!IsShiny(mon))
     {
@@ -2182,11 +2182,10 @@ bool8 sub_809FA94(struct Pokemon *mon)
         LoadPalette(sUnknown_083C157E, 4, 2);
         return TRUE;
     }
-}
+}*/
 
 static void sub_809FAC8(struct Pokemon *mon)
 {
-    bool8 shiny;
     u16 dexNum;
     u8 *buffer;
 
@@ -2201,20 +2200,11 @@ static void sub_809FAC8(struct Pokemon *mon)
     }
     else
     {
-        shiny = sub_809FA94(mon);
         dexNum = SpeciesToPokedexNum(GetMonData(mon, MON_DATA_SPECIES));
         if (dexNum != 0xFFFF)
         {
-            if (!shiny)
-            {
-                SummaryScreen_PlaceTextTile_White(2, 1, 2);
-                SummaryScreen_PrintColoredIntPixelCoords(dexNum, 13, 3, 2, 17, 16, 1);
-            }
-            else
-            {
-                SummaryScreen_PlaceTextTile(2, 8, 1, 2);
-                SummaryScreen_PrintColoredIntPixelCoords(dexNum, 8, 3, 2, 17, 16, 1);
-            }
+            SummaryScreen_PlaceTextTile_White(2, 1, 2);
+            SummaryScreen_PrintColoredIntPixelCoords(dexNum, 13, 3, 2, 17, 16, 1);
         }
         else
         {

@@ -953,7 +953,7 @@ static void NakaGenderTest_AdjustSpecies(u8 i, s8 dirn)
         sNakaGenderTestData[i].species -= SPECIES_CHIMECHO;
     if (sNakaGenderTestData[i].species < 0)
         sNakaGenderTestData[i].species += SPECIES_CHIMECHO;
-    CreateMon(gPlayerParty + i, sNakaGenderTestData[i].species, sNakaGenderTestData[i].level, 0x20, FALSE, 0, FALSE, 0);
+    CreateMon(gPlayerParty + i, sNakaGenderTestData[i].species, sNakaGenderTestData[i].level, 0x20, FALSE, 0, FALSE, 0, 0, 0);
     sNakaGenderTestData[i].unk3 = 1;
 }
 
@@ -998,7 +998,7 @@ static void NakaGenderTest_PartyCompactionEnsureAtLeastOne(void)
     CalculatePlayerPartyCount();
     if (gPlayerPartyCount == 0)
     {
-        CreateMon(gPlayerParty + 0, SPECIES_BULBASAUR, 10, 0x20, FALSE, 0, FALSE, 0);
+        CreateMon(gPlayerParty + 0, SPECIES_BULBASAUR, 10, 0x20, FALSE, 0, FALSE, 0, 0, 0);
         gPlayerPartyCount = 1;
     }
 }
@@ -1162,7 +1162,7 @@ static u8 NakaGenderTest_ForceRerollPokemon(u8 i)
     } while (GetGenderFromSpeciesAndPersonality(species, personality) != ratio);
 
     GetMonData(gPlayerParty + i, MON_DATA_IVS);
-    CreateMon(gPlayerParty + i, sNakaGenderTestData[i].species, sNakaGenderTestData[i].level, 0x20, TRUE, personality, FALSE, 0);
+    CreateMon(gPlayerParty + i, sNakaGenderTestData[i].species, sNakaGenderTestData[i].level, 0x20, TRUE, personality, FALSE, 0, 0, 0);
     return ratio;
 }
 

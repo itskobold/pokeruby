@@ -163,7 +163,7 @@ void debug_sub_813C638(struct Pokemon * mon, u16 species, u8 level, u16 itemId)
 {
     u32 _itemId;
     ZeroMonData(mon);
-    CreateMon(mon, species, level, 32, FALSE, 0, TRUE, 9999);
+    CreateMon(mon, species, level, 32, FALSE, 0, TRUE, 9999, 0, 0);
     SetMonData(mon, MON_DATA_OT_NAME, Str_842E240);
     SetMonData(mon, MON_DATA_NICKNAME, Str_842E248);
     _itemId = itemId;

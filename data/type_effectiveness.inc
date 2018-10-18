@@ -44,6 +44,7 @@ gTypeEffectiveness:: @ 81F9720
 	.byte	TYPE_ICE,		TYPE_FIRE,		5
 	.byte	TYPE_ICE,		TYPE_GRASS,		20
 	.byte	TYPE_ICE,		TYPE_ICE,		5
+	.byte	TYPE_ICE,		TYPE_COSMIC,	5
 	.byte	TYPE_ICE,		TYPE_FLYING,	20
 	.byte	TYPE_ICE,		TYPE_GROUND,	20
 	.byte	TYPE_ICE,		TYPE_DRAGON,	20
@@ -158,9 +159,7 @@ gTypeEffectiveness:: @ 81F9720
 	
 	//allows ghost to be hit
 	.byte	0xFE,			0xFE,			0
-	.byte	TYPE_ICE,		TYPE_GHOST,		0
 	.byte	TYPE_FIGHTING,	TYPE_GHOST,		0
 	.byte	TYPE_POISON,	TYPE_GHOST,		0
-	.byte	TYPE_STEEL,		TYPE_GHOST,		0
 	.byte	TYPE_FAIRY,		TYPE_GHOST,		0
 	.byte	0xFF,			0xFF,			0

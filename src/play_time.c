@@ -16,9 +16,6 @@ enum
 
 static u8 sPlayTimeCounterState;
 
-static void RunMinuteRoutines(void);
-static void RunHourRoutines(void);
-
 void PlayTimeCounter_Reset()
 {
     sPlayTimeCounterState = STOPPED;
@@ -52,7 +49,7 @@ void PlayTimeCounter_Stop()
 
 void PlayTimeCounter_Update()
 {
-    if (sPlayTimeCounterState == RUNNING)
+    if (sPlayTimeCounterState == !STOPPED)
     {		
         gSaveBlock2.playTimeVBlanks++;
 

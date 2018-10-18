@@ -2116,6 +2116,22 @@ const struct WildPokemonInfo Route116_LandMonsInfo = {20, Route116_LandMons};
 
 const struct WildPokemon Route117_LandMons [] =
 {
+    {1, 100, SPECIES_ONIX},
+    {1, 100, SPECIES_ONIX},
+    {1, 100, SPECIES_STEELIX},
+    {1, 100, SPECIES_STEELIX},
+    {1, 100, SPECIES_STEELIX},
+    {1, 100, SPECIES_STEELIX},
+    {1, 100, SPECIES_STEELIX},
+    {1, 100, SPECIES_STEELIX},
+    {1, 100, SPECIES_STEELIX},
+    {1, 100, SPECIES_STEELIX},
+    {1, 100, SPECIES_STEELIX},
+    {1, 100, SPECIES_STEELIX},
+};
+
+/*const struct WildPokemon Route117_LandMons [] =
+{
     {13, 13, SPECIES_ZIGZAGOON},
     {13, 13, SPECIES_ROSELIA},
     {14, 14, SPECIES_ZIGZAGOON},
@@ -2136,7 +2152,7 @@ const struct WildPokemon Route117_LandMons [] =
     {13, 13, SPECIES_VOLBEAT},
 #endif
     {13, 13, SPECIES_SURSKIT},
-};
+};*/
 
 const struct WildPokemonInfo Route117_LandMonsInfo = {20, Route117_LandMons};
 
@@ -3725,6 +3741,7 @@ void FeebasSeedRng(u16 seed);
 static bool8 IsWildLevelAllowedByRepel(u8 level);
 static void ApplyFluteEncounterRateMod(u32 *encRate);
 static void ApplyCleanseTagEncounterRateMod(u32 *encRate);
+static bool8 CheckShinyCharm(void);
 
 void DisableWildEncounters(bool8 disabled)
 {
@@ -4076,15 +4093,13 @@ bool8 IsLevelBasedEvolution(u8 method)
 static void CreateWildMon(u16 species, u8 level)
 {	
     ZeroEnemyPartyMons();
-
+	
 //generates a random wild species for random & super random game modes
 //accounts for sensible evolutions (so no level 3 blazikens etc)
 //Pokemon on a banlist don't get generated (legendaries etc)
 	if (gSaveBlock2.gameMode >= GAME_MODE_RANDOM)
-	{
 		species = GenerateRandomSpecies(level);
-	}
-	CreateMonWithNature(&gEnemyParty[0], species, level, 0x20, PickWildMonNature());
+	CreateMonWithNature(&gEnemyParty[0], species, level, 0x20, PickWildMonNature(), CheckShinyCharm());
 }
 
 static bool8 GenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 area, bool8 checkRepel)
@@ -4498,4 +4513,12 @@ static void ApplyCleanseTagEncounterRateMod(u32 *encRate)
     // UB: Too few arguments for function 'GetMonData'
     if (GetMonData(&gPlayerParty[0], MON_DATA_HELD_ITEM) == 0xBE)
         *encRate = *encRate * 2 / 3;
+}
+
+static bool8 CheckShinyCharm(void)
+{
+    if (GetMonData(&gPlayerParty[0], MON_DATA_HELD_ITEM) == ITEM_SHINY_CHARM)
+        return TRUE;
+	else
+		return FALSE;
 }

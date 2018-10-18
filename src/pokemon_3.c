@@ -1264,10 +1264,41 @@ void current_map_music_set__default_for_battle(u16 song)
 
 const u8 *GetMonSpritePal(struct Pokemon *mon)
 {
+	u8 rarity = GetMonData(mon, MON_DATA_RARITY, 0);
     u16 species = GetMonData(mon, MON_DATA_SPECIES2, 0);
     u32 otId = GetMonData(mon, MON_DATA_OT_ID, 0);
     u32 personality = GetMonData(mon, MON_DATA_PERSONALITY, 0);
-    return GetMonSpritePalFromOtIdPersonality(species, otId, personality);
+	
+	if (species > SPECIES_EGG)
+        return gMonPaletteTable[0].data;
+	
+	if (rarity != 0) //use rarity value if it's been set
+	{
+		switch (rarity)
+		{
+		default:
+		case COSMETIC_RARITY_TYPICAL:
+			return gMonPaletteTable[species].data;
+		case COSMETIC_RARITY_COMMON:
+			return gMonCommonPaletteTable[species].data;
+		case COSMETIC_RARITY_UNCOMMON:
+			return gMonUncommonPaletteTable[species].data;
+		case COSMETIC_RARITY_LESSER:
+			return gMonLesserPaletteTable[species].data;
+		case COSMETIC_RARITY_RARE:
+			return gMonRarePaletteTable[species].data;
+		case COSMETIC_RARITY_ELITE:
+			return gMonElitePaletteTable[species].data;
+		case COSMETIC_RARITY_EXOTIC:
+			return gMonExoticPaletteTable[species].data;
+		case COSMETIC_RARITY_MYTHICAL:
+			return gMonShinyPaletteTable[species].data;
+		case COSMETIC_RARITY_GOLD:
+			return gMonGoldPaletteTable[0].data;
+		}
+	}
+	else //if not use PID & OtId
+		return GetMonSpritePalFromOtIdPersonality(species, otId, personality);
 }
 
 //Extracts the upper 16 bits of a 32-bit number
@@ -1278,16 +1309,27 @@ const u8 *GetMonSpritePal(struct Pokemon *mon)
 
 const u8 *GetMonSpritePalFromOtIdPersonality(u16 species, u32 otId, u32 personality)
 {
-    u32 shinyValue;
-
-    if (species > SPECIES_EGG)
-        return gMonPaletteTable[0].data;
-
-    shinyValue = HIHALF(otId) ^ LOHALF(otId) ^ HIHALF(personality) ^ LOHALF(personality);
-    if (shinyValue < 8)
-        return gMonShinyPaletteTable[species].data;
-    else
-        return gMonPaletteTable[species].data;
+    switch (GetRarityOtIdPersonality(otId, personality))
+	{
+		case RARITY_TYPICAL:
+			return gMonPaletteTable[species].data;
+		case RARITY_COMMON:
+			return gMonCommonPaletteTable[species].data;
+		case RARITY_UNCOMMON:
+			return gMonUncommonPaletteTable[species].data;
+		case RARITY_LESSER:
+			return gMonLesserPaletteTable[species].data;
+		case RARITY_RARE:
+			return gMonRarePaletteTable[species].data;
+		case RARITY_ELITE:
+			return gMonElitePaletteTable[species].data;
+		case RARITY_EXOTIC:
+			return gMonExoticPaletteTable[species].data;
+		case RARITY_MYTHICAL:
+			return gMonShinyPaletteTable[species].data;
+		case RARITY_GOLD:
+			return gMonGoldPaletteTable[0].data;
+	}  
 }
 
 const struct CompressedSpritePalette *GetMonSpritePalStruct(struct Pokemon *mon)
@@ -1300,13 +1342,26 @@ const struct CompressedSpritePalette *GetMonSpritePalStruct(struct Pokemon *mon)
 
 const struct CompressedSpritePalette *GetMonSpritePalStructFromOtIdPersonality(u16 species, u32 otId , u32 personality)
 {
-    u32 shinyValue;
+    u32 rarityValue = HIHALF(otId) ^ LOHALF(otId) ^ HIHALF(personality) ^ LOHALF(personality);
 
-    shinyValue = HIHALF(otId) ^ LOHALF(otId) ^ HIHALF(personality) ^ LOHALF(personality);
-    if (shinyValue < 8)
-        return &gMonShinyPaletteTable[species];
-    else
-        return &gMonPaletteTable[species];
+	if (rarityValue == RARITY_GOLD)
+		return &gMonGoldPaletteTable[0];
+	else if (rarityValue < RARITY_MYTHICAL)
+		return &gMonShinyPaletteTable[species];
+	else if (rarityValue < RARITY_EXOTIC)
+		return &gMonExoticPaletteTable[species];
+	else if (rarityValue < RARITY_ELITE)
+		return &gMonElitePaletteTable[species];
+	else if (rarityValue < RARITY_RARE)
+		return &gMonRarePaletteTable[species];
+	else if (rarityValue < RARITY_LESSER)
+		return &gMonLesserPaletteTable[species];
+	else if (rarityValue < RARITY_UNCOMMON)
+		return &gMonUncommonPaletteTable[species];
+	else if (rarityValue < RARITY_COMMON)
+		return &gMonCommonPaletteTable[species];
+	else
+		return &gMonPaletteTable[species];
 }
 
 const u16 gHMMoves[] =
@@ -1450,21 +1505,35 @@ void SetWildMonHeldItem(void)
     }
 }
 
-bool8 IsShinyOtIdPersonality(u32, u32);
-
-bool8 IsShiny(struct Pokemon *mon)
+u16 GetRarity(struct Pokemon *mon)
 {
     u32 otId = GetMonData(mon, MON_DATA_OT_ID, 0);
     u32 personality = GetMonData(mon, MON_DATA_PERSONALITY, 0);
-    return IsShinyOtIdPersonality(otId, personality);
+    return GetRarityOtIdPersonality(otId, personality);
 }
 
-bool8 IsShinyOtIdPersonality(u32 otId, u32 personality)
+u16 GetRarityOtIdPersonality(u32 otId, u32 personality)
 {
-    bool8 retVal = FALSE;
-    u32 shinyValue = HIHALF(otId) ^ LOHALF(otId) ^ HIHALF(personality) ^ LOHALF(personality);
-    if (shinyValue < 8)
-        retVal = TRUE;
+    u16 retVal = RARITY_TYPICAL;
+    u32 rarityValue = HIHALF(otId) ^ LOHALF(otId) ^ HIHALF(personality) ^ LOHALF(personality);
+	
+	if (rarityValue == RARITY_GOLD)
+		retVal = RARITY_GOLD;
+	else if (rarityValue < RARITY_MYTHICAL)
+		retVal = RARITY_MYTHICAL;
+	else if (rarityValue < RARITY_EXOTIC)
+		retVal = RARITY_EXOTIC;
+	else if (rarityValue < RARITY_ELITE)
+		retVal = RARITY_ELITE;
+	else if (rarityValue < RARITY_RARE)
+		retVal = RARITY_RARE;
+	else if (rarityValue < RARITY_LESSER)
+		retVal = RARITY_LESSER;
+	else if (rarityValue < RARITY_UNCOMMON)
+		retVal = RARITY_UNCOMMON;
+	else if (rarityValue < RARITY_COMMON)
+		retVal = RARITY_COMMON;
+	
     return retVal;
 }
 

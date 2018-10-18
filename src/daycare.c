@@ -702,8 +702,6 @@ static void _GiveEggFromDaycare(struct DayCare *daycare) // give_egg
 	{
 		species = DetermineEggSpeciesAndParentSlots(daycare, parentSlots);
     }
-//HOENNISLES END
-//species = DetermineEggSpeciesAndParentSlots(daycare, parentSlots); VANILLA
 	AlterEggSpeciesWithIncenseItem(&species, daycare);
     SetInitialEggData(&egg, species, daycare);
     InheritIVs(&egg, daycare);
@@ -725,7 +723,7 @@ void CreateEgg(struct Pokemon *mon, u16 species, bool8 setMetLocation)
     u8 metLocation;
     u8 isEgg;
 
-    CreateMon(mon, species, EGG_HATCH_LEVEL, 0x20, FALSE, 0, FALSE, 0);
+    CreateMon(mon, species, EGG_HATCH_LEVEL, 0x20, FALSE, 0, FALSE, 0, 0, 0);
     metLevel = 0;
     ball = ITEM_POKE_BALL;
     language = LANGUAGE_JAPANESE;
@@ -752,7 +750,7 @@ static void SetInitialEggData(struct Pokemon *mon, u16 species, struct DayCare *
     u8 language;
 
     personality = daycare->misc.countersEtc.pendingEggPersonality | (Random() << 16);
-    CreateMon(mon, species, EGG_HATCH_LEVEL, 0x20, TRUE, personality, FALSE, 0);
+    CreateMon(mon, species, EGG_HATCH_LEVEL, 0x20, TRUE, personality, FALSE, 0, 0, 0);
     metLevel = 0;
     ball = ITEM_POKE_BALL;
     language = LANGUAGE_JAPANESE;

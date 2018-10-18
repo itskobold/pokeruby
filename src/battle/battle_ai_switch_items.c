@@ -69,7 +69,7 @@ static bool8 ShouldSwitchIfWonderGuard(void)
         if (move == MOVE_NONE)
             continue;
 
-        moveFlags = AI_TypeCalc(move, gBattleMons[opposingBattler].species, gBattleMons[opposingBattler].ability);
+        moveFlags = AI_TypeCalc(move, gBattleMons[opposingBattler].type1, gBattleMons[opposingBattler].type2, gBattleMons[opposingBattler].ability);
         if (moveFlags & MOVE_RESULT_SUPER_EFFECTIVE)
             return FALSE;
     }
@@ -93,7 +93,7 @@ static bool8 ShouldSwitchIfWonderGuard(void)
             if (move == MOVE_NONE)
                 continue;
 
-            moveFlags = AI_TypeCalc(move, gBattleMons[opposingBattler].species, gBattleMons[opposingBattler].ability);
+            moveFlags = AI_TypeCalc(move, gBattleMons[opposingBattler].type1, gBattleMons[opposingBattler].type2, gBattleMons[opposingBattler].ability);
             if (moveFlags & MOVE_RESULT_SUPER_EFFECTIVE && (Random() % 3) < 2)
             {
                 // we found a mon
@@ -437,7 +437,7 @@ static bool8 HasSuperEffectiveMoveAgainstOpponents(bool8 noRng)
             if (move == MOVE_NONE)
                 continue;
 
-            moveFlags = AI_TypeCalc(move, gBattleMons[opposingBattler].species, gBattleMons[opposingBattler].ability);
+            moveFlags = AI_TypeCalc(move, gBattleMons[opposingBattler].type1, gBattleMons[opposingBattler].type2, gBattleMons[opposingBattler].ability);
             if (moveFlags & MOVE_RESULT_SUPER_EFFECTIVE)
             {
                 if (noRng)
@@ -459,7 +459,7 @@ static bool8 HasSuperEffectiveMoveAgainstOpponents(bool8 noRng)
             if (move == MOVE_NONE)
                 continue;
 
-            moveFlags = AI_TypeCalc(move, gBattleMons[opposingBattler].species, gBattleMons[opposingBattler].ability);
+            moveFlags = AI_TypeCalc(move, gBattleMons[opposingBattler].type1, gBattleMons[opposingBattler].type2, gBattleMons[opposingBattler].ability);
             if (moveFlags & MOVE_RESULT_SUPER_EFFECTIVE)
             {
                 if (noRng)
@@ -519,7 +519,8 @@ static bool8 FindMonWithFlagsAndSuperEffective(u8 flags, u8 moduloPercent)
 
     for (i = 0; i < 6; i++)
     {
-        u16 species;
+		u16 species;
+        u8 type1 = GetMonData(&gEnemyParty[i], MON_DATA_TYPE_1), type2 = GetMonData(&gEnemyParty[i], MON_DATA_TYPE_2);
         u8 monAbility;
 
         if (GetMonData(&gEnemyParty[i], MON_DATA_HP) == 0)
@@ -543,7 +544,7 @@ static bool8 FindMonWithFlagsAndSuperEffective(u8 flags, u8 moduloPercent)
         else
             monAbility = gBaseStats[species].ability1;
 
-        moveFlags = AI_TypeCalc(gLastLandedMoves[gActiveBattler], species, monAbility);
+        moveFlags = AI_TypeCalc(gLastLandedMoves[gActiveBattler], type1, type2, monAbility);
         if (moveFlags & flags)
         {
             battlerIn1 = gLastHitBy[gActiveBattler];
@@ -554,7 +555,7 @@ static bool8 FindMonWithFlagsAndSuperEffective(u8 flags, u8 moduloPercent)
                 if (move == 0)
                     continue;
 
-                moveFlags = AI_TypeCalc(move, gBattleMons[battlerIn1].species, gBattleMons[battlerIn1].ability);
+                moveFlags = AI_TypeCalc(move, type1, type2, gBattleMons[battlerIn1].ability);
                 if (moveFlags & MOVE_RESULT_SUPER_EFFECTIVE && Random() % moduloPercent == 0)
                 {
                     ewram160C8arr(GetBattlerPosition(gActiveBattler)) = i;

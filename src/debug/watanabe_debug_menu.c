@@ -2128,7 +2128,7 @@ void debug_80C5C94(void)
     ivs |= (gUnknown_Debug_2038A1C->unk64[19] & 0x1f) << 15;
     ivs |= (gUnknown_Debug_2038A1C->unk64[21] & 0x1f) << 20;
     ivs |= (gUnknown_Debug_2038A1C->unk64[23] & 0x1f) << 25;
-    CreateMon(&gUnknown_Debug_2038A1C->pokemon, NationalPokedexNumToSpecies(gUnknown_Debug_2038A1C->unk64[0]), gUnknown_Debug_2038A1C->unk64[1], ivs, TRUE, gUnknown_Debug_2038A1C->unk64[4], TRUE, gUnknown_Debug_2038A1C->unk64[3]);
+    CreateMon(&gUnknown_Debug_2038A1C->pokemon, NationalPokedexNumToSpecies(gUnknown_Debug_2038A1C->unk64[0]), gUnknown_Debug_2038A1C->unk64[1], ivs, TRUE, gUnknown_Debug_2038A1C->unk64[4], TRUE, gUnknown_Debug_2038A1C->unk64[3], 0, 0);
     gUnknown_Debug_2038A1C->unk64[5] = (u8)(GetMonGender(&gUnknown_Debug_2038A1C->pokemon) + 2);
     gUnknown_Debug_2038A1C->unk64[6] = GetNature(&gUnknown_Debug_2038A1C->pokemon);
     gUnknown_Debug_2038A1C->unk64[7] = GetMonData(&gUnknown_Debug_2038A1C->pokemon, MON_DATA_MOVE1);
@@ -2205,7 +2205,7 @@ void debug_80C5FFC(void)
     ivs |= (gUnknown_Debug_2038A1C->unk64[21] & 0x1f) << 20;
     ivs |= (gUnknown_Debug_2038A1C->unk64[23] & 0x1f) << 25;
 
-    CreateMon(&gUnknown_Debug_2038A1C->pokemon, NationalPokedexNumToSpecies(gUnknown_Debug_2038A1C->unk64[0]), gUnknown_Debug_2038A1C->unk64[1], ivs, TRUE, gUnknown_Debug_2038A1C->unk64[4], TRUE, gUnknown_Debug_2038A1C->unk64[3]);
+    CreateMon(&gUnknown_Debug_2038A1C->pokemon, NationalPokedexNumToSpecies(gUnknown_Debug_2038A1C->unk64[0]), gUnknown_Debug_2038A1C->unk64[1], ivs, TRUE, gUnknown_Debug_2038A1C->unk64[4], TRUE, gUnknown_Debug_2038A1C->unk64[3], 0);
 
     if (gUnknown_Debug_2038A1C->unk64[7] != MOVE_NONE)
         SetMonMoveSlot(&gUnknown_Debug_2038A1C->pokemon, gUnknown_Debug_2038A1C->unk64[7], 0);
@@ -2663,7 +2663,7 @@ void debug_80C6CB8(u8 taskId)
     gSprites[gUnknown_Debug_2038A20->unk3].callback = debug_69;
     gSprites[gUnknown_Debug_2038A20->unk3].oam.priority = 0;
 
-    gUnknown_Debug_2038A20->unk4 = CreateMonIcon(gUnknown_Debug_2038A20->unk0, sub_809D62C, 0x68, 0x2C, 0, 0);
+    gUnknown_Debug_2038A20->unk4 = CreateMonIcon(gUnknown_Debug_2038A20->unk0, sub_809D62C, 0x68, 0x2C, 0, 0, 0);
 
     sub_8091738(SpeciesToNationalPokedexNum(gUnknown_Debug_2038A20->unk0), 2, 0x3fc);
 

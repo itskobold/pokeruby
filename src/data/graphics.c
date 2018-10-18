@@ -9,6 +9,12 @@ const u8 gMonFrontPic_CircledQuestionMark[] = INCBIN_U8("graphics/pokemon/circle
 const u8 gMonBackPic_CircledQuestionMark[] = INCBIN_U8("graphics/pokemon/circled_question_mark/back.4bpp.lz");
 const u16 gMonPalette_CircledQuestionMark[] = INCBIN_U16("graphics/pokemon/circled_question_mark/normal.gbapal.lz");
 const u16 gMonShinyPalette_CircledQuestionMark[] = INCBIN_U16("graphics/pokemon/circled_question_mark/shiny.gbapal.lz");
+const u16 gMonCommonPalette_CircledQuestionMark[] = INCBIN_U8("graphics/pokemon/circled_question_mark/common.gbapal.lz");
+const u16 gMonUncommonPalette_CircledQuestionMark[] = INCBIN_U8("graphics/pokemon/circled_question_mark/uncommon.gbapal.lz");
+const u16 gMonLesserPalette_CircledQuestionMark[] = INCBIN_U8("graphics/pokemon/circled_question_mark/lesser.gbapal.lz");
+const u16 gMonRarePalette_CircledQuestionMark[] = INCBIN_U8("graphics/pokemon/circled_question_mark/rare.gbapal.lz");
+const u16 gMonElitePalette_CircledQuestionMark[] = INCBIN_U8("graphics/pokemon/circled_question_mark/elite.gbapal.lz");
+const u16 gMonExoticPalette_CircledQuestionMark[] = INCBIN_U8("graphics/pokemon/circled_question_mark/exotic.gbapal.lz");
 
 // japanese table and bunch of stuff
 const u8 gUnusedOldCharmap_Gfx_lz[] = INCBIN_U8("graphics/unused/old_charmap.4bpp.lz");

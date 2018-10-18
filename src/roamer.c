@@ -62,7 +62,7 @@ void ClearRoamerLocationData(void)
 void CreateInitialRoamerMon(void)
 {
     struct Roamer *roamer;
-    CreateMon(&gEnemyParty[0], ROAMER_SPECIES, 40, 0x20, 0, 0, 0, 0);
+    CreateMon(&gEnemyParty[0], ROAMER_SPECIES, 40, 0x20, 0, 0, 0, 0, 0, 0);
     roamer = &gSaveBlock1.roamer;
     roamer->species = ROAMER_SPECIES;
     roamer->level = 40;
@@ -163,7 +163,7 @@ void CreateRoamerMonInstance(void)
 {
     struct Pokemon *mon = &gEnemyParty[0];
     struct Roamer *roamer = &gSaveBlock1.roamer;
-    CreateMonWithIVsPersonality(mon, roamer->species, roamer->level, roamer->ivs, roamer->personality);
+    CreateMonWithIVsPersonality(mon, roamer->species, roamer->level, roamer->ivs, roamer->personality, 0);
     SetMonData(mon, MON_DATA_STATUS, &roamer->status);
     SetMonData(mon, MON_DATA_HP, &roamer->hp);
 }

@@ -92,6 +92,7 @@
 #define MON_DATA_SPEED2            86
 #define MON_DATA_SPATK2            87
 #define MON_DATA_SPDEF2            88
+#define MON_DATA_RARITY			   89
 
 #define MAX_LEVEL 100
 
@@ -150,6 +151,20 @@
 #define NUM_BANNED_RANDOM_MONS 47 //number of Pokemon in random mon banlist
 #define NUM_MAX_POSSIBLE_EVOLUTIONS 5 //this should really be in evolution.h but moving it causes problems so eh
 #define NUM_MONS_WITH_BRANCHING_EVOS 8 //number of pokemon with evolution lines that branch out (like eevee, gloom, poliwhirl etc)
+
+enum
+{
+	COSMETIC_RARITY_NONE,
+	COSMETIC_RARITY_TYPICAL,
+	COSMETIC_RARITY_COMMON,
+	COSMETIC_RARITY_UNCOMMON,
+	COSMETIC_RARITY_LESSER,
+	COSMETIC_RARITY_RARE,
+	COSMETIC_RARITY_ELITE,
+	COSMETIC_RARITY_EXOTIC,
+	COSMETIC_RARITY_MYTHICAL,
+	COSMETIC_RARITY_GOLD
+};
 
 enum {
     EGG_GROUP_NONE,
@@ -264,7 +279,8 @@ struct PokemonSubstruct3
     /*0x0B*/ u32 giftRibbon5:1;
     /*0x0B*/ u32 giftRibbon6:1;
     /*0x0B*/ u32 giftRibbon7:1;
-    /*0x0B*/ u32 fatefulEncounter:5; // unused in Ruby/Sapphire, but the high bit must be set for Mew/Deoxys to obey in FR/LG/Emerald
+    /*0x0B*/ u32 fatefulEncounter:1; // unused in Ruby/Sapphire
+	/*0x0B*/ u32 rarity:4; //controls the Pokemon's palette, set by PID
 };
 
 union PokemonSubstruct
@@ -554,15 +570,16 @@ void ZeroBoxMonData(struct BoxPokemon *boxMon);
 void ZeroMonData(struct Pokemon *mon);
 void ZeroPlayerPartyMons(void);
 void ZeroEnemyPartyMons(void);
-void CreateMon(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 hasFixedPersonality, u32 fixedPersonality, u8 otIdType, u32 fixedOtId);
-void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, u8 hasFixedPersonality, u32 fixedPersonality, u8 otIdType, u32 fixedOtId);
-void CreateMonWithNature(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 nature);
-void CreateMonWithGenderNatureLetter(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 gender, u8 nature, u8 unownLetter);
-void CreateMaleMon(struct Pokemon *mon, u16 species, u8 level);
-void CreateMonWithIVsPersonality(struct Pokemon *mon, u16 species, u8 level, u32 ivs, u32 personality);
-void CreateMonWithIVsOTID(struct Pokemon *mon, u16 species, u8 level, u8 *ivs, u32 otId);
-void CreateMonWithEVSpread(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 evSpread);
-void sub_803ADE8(struct Pokemon *mon, struct UnknownPokemonStruct *src);
+void CreateMon(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 hasFixedPersonality, u32 fixedPersonality, u8 otIdType, u32 fixedOtId, u8 rarity, bool8 shinyCharm);
+void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, u8 hasFixedPersonality, u32 fixedPersonality, u8 otIdType, u32 fixedOtId, bool8 shinyCharm);
+void CreateMonWithNature(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 nature, bool8 shinyCharm);
+void CreateMonWithGenderNatureLetter(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 gender, u8 nature, u8 unownLetter, u8 rarity);
+void CreateMonWithRarity(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u16 rarity, u32 OtId); //untested
+void CreateMaleMon(struct Pokemon *mon, u16 species, u8 level, u8 rarity);
+void CreateMonWithIVsPersonality(struct Pokemon *mon, u16 species, u8 level, u32 ivs, u32 personality, u8 rarity);
+void CreateMonWithIVsOTID(struct Pokemon *mon, u16 species, u8 level, u8 *ivs, u32 otId, u8 rarity);
+void CreateMonWithEVSpread(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 evSpread, u8 rarity);
+void sub_803ADE8(struct Pokemon *mon, struct UnknownPokemonStruct *src, u8 rarity);
 void sub_803AF78(struct Pokemon *mon, struct UnknownPokemonStruct *dest);
 u16 CalculateBoxMonChecksum(struct BoxPokemon *boxMon);
 void CalculateMonStats(struct Pokemon *mon);
@@ -677,7 +694,8 @@ const struct CompressedSpritePalette *GetMonSpritePalStruct(struct Pokemon *);
 bool8 IsPokeSpriteNotFlipped(u16);
 u8 GetLevelUpMovesBySpecies(u16, u16 *);
 u8 TryIncrementMonLevel(struct Pokemon *);
-bool8 IsShiny(struct Pokemon *mon);
+u16 GetRarity(struct Pokemon *mon);
+u16 GetRarityOtIdPersonality(u32 otId, u32 personality);
 void RandomlyGivePartyPokerus(struct Pokemon *party);
 void PartySpreadPokerus(struct Pokemon *party);
 

@@ -4,38 +4,42 @@
 #define NUM_TRAINER_EYE_TRAINERS 56
 #define TRAINER_REMATCH_STEPS 255
 
-// IV + LEVEL + SPECIES
+// IV + LEVEL + SPECIES + RARITY
 struct TrainerMonNoItemDefaultMoves
 {
-    u16 iv;
+    u8 iv;
     u8 level;
     u16 species;
+	u8 rarity;
 };
 
-// IV + LEVEL + SPECIES + MOVES
+// IV + LEVEL + SPECIES + MOVES + RARITY
 struct TrainerMonNoItemCustomMoves
 {
-    u16 iv;
+    u8 iv;
     u8 level;
     u16 species;
+	u8 rarity;
     u16 moves[4];
 };
 
-// IV + LEVEL + SPECIES + ITEMS
+// IV + LEVEL + SPECIES + ITEMS + RARITY
 struct TrainerMonItemDefaultMoves
 {
-    u16 iv;
+    u8 iv;
     u8 level;
     u16 species;
+	u8 rarity;
     u16 heldItem;
 };
 
-// IV + LEVEL + SPECIES + ITEMS + MOVES
+// IV + LEVEL + SPECIES + ITEMS + MOVES + RARITY
 struct TrainerMonItemCustomMoves
 {
-    u16 iv;
+    u8 iv;
     u8 level;
     u16 species;
+	u8 rarity;
     u16 heldItem;
     u16 moves[4];
 };

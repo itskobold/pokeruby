@@ -1107,7 +1107,7 @@ static void sub_8047EC0(void)
             gLinkType = 0x1122;
             OpenLink();
             for (i = 0; i < PARTY_SIZE; i ++)
-                CreateMon(&gEnemyParty[i], 0, 0, 0x20, FALSE, 0, FALSE, 0);
+                CreateMon(&gEnemyParty[i], 0, 0, 0x20, FALSE, 0, FALSE, 0, 0, 0);
             gMain.state ++;
             gUnknown_03004824->unk_00b4 = 0;
             CreateTask(sub_8083C50, 1);
@@ -5048,7 +5048,7 @@ static void _CreateInGameTradePokemon(u8 whichPlayerMon, u8 whichInGameTrade)
     u8 isMail;
     struct Pokemon *pokemon = &gEnemyParty[0];
 
-    CreateMon(pokemon, inGameTrade->species, level, 32, TRUE, inGameTrade->personality, TRUE, inGameTrade->otId);
+    CreateMon(pokemon, inGameTrade->species, level, 32, TRUE, inGameTrade->personality, TRUE, inGameTrade->otId, 0, 0);
 
     SetMonData(pokemon, MON_DATA_HP_IV, &inGameTrade->ivs[0]);
     SetMonData(pokemon, MON_DATA_ATK_IV, &inGameTrade->ivs[1]);

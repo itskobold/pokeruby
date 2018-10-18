@@ -186,7 +186,7 @@ void PressurePPLose(u8 bank_atk, u8 bank_def, u16 move);
 void CancelMultiTurnMoves(u8 bank);
 void BattleScriptPush(const u8* BS_ptr);
 void BattleScriptPushCursor(void);
-void RecordAbilityBattle(u8 bank, u8 ability);
+void RecordAbilityBattle(u8 bank, u16 ability);
 void RecordItemBattle(u8 bank, u8 holdEffect);
 static bool8 IsTwoTurnsMove(u16 move);
 static void TrySetDestinyBondToHappen(void);
@@ -1804,11 +1804,11 @@ u8 TypeCalc(u16 move, u8 bank_atk, u8 bank_def)
     return flags;
 }
 
-u8 AI_TypeCalc(u16 move, u16 species, u8 ability)
+u8 AI_TypeCalc(u16 move, u8 type1, u8 type2, u16 ability)
 {
     int i = 0;
     u8 flags = 0;
-    u8 type1 = gBaseStats[species].type1, type2 = gBaseStats[species].type2, move_type; //HOENNISLES update this
+	u8 move_type;
 	u8 chance = Random() % 10;
 	
 
@@ -5283,7 +5283,7 @@ static void atk1D_jumpifstatus2(void)
 static void atk1E_jumpifability(void)
 {
     u8 bank;
-    u8 ability = T2_READ_8(gBattlescriptCurrInstr + 2);
+    u16 ability = T2_READ_8(gBattlescriptCurrInstr + 2);
     void* jump_loc = T2_READ_PTR(gBattlescriptCurrInstr + 3);
     if (T2_READ_8(gBattlescriptCurrInstr + 1) == 8)
     {
@@ -6478,7 +6478,7 @@ static void atk48_playstatchangeanimation(void)
                 continue;
             if (!(T2_READ_8(gBattlescriptCurrInstr + 3)))
             {
-                u8 ability;
+                u16 ability;
                 if (gSideTimers[GetBattlerPosition(gActiveBattler) & 1].mistTimer)
                     continue;
                 ability = gBattleMons[gActiveBattler].ability;
@@ -13726,7 +13726,7 @@ static void atkAE_healpartystatus(void)
             u8 abilityBit = GetMonData(&party[i], MON_DATA_ALT_ABILITY);
             if (species != 0 && species != SPECIES_EGG)
             {
-                u8 ability;
+                u16 ability;
                 if (gBattlerPartyIndexes[gBankAttacker] == i)
                     ability = gBattleMons[gBankAttacker].ability;
                 else if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE && gBattlerPartyIndexes[gActiveBattler] == i && !(gAbsentBattlerFlags & gBitTable[gActiveBattler]))
@@ -15523,7 +15523,7 @@ static void atkE5_pickup(void)
     {
         u16 species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES2);
         u16 held_item = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
-        u8 ability;
+        u16 ability;
         if (GetMonData(&gPlayerParty[i], MON_DATA_ALT_ABILITY))
             ability = gBaseStats[species].ability2;
         else

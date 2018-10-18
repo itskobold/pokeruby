@@ -553,6 +553,9 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
     case MON_DATA_FATEFUL_ENCOUNTER:
         retVal = substruct3->fatefulEncounter;
         break;
+	case MON_DATA_RARITY:
+        retVal = substruct3->rarity;
+        break;
     case MON_DATA_SPECIES2:
         retVal = substruct0->species;
         if (substruct0->species && (substruct3->isEgg || boxMon->isBadEgg))
@@ -922,6 +925,9 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const u8 *data)
     case MON_DATA_FATEFUL_ENCOUNTER:
         SET8(substruct3->fatefulEncounter);
         break;
+	case MON_DATA_RARITY:
+        SET8(substruct3->rarity);
+        break;
     case MON_DATA_IVS:
     {
         u32 ivs = data[0] | (data[1] << 8) | (data[2] << 16) | (data[3] << 24);
@@ -1077,7 +1083,9 @@ void CreateSecretBaseEnemyParty(struct SecretBaseRecord *secretBaseRecord)
                 1,
                 eSecretBaseRecord->partyPersonality[i],
                 2,
-                0);
+                0,
+				0,
+				0);
 
             // these two SetMonData calls require the (u8 *) cast since SetMonData is declared in this function.
             SetMonData(&gEnemyParty[i], MON_DATA_HELD_ITEM, (u8 *)&eSecretBaseRecord->partyHeldItems[i]);

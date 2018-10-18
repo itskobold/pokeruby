@@ -206,9 +206,14 @@ gSpriteAnimTable_81E7C64:: @ 81E7C64
 
 @ 81EA5B4
 	.include "data/graphics/pokemon/palette_table.inc"
-
-@ 81EB374
-	.include "data/graphics/pokemon/shiny_palette_table.inc"
+	.include "data/graphics/pokemon/common_palette_table.inc"
+	.include "data/graphics/pokemon/uncommon_palette_table.inc"
+	.include "data/graphics/pokemon/lesser_palette_table.inc"
+	.include "data/graphics/pokemon/rare_palette_table.inc"
+	.include "data/graphics/pokemon/elite_palette_table.inc"
+	.include "data/graphics/pokemon/exotic_palette_table.inc"
+	.include "data/graphics/pokemon/shiny_palette_table.inc" @rename this mythical eventually
+	.include "data/graphics/pokemon/gold_palette.inc"
 
 	.align 2
 gSpriteAnim_81EC134:: @ 81EC134

@@ -45,7 +45,7 @@
 
 // physical/special types
 #define TYPE_IS_PHYSICAL(type) ((type) < TYPE_STEEL)
-#define TYPE_IS_SPECIAL(type) ((type) > TYPE_FIRE)
+#define TYPE_IS_SPECIAL(type) ((type) > TYPE_GHOST)
 
 enum
 {

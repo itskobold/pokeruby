@@ -1927,23 +1927,16 @@ void sub_8141808(u8 taskId)
 
 void sub_8141828(u8 battler, struct Pokemon *mon)
 {
-    int isShiny;
-    u32 otId, personality;
-    u32 shinyValue;
+	u32 otId, personality;
     u8 taskId1, taskId2;
 
-    isShiny = 0;
     ewram17810[battler].unk0_7 = 1;
     otId = GetMonData(mon, MON_DATA_OT_ID);
     personality = GetMonData(mon, MON_DATA_PERSONALITY);
 
     if (IsAnimBankSpriteVisible(battler))
     {
-        shinyValue = HIHALF(otId) ^ LOHALF(otId) ^ HIHALF(personality) ^ LOHALF(personality);
-        if (shinyValue < 8)
-            isShiny = TRUE;
-
-        if (isShiny)
+        if (GetRarityOtIdPersonality(otId, personality) == RARITY_GOLD || GetMonData(mon, MON_DATA_RARITY) == COSMETIC_RARITY_GOLD)
         {
             if (GetSpriteTileStartByTag(0x27F9) == 0xFFFF)
             {

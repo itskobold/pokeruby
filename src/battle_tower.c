@@ -985,7 +985,7 @@ void FillBattleTowerTrainerParty(void)
     {
         // Load E-Reader trainer's party.
         for (partyIndex = 0; partyIndex < 3; partyIndex++)
-            sub_803ADE8(&gEnemyParty[partyIndex], &gSaveBlock2.battleTower.ereaderTrainer.party[partyIndex]);
+            sub_803ADE8(&gEnemyParty[partyIndex], &gSaveBlock2.battleTower.ereaderTrainer.party[partyIndex], 0);
         return;
     }
     else
@@ -995,7 +995,8 @@ void FillBattleTowerTrainerParty(void)
         {
             sub_803ADE8(
                 &gEnemyParty[partyIndex],
-                &gSaveBlock2.battleTower.records[gSaveBlock2.battleTower.battleTowerTrainerId - BATTLE_TOWER_RECORD_MIXING_TRAINER_BASE_ID].party[partyIndex]);
+                &gSaveBlock2.battleTower.records[gSaveBlock2.battleTower.battleTowerTrainerId - BATTLE_TOWER_RECORD_MIXING_TRAINER_BASE_ID].party[partyIndex],
+				0);
         }
         return;
     }
@@ -1072,7 +1073,8 @@ void FillBattleTowerTrainerParty(void)
                 battleTowerMons[battleMonIndex].species,
                 level,
                 fixedIV,
-                battleTowerMons[battleMonIndex].evSpread);
+                battleTowerMons[battleMonIndex].evSpread,
+				0);
 
             // Give the chosen pokemon its specified moves.
             for (i = 0; i < 4; i++)
@@ -1330,7 +1332,7 @@ void StartSpecialBattle(void)
         ZeroEnemyPartyMons();
 
         for (i = 0; i < 3; i++)
-            sub_803ADE8(&gEnemyParty[i], &gSaveBlock2.battleTower.ereaderTrainer.party[i]);
+            sub_803ADE8(&gEnemyParty[i], &gSaveBlock2.battleTower.ereaderTrainer.party[i], 0);
 
         gBattleTypeFlags = (BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_TRAINER);
         gTrainerBattleOpponent = 0;
