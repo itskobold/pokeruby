@@ -247,23 +247,20 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
                     case 0:
                     case 1:
                         evCount = GetMonEVCount(pkmn);
-                        if (evCount >= 510)
+                        if (evCount >= MAX_TOTAL_EVS)
                             return TRUE;
                         data = GetMonData(pkmn, sGetMonDataEVConstants[sp28], NULL);
-                        if (data < 100)
-                        {
-                            if (data + itemEffect[sp24] > 100)
-                                r4 = 100 - (data + itemEffect[sp24]) + itemEffect[sp24];
-                            else
-                                r4 = itemEffect[sp24];
-                            if (evCount + r4 > 510)
-                                r4 += 510 - (evCount + r4);
-                            data += r4;
-                            SetMonData(pkmn, sGetMonDataEVConstants[sp28], &data);
-                            CalculateMonStats(pkmn);
-                            sp24++;
-                            retVal = FALSE;
-                        }
+						if (data + itemEffect[sp24] > 252)
+							r4 = 252 - (data + itemEffect[sp24]) + itemEffect[sp24];
+						else
+							r4 = itemEffect[sp24];
+						if (evCount + r4 > MAX_TOTAL_EVS)
+							r4 += MAX_TOTAL_EVS - (evCount + r4);
+						data += r4;
+						SetMonData(pkmn, sGetMonDataEVConstants[sp28], &data);
+						CalculateMonStats(pkmn);
+						sp24++;
+						retVal = FALSE;
                         break;
                     case 2:
                         // revive?
@@ -431,23 +428,20 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
                     case 2:
                     case 3:
                         evCount = GetMonEVCount(pkmn);
-                        if (evCount >= 510)
+                        if (evCount >= MAX_TOTAL_EVS)
                             return TRUE;
                         data = GetMonData(pkmn, sGetMonDataEVConstants[sp28 + 2], NULL);
-                        if (data < 100)
-                        {
-                            if (data + itemEffect[sp24] > 100)
-                                r4 = 100 - (data + itemEffect[sp24]) + itemEffect[sp24];
-                            else
-                                r4 = itemEffect[sp24];
-                            if (evCount + r4 > 510)
-                                r4 += 510 - (evCount + r4);
-                            data += r4;
-                            SetMonData(pkmn, sGetMonDataEVConstants[sp28 + 2], &data);
-                            CalculateMonStats(pkmn);
-                            retVal = FALSE;
-                            sp24++;
-                        }
+						if (data + itemEffect[sp24] > 252)
+							r4 = 252 - (data + itemEffect[sp24]) + itemEffect[sp24];
+						else
+							r4 = itemEffect[sp24];
+						if (evCount + r4 > MAX_TOTAL_EVS)
+							r4 += MAX_TOTAL_EVS - (evCount + r4);
+						data += r4;
+						SetMonData(pkmn, sGetMonDataEVConstants[sp28 + 2], &data);
+						CalculateMonStats(pkmn);
+						retVal = FALSE;
+						sp24++;
                         break;
                     case 4:
                         data = (GetMonData(pkmn, MON_DATA_PP_BONUSES, NULL) & gPPUpReadMasks[moveIndex]) >> (moveIndex * 2);
