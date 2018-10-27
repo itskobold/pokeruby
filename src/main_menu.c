@@ -9,6 +9,7 @@
 #include "menu.h"
 #include "mystery_event_menu.h"
 #include "naming_screen.h"
+#include "new_game.h"
 #include "option_menu.h"
 #include "palette.h"
 #include "pokeball.h"
@@ -610,6 +611,8 @@ void Task_MainMenuPressedA(u8 taskId)
     default:
         gPlttBufferUnfaded[0] = 0;
         gPlttBufferFaded[0] = 0;
+		SetDefaultData();					//Story mode, Nuzlocke mode off, map zoom etc
+		SetDefaultOptions();				//also called in ClearSav2 but it doesn't work there for some reason?? Appears to be a bug even in vanilla
         gTasks[taskId].func = Task_NewGameSpeech1;
         break;
     case CONTINUE:

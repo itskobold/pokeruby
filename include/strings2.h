@@ -13,10 +13,11 @@ extern const u8 gMultiText_Saving[];
 extern const u8 gMultiText_LinkError[];
 
 // option_menu
-extern const u8 gSystemText_OptionMenu[];
-extern const u8 gSystemText_TextSpeed[];
 extern const u8 gSystemText_BattleScene[];
 extern const u8 gSystemText_BattleStyle[];
+extern const u8 gSystemText_LowHPSound[];
+extern const u8 gSystemText_QuickFlee[];
+extern const u8 gSystemText_KeypadSound[];
 extern const u8 gSystemText_Sound[];
 extern const u8 gSystemText_BikeMode[];
 extern const u8 gSystemText_FullParty[];
@@ -26,9 +27,8 @@ extern const u8 gSystemText_Frame[];
 extern const u8 gSystemText_DowngradeToHardlockeMode[];
 extern const u8 gSystemText_DowngradeToNuzlockeMode[];
 extern const u8 gSystemText_DisableToNuzlockeMode[];
-extern const u8 gSystemText_ResetToDefault[];
+extern const u8 gSystemText_ResetDefaults[];
 extern const u8 gSystemText_Cancel[];
-extern const u8 gSystemText_ButtonMode[]; //unused
 extern const u8 gSystemText_Slow[];
 extern const u8 gSystemText_Mid[];
 extern const u8 gSystemText_Fast[];
@@ -59,9 +59,30 @@ extern const u8 gSystemText_Aqua[];
 extern const u8 gSystemText_Galactic[];
 extern const u8 gSystemText_Type[];
 extern const u8 gSystemText_Terminator[];
-extern const u8 gSystemText_Normal[];
-extern const u8 gSystemText_LR[];
-extern const u8 gSystemText_LA[];
+extern const u8 gSystemText_BikeModeDescription[];
+extern const u8 gSystemText_FullPartyDescription[];
+extern const u8 gSystemText_BattleStyleDescription[];
+extern const u8 gSystemText_BattleStyleNuzlockeDescription[];
+extern const u8 gSystemText_BattleSceneDescription[];
+extern const u8 gSystemText_QuickFleeDescription[];
+extern const u8 gSystemText_FontDescription[];
+extern const u8 gSystemText_LowHPSoundDescription[];
+extern const u8 gSystemText_KeypadSoundDescription[];
+extern const u8 gSystemText_KeyboardDescription[];
+extern const u8 gSystemText_FrameDescription[];
+extern const u8 gSystemText_SoundOutputDescription[];
+extern const u8 gSystemText_ResetDefaultsDescription[];
+extern const u8 gSystemText_BattleStyleNuzlockeDescription[];
+extern const u8 gSystemText_DowngradeToHardlockeMode[];
+extern const u8 gSystemText_DowngradeToNuzlockeMode[];
+extern const u8 gSystemText_DisableNuzlockeMode[];
+extern const u8 gSystemText_FreezeNuzlockeMode[];
+extern const u8 gSystemText_DisableNuzlockeModeDescription[];
+extern const u8 gSystemText_DowngradeToHardlockeModeDescription[];
+extern const u8 gSystemText_DowngradeToNuzlockeModeDescription[];
+extern const u8 gSystemText_FreezeNuzlockeModeDescription[];
+extern const u8 gSystemText_CancelDescription[];
+extern const u8 gSystemText_AreYouSure[];
 
 //wait menu
 extern const u8 WaitText_1Hour[];

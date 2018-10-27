@@ -222,16 +222,13 @@ void PrintTriangleCursorWithPalette(u8 left, u8 top, u8 paletteNum)
 
 u8 sub_80F9284(void)
 {
-    if (gSaveBlock2.optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
+    if (gMain.newKeys & L_BUTTON)
     {
-        if (gMain.newKeys & L_BUTTON)
-        {
-            return 1;
-        }
-        if (gMain.newKeys & R_BUTTON)
-        {
-            return 2;
-        }
+        return 1;
+    }
+    if (gMain.newKeys & R_BUTTON)
+    {
+        return 2;
     }
 
     return 0;
@@ -239,16 +236,13 @@ u8 sub_80F9284(void)
 
 u8 sub_80F92BC(void)
 {
-    if (gSaveBlock2.optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
+    if (gMain.newAndRepeatedKeys & L_BUTTON)
     {
-        if (gMain.newAndRepeatedKeys & L_BUTTON)
-        {
-            return 1;
-        }
-        if (gMain.newAndRepeatedKeys & R_BUTTON)
-        {
-            return 2;
-        }
+        return 1;
+    }
+    if (gMain.newAndRepeatedKeys & R_BUTTON)
+    {
+        return 2;
     }
 
     return 0;

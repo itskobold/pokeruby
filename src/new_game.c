@@ -81,27 +81,31 @@ void InitPlayerTrainerId(void)
     write_word_to_mem((Random() << 16) | Random(), gSaveBlock2.playerTrainerId);
 }
 
-// L=A isnt set here for some reason.
 void SetDefaultOptions(void)
 {
-    gSaveBlock2.optionsTextSpeed = OPTIONS_TEXT_SPEED_MID;
     gSaveBlock2.optionsWindowFrameType = 0;
-    gSaveBlock2.optionsSound = OPTIONS_SOUND_MONO;
-    gSaveBlock2.optionsBattleStyle = OPTIONS_BATTLE_STYLE_SHIFT;
+    gSaveBlock2.optionsSound = OPTIONS_SOUND_STEREO;
+	if (gSaveBlock2.nuzlockeMode == NUZLOCKE_MODE_OFF)
+		gSaveBlock2.optionsBattleStyle = OPTIONS_BATTLE_STYLE_SHIFT;
     gSaveBlock2.optionsBattleSceneOff = FALSE;
+	gSaveBlock2.optionsQuickFlee = OPTIONS_QUICK_FLEE_OFF;
+	gSaveBlock2.optionsLowHPSound = OPTIONS_LOW_HP_SOUND_ON;
+	gSaveBlock2.optionsKeypadSound = OPTIONS_KEYPAD_SOUND_ON;
 	gSaveBlock2.optionsBikeMode = OPTIONS_BIKE_MODE_HOLD_B;
 	gSaveBlock2.optionsFullParty = OPTIONS_FULL_PARTY_SWAP;
 	gSaveBlock2.optionsKeyboard = OPTIONS_KEYBOARD_QWERTY;
 	gSaveBlock2.optionsFont = OPTIONS_FONT_ROCKET;
-    gSaveBlock2.regionMapZoom = FALSE;
-	gSaveBlock2.waitStatus = WAIT_UNABLE;
-	gSaveBlock2.waitTime = 60;
 }
 
-void SetDefaultGameModeAndNuzlocke(void)
+void SetDefaultData(void)
 {
 	gSaveBlock2.nuzlockeMode = NUZLOCKE_MODE_OFF;			//defaults to standard, non-nuzlocke mode
+	gSaveBlock2.freezeNuzlocke = FALSE;
 	gSaveBlock2.gameMode = GAME_MODE_STORY;					//defaults to story mode
+	gSaveBlock2.regionMapZoom = FALSE;
+	gSaveBlock2.waitStatus = WAIT_UNABLE;
+	gSaveBlock2.waitTime = 60;
+	gSaveBlock2.registeredMenuItem = 0;
 }
 
 void SetDefaultGameTime(void)
@@ -246,10 +250,8 @@ void NewGameInitData(void)
     InitDewfordTrend();
     ResetFanClub();
     ResetLotteryCorner();
-	SetDefaultGameModeAndNuzlocke();	//Story mode, Nuzlocke mode off
 	SetDefaultGameTime(); 				//Second/minute 0, 9AM, Tuesday, Week 1, Spring, random year between 0 and 7
 	GiveStarterItems(); 				//this will probably be moved somewhere else eventually, but it's here for now
-	SetDefaultOptions();				//also called in ClearSav2 but it doesn't work there for some reason?? Appears to be a bug even in vanilla
     WarpToTruck();
     ScriptContext2_RunNewScript(gUnknown_0819FA81);
 }

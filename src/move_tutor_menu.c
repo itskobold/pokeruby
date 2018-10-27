@@ -666,8 +666,7 @@ static u8 ChangeToContestMoveInfoWindow(void)
 {
     u32 result = (gMain.newKeys & DPAD_LEFT) || (gMain.newKeys & DPAD_RIGHT);
 
-    if (gSaveBlock2.optionsButtonMode == OPTIONS_BUTTON_MODE_LR
-     && ((gMain.newKeys & L_BUTTON) || (gMain.newKeys & R_BUTTON)))
+    if ((gMain.newKeys & L_BUTTON) || (gMain.newKeys & R_BUTTON))
         result++;
 
     if (result != 0)
@@ -712,8 +711,7 @@ static u8 ChangeToBattleMoveInfoWindow(void)
 {
     u32 result = (gMain.newKeys & DPAD_LEFT) || (gMain.newKeys & DPAD_RIGHT);
 
-    if (gSaveBlock2.optionsButtonMode == OPTIONS_BUTTON_MODE_LR
-     && ((gMain.newKeys & L_BUTTON) || (gMain.newKeys & R_BUTTON)))
+    if ((gMain.newKeys & L_BUTTON) || (gMain.newKeys & R_BUTTON))
         result++;
 
     if (result != 0)

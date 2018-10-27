@@ -501,7 +501,10 @@ void PlayBGM(u16 songNum)
 
 void PlaySE(u16 songNum)
 {
-    m4aSongNumStart(songNum);
+	if (songNum == SE_SELECT && gSaveBlock2.optionsKeypadSound == OPTIONS_KEYPAD_SOUND_OFF)
+		return;
+	else
+		m4aSongNumStart(songNum);
 }
 
 void PlaySE12WithPanning(u16 songNum, s8 pan)

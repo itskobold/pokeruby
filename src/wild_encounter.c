@@ -2116,18 +2116,18 @@ const struct WildPokemonInfo Route116_LandMonsInfo = {20, Route116_LandMons};
 
 const struct WildPokemon Route117_LandMons [] =
 {
-    {1, 100, SPECIES_ONIX},
-    {1, 100, SPECIES_ONIX},
-    {1, 100, SPECIES_STEELIX},
-    {1, 100, SPECIES_STEELIX},
-    {1, 100, SPECIES_STEELIX},
-    {1, 100, SPECIES_STEELIX},
-    {1, 100, SPECIES_STEELIX},
-    {1, 100, SPECIES_STEELIX},
-    {1, 100, SPECIES_STEELIX},
-    {1, 100, SPECIES_STEELIX},
-    {1, 100, SPECIES_STEELIX},
-    {1, 100, SPECIES_STEELIX},
+    {1, 50, SPECIES_CYNDAQUIL},
+    {1, 50, SPECIES_CYNDAQUIL},
+    {1, 50, SPECIES_QUILAVA},
+    {1, 50, SPECIES_QUILAVA},
+    {1, 50, SPECIES_QUILAVA},
+    {1, 50, SPECIES_TYPHLOSION},
+    {1, 50, SPECIES_TYPHLOSION},
+    {1, 50, SPECIES_TYPHLOSION},
+    {1, 50, SPECIES_TYPHLOSION},
+    {1, 50, SPECIES_TYPHLOSION},
+    {1, 50, SPECIES_TYPHLOSION},
+    {1, 50, SPECIES_TYPHLOSION},
 };
 
 /*const struct WildPokemon Route117_LandMons [] =

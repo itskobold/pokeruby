@@ -2207,13 +2207,10 @@ u8 sub_809C464(void)
         }
         if (gMain.newKeys & B_BUTTON)
             return 16;
-        if (gSaveBlock2.optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
-        {
-            if (gMain.heldKeys & L_BUTTON)
-                return 10;
-            if (gMain.heldKeys & R_BUTTON)
-                return 9;
-        }
+		if (gMain.heldKeys & L_BUTTON)
+			return 10;
+		if (gMain.heldKeys & R_BUTTON)
+			return 9;
         if (gMain.newKeys & SELECT_BUTTON)
         {
             sub_809CD88();
@@ -2884,13 +2881,10 @@ u8 sub_809C85C(void)
                 return 10;
             if (gMain.heldKeys & DPAD_RIGHT)
                 return 9;
-            if (gSaveBlock2.optionsButtonMode == OPTIONS_BUTTON_MODE_LR)
-            {
-                if (gMain.heldKeys & L_BUTTON)
-                    return 10;
-                if (gMain.heldKeys & R_BUTTON)
-                    return 9;
-            }
+			if (gMain.heldKeys & L_BUTTON)
+				return 10;
+			if (gMain.heldKeys & R_BUTTON)
+				return 9;
 
             if (gMain.newKeys & A_BUTTON)
             {

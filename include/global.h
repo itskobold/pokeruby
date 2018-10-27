@@ -128,20 +128,6 @@ enum
     FEMALE
 };
 
-enum //REMOVE THIS!
-{
-    OPTIONS_BUTTON_MODE_NORMAL,
-    OPTIONS_BUTTON_MODE_LR,
-    OPTIONS_BUTTON_MODE_L_EQUALS_A
-};
-
-enum //REMOVE THIS!
-{
-    OPTIONS_TEXT_SPEED_SLOW,
-    OPTIONS_TEXT_SPEED_MID,
-    OPTIONS_TEXT_SPEED_FAST
-};
-
 enum
 {
     OPTIONS_SOUND_MONO,
@@ -152,6 +138,24 @@ enum
 {
     OPTIONS_BATTLE_STYLE_SHIFT,
     OPTIONS_BATTLE_STYLE_SET
+};
+
+enum
+{
+	OPTIONS_QUICK_FLEE_ON,
+	OPTIONS_QUICK_FLEE_OFF
+};
+
+enum
+{
+	OPTIONS_KEYPAD_SOUND_ON,
+	OPTIONS_KEYPAD_SOUND_OFF
+};
+
+enum
+{
+	OPTIONS_LOW_HP_SOUND_ON,
+	OPTIONS_LOW_HP_SOUND_OFF
 };
 
 enum
@@ -898,7 +902,9 @@ struct SaveBlock2 /* 0x02024EA4 */
     /*0x11*/ u8 playTimeSeconds;
     /*0x12*/ u8 playTimeVBlanks;
     /*0x13*/ u8 optionsButtonMode;
-    /*0x14*/ u16 optionsTextSpeed:3;       // OPTIONS_TEXT_SPEED_[SLOW/MID/FAST]
+    /*0x14*/ u16 optionsQuickFlee:1;       // gives an option to fight/run before battle starts
+			 u16 optionsLowHPSound:1;	   // stops beeping sound on low HP
+			 u16 optionsKeypadSound:1;     // stops keypad beeping sound
              u16 optionsWindowFrameType:5; // Specifies one of the 20 decorative borders for text boxes
              u16 optionsSound:1;           // OPTIONS_SOUND_[MONO/STEREO]
              u16 optionsBattleStyle:1;     // OPTIONS_BATTLE_STYLE_[SHIFT/SET]
@@ -913,7 +919,7 @@ struct SaveBlock2 /* 0x02024EA4 */
 	/*0x92*/ u8 optionsFullParty:1;		   // 0 = SWAP, 1 = SEND TO PC
 	/*0x92*/ u8 optionsFont:2;			   // 0 = ROCKET, 1 = MAGMA, 2 = AQUA, 3 = GALACTIC
 	/*0x92*/ u8 optionsKeyboard:4;		   // 0 = QWERTY, 1 = QWERTY+, 2 = ABC, 3 = ABC+, 4 = AZERTY, 5 = AZERTY+, 6 = DVORAK, 7 = DVORAK+, 8 = COLEMAK, 9 = COLEMAK+, 10 = VANILLA
-	/*0x93*/ u8 filler1b:1;
+	/*0x93*/ u8 freezeNuzlocke:1;
 	/*0x93*/ u8 waitStatus:1;			   // 0 = WAIT_UNABLE, 1 = WAIT_ABLE
 	/*0x93*/ u8 waitTime:6;
 	/*0x94*/ u8 timeYear:3;			       // 0-7. Randomised at the start of the game. Different world events happen depending on the current year. Rolls over to 0

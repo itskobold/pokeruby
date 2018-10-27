@@ -19,12 +19,6 @@ gMultiText_Saving:: @ 842C328
 gMultiText_LinkError:: @ 842C34C
 	.string "{HIGHLIGHT TRANSPARENT}{COLOR WHITE2}Link error...\nCheck your Game Link cable connection,\nand turn the power off and on.$"
 
-gSystemText_OptionMenu:: @ 842C3A6
-	.string "{PALETTE 9}GAME OPTIONS$"
-
-gSystemText_TextSpeed:: @ 842C3B0
-	.string "{PALETTE 9}TEXT SPEED$"
-
 gSystemText_BattleScene:: @ 842C3BE
 	.string "{PALETTE 9}BATTLE SCENE$"
 
@@ -32,13 +26,22 @@ gSystemText_BattleStyle:: @ 842C3CE
 	.string "{PALETTE 9}BATTLE STYLE$"
 
 gSystemText_Sound:: @ 842C3DE
-	.string "{PALETTE 9}SOUND$"
+	.string "{PALETTE 9}SOUND OUTPUT$"
 	
 gSystemText_BikeMode::
 	.string "{PALETTE 9}BIKE MODE$"
 	
 gSystemText_FullParty::
 	.string "{PALETTE 9}FULL PARTY$"
+
+gSystemText_LowHPSound::
+	.string "{PALETTE 9}LOW HP SOUND$"
+	
+gSystemText_QuickFlee::
+	.string "{PALETTE 9}QUICK FLEE$"
+	
+gSystemText_KeypadSound::
+	.string "{PALETTE 9}KEYPAD SOUND$"
 	
 gSystemText_Keyboard::
 	.string "{PALETTE 9}KEYBOARD$"
@@ -47,34 +50,25 @@ gSystemText_Font::
 	.string "{PALETTE 9}FONT$"
 	
 gSystemText_Frame:: @ 842C3E7
-	.string "{PALETTE 9}FRAME$"
+	.string "{PALETTE 9}FRAME STYLE$"
 	
 gSystemText_DowngradeToHardlockeMode::
 	.string "{PALETTE 9}DOWNGRADE TO HARDLOCKE MODE$"
 	
 gSystemText_DowngradeToNuzlockeMode::
-	.string "{PALETTE 9}DOWNGRADE TO HARDLOCKE MODE$"
+	.string "{PALETTE 9}DOWNGRADE TO NUZLOCKE MODE$"
 	
 gSystemText_DisableNuzlockeMode::
 	.string "{PALETTE 9}DISABLE NUZLOCKE MODE$"
 	
-gSystemText_ResetToDefault::
-	.string "{PALETTE 9}RESET TO DEFAULT$"
+gSystemText_FreezeNuzlockeMode::
+	.string "{PALETTE 9}FREEZE NUZLOCKE MODE$"
+	
+gSystemText_ResetDefaults::
+	.string "{PALETTE 9}RESET DEFAULT OPTIONS$"
 
 gSystemText_Cancel:: @ 842C3F0
-	.string "{PALETTE 9}EXIT$"
-
-gSystemText_ButtonMode:: @ 842C3FA @@UNUSED
-	.string "{PALETTE 9}BUTTON MODE$"
-
-gSystemText_Slow:: @ 842C409
-	.string "{PALETTE 15}SLOW$"
-
-gSystemText_Mid:: @ 842C411
-	.string "{PALETTE 15}MID$"
-
-gSystemText_Fast:: @ 842C418
-	.string "{PALETTE 15}FAST$"
+	.string "{PALETTE 9}CLOSE MENU$"
 
 gSystemText_On:: @ 842C420
 	.string "{PALETTE 15}ON$"
@@ -83,7 +77,7 @@ gSystemText_Off:: @ 842C426
 	.string "{PALETTE 15}OFF$"
 
 gSystemText_Shift:: @ 842C42D
-	.string "{PALETTE 15}SHIFT$"
+	.string "{PALETTE 15}SWITCH$"
 
 gSystemText_Set:: @ 842C436
 	.string "{PALETTE 15}SET$"
@@ -107,64 +101,112 @@ gSystemText_SendToPC::
 	.string "{PALETTE 15}SEND TO PC$"
 	
 gSystemText_QWERTY::
-	.string "{PALETTE 15}QWERTY$"
+	.string "{PALETTE 8}{LEFT_ARROW} QWERTY {RIGHT_ARROW}$"
 	
 gSystemText_QWERTYPlus::
-	.string "{PALETTE 15}QWERTY+$"
+	.string "{PALETTE 8}{LEFT_ARROW} QWERTY+ {RIGHT_ARROW}$"
 	
 gSystemText_ABC::
-	.string "{PALETTE 15}ABC$"
+	.string "{PALETTE 8}{LEFT_ARROW} ABC {RIGHT_ARROW}$"
 	
 gSystemText_ABCPlus::
-	.string "{PALETTE 15}ABC+$"
+	.string "{PALETTE 8}{LEFT_ARROW} ABC+ {RIGHT_ARROW}$"
 	
 gSystemText_AZERTY::
-	.string "{PALETTE 15}AZERTY$"
+	.string "{PALETTE 8}{LEFT_ARROW} AZERTY {RIGHT_ARROW}$"
 	
 gSystemText_AZERTYPlus::
-	.string "{PALETTE 15}AZERTY+$"
+	.string "{PALETTE 8}{LEFT_ARROW} AZERTY+ {RIGHT_ARROW}$"
 	
 gSystemText_Dvorak::
-	.string "{PALETTE 15}DVORAK$"
+	.string "{PALETTE 8}{LEFT_ARROW} DVORAK {RIGHT_ARROW}$"
 	
 gSystemText_DvorakPlus::
-	.string "{PALETTE 15}DVORAK+$"
+	.string "{PALETTE 8}{LEFT_ARROW} DVORAK+ {RIGHT_ARROW}$"
 	
 gSystemText_Colemak::
-	.string "{PALETTE 15}COLEMAK$"
+	.string "{PALETTE 8}{LEFT_ARROW} COLEMAK {RIGHT_ARROW}$"
 	
 gSystemText_ColemakPlus::
-	.string "{PALETTE 15}COLEMAK+$"
+	.string "{PALETTE 8}{LEFT_ARROW} COLEMAK+ {RIGHT_ARROW}$"
 	
 gSystemText_Vanilla::
-	.string "{PALETTE 15}VANILLA$"
+	.string "{PALETTE 8}{LEFT_ARROW} VANILLA {RIGHT_ARROW}$"
 	
 gSystemText_Rocket::
-	.string "{PALETTE 15}ROCKET$"
+	.string "{PALETTE 8}{LEFT_ARROW} ROCKET {RIGHT_ARROW}$"
 	
 gSystemText_Magma::
-	.string "{PALETTE 15}MAGMA$"
+	.string "{PALETTE 8}{LEFT_ARROW} MAGMA {RIGHT_ARROW}$"
 	
 gSystemText_Aqua::
-	.string "{PALETTE 15}AQUA$"
+	.string "{PALETTE 8}{LEFT_ARROW} AQUA {RIGHT_ARROW}$"
 	
 gSystemText_Galactic::
-	.string "{PALETTE 15}GALACTIC$"
+	.string "{PALETTE 8}{LEFT_ARROW} GALACTIC {RIGHT_ARROW}$"
 
 gSystemText_Type:: @ 842C44F
-	.string "{PALETTE 15}STYLE: $"
+	.string "{PALETTE 15}STYLE$"
 
 gSystemText_Terminator:: @ 842C457
 	.string "{PALETTE 8}$"
 
-gSystemText_Normal:: @ 842C45B
-	.string "{PALETTE 15}NORMAL$"
+gSystemText_BikeModeDescription::
+	.string "Controls how the bike is\nused in the overworld.$"
 
-gSystemText_LR:: @ 842C465
-	.string "{PALETTE 15}LR$"
+gSystemText_FullPartyDescription::
+	.string "Allows a party member to be sent to\nthe PC in place of a caught POKéMON.$"
+	
+gSystemText_BattleStyleDescription::
+	.string "Allows POKéMON to be recalled\nbefore the next foe is sent out.$"
+	
+gSystemText_BattleStyleNuzlockeDescription::
+	.string "This option cannot be changed\nin a Nuzlocke game.$"
+	
+gSystemText_BattleSceneDescription::
+	.string "Enable or disable graphics and\nsound effects in battle.$"
 
-gSystemText_LA:: @ 842C46B
-	.string "{PALETTE 15}L=A$"
+gSystemText_QuickFleeDescription::
+	.string "Allows fleeing from wild battles\nbefore a POKéMON is sent out.$"
+	
+gSystemText_FontDescription::
+	.string "Changes the text style.$"
+	
+gSystemText_LowHPSoundDescription::
+	.string "Toggles the beeping sound when a\nPOKéMON is at low HP in battle.$"
+	
+gSystemText_KeypadSoundDescription::
+	.string "Enables or disables many\nsound effects in menus.$"
+	
+gSystemText_SoundOutputDescription::
+	.string "Controls how audio is\noutput from the game.$"
+	
+gSystemText_KeyboardDescription::
+	.string "Changes the keyboard layout\non the naming screen.$"
+	
+gSystemText_FrameDescription::
+	.string "Changes the border of many\ntext boxes and menus.$"
+	
+gSystemText_ResetDefaultsDescription::
+	.string "Returns options to the\ndefault settings.$"
+	
+gSystemText_DisableNuzlockeModeDescription::
+	.string "Turn Nuzlocke mode off entirely,\nrestoring normal gameplay.$"
+	
+gSystemText_DowngradeToHardlockeModeDescription::
+	.string "Lowers Nuzlocke difficulty from\nDeadlocke to Hardlocke mode.$"
+	
+gSystemText_DowngradeToNuzlockeModeDescription::
+	.string "Lowers Nuzlocke difficulty from\nHardlocke to Nuzlocke mode.$"
+	
+gSystemText_FreezeNuzlockeModeDescription::
+	.string "Removes the ability to lower\nNuzlocke mode difficulty.$"
+	
+gSystemText_CancelDescription::
+	.string "Save settings and\nreturn to the game.$"
+	
+gSystemText_AreYouSure::
+	.string "Are you sure?\nThis action cannot be undone."
 	
 SystemText_BlueText::
 	.string "{COLOR BLUE}$"

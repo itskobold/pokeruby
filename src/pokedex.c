@@ -3055,7 +3055,7 @@ static void Task_PageScreenProcessInput(u8 taskId)
         return;
     }
     if (((gMain.newKeys & DPAD_LEFT)
-     || ((gMain.newKeys & L_BUTTON) && gSaveBlock2.optionsButtonMode == OPTIONS_BUTTON_MODE_LR))
+     || (gMain.newKeys & L_BUTTON))
      && gPokedexView->selectedScreen > 0)
     {
         gPokedexView->selectedScreen--;
@@ -3064,7 +3064,7 @@ static void Task_PageScreenProcessInput(u8 taskId)
         return;
     }
     if (((gMain.newKeys & DPAD_RIGHT)
-     || ((gMain.newKeys & R_BUTTON) && gSaveBlock2.optionsButtonMode == OPTIONS_BUTTON_MODE_LR))
+     || (gMain.newKeys & R_BUTTON))
      && gPokedexView->selectedScreen < 3)
     {
         gPokedexView->selectedScreen++;
@@ -3267,7 +3267,7 @@ static void Task_CryScreenProcessInput(u8 taskId)
             return;
         }
         if ((gMain.newKeys & DPAD_LEFT)
-         || ((gMain.newKeys & L_BUTTON) && gSaveBlock2.optionsButtonMode == OPTIONS_BUTTON_MODE_LR))
+         || (gMain.newKeys & L_BUTTON))
         {
             BeginNormalPaletteFade(0xFFFFFFEB, 0, 0, 16, RGB(0, 0, 0));
             m4aMPlayContinue(&gMPlay_BGM);
@@ -3277,7 +3277,7 @@ static void Task_CryScreenProcessInput(u8 taskId)
             return;
         }
         if ((gMain.newKeys & DPAD_RIGHT)
-         || ((gMain.newKeys & R_BUTTON) && gSaveBlock2.optionsButtonMode == OPTIONS_BUTTON_MODE_LR))
+         || (gMain.newKeys & R_BUTTON))
         {
             if (!gUnknown_0202FFBC->owned)
             {
@@ -3428,7 +3428,7 @@ static void Task_SizeScreenProcessInput(u8 taskId)
         PlaySE(SE_PC_OFF);
     }
     else if ((gMain.newKeys & DPAD_LEFT)
-     || ((gMain.newKeys & L_BUTTON) && gSaveBlock2.optionsButtonMode == OPTIONS_BUTTON_MODE_LR))
+     || (gMain.newKeys & L_BUTTON))
     {
         BeginNormalPaletteFade(0xFFFFFFEB, 0, 0, 16, RGB(0, 0, 0));
         gPokedexView->unk64F = 2;

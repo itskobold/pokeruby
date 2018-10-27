@@ -383,6 +383,7 @@ gBattleMonForms = .; /* 2024E84 */
 . = ALIGN(4); src/berry_tag_screen.o(ewram_data);
 . = ALIGN(4); src/mystery_event_menu.o(ewram_data);
 . = ALIGN(4); src/save_failed_screen.o(ewram_data);
+. = ALIGN(4); src/option_menu.o(ewram_data);
 . = ALIGN(4); src/pokeblock_feed.o(ewram_data);
 . = ALIGN(4); src/debug/nakamura_debug_menu.o(ewram_data);
 . = ALIGN(4); src/intro_credits_graphics.o(ewram_data);

@@ -451,7 +451,7 @@ static bool8 MainState_WaitPageSwap(struct Task *task)
         SetInputState(INPUT_STATE_ENABLED);
         GetCursorPos(&cursorX, &cursorY);
 #if ENGLISH
-        if (namingScreenDataPtr->currentPage == PAGE_OTHERS && (cursorX == 6 || cursorX == 7))
+        if (gSaveBlock2.optionsKeyboard == OPTIONS_KEYBOARD_VANILLA && namingScreenDataPtr->currentPage == PAGE_OTHERS && (cursorX == 6 || cursorX == 7))
             cursorX = 5;
 #elif GERMAN
         if (namingScreenDataPtr->currentPage == PAGE_OTHERS && (cursorX == 7 || cursorX == 8))
@@ -634,6 +634,12 @@ static void HandleDpadMovement(struct Task *);
 static void InputInit(void)
 {
     CreateTask(Task_HandleInput, 1);
+	if (gSaveBlock2.optionsKeyboard == OPTIONS_KEYBOARD_QWERTY ||
+		gSaveBlock2.optionsKeyboard == OPTIONS_KEYBOARD_ABC ||
+		gSaveBlock2.optionsKeyboard == OPTIONS_KEYBOARD_AZERTY ||
+		gSaveBlock2.optionsKeyboard == OPTIONS_KEYBOARD_DVORAK ||
+		gSaveBlock2.optionsKeyboard == OPTIONS_KEYBOARD_COLEMAK) //keyboards with a row of numbers at the top of each page should load with the cursor on Q rather than 0 (down one space from top left)
+		SetCursorPos(0, 1);
 }
 
 static u8 GetInputEvent(void)
@@ -746,9 +752,9 @@ static void HandleDpadMovement(struct Task *task)
     //Handle cursor movement in X direction
     if (sDpadDeltaX[dpadDir] != 0)
     {
-        //The "others" page only has 5 columns
+        //The vanilla keyboard "others" page only has 5 columns
 #if ENGLISH
-        if (namingScreenDataPtr->currentPage == PAGE_OTHERS && (cursorX == 6 || cursorX == 7))
+        if (gSaveBlock2.optionsKeyboard == OPTIONS_KEYBOARD_VANILLA && namingScreenDataPtr->currentPage == PAGE_OTHERS && (cursorX == 6 || cursorX == 7))
 #elif GERMAN
         if (namingScreenDataPtr->currentPage == PAGE_OTHERS && (cursorX == 6 || cursorX == 7 || cursorX == 8))
 #endif

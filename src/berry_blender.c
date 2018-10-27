@@ -1815,7 +1815,7 @@ static void sub_80500A8(void)
     u8 var2 = gBerryBlenderData->field_A2[GetMultiplayerId()];
     if (gBerryBlenderData->field_6F == 0)
     {
-        if (gSaveBlock2.optionsButtonMode == OPTIONS_BUTTON_MODE_L_EQUALS_A && gMain.newKeys & A_BUTTON)
+        if (gMain.newKeys & A_BUTTON)
             A_pressed = ((gMain.heldKeysRaw & (A_BUTTON | L_BUTTON)) != (A_BUTTON | L_BUTTON));
         else if (gMain.newKeys & A_BUTTON)
             A_pressed = 1;

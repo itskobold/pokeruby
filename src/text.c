@@ -101,7 +101,6 @@ static void SetWindowDefaultColors(struct Window *);
 static void SetWindowBackgroundColor(struct Window *, u8);
 static void SetWindowShadowColor(struct Window *, u8);
 static void SetWindowForegroundColor(struct Window *, u8);
-static u8 GetTextDelay(struct Window *);
 static bool8 PlayerCanInterruptDelay(struct Window *);
 static void ScrollWindowTextLines(struct Window *);
 static void ScrollWindowTextLines_TextMode0(struct Window *);
@@ -432,8 +431,6 @@ static const struct Font sFonts[] =
     { 2, (u8 *)gFont4LatinGlyphs, 32,   0 },
     { 3, (u8 *)sBrailleGlyphs,  8,   0 },
 };
-
-static const u8 sTextSpeedDelays[] = { 6, 3, 1 }; // slow, mid, fast
 
 static const u8 sExtCtrlCodeLengths[] =
 {
@@ -2503,7 +2500,7 @@ static u8 UpdateWindowText(struct Window *win)
         break;
     default:
         win->state = WIN_STATE_CHAR_DELAY;
-        win->delayCounter = GetTextDelay(win);
+        win->delayCounter = 1;
         break;
     }
 
@@ -2940,14 +2937,6 @@ static void SetWindowForegroundColor(struct Window *win, u8 color)
 {
     win->foregroundColor = color;
     sGlyphBuffer.colors[15] = color;
-}
-
-static u8 GetTextDelay(struct Window *win)
-{
-    if (!PlayerCanInterruptDelay(win))
-        return 3;
-
-    return sTextSpeedDelays[gSaveBlock2.optionsTextSpeed];
 }
 
 static bool8 PlayerCanInterruptDelay(struct Window *win)
