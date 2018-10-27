@@ -169,13 +169,12 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     }
 
 	for (i = 0; i < 20; i++)
-
-    //for (i = 0; i < 17; i++) VANILLA
+	//why is this a loop?
     {
         if (attackerHoldEffect == gHoldEffectToType[i][0]
             && type == gHoldEffectToType[i][1])
         {
-            if (TYPE_IS_PHYSICAL(type))
+            if (gBattleMoves[move].pss == MOVE_IS_PHYSICAL)
                 attack = (attack * (attackerHoldEffectParam + 100)) / 100;
             else
                 spAttack = (spAttack * (attackerHoldEffectParam + 100)) / 100;
@@ -226,7 +225,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     if (gBattleMoves[gCurrentMove].effect == EFFECT_EXPLOSION)
         defense /= 2;
 
-    if (TYPE_IS_PHYSICAL(type)) // type < TYPE_MYSTERY
+    if (gBattleMoves[move].pss == MOVE_IS_PHYSICAL)
     {
         if (gCritMultiplier == 2)
         {
@@ -267,13 +266,13 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
 
         if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && gBattleMoves[move].target == 8 && CountAliveMons(2) == 2)
             damage /= 2;
-
+		
         // moves always do at least 1 damage.
         if (damage == 0)
             damage = 1;
     }
 
-    if (TYPE_IS_SPECIAL(type)) // type > TYPE_MYSTERY
+    if (gBattleMoves[move].pss == MOVE_IS_SPECIAL)
     {
         if (gCritMultiplier == 2)
         {

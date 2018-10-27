@@ -43,9 +43,14 @@
 #define TYPE_FORESIGHT  0xFE
 #define TYPE_ENDTABLE   0xFF
 
-// physical/special types
-#define TYPE_IS_PHYSICAL(type) ((type) < TYPE_STEEL)
-#define TYPE_IS_SPECIAL(type) ((type) > TYPE_GHOST)
+// old physical/special types
+//#define TYPE_IS_PHYSICAL(type) ((type) < TYPE_STEEL)
+//#define TYPE_IS_SPECIAL(type) ((type) > TYPE_GHOST)
+
+// physical/special/status
+#define MOVE_IS_PHYSICAL	0
+#define MOVE_IS_SPECIAL		1
+#define MOVE_IS_STATUS		2
 
 enum
 {
