@@ -778,12 +778,12 @@ static void sub_808AB34(u8 taskID)
 {
     if (!gPaletteFade.active)
     {
-        /*if (!IS_FLY(gTasks[taskID].tFieldMoveId) || ShouldDoBrailleFlyEffect())
-            SetMainCallback2(c2_exit_to_overworld_2_switch);
+/*        if (!IS_FLY(gTasks[taskID].tFieldMoveId) || ShouldDoBrailleFlyEffect())
+            SetMainCallback2(CB2_ReturnToField);
         else
             SetMainCallback2(CB2_InitFlyRegionMap);
         DestroyTask(taskID);*/
-		SetMainCallback2(c2_exit_to_overworld_2_switch);
+		SetMainCallback2(CB2_ReturnToField);
 		DestroyTask(taskID);
     }
 }
