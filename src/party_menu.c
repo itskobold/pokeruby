@@ -4280,6 +4280,15 @@ void GetMedicineItemEffectMessage(u16 item)
     case 21:
         StringExpandPlaceholders(gStringVar4, gOtherText_PPRestored);
         break;
+	case 23: //Roll types
+		StringExpandPlaceholders(gStringVar4, gOtherText_TypesRandomized);
+        break;
+	case 24: //Roll ability
+		StringExpandPlaceholders(gStringVar4, gOtherText_AbilityRandomized);
+        break;
+	case 25: //Roll nature
+		StringExpandPlaceholders(gStringVar4, gOtherText_NatureRandomized);
+        break;
     default:
         StringExpandPlaceholders(gStringVar4, gOtherText_WontHaveAnyEffect);
         break;
@@ -5015,6 +5024,18 @@ u8 GetItemEffectType(u16 item)
         {
             return 11;
         }
+    }
+	else if (itemEffect[10] == 0x01) //roll types
+    {
+        return 23;
+    }
+	else if (itemEffect[10] == 0x02) //roll ability
+    {
+        return 24;
+    }
+	else if (itemEffect[10] == 0x03) //roll nature
+    {
+        return 25;
     }
     else if (itemEffect[4] & 0x44)
     {

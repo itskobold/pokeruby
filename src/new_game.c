@@ -134,6 +134,12 @@ void GiveStarterItems(void)
 	}
 	else
 	{
+		if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
+		{
+			AddBagItem(ITEM_ROLL_TYPES, 1);
+			AddBagItem(ITEM_ROLL_ABILITY, 1);
+			AddBagItem(ITEM_ROLL_NATURE, 1);
+		}
 		AddBagItem(ITEM_POTION, 1);
 	}
 }

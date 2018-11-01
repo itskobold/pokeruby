@@ -814,7 +814,7 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const u8 *data)
         SET8(substruct2->hiddenType);
         break;
     case MON_DATA_ABILITY:
-        SET8(substruct2->ability);
+        SET16(substruct2->ability);
         break;
     case MON_DATA_NATURE:
         SET8(substruct2->nature);
@@ -1220,20 +1220,9 @@ void CopyPlayerPartyMonToBattleData(u8 battleIndex, u8 partyIndex)
     gBattleMons[battleIndex].isEgg = GetMonData(&gPlayerParty[partyIndex], MON_DATA_IS_EGG, NULL);
     gBattleMons[battleIndex].altAbility = GetMonData(&gPlayerParty[partyIndex], MON_DATA_ALT_ABILITY, NULL);
     gBattleMons[battleIndex].otId = GetMonData(&gPlayerParty[partyIndex], MON_DATA_OT_ID, NULL);
+	gBattleMons[gActiveBattler].type1 = GetMonData(&gPlayerParty[partyIndex], MON_DATA_TYPE_1, NULL);
+	gBattleMons[gActiveBattler].type2 = GetMonData(&gPlayerParty[partyIndex], MON_DATA_TYPE_2, NULL);
 
-	//this chooses whether to load the Pokemon's custom types or their normal types
-	//if the player were able to downgrade from super random to any other game type, the Pokemon will revert to using its normal types
-	//(but this can never happen, so that's okay)
-	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
-	{	
-		gBattleMons[gActiveBattler].type1 = GetMonData(&gPlayerParty[partyIndex], MON_DATA_TYPE_1, NULL);
-		gBattleMons[gActiveBattler].type2 = GetMonData(&gPlayerParty[partyIndex], MON_DATA_TYPE_2, NULL);
-	}
-	else
-	{
-		gBattleMons[battleIndex].type1 = gBaseStats[gBattleMons[battleIndex].species].type1;
-		gBattleMons[battleIndex].type2 = gBaseStats[gBattleMons[battleIndex].species].type2;
-	}
 	if (customAbility != 0) //always use custom ability even outside of super random! this is because some mons will be available with custom abilities in all game modes
 	{
 		gBattleMons[battleIndex].ability = customAbility;

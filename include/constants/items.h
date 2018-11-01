@@ -65,9 +65,9 @@
 #define ITEM_039 57
 #define ITEM_03A 58
 #define ITEM_03B 59
-#define ITEM_03C 60
-#define ITEM_03D 61
-#define ITEM_03E 62
+#define ITEM_ROLL_TYPES 60
+#define ITEM_ROLL_ABILITY 61
+#define ITEM_ROLL_NATURE 62
 #define ITEM_HP_UP 63
 #define ITEM_PROTEIN 64
 #define ITEM_IRON 65

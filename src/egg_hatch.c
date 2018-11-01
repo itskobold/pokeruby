@@ -278,10 +278,14 @@ static void AddHatchedMonToParty(u8 id)
     u16 caughtLvl;
     u8 mapNameID;
     struct Pokemon* mon = &gPlayerParty[id];
+	u8 type1 = GetMonData(mon, MON_DATA_TYPE_1), type2 = GetMonData(mon, MON_DATA_TYPE_2); //fix for types being regenerated when an egg hatches on super random
 
     CreatedHatchedMon(mon, &gEnemyParty[0]);
     isEgg = 0;
     SetMonData(mon, MON_DATA_IS_EGG, &isEgg);
+	
+	SetMonData(mon, MON_DATA_TYPE_1, &type1);
+	SetMonData(mon, MON_DATA_TYPE_2, &type2);
 
     pokeNum = GetMonData(mon, MON_DATA_SPECIES);
     GetSpeciesName(name, pokeNum);

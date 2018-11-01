@@ -5,6 +5,7 @@
 #include "constants/moves.h"
 #include "constants/species.h"
 #include "main.h"
+#include "battle.h"
 #include "pokemon.h"
 #include "random.h"
 #include "overworld.h"
@@ -1523,7 +1524,7 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
 //nature is obtained from PID in initial mon generation, this is used for regeneration
 void GenerateRandomNature(struct BoxPokemon *boxMon)
 {
-	u8 nature = Random() & 25; //25 natures
+	u8 nature = Random() % 25; //25 natures
 	SetBoxMonData(boxMon, MON_DATA_NATURE, &nature);
 	return;
 }
@@ -1553,18 +1554,19 @@ void GenerateRandomTypes(struct BoxPokemon *boxMon)
 		customType1 = gBaseStats[species].type1;
 		customType2 = gBaseStats[species].type2;
 	}
-	else if (Random() % 3 != 0)
-	{
-		do
-		{
-		customType2 = Random() % 20;
-		if (customType1 == customType2)
-			break;
-		} while (customType1 == customType2);
-	}
 	else
 	{
-		customType2 = customType1;
+		if (Random() % 3 != 0)
+		{
+			do
+			{
+			customType2 = Random() % 20;
+			} while (customType1 == customType2);
+		}
+		else
+		{
+			customType2 = customType1;
+		}
 	}
 	
 	SetBoxMonData(boxMon, MON_DATA_TYPE_1, &customType1);
@@ -1575,7 +1577,7 @@ void SetRandomAbility(struct BoxPokemon *boxMon)
 {
 	u16 ability;
 	
-	if (GetBoxMonData(boxMon, MON_DATA_SPECIES, NULL) == SPECIES_SHEDINJA) //shedninja always has wonder guard
+	if (GetBoxMonData(boxMon, MON_DATA_SPECIES, NULL) == SPECIES_SHEDINJA) //shedinja always has wonder guard
 	{
 		ability = ABILITY_WONDER_GUARD;
 		SetBoxMonData(boxMon, MON_DATA_ABILITY, &ability);
@@ -1620,17 +1622,17 @@ void GenerateSuperRandomMovesetForBoxMon(struct BoxPokemon *boxMon, s32 level, b
 	int i;
 	u16 move;
 	
-	move = GenerateSuperRandomMove(moveType1, moveType2);
-	
-	for (i = 0; i < (GetSuperRandomMovesetSize(level, hatched) + 1); i++) //make movelist
+	do
 	{
-		do
-		{
-			move = GenerateSuperRandomMove(moveType1, moveType2);
-		}
-		while (GiveMoveToBoxMon(boxMon, move) == (u16)-2);
-		
+		move = GenerateSuperRandomMove(moveType1, moveType2);
+	} while (gBattleMoves[move].pss == MOVE_IS_STATUS &&
+			 move != MOVE_SELF_DESTRUCT &&
+			 move != MOVE_EXPLOSION); //first move will always be attacking & not self destruct/explosion
+	
+	for (i = 0; i < (GetSuperRandomMovesetSize(level, hatched)); i++) //make movelist
+	{	
 		GiveMoveToBoxMon(boxMon, move);
+		move = GenerateSuperRandomMove(moveType1, moveType2);
 	}
     return;
 }
@@ -1642,7 +1644,7 @@ u8 GetSuperRandomMovesetSize(s32 level, bool8 hatched)
 	
 	if (hatched == TRUE) //hatched mons always get 4 moves
 	{
-		movesetSize = 3;
+		movesetSize = 4;
 		return movesetSize;
 	}
 	else
@@ -1651,7 +1653,7 @@ u8 GetSuperRandomMovesetSize(s32 level, bool8 hatched)
 		{
 			if (level < levelCheck)
 			{
-				return movesetSize;
+				return movesetSize + 1;
 			}
 			levelCheck += 5; //below lv5 = 1 move, lv 5-9 = 2 moves, lv 10-14 = 3 moves, lv 15+ = 4 moves
 		}

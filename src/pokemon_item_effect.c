@@ -215,9 +215,51 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
                 retVal = FALSE;
             }
             break;
-        // EV, HP, and PP raising effects
+        // EV, HP, and PP raising effects, super random Roll items
         case 4:
             r10 = itemEffect[cmdIndex];
+			if (r10 & 0x10) //Roll Types
+            {
+				u8 type1 = GetMonData(pkmn, MON_DATA_TYPE_1), type2 = GetMonData(pkmn, MON_DATA_TYPE_2);
+				
+				if (gSaveBlock2.gameMode != GAME_MODE_SUPER_RANDOM) //only works on super random
+					return TRUE;
+				
+				r10 &= ~0x10;
+				do
+				{
+					GenerateRandomTypes(&pkmn->box);
+				} while (type1 == GetMonData(pkmn, MON_DATA_TYPE_1) && type2 == GetMonData(pkmn, MON_DATA_TYPE_2));
+				retVal = FALSE;
+            }
+			if (r10 & 0x40) //Roll Ability
+            {
+				u16 ability = GetMonData(pkmn, MON_DATA_ABILITY);
+				
+				if (gSaveBlock2.gameMode != GAME_MODE_SUPER_RANDOM || GetMonData(pkmn, MON_DATA_SPECIES) == SPECIES_SHEDINJA) //only works on super random & if mon is not Shedinja
+					return TRUE;
+				
+				r10 &= ~0x40;
+				do
+				{
+					SetRandomAbility(&pkmn->box);
+				} while (GetMonData(pkmn, MON_DATA_ABILITY) == ability);
+				retVal = FALSE;
+            }	
+		    if (r10 & 0x80) //Roll Nature
+            {
+				u8 nature = GetMonData(pkmn, MON_DATA_NATURE);
+				
+				if (gSaveBlock2.gameMode != GAME_MODE_SUPER_RANDOM) //only works on super random
+					return TRUE;
+				
+				r10 &= ~0x80;
+				do
+				{
+					GenerateRandomNature(&pkmn->box);
+				} while (GetMonData(pkmn, MON_DATA_NATURE) == nature);
+				retVal = FALSE;
+            }
             if (r10 & 0x20)
             {
                 r10 &= ~0x20;

@@ -360,6 +360,21 @@ static const u8 gItemDescription_GreenShard[] = _(
     "ancient item.\n"
     "Can be sold cheaply.");
 
+static const u8 gItemDescription_RollTypes[] = _(
+    "Randomizes the\n"
+    "types of one\n"
+	"POKéMON.");
+	
+static const u8 gItemDescription_RollAbility[] = _(
+    "Randomizes the\n"
+    "ability of one\n"
+	"POKéMON.");
+	
+static const u8 gItemDescription_RollNature[] = _(
+    "Randomizes the\n"
+    "nature of one\n"
+	"POKéMON.");
+	
 static const u8 gItemDescription_HPUp[] = _(
     "Raises the HP of\n"
     "one POKéMON.");
