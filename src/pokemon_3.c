@@ -745,6 +745,37 @@ u16 nature_stat_mod(u8 nature, u16 n, u8 statIndex)
     return n;
 }
 
+//purple scarf for HP is calculated in CalculateMonStats
+u16 scarf_stat_mod(u16 item, u16 n, u8 statIndex)
+{
+    if (statIndex > 5)
+        return n;
+
+    switch (item)
+    {
+	case ITEM_PURPLE_SCARF:			//HP
+		if (statIndex == 0)
+			return (u16)(n * 110) / 100;
+    case ITEM_RED_SCARF:			//attack
+		if (statIndex == 1)
+			return (u16)(n * 110) / 100;
+	case ITEM_BLUE_SCARF:			//defense
+		if (statIndex == 2)
+			return (u16)(n * 110) / 100;
+	case ITEM_YELLOW_SCARF:			//speed
+		if (statIndex == 3)
+			return (u16)(n * 110) / 100;
+	case ITEM_GREEN_SCARF:			//sp. atk
+		if (statIndex == 4)
+			return (u16)(n * 110) / 100;
+	case ITEM_PINK_SCARF:			//sp. def
+		if (statIndex == 5)
+			return (u16)(n * 110) / 100;
+    }
+
+    return n;
+}
+
 // Friendship deltas. Each event has 3 separate values, depending on the mon's
 // current friendship value. In general, a mon's friendship grows faster if
 // its current friendship is lower. The 3 tiers are 0-99, 100-199, and 200-255.

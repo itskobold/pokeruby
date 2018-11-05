@@ -1091,30 +1091,35 @@ static const u8 gItemDescription_Stick[] = _(
     "It can be sold\n"
     "cheaply.");
 
+static const u8 gItemDescription_PurpleScarf[] = _(
+    "A hold item that\n"
+    "raises the base\n"
+    "HP stat.");
+	
 static const u8 gItemDescription_RedScarf[] = _(
     "A hold item that\n"
-    "raises COOL in\n"
-    "CONTESTS.");
+    "raises the base\n"
+    "ATTACK stat.");
 
 static const u8 gItemDescription_BlueScarf[] = _(
     "A hold item that\n"
-    "raises BEAUTY in\n"
-    "CONTESTS.");
-
-static const u8 gItemDescription_PinkScarf[] = _(
-    "A hold item that\n"
-    "raises CUTE in\n"
-    "CONTESTS.");
-
-static const u8 gItemDescription_GreenScarf[] = _(
-    "A hold item that\n"
-    "raises SMART in\n"
-    "CONTESTS.");
+    "raises the base\n"
+    "DEFENSE stat.");
 
 static const u8 gItemDescription_YellowScarf[] = _(
     "A hold item that\n"
-    "raises TOUGH in\n"
-    "CONTESTS.");
+    "raises the base\n"
+    "SPEED stat.");
+	
+static const u8 gItemDescription_GreenScarf[] = _(
+    "A hold item that\n"
+    "raises the base\n"
+    "SP. ATK stat.");
+	
+static const u8 gItemDescription_PinkScarf[] = _(
+    "A hold item that\n"
+    "raises the base\n"
+    "SP. DEF stat.");
 
 static const u8 gItemDescription_MachBike[] = _(
     "A folding bicycle\n"

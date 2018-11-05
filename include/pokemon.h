@@ -656,6 +656,7 @@ u8 GetNatureFromPersonality(u32 personality);
 u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 type, u16 evolutionItem);
 
 u16 nature_stat_mod(u8 nature, u16 n, u8 statIndex);
+u16 scarf_stat_mod(u16 item, u16 n, u8 statIndex);
 
 void MonRestorePP(struct Pokemon *);
 

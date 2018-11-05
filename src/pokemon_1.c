@@ -1942,13 +1942,14 @@ u16 CalculateBoxMonChecksum(struct BoxPokemon *boxMon)
     return checksum;
 }
 
-#define CALC_STAT(base, eviolite, iv, ev, statIndex, field)                	\
-{                                                               			\
-    u8 baseStat = gBaseStats[species].base;                     			\
-    s32 n = (((2 * baseStat + eviolite + iv + ev / 4) * level) / 100) + 5;  \
-    u8 nature = GetNature(mon);                                 			\
-    n = nature_stat_mod(nature, n, statIndex);                  			\
-    SetMonData(mon, field, &n);                                 			\
+#define CALC_STAT(base, eviolite, item, iv, ev, statIndex, field)               	\
+{                                                               					\
+    u8 baseStat = gBaseStats[species].base;                     					\
+    s32 n = (((2 * baseStat + eviolite + iv + ev / 4) * level) / 100) + 5; 			\
+    u8 nature = GetNature(mon);                                 					\
+    n = nature_stat_mod(nature, n, statIndex);                  					\
+	n = scarf_stat_mod(item, n, statIndex);       	 	          					\
+    SetMonData(mon, field, &n);                                 					\
 }
 
 u16 CalculateBaseStatTotal(struct Pokemon *mon)
@@ -1988,6 +1989,7 @@ void CalculateMonStats(struct Pokemon *mon)
     s32 newMaxHP;
 	u16 item = GetMonData(mon, MON_DATA_HELD_ITEM, NULL);
 	u16 evioliteBoost = 0;
+	u16 purpleScarf = 0;
 
     SetMonData(mon, MON_DATA_LEVEL, &level);
 	
@@ -1995,23 +1997,20 @@ void CalculateMonStats(struct Pokemon *mon)
 	{
 		u16 statTotal = CalculateBaseStatTotal(mon);
 		if(statTotal > 512)
-		{
 			evioliteBoost = 0;
-		}
 		else
-		{
 			evioliteBoost = ((512 - statTotal) / 6);
-		}
 	}
+	else if (item == ITEM_PURPLE_SCARF) //to boost HP
+		purpleScarf = (gBaseStats[species].baseHP * 110) / 100;
 	
     if (species == SPECIES_SHEDINJA)
-    {
         newMaxHP = 1;
-    }
     else
     {
 		s32 n = 2 * gBaseStats[species].baseHP + evioliteBoost + hpIV;
         newMaxHP = (((n + hpEV / 4) * level) / 100) + level + 10;
+		newMaxHP = scarf_stat_mod(item, newMaxHP, 0);
     }
 
     eStatHp = newMaxHP - oldMaxHP;
@@ -2020,11 +2019,11 @@ void CalculateMonStats(struct Pokemon *mon)
 
     SetMonData(mon, MON_DATA_MAX_HP, &newMaxHP);
 
-    CALC_STAT(baseAttack, evioliteBoost, attackIV, attackEV, 1, MON_DATA_ATK)
-    CALC_STAT(baseDefense, evioliteBoost, defenseIV, defenseEV, 2, MON_DATA_DEF)
-    CALC_STAT(baseSpeed, evioliteBoost, speedIV, speedEV, 3, MON_DATA_SPEED)
-    CALC_STAT(baseSpAttack, evioliteBoost, spAttackIV, spAttackEV, 4, MON_DATA_SPATK)
-    CALC_STAT(baseSpDefense, evioliteBoost, spDefenseIV, spDefenseEV, 5, MON_DATA_SPDEF)
+    CALC_STAT(baseAttack, evioliteBoost, item, attackIV, attackEV, 1, MON_DATA_ATK)
+    CALC_STAT(baseDefense, evioliteBoost, item, defenseIV, defenseEV, 2, MON_DATA_DEF)
+    CALC_STAT(baseSpeed, evioliteBoost, item, speedIV, speedEV, 3, MON_DATA_SPEED)
+    CALC_STAT(baseSpAttack, evioliteBoost, item, spAttackIV, spAttackEV, 4, MON_DATA_SPATK)
+    CALC_STAT(baseSpDefense, evioliteBoost, item, spDefenseIV, spDefenseEV, 5, MON_DATA_SPDEF)
 
     if (species == SPECIES_SHEDINJA)
     {

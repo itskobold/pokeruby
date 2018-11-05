@@ -2171,7 +2171,7 @@ void Contest_CreatePlayerMon(u8 partyIndex)
     cute   = gContestMons[gContestPlayerMonIndex].cute;
     smart  = gContestMons[gContestPlayerMonIndex].smart;
     tough  = gContestMons[gContestPlayerMonIndex].tough;
-    if      (heldItem == ITEM_RED_SCARF)
+    /*if      (heldItem == ITEM_RED_SCARF)
         cool += 20;
     else if (heldItem == ITEM_BLUE_SCARF)
         beauty += 20;
@@ -2180,7 +2180,7 @@ void Contest_CreatePlayerMon(u8 partyIndex)
     else if (heldItem == ITEM_GREEN_SCARF)
         smart += 20;
     else if (heldItem == ITEM_YELLOW_SCARF)
-        tough += 20;
+        tough += 20;*/
     if (cool > 255)
         cool = 255;
     if (beauty > 255)
