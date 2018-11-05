@@ -4289,6 +4289,24 @@ void GetMedicineItemEffectMessage(u16 item)
 	case 25: //Roll nature
 		StringExpandPlaceholders(gStringVar4, gOtherText_NatureRandomized);
         break;
+	case 26: //Vital Tonic
+		StringExpandPlaceholders(gStringVar4, gOtherText_HPIVRaised);
+        break;
+	case 27: //Strong Tonic
+		StringExpandPlaceholders(gStringVar4, gOtherText_AttackIVRaised);
+        break;
+	case 28: //Guard Tonic
+		StringExpandPlaceholders(gStringVar4, gOtherText_DefenseIVRaised);
+        break;
+	case 29: //Rapid Tonic
+		StringExpandPlaceholders(gStringVar4, gOtherText_SpeedIVRaised);
+        break;
+	case 30: //Mental Tonic
+		StringExpandPlaceholders(gStringVar4, gOtherText_SpAtkIVRaised);
+        break;
+	case 31: //Shield Tonic
+		StringExpandPlaceholders(gStringVar4, gOtherText_SpDefIVRaised);
+        break;
     default:
         StringExpandPlaceholders(gStringVar4, gOtherText_WontHaveAnyEffect);
         break;
@@ -5036,6 +5054,30 @@ u8 GetItemEffectType(u16 item)
 	else if (itemEffect[10] == 0x03) //roll nature
     {
         return 25;
+    }
+	else if (itemEffect[10] == 0x04) //vital tonic
+    {
+        return 26;
+    }
+	else if (itemEffect[10] == 0x05) //strong tonic
+    {
+        return 27;
+    }
+	else if (itemEffect[10] == 0x06) //guard tonic
+    {
+        return 28;
+    }
+	else if (itemEffect[10] == 0x07) //rapid tonic
+    {
+        return 29;
+    }
+	else if (itemEffect[10] == 0x08) //mental tonic
+    {
+        return 30;
+    }
+	else if (itemEffect[10] == 0x09) //shield tonic
+    {
+        return 31;
     }
     else if (itemEffect[4] & 0x44)
     {

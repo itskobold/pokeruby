@@ -1220,17 +1220,14 @@ void CopyPlayerPartyMonToBattleData(u8 battleIndex, u8 partyIndex)
     gBattleMons[battleIndex].isEgg = GetMonData(&gPlayerParty[partyIndex], MON_DATA_IS_EGG, NULL);
     gBattleMons[battleIndex].altAbility = GetMonData(&gPlayerParty[partyIndex], MON_DATA_ALT_ABILITY, NULL);
     gBattleMons[battleIndex].otId = GetMonData(&gPlayerParty[partyIndex], MON_DATA_OT_ID, NULL);
-	gBattleMons[gActiveBattler].type1 = GetMonData(&gPlayerParty[partyIndex], MON_DATA_TYPE_1, NULL);
-	gBattleMons[gActiveBattler].type2 = GetMonData(&gPlayerParty[partyIndex], MON_DATA_TYPE_2, NULL);
-
+	gBattleMons[battleIndex].type1 = GetMonData(&gPlayerParty[partyIndex], MON_DATA_TYPE_1, NULL);
+	gBattleMons[battleIndex].type2 = GetMonData(&gPlayerParty[partyIndex], MON_DATA_TYPE_2, NULL);
+	
 	if (customAbility != 0) //always use custom ability even outside of super random! this is because some mons will be available with custom abilities in all game modes
-	{
 		gBattleMons[battleIndex].ability = customAbility;
-	}
 	else
-	{
 		gBattleMons[battleIndex].ability = GetAbilityBySpecies(gBattleMons[battleIndex].species, gBattleMons[battleIndex].altAbility);
-	}
+	
     GetMonData(&gPlayerParty[partyIndex], MON_DATA_NICKNAME, nickname);
     StringCopy10(gBattleMons[battleIndex].nickname, nickname);
     GetMonData(&gPlayerParty[partyIndex], MON_DATA_OT_NAME, gBattleMons[battleIndex].otName);

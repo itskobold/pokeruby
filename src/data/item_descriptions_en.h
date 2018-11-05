@@ -360,6 +360,36 @@ static const u8 gItemDescription_GreenShard[] = _(
     "ancient item.\n"
     "Can be sold cheaply.");
 
+static const u8 gItemDescription_VitalTonic[] = _(
+    "Raises the\n"
+    "HP IV of\n"
+    "one POKéMON.");
+	
+static const u8 gItemDescription_StrongTonic[] = _(
+    "Raises the\n"
+    "ATTACK IV of\n"
+    "one POKéMON.");
+	
+static const u8 gItemDescription_GuardTonic[] = _(
+    "Raises the\n"
+    "DEFENSE IV of\n"
+    "one POKéMON.");
+	
+static const u8 gItemDescription_RapidTonic[] = _(
+    "Raises the\n"
+    "SPEED IV of\n"
+    "one POKéMON.");
+	
+static const u8 gItemDescription_MentalTonic[] = _(
+    "Raises the\n"
+    "SP. ATK IV of\n"
+    "one POKéMON.");
+	
+static const u8 gItemDescription_ShieldTonic[] = _(
+    "Raises the\n"
+    "SP. DEF IV of\n"
+    "one POKéMON.");
+	
 static const u8 gItemDescription_RollTypes[] = _(
     "Randomizes the\n"
     "types of one\n"

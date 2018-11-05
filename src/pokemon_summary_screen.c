@@ -2321,13 +2321,10 @@ static void SummaryScreen_PrintPokemonInfo(struct Pokemon *mon)
 		SummaryScreen_CreateTypeIcons(mon);
 
 		if (customAbility != 0)
-		{
 			ability = customAbility;
-		}
 		else
-		{
 			ability = GetAbilityBySpecies(GetMonData(mon, MON_DATA_SPECIES), GetMonData(mon, MON_DATA_ALT_ABILITY));
-		}
+
         SummaryScreen_PrintColoredText(gAbilityNames[ability], 13, 11, 9);
         Menu_PrintText(gAbilityDescriptions[ability], 11, 11);
 

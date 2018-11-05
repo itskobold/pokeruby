@@ -8420,10 +8420,8 @@ static void atk4C_getswitchedmondata(void)
 static void atk4D_switchindataupdate(void)
 {
     struct BattlePokemon oldData;
-    s32 i;
+	s32 i;
     u8 *monData;
-	
-	u16 customAbility = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_ABILITY) : GetMonData(&gEnemyParty, MON_DATA_ABILITY);
 	
     if (gBattleExecBuffer)
         return;
@@ -8436,22 +8434,16 @@ static void atk4D_switchindataupdate(void)
     {
         monData[i] = gBattleBufferB[gActiveBattler][4 + i];
     }
-
-	gBattleMons[gActiveBattler].type1 = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_1) : GetMonData(&gEnemyParty, MON_DATA_TYPE_1);
-	gBattleMons[gActiveBattler].type2 = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_2) : GetMonData(&gEnemyParty, MON_DATA_TYPE_2);
+	
+	//this code is absolutely horrible
+	//but i can't get it to work any other way & i'm too tired to figure it out. so this stays for now
+	gBattleMons[gActiveBattler].type1 = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_TYPE_1) : GetMonData(&gEnemyParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_TYPE_1);
+	gBattleMons[gActiveBattler].type2 = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_TYPE_2) : GetMonData(&gEnemyParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_TYPE_2);
 		
-	if (customAbility != 0)
-	{
-		gBattleMons[gActiveBattler].ability = customAbility;
-	}
+	if ((GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_ABILITY) : GetMonData(&gEnemyParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_ABILITY) != 0)
+		gBattleMons[gActiveBattler].ability = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_ABILITY) : GetMonData(&gEnemyParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_ABILITY);
 	else
-	{
 		gBattleMons[gActiveBattler].ability = GetAbilityBySpecies(gBattleMons[gActiveBattler].species, gBattleMons[gActiveBattler].altAbility);
-	}
-		
-    gBattleMons[gActiveBattler].type1 = gBaseStats[gBattleMons[gActiveBattler].species].type1;
-    gBattleMons[gActiveBattler].type2 = gBaseStats[gBattleMons[gActiveBattler].species].type2;
-    gBattleMons[gActiveBattler].ability = GetAbilityBySpecies(gBattleMons[gActiveBattler].species, gBattleMons[gActiveBattler].altAbility);
 
     // check knocked off item
     i = GetBattlerSide(gActiveBattler);
@@ -13723,6 +13715,7 @@ static void atkAE_healpartystatus(void)
         for (i = 0; i < 6; i++)
         {
             u16 species = GetMonData(&party[i], MON_DATA_SPECIES2);
+			u16 customAbility = GetMonData(&party[i], MON_DATA_ABILITY);
             u8 abilityBit = GetMonData(&party[i], MON_DATA_ALT_ABILITY);
             if (species != 0 && species != SPECIES_EGG)
             {
@@ -13732,7 +13725,12 @@ static void atkAE_healpartystatus(void)
                 else if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE && gBattlerPartyIndexes[gActiveBattler] == i && !(gAbsentBattlerFlags & gBitTable[gActiveBattler]))
                     ability = gBattleMons[gActiveBattler].ability;
                 else
-                    ability = GetAbilityBySpecies(species, abilityBit);
+				{
+					if (customAbility != 0)
+						ability = customAbility;
+					else
+						ability = GetAbilityBySpecies(species, abilityBit);
+				}
                 if (ability != ABILITY_SOUNDPROOF)
                     to_heal |= (1 << i);
             }

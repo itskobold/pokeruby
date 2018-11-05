@@ -3957,9 +3957,9 @@ static void BattlePrepIntroSlide(void)
 
 void sub_8011384(void)
 {
+	//abilities and such set here
     u8 *ptr;
     s32 i;
-	u16 customAbility = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_ABILITY) : GetMonData(&gEnemyParty, MON_DATA_ABILITY);
 
     if (gBattleExecBuffer == 0)
     {
@@ -3979,14 +3979,11 @@ void sub_8011384(void)
 				gBattleMons[gActiveBattler].type1 = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_1) : GetMonData(&gEnemyParty, MON_DATA_TYPE_1);
 				gBattleMons[gActiveBattler].type2 = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_2) : GetMonData(&gEnemyParty, MON_DATA_TYPE_2);
 
-                if (customAbility != 0)
-				{
-					gBattleMons[gActiveBattler].ability = customAbility;
-				}
+                if (GetMonData(((GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? &gPlayerParty : &gEnemyParty), MON_DATA_ABILITY) != 0)
+					gBattleMons[gActiveBattler].ability = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_ABILITY) : GetMonData(&gEnemyParty, MON_DATA_ABILITY);
 				else
-				{
 					gBattleMons[gActiveBattler].ability = GetAbilityBySpecies(gBattleMons[gActiveBattler].species, gBattleMons[gActiveBattler].altAbility);
-				}
+				
                 r0 = GetBattlerSide(gActiveBattler);
                 ewram160BC[r0] = gBattleMons[gActiveBattler].hp;
                 for (i = 0; i < 8; i++)

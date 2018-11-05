@@ -113,7 +113,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
         itemEffect = gItemEffectTable[item - 13];
     }
 
-    for (cmdIndex = 0; cmdIndex < 6; cmdIndex++)
+    for (cmdIndex = 0; cmdIndex < 11; cmdIndex++)
     {
         switch (cmdIndex)
         {
@@ -215,51 +215,9 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
                 retVal = FALSE;
             }
             break;
-        // EV, HP, and PP raising effects, super random Roll items
+        // EV, HP and PP raising effects
         case 4:
             r10 = itemEffect[cmdIndex];
-			if (r10 & 0x10) //Roll Types
-            {
-				u8 type1 = GetMonData(pkmn, MON_DATA_TYPE_1), type2 = GetMonData(pkmn, MON_DATA_TYPE_2);
-				
-				if (gSaveBlock2.gameMode != GAME_MODE_SUPER_RANDOM) //only works on super random
-					return TRUE;
-				
-				r10 &= ~0x10;
-				do
-				{
-					GenerateRandomTypes(&pkmn->box);
-				} while (type1 == GetMonData(pkmn, MON_DATA_TYPE_1) && type2 == GetMonData(pkmn, MON_DATA_TYPE_2));
-				retVal = FALSE;
-            }
-			if (r10 & 0x40) //Roll Ability
-            {
-				u16 ability = GetMonData(pkmn, MON_DATA_ABILITY);
-				
-				if (gSaveBlock2.gameMode != GAME_MODE_SUPER_RANDOM || GetMonData(pkmn, MON_DATA_SPECIES) == SPECIES_SHEDINJA) //only works on super random & if mon is not Shedinja
-					return TRUE;
-				
-				r10 &= ~0x40;
-				do
-				{
-					SetRandomAbility(&pkmn->box);
-				} while (GetMonData(pkmn, MON_DATA_ABILITY) == ability);
-				retVal = FALSE;
-            }	
-		    if (r10 & 0x80) //Roll Nature
-            {
-				u8 nature = GetMonData(pkmn, MON_DATA_NATURE);
-				
-				if (gSaveBlock2.gameMode != GAME_MODE_SUPER_RANDOM) //only works on super random
-					return TRUE;
-				
-				r10 &= ~0x80;
-				do
-				{
-					GenerateRandomNature(&pkmn->box);
-				} while (GetMonData(pkmn, MON_DATA_NATURE) == nature);
-				retVal = FALSE;
-            }
             if (r10 & 0x20)
             {
                 r10 &= ~0x20;
@@ -580,7 +538,76 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
                 r10 >>= 1;
             }
             break;
-        }
+		//new item effects here, keep shit simple ey
+		case 10:
+			r10 = itemEffect[cmdIndex];
+			if (r10 == 0x01) //Roll Types
+            {
+				u8 type1 = GetMonData(pkmn, MON_DATA_TYPE_1), type2 = GetMonData(pkmn, MON_DATA_TYPE_2);
+				
+				if (gSaveBlock2.gameMode != GAME_MODE_SUPER_RANDOM) //only works on super random
+					return TRUE;
+				
+				do
+				{
+					GenerateRandomTypes(&pkmn->box);
+				} while (type1 == GetMonData(pkmn, MON_DATA_TYPE_1) && type2 == GetMonData(pkmn, MON_DATA_TYPE_2));
+				return FALSE;
+            }
+			if (r10 == 0x02) //Roll Ability
+            {
+				u16 ability = GetMonData(pkmn, MON_DATA_ABILITY);
+				
+				if (gSaveBlock2.gameMode != GAME_MODE_SUPER_RANDOM || GetMonData(pkmn, MON_DATA_SPECIES) == SPECIES_SHEDINJA) //only works on super random & if mon is not Shedinja
+					return TRUE;
+				
+				do
+				{
+					SetRandomAbility(&pkmn->box);
+				} while (GetMonData(pkmn, MON_DATA_ABILITY) == ability);
+				return FALSE;
+            }	
+		    if (r10 == 0x03) //Roll Nature
+            {
+				u8 nature = GetMonData(pkmn, MON_DATA_NATURE);
+				
+				if (gSaveBlock2.gameMode != GAME_MODE_SUPER_RANDOM) //only works on super random
+					return TRUE;
+				
+				do
+				{
+					GenerateRandomNature(&pkmn->box);
+				} while (GetMonData(pkmn, MON_DATA_NATURE) == nature);
+				return FALSE;
+            }
+			if (r10 >= 0x04 && r10 <= 0x09) //IV Tonics
+			{	
+				int i;
+				u8 iv;
+				
+				r10 -= 0x04;
+				
+				for (i = 0; i < 4; i++) //IV is raised by a maximum of 4
+				{
+					iv = GetMonData(pkmn, MON_DATA_HP_IV + r10);
+					
+					if (iv >= 31) //IV is maxed out
+					{
+						if (i == 0) //hasn't looped - IV has been maxed out before tonic was used
+							return TRUE;
+						else //IV was maxed during loop
+							break;
+					}
+					else
+						iv++;
+					
+					SetMonData(pkmn, MON_DATA_HP_IV + r10, &iv);
+				}
+				CalculateMonStats(pkmn);
+				return FALSE;
+			}
+			break;
+		}
     }
     return retVal;
 }
