@@ -464,25 +464,60 @@ static const u8 gItemDescription_XAttack[] = _(
     "ATTACK during one\n"
     "battle.");
 
+static const u8 gItemDescription_MaxAttack[] = _(
+    "Maximizes the stat\n"
+    "ATTACK during\n"
+    "one battle.");
+	
 static const u8 gItemDescription_XDefend[] = _(
     "Raises the stat\n"
     "DEFENSE during one\n"
     "battle.");
+	
+static const u8 gItemDescription_MaxDefend[] = _(
+    "Maximizes the stat\n"
+    "DEFENSE during\n"
+    "one battle.");
 
 static const u8 gItemDescription_XSpeed[] = _(
     "Raises the stat\n"
     "SPEED during one\n"
     "battle.");
+	
+static const u8 gItemDescription_MaxSpeed[] = _(
+    "Maximizes the stat\n"
+    "SPEED during\n"
+    "one battle.");
+	
+static const u8 gItemDescription_XSpAtk[] = _(
+    "Raises the stat\n"
+    "SP. ATK during one\n"
+    "battle.");
+	
+static const u8 gItemDescription_MaxSpAtk[] = _(
+    "Maximizes the stat\n"
+    "SP. ATK during\n"
+    "one battle.");
+	
+static const u8 gItemDescription_XSpDef[] = _(
+    "Raises the stat\n"
+    "SP. DEF during one\n"
+    "battle.");
+	
+static const u8 gItemDescription_MaxSpDef[] = _(
+    "Maximizes the stat\n"
+    "SP. DEF during\n"
+    "one battle.");
 
 static const u8 gItemDescription_XAccuracy[] = _(
     "Raises accuracy\n"
     "of attack moves\n"
     "during one battle.");
-
-static const u8 gItemDescription_XSpecial[] = _(
-    "Raises the stat\n"
-    "SP. ATK during one\n"
-    "battle.");
+	
+static const u8 gItemDescription_MaxAccuracy[] = _(
+    "Maximizes accuracy\n"
+    "of attack moves\n"
+    "during one battle.");
 
 static const u8 gItemDescription_PokeDoll[] = _(
     "Use to flee from\n"

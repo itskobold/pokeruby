@@ -91,7 +91,7 @@ Route115_EventScript_1B1557:: @ 81B1557
 	end
 
 Route116_EventScript_1B1564:: @ 81B1564
-	giveitem_std ITEM_X_SPECIAL, 1, 1
+	giveitem_std ITEM_X_SP_ATK, 1, 1
 	end
 
 Route116_EventScript_1B1571:: @ 81B1571

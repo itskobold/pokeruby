@@ -6808,7 +6808,7 @@ void HandleAction_Switch(void)
         gBattleResults.unk2++;
 }
 
-#ifdef NONMATCHING
+#ifndef NONMATCHING
 void HandleAction_UseItem(void)
 {
     gBankAttacker = gBankTarget = gBanksByTurnOrder[gCurrentTurnActionNumber];

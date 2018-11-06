@@ -25,6 +25,12 @@ extern u8 gStringBank;
 extern struct BattlePokemon gBattleMons[];
 extern struct BattleEnigmaBerry gEnigmaBerries[];
 
+enum
+{
+    STAT_BOOSTER_X,       // 0
+    STAT_BOOSTER_MAX,     // 1
+};
+
 static const u8 sGetMonDataEVConstants[] =
 {
     MON_DATA_HP_EV,
@@ -33,6 +39,24 @@ static const u8 sGetMonDataEVConstants[] =
     MON_DATA_SPEED_EV,
     MON_DATA_SPDEF_EV,
     MON_DATA_SPATK_EV
+};
+
+//0 = X item
+//1 = MAX item
+static const u8 gStatBoosters[][2] =
+{
+	{STAT_STAGE_ATK,		0},
+	{STAT_STAGE_ATK,		1},
+	{STAT_STAGE_DEF,		0},
+	{STAT_STAGE_DEF,		1},
+	{STAT_STAGE_SPEED,		0},
+	{STAT_STAGE_SPEED,		1},
+	{STAT_STAGE_SPATK,		0},
+	{STAT_STAGE_SPATK,		1},
+	{STAT_STAGE_SPDEF,		0},
+	{STAT_STAGE_SPDEF,		1},
+	{STAT_STAGE_ACC,		0},
+	{STAT_STAGE_ACC,		1}
 };
 
 extern u8 gPPUpReadMasks[];
@@ -677,7 +701,25 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 				else
 					return TRUE;
 			}
-			break;
+			if (r10 >= 0x12 && r10 <= 0x1d) //stat boosters (x attack etc)
+            {
+				r10 -= 0x12;
+				
+				if (gBattleMons[gActiveBattler].statStages[gStatBoosters[r10][0]] < 12)
+				{
+					if (gStatBoosters[r10][1] == STAT_BOOSTER_X)							//it's a regular X item, boost stat by 2 stages
+						gBattleMons[gActiveBattler].statStages[gStatBoosters[r10][0]] += 2;
+					else																	//it's a MAX item, maximise stat
+						gBattleMons[gActiveBattler].statStages[gStatBoosters[r10][0]] = 12;
+						
+					if (gBattleMons[gActiveBattler].statStages[gStatBoosters[r10][0]] > 12)
+						gBattleMons[gActiveBattler].statStages[gStatBoosters[r10][0]] = 12;
+					
+					retVal = FALSE;
+				}
+				else
+					return TRUE;
+            }
 		}
     }
     return retVal;

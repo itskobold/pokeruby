@@ -58,9 +58,10 @@ extern const u8 BattleText_PreventedSwitch[];
 extern u16 gBattlerPartyIndexes[];
 
 extern u8 BattleText_Rose[];
+extern u8 BattleText_WasMaximized[];
 extern u8 BattleText_UnknownString3[];
-extern u8 BattleText_MistShroud[];
-extern u8 BattleText_GetPumped[];
+extern u8 BattleText_GuardSpec[];
+extern u8 BattleText_DireHit[];
 extern u8 *gUnknown_08400F58[];
 
 bool8 HealStatusConditions(struct Pokemon *mon, u32 unused, u32 healMask, u8 battleId)
@@ -198,15 +199,25 @@ const u8 gUnknown_082082F8[] = {1, 1, 3, 2, 4, 6};
 
 void sub_803F324(int stat)
 {
+	bool8 max = FALSE;
+	
+	if (stat > 9)
+	{
+		stat -= 10;
+		max = TRUE;
+	}
     gBankTarget = gBankInMenu;
     StringCopy(gBattleTextBuff1, gUnknown_08400F58[gUnknown_082082F8[stat]]);
-    StringCopy(gBattleTextBuff2, BattleText_Rose);
+	if (max)
+		StringCopy(gBattleTextBuff2, BattleText_WasMaximized);
+	else
+		StringCopy(gBattleTextBuff2, BattleText_Rose);
     StrCpyDecodeToDisplayedStringBattle(BattleText_UnknownString3);
 }
 
 u8 *sub_803F378(u16 itemId)
 {
-    int i;
+    int i, stat;
     const u8 *itemEffect;
 
     if (itemId == ITEM_ENIGMA_BERRY)
@@ -227,6 +238,51 @@ u8 *sub_803F378(u16 itemId)
 
     gStringBank = gBankInMenu;
 
+	//new stat booster print
+	if (itemEffect[10] >= 0x12 && itemEffect[10] <= 0x1d)
+	{
+		switch (itemEffect[10])
+		{	
+			case 0x12:		//attack
+				stat = 1;
+				break;
+			case 0x13:
+				stat = 11;
+				break;
+			case 0x14:		//defense
+				stat = 3;
+				break;
+			case 0x15:
+				stat = 13;
+				break;
+			case 0x16:		//speed
+				stat = 2;
+				break;
+			case 0x17:
+				stat = 12;
+				break;
+			case 0x18:		//sp. atk
+				stat = 4;
+				break;
+			case 0x19:
+				stat = 14;
+				break;
+			case 0x1a:		//sp. def
+				stat = 6;
+				break;
+			case 0x1b:
+				stat = 16;
+				break;
+			case 0x1c:		//accuracy
+				stat = 5;
+				break;
+			case 0x1d:
+				stat = 15;
+				break;
+		};
+		sub_803F324(stat);
+	}
+	
     for (i = 0; i < 3; i++)
     {
         if (itemEffect[i] & 0xF)
@@ -240,7 +296,7 @@ u8 *sub_803F378(u16 itemId)
             else
             {
                 gBankAttacker = gBankInMenu;
-                StrCpyDecodeToDisplayedStringBattle(BattleText_GetPumped);
+                StrCpyDecodeToDisplayedStringBattle(BattleText_DireHit);
             }
         }
     }
@@ -248,7 +304,7 @@ u8 *sub_803F378(u16 itemId)
     if (itemEffect[3] & 0x80)
     {
         gBankAttacker = gBankInMenu;
-        StrCpyDecodeToDisplayedStringBattle(BattleText_MistShroud);
+        StrCpyDecodeToDisplayedStringBattle(BattleText_GuardSpec);
     }
 
     return gDisplayedStringBattle;
