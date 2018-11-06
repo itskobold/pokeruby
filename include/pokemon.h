@@ -598,6 +598,8 @@ u16 MonTryLearningNewMove(struct Pokemon *mon, bool8 firstMove);
 void DeleteFirstMoveAndGiveMoveToMon(struct Pokemon *mon, u16 move);
 void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move);
 
+u16 CalculateBaseStatTotal(u16 species);
+u16 CalculateEvioliteBonus(u16 species);
 bool8 IsRandomAbilityBanned(u16 ability);
 void SetRandomAbility(struct BoxPokemon *boxMon);
 void GenerateRandomNature(struct BoxPokemon *boxMon);

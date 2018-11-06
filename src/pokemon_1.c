@@ -1952,10 +1952,19 @@ u16 CalculateBoxMonChecksum(struct BoxPokemon *boxMon)
     SetMonData(mon, field, &n);                                 					\
 }
 
-u16 CalculateBaseStatTotal(struct Pokemon *mon)
+u16 CalculateEvioliteBonus(u16 species)
+{
+	u16 statTotal = CalculateBaseStatTotal(species);
+	if(statTotal > 512)
+		return 0;
+	else
+		return ((512 - statTotal) / 6);
+}
+
+//pre-eviolite/scarf
+u16 CalculateBaseStatTotal(u16 species)
 {
 	u16 bst = 0;
-    u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
 
 	u8 bstHP = gBaseStats[species].baseHP;
 	u8 bstATK = gBaseStats[species].baseAttack;
@@ -1993,13 +2002,7 @@ void CalculateMonStats(struct Pokemon *mon)
     SetMonData(mon, MON_DATA_LEVEL, &level);
 	
 	if (item == ITEM_EVIOLITE && gEvolutionTable[species][0].targetSpecies != SPECIES_NONE)	//if mon is holding eviolite & can evolve
-	{
-		u16 statTotal = CalculateBaseStatTotal(mon);
-		if(statTotal > 512)
-			evioliteBoost = 0;
-		else
-			evioliteBoost = ((512 - statTotal) / 6);
-	}
+		evioliteBoost = CalculateEvioliteBonus(species);
 	
     if (species == SPECIES_SHEDINJA)
         newMaxHP = 1;

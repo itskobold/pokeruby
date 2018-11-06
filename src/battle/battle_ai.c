@@ -1363,8 +1363,21 @@ static void BattleAICmd_get_considered_move_effect(void)
 
 static void BattleAICmd_get_ability(void)
 {
+    struct Pokemon *party;
+    struct Pokemon *partyPtr;
     u8 index;
+	u16 customAbility;
 
+	switch (gAIScriptPtr[1])
+    {
+    case 1:
+        party = partyPtr = gEnemyParty;
+        break;
+    default:
+        party = partyPtr = gPlayerParty;
+        break;
+    }
+	
     if (gAIScriptPtr[1] == USER)
         index = gBankAttacker;
     else
@@ -1390,30 +1403,37 @@ static void BattleAICmd_get_ability(void)
             gAIScriptPtr += 2;
             return;
         }
+		
+		customAbility = GetMonData(&party[index], MON_DATA_ABILITY);
 
-        if (gBaseStats[gBattleMons[index].species].ability1 != ABILITY_NONE)
-        {
-            if (gBaseStats[gBattleMons[index].species].ability2 != ABILITY_NONE)
-            {
-                // AI has no knowledge of opponent, so it guesses which ability.
-                if (Random() % 2)
-                {
-                    AI_THINKING_STRUCT->funcResult = gBaseStats[gBattleMons[index].species].ability1;
-                }
-                else
-                {
-                    AI_THINKING_STRUCT->funcResult = gBaseStats[gBattleMons[index].species].ability2;
-                }
-            }
-            else
-            {
-                AI_THINKING_STRUCT->funcResult = gBaseStats[gBattleMons[index].species].ability1; // it's definitely ability 1.
-            }
-        }
-        else
-        {
-            AI_THINKING_STRUCT->funcResult = gBaseStats[gBattleMons[index].species].ability2; // AI cant actually reach this part since every mon has at least 1 ability.
-        }
+		if (customAbility != 0)
+			AI_THINKING_STRUCT->funcResult = customAbility;
+		else
+		{
+			if (gBaseStats[gBattleMons[index].species].ability1 != ABILITY_NONE)
+			{
+				if (gBaseStats[gBattleMons[index].species].ability2 != ABILITY_NONE)
+				{
+					// AI has no knowledge of opponent, so it guesses which ability.
+					if (Random() % 2)
+					{
+						AI_THINKING_STRUCT->funcResult = gBaseStats[gBattleMons[index].species].ability1;
+					}
+					else
+					{
+						AI_THINKING_STRUCT->funcResult = gBaseStats[gBattleMons[index].species].ability2;
+					}
+				}
+				else
+				{
+					AI_THINKING_STRUCT->funcResult = gBaseStats[gBattleMons[index].species].ability1; // it's definitely ability 1.
+				}
+			}
+			else
+			{
+				AI_THINKING_STRUCT->funcResult = gBaseStats[gBattleMons[index].species].ability2; // AI cant actually reach this part since every mon has at least 1 ability.
+			}
+		}
     }
     else
     {

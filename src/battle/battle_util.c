@@ -1887,7 +1887,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 bank, u8 ability, u8 special, u16 moveArg)
                             StringCopy(gBattleTextBuff1, gStatusConditionString_IceJpn);
                         gBattleMons[bank].status1 = 0;
                         // BUG: The nightmare status does not get cleared here. This was fixed in Emerald.
-                        //gBattleMons[bank].status2 &= ~(STATUS2_NIGHTMARE);
+                        gBattleMons[bank].status2 &= ~(STATUS2_NIGHTMARE); //this was commented out
                         gBattleStruct->scriptingActive = gActiveBattler = bank;
                         BattleScriptPushCursorAndCallback(BattleScript_ShedSkinActivates);
                         EmitSetMonData(0, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[bank].status1);

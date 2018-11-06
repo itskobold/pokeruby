@@ -14197,6 +14197,10 @@ static void atkC3_trysetfutureattack(void)
 #ifdef NONMATCHING
 static void atkC4_trydobeatup(void)
 {
+	u16 enemySpecies = gBattleMons[gBankTarget].species;
+	u16 attack = gBaseStats[GetMonData(&party[gBattleCommunication[0]], MON_DATA_SPECIES)].baseAttack; //party mon base attack stats
+	u16 defense = gBaseStats[gBattleMons[gBankTarget].species].baseDefense; //target mon defense
+	
     register struct Pokemon* party asm("r7");
     if (GetBattlerSide(gBankAttacker) == 0)
         party = gPlayerParty;
@@ -14223,10 +14227,20 @@ static void atkC4_trydobeatup(void)
             gBattleTextBuff1[4] = 0xFF;
             gBattlescriptCurrInstr += 9;
 
-            gBattleMoveDamage = gBaseStats[GetMonData(&party[gBattleCommunication[0]], MON_DATA_SPECIES)].baseAttack;
+			if (gBattleMons[gBankTarget].item == ITEM_RED_SCARF) //mod attack if party mon is holding red scarf
+				attack = scarf_stat_mod(ITEM_RED_SCARF, attack, 1)
+			else if (gBattleMons[gBankTarget].item == ITEM_EVIOLITE && gEvolutionTable[GetMonData(&party[gBattleCommunication[0]], MON_DATA_SPECIES][0].targetSpecies != SPECIES_NONE) //mod attack if party mon is holding eviolite & can evolve
+				attack += CalculateEvioliteBonus(enemySpecies);
+			
+			if (gBattleMons[gBankTarget].item == ITEM_BLUE_SCARF) //mod defense if target is holding blue scarf
+				defense = scarf_stat_mod(ITEM_BLUE_SCARF, defense, 2)
+			else if (gBattleMons[gBankTarget].item == ITEM_EVIOLITE && gEvolutionTable[enemySpecies][0].targetSpecies != SPECIES_NONE) //mod defense if target is holding eviolite & can evolve
+				defense += CalculateEvioliteBonus(enemySpecies);
+			
+            gBattleMoveDamage = attack;
             gBattleMoveDamage *= gBattleMoves[gCurrentMove].power;
             gBattleMoveDamage *= (GetMonData(&party[gBattleCommunication[0]], MON_DATA_LEVEL) * 2 / 5 + 2);
-            gBattleMoveDamage /= gBaseStats[gBattleMons[gBankTarget].species].baseDefense;
+            gBattleMoveDamage /= defense;
             gBattleMoveDamage = (gBattleMoveDamage / 50) + 2;
             if (gProtectStructs[gBankAttacker].helpingHand)
                 gBattleMoveDamage = gBattleMoveDamage * 15 / 10;
@@ -15521,11 +15535,15 @@ static void atkE5_pickup(void)
     {
         u16 species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES2);
         u16 held_item = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
-        u16 ability;
-        if (GetMonData(&gPlayerParty[i], MON_DATA_ALT_ABILITY))
-            ability = gBaseStats[species].ability2;
-        else
-            ability = gBaseStats[species].ability1;
+        u16 ability = GetMonData(&gPlayerParty[i], MON_DATA_ABILITY);
+		
+		if (ability == 0)
+		{
+			if (GetMonData(&gPlayerParty[i], MON_DATA_ALT_ABILITY))
+				ability = gBaseStats[species].ability2;
+			else
+				ability = gBaseStats[species].ability1;
+		}
 
         if (ability == ABILITY_PICKUP && species != 0 && species != SPECIES_EGG && held_item == 0 && (Random() % 10) == 0)
         {

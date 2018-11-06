@@ -745,7 +745,6 @@ u16 nature_stat_mod(u8 nature, u16 n, u8 statIndex)
     return n;
 }
 
-//purple scarf for HP is calculated in CalculateMonStats
 u16 scarf_stat_mod(u16 item, s32 n, u8 statIndex)
 {
     if (statIndex > 5)

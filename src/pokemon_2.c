@@ -1060,9 +1060,14 @@ u8 GetAbilityBySpecies(u16 species, bool8 altAbility)
 
 u8 GetMonAbility(struct Pokemon *mon)
 {
+	u16 customAbility = GetMonData(mon, MON_DATA_ABILITY, NULL);
     u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
     u8 altAbility = GetMonData(mon, MON_DATA_ALT_ABILITY, NULL);
-    return GetAbilityBySpecies(species, altAbility);
+	
+	if (customAbility != 0)
+		return customAbility;
+	else
+		return GetAbilityBySpecies(species, altAbility);
 }
 
 void CreateSecretBaseEnemyParty(struct SecretBaseRecord *secretBaseRecord)
