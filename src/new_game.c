@@ -87,6 +87,8 @@ void SetDefaultOptions(void)
     gSaveBlock2.optionsSound = OPTIONS_SOUND_STEREO;
 	if (gSaveBlock2.nuzlockeMode == NUZLOCKE_MODE_OFF)
 		gSaveBlock2.optionsBattleStyle = OPTIONS_BATTLE_STYLE_SHIFT;
+	else
+		gSaveBlock2.optionsBattleStyle = OPTIONS_BATTLE_STYLE_SET;
     gSaveBlock2.optionsBattleSceneOff = FALSE;
 	gSaveBlock2.optionsQuickFlee = OPTIONS_QUICK_FLEE_OFF;
 	gSaveBlock2.optionsLowHPSound = OPTIONS_LOW_HP_SOUND_ON;

@@ -746,7 +746,7 @@ u16 nature_stat_mod(u8 nature, u16 n, u8 statIndex)
 }
 
 //purple scarf for HP is calculated in CalculateMonStats
-u16 scarf_stat_mod(u16 item, u16 n, u8 statIndex)
+u16 scarf_stat_mod(u16 item, s32 n, u8 statIndex)
 {
     if (statIndex > 5)
         return n;
@@ -755,22 +755,28 @@ u16 scarf_stat_mod(u16 item, u16 n, u8 statIndex)
     {
 	case ITEM_PURPLE_SCARF:			//HP
 		if (statIndex == 0)
-			return (u16)(n * 110) / 100;
+			return (s32)(n * 110) / 100;
+		break;
     case ITEM_RED_SCARF:			//attack
 		if (statIndex == 1)
 			return (u16)(n * 110) / 100;
+		break;
 	case ITEM_BLUE_SCARF:			//defense
 		if (statIndex == 2)
 			return (u16)(n * 110) / 100;
+		break;
 	case ITEM_YELLOW_SCARF:			//speed
 		if (statIndex == 3)
 			return (u16)(n * 110) / 100;
+		break;
 	case ITEM_GREEN_SCARF:			//sp. atk
 		if (statIndex == 4)
 			return (u16)(n * 110) / 100;
+		break;
 	case ITEM_PINK_SCARF:			//sp. def
 		if (statIndex == 5)
 			return (u16)(n * 110) / 100;
+		break;
     }
 
     return n;

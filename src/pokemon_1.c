@@ -1989,8 +1989,7 @@ void CalculateMonStats(struct Pokemon *mon)
     s32 newMaxHP;
 	u16 item = GetMonData(mon, MON_DATA_HELD_ITEM, NULL);
 	u16 evioliteBoost = 0;
-	u16 purpleScarf = 0;
-
+	
     SetMonData(mon, MON_DATA_LEVEL, &level);
 	
 	if (item == ITEM_EVIOLITE && gEvolutionTable[species][0].targetSpecies != SPECIES_NONE)	//if mon is holding eviolite & can evolve
@@ -2001,8 +2000,6 @@ void CalculateMonStats(struct Pokemon *mon)
 		else
 			evioliteBoost = ((512 - statTotal) / 6);
 	}
-	else if (item == ITEM_PURPLE_SCARF) //to boost HP
-		purpleScarf = (gBaseStats[species].baseHP * 110) / 100;
 	
     if (species == SPECIES_SHEDINJA)
         newMaxHP = 1;

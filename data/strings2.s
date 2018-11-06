@@ -157,6 +157,9 @@ gSystemText_BikeModeDescription::
 gSystemText_FullPartyDescription::
 	.string "Allows a party member to be sent to\nthe PC in place of a caught POKéMON.$"
 	
+gSystemText_FullPartyDeadlockeDescription::
+	.string "This option cannot be changed\nin a Deadlocke game.$"
+	
 gSystemText_BattleStyleDescription::
 	.string "Allows POKéMON to be recalled\nbefore the next foe is sent out.$"
 	

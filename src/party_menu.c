@@ -5079,6 +5079,38 @@ u8 GetItemEffectType(u16 item)
     {
         return 31;
     }
+	else if (itemEffect[10] == 0x0a) //hp up
+    {
+        return 13;
+    }
+	else if (itemEffect[10] == 0x0b) //protein
+    {
+        return 12;
+    }
+	else if (itemEffect[10] == 0x0c) //iron
+    {
+        return 17;
+    }
+	else if (itemEffect[10] == 0x0d) //carbos
+    {
+        return 16;
+    }
+	else if (itemEffect[10] == 0x0e) //calcium
+    {
+        return 14;
+    }
+	else if (itemEffect[10] == 0x0f) //zinc
+    {
+        return 15;
+    }
+	else if (itemEffect[10] == 0x10) //pp up
+    {
+        return 19;
+    }
+	else if (itemEffect[10] == 0x11) //pp max
+    {
+        return 20;
+    }
     else if (itemEffect[4] & 0x44)
     {
         return 2;

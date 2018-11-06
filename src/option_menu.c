@@ -723,12 +723,22 @@ static void BikeMode_DrawChoices(u8 selection, int yPos)
 
 static u8 FullParty_ProcessInput(u8 selection, u8 taskId)
 {
-    if (gMain.newKeys & (DPAD_LEFT | DPAD_RIGHT))
-    {
-        selection ^= 1;
-		BlankChoice(taskId);
-    }
-    return selection;
+	if (gMain.newKeys & (DPAD_LEFT | DPAD_RIGHT))
+	{
+		if (gSaveBlock2.nuzlockeMode != NUZLOCKE_MODE_DEADLOCKE)
+		{
+			selection ^= 1;
+			BlankChoice(taskId);
+			return selection;
+		}
+		else
+		{
+			Menu_BlankWindowRect(2, 15, 27, 18);
+			Menu_PrintText(gSystemText_FullPartyDeadlockeDescription,  2,  15);
+			PlaySE(SE_BOO);
+			return 0;
+		}
+	}
 }
 
 static void FullParty_DrawChoices(u8 selection, int yPos)

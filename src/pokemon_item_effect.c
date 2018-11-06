@@ -215,10 +215,10 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
                 retVal = FALSE;
             }
             break;
-        // EV, HP and PP raising effects
+        // EV, HP, and PP raising effects are no longer called here - they have been recoded entirely
         case 4:
             r10 = itemEffect[cmdIndex];
-            if (r10 & 0x20)
+            if (r10 & 0x20) //pp up, unused
             {
                 r10 &= ~0x20;
                 data = (GetMonData(pkmn, MON_DATA_PP_BONUSES, NULL) & gPPUpReadMasks[moveIndex]) >> (moveIndex * 2);
@@ -247,20 +247,23 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
                     case 0:
                     case 1:
                         evCount = GetMonEVCount(pkmn);
-                        if (evCount >= MAX_TOTAL_EVS)
+                        if (evCount >= 510)
                             return TRUE;
                         data = GetMonData(pkmn, sGetMonDataEVConstants[sp28], NULL);
-						if (data + itemEffect[sp24] > 252)
-							r4 = 252 - (data + itemEffect[sp24]) + itemEffect[sp24];
-						else
-							r4 = itemEffect[sp24];
-						if (evCount + r4 > MAX_TOTAL_EVS)
-							r4 += MAX_TOTAL_EVS - (evCount + r4);
-						data += r4;
-						SetMonData(pkmn, sGetMonDataEVConstants[sp28], &data);
-						CalculateMonStats(pkmn);
-						sp24++;
-						retVal = FALSE;
+                        if (data < 100)
+                        {
+                            if (data + itemEffect[sp24] > 100)
+                                r4 = 100 - (data + itemEffect[sp24]) + itemEffect[sp24];
+                            else
+                                r4 = itemEffect[sp24];
+                            if (evCount + r4 > 510)
+                                r4 += 510 - (evCount + r4);
+                            data += r4;
+                            SetMonData(pkmn, sGetMonDataEVConstants[sp28], &data);
+                            CalculateMonStats(pkmn);
+                            sp24++;
+                            retVal = FALSE;
+                        }
                         break;
                     case 2:
                         // revive?
@@ -578,6 +581,8 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 				{
 					GenerateRandomNature(&pkmn->box);
 				} while (GetMonData(pkmn, MON_DATA_NATURE) == nature);
+				
+				CalculateMonStats(pkmn);
 				return FALSE;
             }
 			if (r10 >= 0x04 && r10 <= 0x09) //IV Tonics
@@ -605,6 +610,57 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 				}
 				CalculateMonStats(pkmn);
 				return FALSE;
+			}
+			if (r10 >= 0x0a && r10 <= 0x0f) //vitamins
+			{
+				int i;
+				u8 ev;
+				u16 evCount = GetMonEVCount(pkmn);
+				
+                if (evCount >= MAX_TOTAL_EVS)
+                    return TRUE; //has hit max EV count across all stats
+				
+				r10 -= 0x0a;
+				
+				for (i = 0; i < 20; i++) //EV is raised by a maximum of 20
+				{
+					ev = GetMonData(pkmn, MON_DATA_HP_EV + r10);
+					
+					if (ev >= 252) //EV is maxed out
+					{
+						if (i == 0) //hasn't looped - EV has been maxed out before vitamin was used
+							return TRUE;
+						else //EV was maxed during loop
+							break;
+					}
+					else
+						ev++;
+					
+					SetMonData(pkmn, MON_DATA_HP_EV + r10, &ev);
+				}
+				CalculateMonStats(pkmn);
+				return FALSE;
+			}
+			if (r10 == 0x10 || r10 == 0x11) //pp up/pp max
+			{
+                data = (GetMonData(pkmn, MON_DATA_PP_BONUSES, NULL) & gPPUpReadMasks[moveIndex]) >> (moveIndex * 2);
+                sp28 = CalculatePPWithBonus(GetMonData(pkmn, MON_DATA_MOVE1 + moveIndex, NULL), GetMonData(pkmn, MON_DATA_PP_BONUSES, NULL), moveIndex);
+                if (data < 3 && sp28 > 4)
+                {
+                    data = GetMonData(pkmn, MON_DATA_PP_BONUSES, NULL) + gPPUpValues[moveIndex];
+					
+					if (r10 == 0x11) //pp max, set bonus to 3
+						SetMonData(pkmn, MON_DATA_PP_BONUSES, 3);
+                    else
+						SetMonData(pkmn, MON_DATA_PP_BONUSES, &data);
+
+                    data = CalculatePPWithBonus(GetMonData(pkmn, MON_DATA_MOVE1 + moveIndex, NULL), data, moveIndex) - sp28;
+                    data = GetMonData(pkmn, MON_DATA_PP1 + moveIndex, NULL) + data;
+                    SetMonData(pkmn, MON_DATA_PP1 + moveIndex, &data);
+                    retVal = FALSE;
+                }
+				else
+					return TRUE;
 			}
 			break;
 		}
