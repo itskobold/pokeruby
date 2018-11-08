@@ -217,7 +217,7 @@ void sub_803F324(int stat)
 
 u8 *sub_803F378(u16 itemId)
 {
-    int i, stat;
+    int stat;
     const u8 *itemEffect;
 
     if (itemId == ITEM_ENIGMA_BERRY)
@@ -283,29 +283,12 @@ u8 *sub_803F378(u16 itemId)
 		sub_803F324(stat);
 	}
 	
-    for (i = 0; i < 3; i++)
-    {
-        if (itemEffect[i] & 0xF)
-            sub_803F324(i * 2);
-        if (itemEffect[i] & 0xF0)
-        {
-            if (i)
-            {
-                sub_803F324(i * 2 + 1);
-            }
-            else
-            {
-                gBankAttacker = gBankInMenu;
-                StrCpyDecodeToDisplayedStringBattle(BattleText_DireHit);
-            }
-        }
-    }
-
-    if (itemEffect[3] & 0x80)
-    {
-        gBankAttacker = gBankInMenu;
-        StrCpyDecodeToDisplayedStringBattle(BattleText_GuardSpec);
-    }
+	gBankAttacker = gBankInMenu;
+	
+	if (itemEffect[10] == 0x1e)
+		StrCpyDecodeToDisplayedStringBattle(BattleText_DireHit);
+	else if (itemEffect[10] == 0x1f)
+		StrCpyDecodeToDisplayedStringBattle(BattleText_GuardSpec);
 
     return gDisplayedStringBattle;
 }

@@ -370,6 +370,7 @@ extern const u8 gOtherText_SpDefIVRaised[];
 extern const u8 gOtherText_TypesRandomized[];
 extern const u8 gOtherText_AbilityRandomized[];
 extern const u8 gOtherText_NatureRandomized[];
+extern const u8 gOtherText_ExpRaised[];
 extern const u8 gOtherText_ElevatedTo[];
 extern const u8 gOtherText_WasRaised[];
 extern const u8 gOtherText_SnapConfusion[];

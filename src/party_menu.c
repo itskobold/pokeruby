@@ -4660,11 +4660,14 @@ void DoRareCandyItemEffect(u8 taskId, u16 item, TaskFunc c)
 {
     u8 i;
     bool8 noEffect;
-
+	u8 oldLevel;
+	
     gTasks[taskId].func = TaskDummy;
     sub_806E8D0(taskId, item, c);
 
-    if (GetMonData(ewram1C000.pokemon, MON_DATA_LEVEL) != 100)
+	oldLevel = GetMonData(ewram1C000.pokemon, MON_DATA_LEVEL);
+	
+    if (oldLevel < 100)
     {
         for (i = 0; i < NUM_STATS; i++)
             ewram1B000.statGrowths[i] = GetMonData(ewram1C000.pokemon, StatDataTypes[i]);
@@ -4682,18 +4685,28 @@ void DoRareCandyItemEffect(u8 taskId, u16 item, TaskFunc c)
     }
     else
     {
-        u8 level;
+        u8 newLevel;
 
         gUnknown_0202E8F4 = 1;
-        PlayFanfareByFanfareNum(0);
-        RedrawPokemonInfoInMenu(ewram1C000.primarySelectedMonIndex, ewram1C000.pokemon);
+		RedrawPokemonInfoInMenu(ewram1C000.primarySelectedMonIndex, ewram1C000.pokemon);
         RemoveBagItem(item, 1);
         GetMonNickname(ewram1C000.pokemon, gStringVar1);
-        level = GetMonData(ewram1C000.pokemon, MON_DATA_LEVEL);
-        ConvertIntToDecimalStringN(gStringVar2, level, 0, 3);
-        StringExpandPlaceholders(gStringVar4, gOtherText_ElevatedTo);
-        sub_806E834(gStringVar4, 1);
-        CreateTask(Task_RareCandy1, 5);
+        newLevel = GetMonData(ewram1C000.pokemon, MON_DATA_LEVEL);
+		if (oldLevel < newLevel) //mon has leveled up
+		{
+			PlayFanfareByFanfareNum(0);
+			ConvertIntToDecimalStringN(gStringVar2, newLevel, 0, 3);
+			StringExpandPlaceholders(gStringVar4, gOtherText_ElevatedTo);
+			sub_806E834(gStringVar4, 1);
+			CreateTask(Task_RareCandy1, 5);
+		}
+		else
+		{
+			PlaySE(SE_SELECT);
+			StringExpandPlaceholders(gStringVar4, gOtherText_ExpRaised);
+			sub_806E834(gStringVar4, 1);
+			CreateTask(sub_806FB0C, 5);
+		}
     }
 }
 

@@ -523,11 +523,11 @@ static const u8 gItemDescription_PokeDoll[] = _(
     "Use to flee from\n"
     "any battle with\n"
     "a wild POKéMON.");
-
-static const u8 gItemDescription_FluffyTail[] = _(
-    "Use to flee from\n"
-    "any battle with\n"
-    "a wild POKéMON.");
+	
+static const u8 gItemDescription_Candy[] = _(
+    "Raises the EXP.\n"
+    "points of a\n"
+    "POKéMON.");
 
 static const u8 gItemDescription_SuperRepel[] = _(
     "Repels weak wild\n"

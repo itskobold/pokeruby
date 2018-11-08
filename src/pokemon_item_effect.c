@@ -9,6 +9,7 @@
 #include "item.h"
 #include "main.h"
 #include "overworld.h"
+#include "party_menu.h"
 #include "pokemon.h"
 #include "pokemon_item_effect.h"
 #include "rom_8077ABC.h"
@@ -579,7 +580,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 				{
 					GenerateRandomTypes(&pkmn->box);
 				} while (type1 == GetMonData(pkmn, MON_DATA_TYPE_1) && type2 == GetMonData(pkmn, MON_DATA_TYPE_2));
-				return FALSE;
+				retVal = FALSE;
             }
 			if (r10 == 0x02) //Roll Ability
             {
@@ -592,7 +593,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 				{
 					SetRandomAbility(&pkmn->box);
 				} while (GetMonData(pkmn, MON_DATA_ABILITY) == ability);
-				return FALSE;
+				retVal = FALSE;
             }	
 		    if (r10 == 0x03) //Roll Nature
             {
@@ -607,7 +608,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 				} while (GetMonData(pkmn, MON_DATA_NATURE) == nature);
 				
 				CalculateMonStats(pkmn);
-				return FALSE;
+				retVal = FALSE;
             }
 			if (r10 >= 0x04 && r10 <= 0x09) //IV Tonics
 			{	
@@ -633,7 +634,8 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 					SetMonData(pkmn, MON_DATA_HP_IV + r10, &iv);
 				}
 				CalculateMonStats(pkmn);
-				return FALSE;
+				RedrawPokemonInfoInMenu(partyIndex, pkmn);
+				retVal = FALSE;
 			}
 			if (r10 >= 0x0a && r10 <= 0x0f) //vitamins
 			{
@@ -663,7 +665,8 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 					SetMonData(pkmn, MON_DATA_HP_EV + r10, &ev);
 				}
 				CalculateMonStats(pkmn);
-				return FALSE;
+				RedrawPokemonInfoInMenu(partyIndex, pkmn);
+				retVal = FALSE;
 			}
 			if (r10 == 0x10) //pp up
 			{
@@ -679,8 +682,6 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
                     SetMonData(pkmn, MON_DATA_PP1 + moveIndex, &data);
                     retVal = FALSE;
                 }
-				else
-					return TRUE;
 			}
 			if (r10 == 0x11) //pp max
 			{
@@ -698,8 +699,6 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
                     SetMonData(pkmn, MON_DATA_PP1 + moveIndex, &data);
                     retVal = FALSE;
                 }
-				else
-					return TRUE;
 			}
 			if (r10 >= 0x12 && r10 <= 0x1d) //stat boosters (x attack etc)
             {
@@ -717,8 +716,52 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 					
 					retVal = FALSE;
 				}
-				else
-					return TRUE;
+            }
+			if (r10 == 0x1e) //dire hit
+			{
+				if (!(gBattleMons[gActiveBattler].status2 & STATUS2_FOCUS_ENERGY))
+				{
+					gBattleMons[gActiveBattler].status2 |= STATUS2_FOCUS_ENERGY;
+					retVal = FALSE;
+				}
+			}
+			if (r10 == 0x1f) //guard spec
+			{
+				if (gSideTimers[GetBattlerSide(gActiveBattler)].mistTimer == 0)
+				{
+					gSideTimers[GetBattlerSide(gActiveBattler)].mistTimer = 5;
+					retVal = FALSE;
+				}
+			}
+			if ((r10 == 0x20 || r10 == 0x21) //candy/rare candy
+             && GetMonData(pkmn, MON_DATA_LEVEL) < MAX_LEVEL)
+            {
+				u8 level = GetMonData(pkmn, MON_DATA_LEVEL);
+				u16 species = GetMonData(pkmn, MON_DATA_SPECIES);
+				u32 exp = GetMonData(pkmn, MON_DATA_EXP);
+				
+				if (r10 == 0x20) //rare candy
+				{
+					data = exp - gExperienceTables[gBaseStats[species].growthRate][level];
+					data += gExperienceTables[gBaseStats[species].growthRate][level + 1];
+				}
+				else //candy
+				{
+					data = gExperienceTables[gBaseStats[species].growthRate][level + 1]
+						 - gExperienceTables[gBaseStats[species].growthRate][level];
+					data /= 2;
+					data += exp;
+				}
+				
+				SetMonData(pkmn, MON_DATA_EXP, &data);
+				CalculateMonStats(pkmn);
+				
+				if (GetMonData(pkmn, MON_DATA_LEVEL) >= MAX_LEVEL) //if mon hits max level, set exp to cap
+				{
+					data = gExperienceTables[gBaseStats[species].growthRate][MAX_LEVEL];
+					SetMonData(pkmn, MON_DATA_EXP, &data);
+				}
+                retVal = FALSE;
             }
 		}
     }

@@ -337,11 +337,11 @@ const u8 gOtherText_SpAtk2[] = _("SP. ATK");
 const u8 gOtherText_SpDef2[] = _("SP. DEF");
 const u8 gOtherText_WontHaveAnyEffect[] = _("It won’t have any effect.{PAUSE_UNTIL_PRESS}");
 
-#if REVISION >= 1
-const u8 gOtherText_CantUseOnPoke[] = _("This can’t be used on\nthat POKéMON.{PAUSE_UNTIL_PRESS}");
-#else
+//#if REVISION >= 1
+//const u8 gOtherText_CantUseOnPoke[] = _("This can’t be used on\nthat POKéMON.{PAUSE_UNTIL_PRESS}");
+//#else
 const u8 gOtherText_CantUseOnPoke[] = _("This item can’t be used on\nthat POKéMON.{PAUSE_UNTIL_PRESS}");
-#endif
+//#endif
 
 const u8 gOtherText_CantBeSwitched[] = _("{STR_VAR_1} can’t be switched\nout!{PAUSE_UNTIL_PRESS}");
 const u8 gOtherText_AlreadyBattle[] = _("{STR_VAR_1} is already\nin battle!{PAUSE_UNTIL_PRESS}");
@@ -392,7 +392,8 @@ const u8 gOtherText_SpDefIVRaised[] = _("{STR_VAR_1}’s SP. DEF IV\nwas raised.
 const u8 gOtherText_TypesRandomized[] = _("{STR_VAR_1}’s types were\nrandomized.{PAUSE_UNTIL_PRESS}");
 const u8 gOtherText_AbilityRandomized[] = _("{STR_VAR_1}’s ability was\nrandomized.{PAUSE_UNTIL_PRESS}");
 const u8 gOtherText_NatureRandomized[] = _("{STR_VAR_1}’s nature was\nrandomized.{PAUSE_UNTIL_PRESS}");
-const u8 gOtherText_ElevatedTo[] = _("{STR_VAR_1} was elevated to\nLv. {STR_VAR_2}.");
+const u8 gOtherText_ExpRaised[] = _("{STR_VAR_1}’s EXP. points were\nraised.{PAUSE_UNTIL_PRESS}");
+const u8 gOtherText_ElevatedTo[] = _("{STR_VAR_1} was elevated to\nLv. {STR_VAR_2}!");
 const u8 gOtherText_WasRaised[] = _("{STR_VAR_1}’s {STR_VAR_2} was\nraised.{PAUSE_UNTIL_PRESS}");
 const u8 gOtherText_SnapConfusion[] = _("{STR_VAR_1} snapped out of its\nconfusion.{PAUSE_UNTIL_PRESS}");
 const u8 gOtherText_GotOverLove[] = _("{STR_VAR_1} got over its\ninfatuation.{PAUSE_UNTIL_PRESS}");

@@ -23,7 +23,7 @@ VerdanturfTown_Mart_Items:: @ 8153ED4
 	.2byte ITEM_ICE_HEAL
 	.2byte ITEM_REPEL
 	.2byte ITEM_X_SP_ATK
-	.2byte ITEM_FLUFFY_TAIL
+	.2byte ITEM_POKE_DOLL
 	.2byte ITEM_NONE
 	release
 	end

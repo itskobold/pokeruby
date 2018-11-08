@@ -35,7 +35,7 @@ LilycoveCity_DepartmentStore_2F_Items1:: @ 8159F44
 	.2byte ITEM_BURN_HEAL
 	.2byte ITEM_ICE_HEAL
 	.2byte ITEM_AWAKENING
-	.2byte ITEM_FLUFFY_TAIL
+	.2byte ITEM_POKE_DOLL
 	.2byte ITEM_NONE
 	release
 	end
