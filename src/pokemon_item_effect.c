@@ -763,6 +763,25 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 				}
                 retVal = FALSE;
             }
+			if (r10 == 0x22) //ability capsule
+			{
+				u16 ability = 0;
+				
+				if (GetMonData(pkmn, MON_DATA_ABILITY) != 0) //set mon custom ability & ability bit to 0 if mon has custom ability
+				{
+					SetMonData(pkmn, MON_DATA_ABILITY, &ability);
+					SetMonData(pkmn, MON_DATA_ALT_ABILITY, &ability);
+				}
+				else
+				{
+					if (gBaseStats[GetMonData(pkmn, MON_DATA_SPECIES)].ability2 == 0) //if mon only has 1 ability return no effect
+						return TRUE;
+					
+					ability = ~(GetMonData(pkmn, MON_DATA_ALT_ABILITY));
+					SetMonData(pkmn, MON_DATA_ALT_ABILITY, &ability);
+				}
+				retVal = FALSE;
+			}
 		}
     }
     return retVal;

@@ -389,6 +389,7 @@ const u8 gOtherText_DefenseIVRaised[] = _("{STR_VAR_1}’s DEFENSE IV\nwas raise
 const u8 gOtherText_SpeedIVRaised[] = _("{STR_VAR_1}’s SPEED IV\nwas raised.{PAUSE_UNTIL_PRESS}");
 const u8 gOtherText_SpAtkIVRaised[] = _("{STR_VAR_1}’s SP. ATK IV\nwas raised.{PAUSE_UNTIL_PRESS}");
 const u8 gOtherText_SpDefIVRaised[] = _("{STR_VAR_1}’s SP. DEF IV\nwas raised.{PAUSE_UNTIL_PRESS}");
+const u8 gOtherText_AbilitySwapped[] = _("{STR_VAR_1}’s ability was\nswapped.{PAUSE_UNTIL_PRESS}");
 const u8 gOtherText_TypesRandomized[] = _("{STR_VAR_1}’s types were\nrandomized.{PAUSE_UNTIL_PRESS}");
 const u8 gOtherText_AbilityRandomized[] = _("{STR_VAR_1}’s ability was\nrandomized.{PAUSE_UNTIL_PRESS}");
 const u8 gOtherText_NatureRandomized[] = _("{STR_VAR_1}’s nature was\nrandomized.{PAUSE_UNTIL_PRESS}");

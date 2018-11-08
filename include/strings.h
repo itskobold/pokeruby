@@ -367,6 +367,7 @@ extern const u8 gOtherText_DefenseIVRaised[];
 extern const u8 gOtherText_SpeedIVRaised[];
 extern const u8 gOtherText_SpAtkIVRaised[];
 extern const u8 gOtherText_SpDefIVRaised[];
+extern const u8 gOtherText_AbilitySwapped[];
 extern const u8 gOtherText_TypesRandomized[];
 extern const u8 gOtherText_AbilityRandomized[];
 extern const u8 gOtherText_NatureRandomized[];

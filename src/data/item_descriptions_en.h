@@ -448,6 +448,11 @@ static const u8 gItemDescription_PPMax[] = _(
     "Raises the PP of a\n"
     "move to its maximum\n"
     "points.");
+	
+static const u8 gItemDescription_AbilityCapsule[] = _(
+    "Allows some POKéMON\n"
+    "to switch between\n"
+    "abilities.");
 
 static const u8 gItemDescription_GuardSpec[] = _(
     "Prevents stat\n"

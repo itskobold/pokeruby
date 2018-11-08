@@ -4307,6 +4307,9 @@ void GetMedicineItemEffectMessage(u16 item)
 	case 31: //Shield Tonic
 		StringExpandPlaceholders(gStringVar4, gOtherText_SpDefIVRaised);
         break;
+	case 32: //Ability Capsule
+		StringExpandPlaceholders(gStringVar4, gOtherText_AbilitySwapped);
+        break;
     default:
         StringExpandPlaceholders(gStringVar4, gOtherText_WontHaveAnyEffect);
         break;
@@ -5123,6 +5126,10 @@ u8 GetItemEffectType(u16 item)
 	else if (itemEffect[10] == 0x11) //pp max
     {
         return 20;
+    }
+	else if (itemEffect[10] == 0x22) //ability capsule
+    {
+        return 32;
     }
     else if (itemEffect[4] & 0x44)
     {
