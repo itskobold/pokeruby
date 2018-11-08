@@ -3849,7 +3849,10 @@ void SwitchInClearSetData(void)
 void UndoEffectsAfterFainting(void)
 {
     s32 i;
+	u16 species;
+	u16 hp;
     u8 *ptr;
+	int j;
 	
     for (i = 0; i < 8; i++)
         gBattleMons[gActiveBattler].statStages[i] = 6;
@@ -3907,8 +3910,18 @@ void UndoEffectsAfterFainting(void)
 
     eFlashFireArr.arr[gActiveBattler] = 0;
 	
-	gBattleMons[gActiveBattler].type1 = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_1) : GetMonData(&gEnemyParty, MON_DATA_TYPE_1);
-	gBattleMons[gActiveBattler].type2 = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_2) : GetMonData(&gEnemyParty, MON_DATA_TYPE_2);
+	for (j = 0; j < 6; j++) //gets types of mon - it will always be first in the party that isn't fainted, an egg, or no species
+	{
+		species = GetMonData(&gPlayerParty[j], MON_DATA_SPECIES2);
+		hp = GetMonData(&gPlayerParty[j], MON_DATA_HP);
+		
+		if (species != SPECIES_NONE && species != SPECIES_EGG && hp != 0)
+		{
+			gBattleMons[gActiveBattler].type1 = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty[j], MON_DATA_TYPE_1) : GetMonData(&gEnemyParty[j], MON_DATA_TYPE_1);
+			gBattleMons[gActiveBattler].type2 = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty[j], MON_DATA_TYPE_2) : GetMonData(&gEnemyParty[j], MON_DATA_TYPE_2);
+			break;
+		}
+	}
 	
 	/*if (gSaveBlock2.nuzlockeMode != NUZLOCKE_MODE_OFF)
 	{
@@ -3959,7 +3972,10 @@ void sub_8011384(void)
 {
 	//abilities and such set here
     u8 *ptr;
+	u16 species;
+	u16 hp;
     s32 i;
+	int j;
 
     if (gBattleExecBuffer == 0)
     {
@@ -3976,13 +3992,23 @@ void sub_8011384(void)
 
                 MEMSET_ALT(&gBattleMons[gActiveBattler], gBattleBufferB[gActiveBattler][4 + i], 0x58, i, ptr);
 
-				gBattleMons[gActiveBattler].type1 = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_1) : GetMonData(&gEnemyParty, MON_DATA_TYPE_1);
-				gBattleMons[gActiveBattler].type2 = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_TYPE_2) : GetMonData(&gEnemyParty, MON_DATA_TYPE_2);
+				for (j = 0; j < 6; j++) //gets ability & types of mon - it will always be first in the party that isn't fainted, an egg, or no species
+				{
+					species = GetMonData(&gPlayerParty[j], MON_DATA_SPECIES2);
+					hp = GetMonData(&gPlayerParty[j], MON_DATA_HP);
+					
+					if (species != SPECIES_NONE && species != SPECIES_EGG && hp != 0)
+					{
+						gBattleMons[gActiveBattler].type1 = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty[j], MON_DATA_TYPE_1) : GetMonData(&gEnemyParty[j], MON_DATA_TYPE_1);
+						gBattleMons[gActiveBattler].type2 = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty[j], MON_DATA_TYPE_2) : GetMonData(&gEnemyParty[j], MON_DATA_TYPE_2);
 
-                if (GetMonData(((GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? &gPlayerParty : &gEnemyParty), MON_DATA_ABILITY) != 0)
-					gBattleMons[gActiveBattler].ability = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty, MON_DATA_ABILITY) : GetMonData(&gEnemyParty, MON_DATA_ABILITY);
-				else
-					gBattleMons[gActiveBattler].ability = GetAbilityBySpecies(gBattleMons[gActiveBattler].species, gBattleMons[gActiveBattler].altAbility);
+						if (GetMonData(((GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? &gPlayerParty[j] : &gEnemyParty[j]), MON_DATA_ABILITY) != 0)
+							gBattleMons[gActiveBattler].ability = (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER) ? GetMonData(&gPlayerParty[j], MON_DATA_ABILITY) : GetMonData(&gEnemyParty[j], MON_DATA_ABILITY);
+						else
+							gBattleMons[gActiveBattler].ability = GetAbilityBySpecies(gBattleMons[gActiveBattler].species, gBattleMons[gActiveBattler].altAbility);
+						break;
+					}
+				}
 				
                 r0 = GetBattlerSide(gActiveBattler);
                 ewram160BC[r0] = gBattleMons[gActiveBattler].hp;
