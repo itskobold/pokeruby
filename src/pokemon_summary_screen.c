@@ -239,10 +239,7 @@ static const union AnimCmd sSpriteAnim_TypeSteel[] = {
     ANIMCMD_FRAME(TYPE_STEEL * 8, 0, FALSE, FALSE),
     ANIMCMD_END
 };
-static const union AnimCmd sSpriteAnim_TypeMystery[] = {
-    ANIMCMD_FRAME(TYPE_MYSTERY * 8, 0, FALSE, FALSE),
-    ANIMCMD_END
-};
+
 static const union AnimCmd sSpriteAnim_TypeFire[] = {
     ANIMCMD_FRAME(TYPE_FIRE * 8, 0, FALSE, FALSE),
     ANIMCMD_END
@@ -273,6 +270,22 @@ static const union AnimCmd sSpriteAnim_TypeDragon[] = {
 };
 static const union AnimCmd sSpriteAnim_TypeDark[] = {
     ANIMCMD_FRAME(TYPE_DARK * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypeAudio[] = {
+    ANIMCMD_FRAME(TYPE_AUDIO * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypeCosmic[] = {
+    ANIMCMD_FRAME(TYPE_COSMIC * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypeFairy[] = {
+    ANIMCMD_FRAME(TYPE_FAIRY * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypeNull[] = {
+    ANIMCMD_FRAME(TYPE_NULL * 8, 0, FALSE, FALSE),
     ANIMCMD_END
 };
 static const union AnimCmd sSpriteAnim_CategoryCool[] = {
@@ -306,7 +319,6 @@ static const union AnimCmd *const sSpriteAnimTable_MoveTypes[NUMBER_OF_MON_TYPES
     sSpriteAnim_TypeBug,
     sSpriteAnim_TypeGhost,
     sSpriteAnim_TypeSteel,
-    sSpriteAnim_TypeMystery,
     sSpriteAnim_TypeFire,
     sSpriteAnim_TypeWater,
     sSpriteAnim_TypeGrass,
@@ -315,6 +327,10 @@ static const union AnimCmd *const sSpriteAnimTable_MoveTypes[NUMBER_OF_MON_TYPES
     sSpriteAnim_TypeIce,
     sSpriteAnim_TypeDragon,
     sSpriteAnim_TypeDark,
+	sSpriteAnim_TypeAudio,
+	sSpriteAnim_TypeCosmic,
+	sSpriteAnim_TypeFairy,
+	sSpriteAnim_TypeNull,
     sSpriteAnim_CategoryCool,
     sSpriteAnim_CategoryBeauty,
     sSpriteAnim_CategoryCute,
