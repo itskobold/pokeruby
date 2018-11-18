@@ -121,6 +121,7 @@
 #define TYPE_COSMIC   0x12
 #define TYPE_FAIRY    0x13
 #define TYPE_NULL     0x14
+#define NUMBER_OF_MON_TYPES     0x15
 
 #define FRIENDSHIP_EVENT_GROW_LEVEL           0x0
 #define FRIENDSHIP_EVENT_VITAMIN              0x1 // unused
