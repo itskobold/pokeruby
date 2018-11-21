@@ -656,7 +656,7 @@ u32 StrCpyDecodeBattle(const u8* src, u8* dst)
             case 19: // last used item
                 if (gBattleTypeFlags & BATTLE_TYPE_LINK)
                 {
-                    if (gLastUsedItem == ITEM_ENIGMA_BERRY)
+                    /*if (gLastUsedItem == ITEM_ENIGMA_BERRY)
                     {
                         if (gLinkPlayers[gBattleStruct->linkPlayerIndex].lp_field_18 == gStringBank)
                         {
@@ -672,10 +672,10 @@ u32 StrCpyDecodeBattle(const u8* src, u8* dst)
                             toCpy = BattleText_EnigmaBerry;
                     }
                     else
-                    {
+                    {*/
                         CopyItemName(gLastUsedItem, text);
                         toCpy = text;
-                    }
+                    //}
                 }
                 else
                 {
@@ -947,7 +947,7 @@ void StrCpyDecodeBattleTextBuff(u8* src, u8* dst)
                 hword = ByteRead16(&src[srcID + 1]);
                 if (gBattleTypeFlags & BATTLE_TYPE_LINK)
                 {
-                    if (hword == ITEM_ENIGMA_BERRY)
+                    /*if (hword == ITEM_ENIGMA_BERRY)
                     {
                         if (gLinkPlayers[gBattleStruct->linkPlayerIndex].lp_field_18 == gStringBank)
                         {
@@ -961,7 +961,7 @@ void StrCpyDecodeBattleTextBuff(u8* src, u8* dst)
                         else
                             StringAppend(dst, BattleText_EnigmaBerry);
                     }
-                    else
+                    else*/
                         CopyItemName(hword, dst);
                 }
                 else

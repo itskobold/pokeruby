@@ -88,7 +88,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
     u32 r4;
 
     heldItem = GetMonData(pkmn, MON_DATA_HELD_ITEM, NULL);
-    if (heldItem == ITEM_ENIGMA_BERRY)
+    /*if (heldItem == ITEM_ENIGMA_BERRY)
     {
         if (gMain.inBattle)
             holdEffect = gEnigmaBerries[gBankInMenu].holdEffect;
@@ -96,9 +96,9 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
             holdEffect = gSaveBlock1.enigmaBerry.holdEffect;
     }
     else
-    {
+    {*/
         holdEffect = ItemId_GetHoldEffect(heldItem);
-    }
+    //}
 
     gStringBank = gBankInMenu;
     if (gMain.inBattle)
@@ -123,10 +123,10 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 
     if (!IS_POKEMON_ITEM(item))
         return TRUE;
-    if (gItemEffectTable[item - 13] == NULL && item != ITEM_ENIGMA_BERRY)
+    if (gItemEffectTable[item - 13] == NULL/* && item != ITEM_ENIGMA_BERRY*/)
         return TRUE;
 
-    if (item == ITEM_ENIGMA_BERRY)
+    /*if (item == ITEM_ENIGMA_BERRY)
     {
         if (gMain.inBattle)
             itemEffect = gEnigmaBerries[gActiveBattler].itemEffect;
@@ -134,9 +134,9 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
             itemEffect = gSaveBlock1.enigmaBerry.itemEffect;
     }
     else
-    {
+    {*/
         itemEffect = gItemEffectTable[item - 13];
-    }
+    //}
 
     for (cmdIndex = 0; cmdIndex < 11; cmdIndex++)
     {

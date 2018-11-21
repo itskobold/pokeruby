@@ -140,7 +140,7 @@ Route120_EventScript_1517E7:: @ 81517E7
 	end
 
 Route120_EventScript_1517F2:: @ 81517F2
-	setvar VAR_SPECIAL_4, ITEM_MAGO_BERRY
+	setvar VAR_SPECIAL_4, ITEM_POTION
 	goto Route120_EventScript_151813
 	end
 
@@ -150,7 +150,7 @@ Route120_EventScript_1517FD:: @ 81517FD
 	end
 
 Route120_EventScript_151808:: @ 8151808
-	setvar VAR_SPECIAL_4, ITEM_IAPAPA_BERRY
+	setvar VAR_SPECIAL_4, ITEM_POTION
 	goto Route120_EventScript_151813
 	end
 

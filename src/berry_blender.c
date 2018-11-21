@@ -1312,7 +1312,7 @@ static void sub_804F1BC(u16 itemID, u8 a1, struct BlenderBerry* berry)
 {
     u16 r4 = 0;
     u16 i;
-    if (itemID == ITEM_ENIGMA_BERRY)
+    /*if (itemID == ITEM_ENIGMA_BERRY)
     {
         for (i = 0; i < 5; i++)
         {
@@ -1322,11 +1322,11 @@ static void sub_804F1BC(u16 itemID, u8 a1, struct BlenderBerry* berry)
         r4 += 5;
     }
     else
-    {
+    {*/
         r4 = itemID - 133;
         if (r4 >= 5)
             r4 = (r4 % 5) + 5;
-    }
+    //}
     for (i = 0; i < a1 - 1; i++)
     {
         Blender_SetBankBerryData(i + 1, gUnknown_082165BC[r4][i] + 133);
@@ -1903,7 +1903,7 @@ u32 Blender_GetPokeblockColor(struct BlenderBerry* berries, s16* a1, u8 playersN
         for (r6 = 0; r6 < playersNo; r6++)
         {
             if (berries[i].itemID == berries[r6].itemID && i != r6
-                && (berries[i].itemID != ITEM_ENIGMA_BERRY || sub_80502A4(berries, i, r6)))
+                && (/*berries[i].itemID != ITEM_ENIGMA_BERRY || */sub_80502A4(berries, i, r6)))
                     return PBLOCK_CLR_BLACK;
         }
     }

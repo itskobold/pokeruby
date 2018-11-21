@@ -112,7 +112,7 @@ SootopolisCity_EventScript_14D1FF:: @ 814D1FF
 	end
 
 SootopolisCity_EventScript_14D220:: @ 814D220
-	giveitem_std ITEM_IAPAPA_BERRY
+	giveitem_std ITEM_POTION
 	compare RESULT, 0
 	goto_if_eq SootopolisCity_EventScript_1A029B
 	msgbox SootopolisCity_Text_1C650B, 4

@@ -1127,10 +1127,10 @@ const struct Berry *GetBerryInfo(u8 berry)
     // when getting the pointer to the berry info, enigma berries are handled differently. if your
     // berry is an Enigma Berry and its checksum is valid, fetch the pointer to its information in
     // the save block.
-    if (berry == GETBERRYID(ITEM_ENIGMA_BERRY) && IsEnigmaBerryValid())
+    /*if (berry == GETBERRYID(ITEM_ENIGMA_BERRY) && IsEnigmaBerryValid())
         return &gSaveBlock1.enigmaBerry.berry;
     else
-    {
+    {*/
         // invalid berries will be flattened into a cheri berry. Interestingly, if your berry was
         // an enigma berry whos checksum failed, the game will use the Enigma Berry information
         // for this: meaning if you see the Enigma Berry information, its actually because the
@@ -1138,7 +1138,7 @@ const struct Berry *GetBerryInfo(u8 berry)
         if (berry == BERRY_NONE || berry > GETBERRYID(LAST_BERRY))
             berry = GETBERRYID(FIRST_BERRY);
         return &gBerries[berry - 1];
-    }
+    //}
 }
 
 // the save file can handle up to a number of 128 berry trees as indicated by its definition

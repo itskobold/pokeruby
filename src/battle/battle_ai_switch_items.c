@@ -924,9 +924,9 @@ static bool8 ShouldUseItem(void)
         if (gItemEffectTable[item - 13] == NULL)
             continue;
 
-        if (item == ITEM_ENIGMA_BERRY)
+        /*if (item == ITEM_ENIGMA_BERRY)
             itemEffects = gSaveBlock1.enigmaBerry.itemEffect;
-        else
+        else*/
             itemEffects = gItemEffectTable[item - 13];
 
         ewram160D8(gActiveBattler) = GetAI_ItemType(item, itemEffects);

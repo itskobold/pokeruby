@@ -62,15 +62,15 @@ static void CompactPCItems(void);
 
 void CopyItemName(u16 itemId, u8 *string)
 {
-    if (itemId == ITEM_ENIGMA_BERRY)
+    /*if (itemId == ITEM_ENIGMA_BERRY)
     {
         StringCopy(string, GetBerryInfo(GETBERRYID(ITEM_ENIGMA_BERRY))->name);
         StringAppend(string, gOtherText_Berry2);
     }
     else
-    {
+    {*/
         StringCopy(string, ItemId_GetName(itemId));
-    }
+    //}
 }
 
 //Unreferenced

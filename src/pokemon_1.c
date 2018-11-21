@@ -1889,8 +1889,8 @@ void sub_803AF78(struct Pokemon *mon, struct UnknownPokemonStruct *dest)
     dest->species = GetMonData(mon, MON_DATA_SPECIES, NULL);
     heldItem = GetMonData(mon, MON_DATA_HELD_ITEM, NULL);
 
-    if (heldItem == ITEM_ENIGMA_BERRY)
-        heldItem = 0;
+    //if (heldItem == ITEM_ENIGMA_BERRY)
+    //    heldItem = 0;
 
     dest->heldItem = heldItem;
 

@@ -110,27 +110,27 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     spAttack = attacker->spAttack;
     spDefense = defender->spDefense;
 
-    if (attacker->item == ITEM_ENIGMA_BERRY)
+    /*if (attacker->item == ITEM_ENIGMA_BERRY)
     {
         attackerHoldEffect = gEnigmaBerries[bankAtk].holdEffect;
         attackerHoldEffectParam = gEnigmaBerries[bankAtk].holdEffectParam;
     }
     else
-    {
+    {*/
         attackerHoldEffect = ItemId_GetHoldEffect(attacker->item);
         attackerHoldEffectParam = ItemId_GetHoldEffectParam(attacker->item);
-    }
+    //}
 
-    if (defender->item == ITEM_ENIGMA_BERRY)
+    /*if (defender->item == ITEM_ENIGMA_BERRY)
     {
         defenderHoldEffect = gEnigmaBerries[bankDef].holdEffect;
         defenderHoldEffectParam = gEnigmaBerries[bankDef].holdEffectParam;
     }
     else
-    {
+    {*/
         defenderHoldEffect = ItemId_GetHoldEffect(defender->item);
         defenderHoldEffectParam = ItemId_GetHoldEffectParam(defender->item);
-    }
+    //}
 
     if (attacker->ability == ABILITY_HUGE_POWER || attacker->ability == ABILITY_PURE_POWER)
         attack *= 2;

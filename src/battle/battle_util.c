@@ -502,9 +502,9 @@ u8 TrySetCantSelectMoveBattleScript(void) //msg can't select a move
         gUnknown_02024C1C[gActiveBattler] = BattleScript_MoveSelectionImprisoned;
         limitations++;
     }
-    if (gBattleMons[gActiveBattler].item == ITEM_ENIGMA_BERRY)
+    /*if (gBattleMons[gActiveBattler].item == ITEM_ENIGMA_BERRY)
         holdEffect = gEnigmaBerries[gActiveBattler].holdEffect;
-    else
+    else*/
         holdEffect = ItemId_GetHoldEffect(gBattleMons[gActiveBattler].item);
     gStringBank = gActiveBattler;
     if (holdEffect == HOLD_EFFECT_CHOICE_BAND && *choicedMove != 0 && *choicedMove != 0xFFFF && *choicedMove != move)
@@ -534,9 +534,9 @@ u8 CheckMoveLimitations(u8 bank, u8 unusableMoves, u8 check)
     u8 holdEffect;
     u16* choicedMove = CHOICED_MOVE(bank);
     s32 i;
-    if (gBattleMons[bank].item == ITEM_ENIGMA_BERRY)
+    /*if (gBattleMons[bank].item == ITEM_ENIGMA_BERRY)
         holdEffect = gEnigmaBerries[bank].holdEffect;
-    else
+    else*/
         holdEffect = ItemId_GetHoldEffect(gBattleMons[bank].item);
     gStringBank = bank;
     for (i = 0; i < 4; i++)
@@ -2606,41 +2606,41 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
     u16 atkItem, defItem;
 
     gLastUsedItem = gBattleMons[bank].item;
-    if (gLastUsedItem == ITEM_ENIGMA_BERRY)
+    /*if (gLastUsedItem == ITEM_ENIGMA_BERRY)
     {
         bankHoldEffect = gEnigmaBerries[bank].holdEffect;
         bankQuality = gEnigmaBerries[bank].holdEffectParam;
     }
     else
-    {
+    {*/
         bankHoldEffect = ItemId_GetHoldEffect(gLastUsedItem);
         bankQuality = ItemId_GetHoldEffectParam(gLastUsedItem);
-    }
+    //}
 
     atkItem = gBattleMons[gBankAttacker].item;
-    if (atkItem == ITEM_ENIGMA_BERRY)
+    /*if (atkItem == ITEM_ENIGMA_BERRY)
     {
         atkHoldEffect = gEnigmaBerries[gBankAttacker].holdEffect;
         atkQuality = gEnigmaBerries[gBankAttacker].holdEffectParam;
     }
     else
-    {
+    {*/
         atkHoldEffect = ItemId_GetHoldEffect(atkItem);
         atkQuality = ItemId_GetHoldEffectParam(atkItem);
-    }
+    //}
 
     // def variables are unused
     defItem = gBattleMons[gBankTarget].item;
-    if (defItem == ITEM_ENIGMA_BERRY)
+    /*if (defItem == ITEM_ENIGMA_BERRY)
     {
         defHoldEffect = gEnigmaBerries[gBankTarget].holdEffect;
         defQuality = gEnigmaBerries[gBankTarget].holdEffectParam;
     }
     else
-    {
+    {*/
         defHoldEffect = ItemId_GetHoldEffect(defItem);
         defQuality = ItemId_GetHoldEffectParam(defItem);
-    }
+    //}
 
     switch (caseID)
     {
@@ -3118,16 +3118,16 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
         for (bank = 0; bank < gBattlersCount; bank++)
         {
             gLastUsedItem = gBattleMons[bank].item;
-            if (gBattleMons[bank].item == ITEM_ENIGMA_BERRY)
+            /*if (gBattleMons[bank].item == ITEM_ENIGMA_BERRY)
             {
                 bankHoldEffect = gEnigmaBerries[bank].holdEffect;
                 bankQuality = gEnigmaBerries[bank].holdEffectParam;
             }
             else
-            {
+            {*/
                 bankHoldEffect = ItemId_GetHoldEffect(gLastUsedItem);
                 bankQuality = ItemId_GetHoldEffectParam(gLastUsedItem);
-            }
+            //}
             switch (bankHoldEffect)
             {
             case HOLD_EFFECT_CURE_PAR:

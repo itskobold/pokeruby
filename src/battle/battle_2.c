@@ -4411,9 +4411,9 @@ u8 CanRunFromBattle(void)
     u8 r6;
     s32 i;
 
-    if (gBattleMons[gActiveBattler].item == ITEM_ENIGMA_BERRY)
+    /*if (gBattleMons[gActiveBattler].item == ITEM_ENIGMA_BERRY)
         r2 = gEnigmaBerries[gActiveBattler].holdEffect;
-    else
+    else*/
         r2 = ItemId_GetHoldEffect(gBattleMons[gActiveBattler].item);
     gStringBank = gActiveBattler;
     if (r2 == HOLD_EFFECT_CAN_ALWAYS_RUN)
@@ -6079,16 +6079,16 @@ u8 GetWhoStrikesFirst(u8 bank1, u8 bank2, bool8 ignoreMovePriorities)
     bank1AdjustedSpeed = (gBattleMons[bank1].speed * bank1SpeedMultiplier)
         * gStatStageRatios[gBattleMons[bank1].statStages[STAT_STAGE_SPEED]][0] / gStatStageRatios[gBattleMons[bank1].statStages[STAT_STAGE_SPEED]][1];
 
-    if (gBattleMons[bank1].item == ITEM_ENIGMA_BERRY)
+    /*if (gBattleMons[bank1].item == ITEM_ENIGMA_BERRY)
     {
         heldItemEffect = gEnigmaBerries[bank1].holdEffect;
         heldItemEffectParam = gEnigmaBerries[bank1].holdEffectParam;
     }
     else
-    {
+    {*/
         heldItemEffect = ItemId_GetHoldEffect(gBattleMons[bank1].item);
         heldItemEffectParam = ItemId_GetHoldEffectParam(gBattleMons[bank1].item);
-    }
+    //}
 
     // Only give badge speed boost to the player's mon.
     if (!(gBattleTypeFlags & BATTLE_TYPE_LINK) && FlagGet(FLAG_BADGE03_GET) && GetBattlerSide(bank1) == 0)
@@ -6107,16 +6107,16 @@ u8 GetWhoStrikesFirst(u8 bank1, u8 bank2, bool8 ignoreMovePriorities)
     bank2AdjustedSpeed = gBattleMons[bank2].speed * bank2SpeedMultiplier
         * gStatStageRatios[gBattleMons[bank2].statStages[STAT_STAGE_SPEED]][0] / gStatStageRatios[gBattleMons[bank2].statStages[STAT_STAGE_SPEED]][1];
 
-    if (gBattleMons[bank2].item == ITEM_ENIGMA_BERRY)
+    /*if (gBattleMons[bank2].item == ITEM_ENIGMA_BERRY)
     {
         heldItemEffect = gEnigmaBerries[bank2].holdEffect;
         heldItemEffectParam = gEnigmaBerries[bank2].holdEffectParam;
     }
     else
-    {
+    {*/
         heldItemEffect = ItemId_GetHoldEffect(gBattleMons[bank2].item);
         heldItemEffectParam = ItemId_GetHoldEffectParam(gBattleMons[bank2].item);
-    }
+    //}
 
     // Only give badge speed boost to the player's mon.
     if (!(gBattleTypeFlags & BATTLE_TYPE_LINK) && FlagGet(FLAG_BADGE03_GET) && GetBattlerSide(bank2) == 0)
@@ -7289,9 +7289,9 @@ bool8 TryRunFromBattle(u8 bank)
     u8 holdEffect;
     u8 speedVar;
 
-    if (gBattleMons[bank].item == ITEM_ENIGMA_BERRY)
+    /*if (gBattleMons[bank].item == ITEM_ENIGMA_BERRY)
         holdEffect = gEnigmaBerries[bank].holdEffect;
-    else
+    else*/
         holdEffect = ItemId_GetHoldEffect(gBattleMons[bank].item);
 
     gStringBank = bank;

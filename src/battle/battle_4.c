@@ -1338,16 +1338,16 @@ static void atk01_accuracycheck(void)
         if (gBattleMons[gBankAttacker].ability == ABILITY_HUSTLE && type < 9)
             calc = (calc * 80) / 100; // 1.2 hustle loss;
 
-        if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
+        /*if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
         {
             holdEffect = gEnigmaBerries[gBankTarget].holdEffect;
             quality = gEnigmaBerries[gBankTarget].holdEffectParam;
         }
         else
-        {
+        {*/
             holdEffect = ItemId_GetHoldEffect(gBattleMons[gBankTarget].item);
             quality = ItemId_GetHoldEffectParam(gBattleMons[gBankTarget].item);
-        }
+        //}
 
         gStringBank = gBankTarget;
 
@@ -1436,9 +1436,9 @@ static void atk04_critcalc(void)
 
     item = gBattleMons[gBankAttacker].item;
 
-    if (item == ITEM_ENIGMA_BERRY)
+    /*if (item == ITEM_ENIGMA_BERRY)
         holdEffect = gEnigmaBerries[gBankAttacker].holdEffect;
-    else
+    else*/
         holdEffect = ItemId_GetHoldEffect(item);
 
     gStringBank = gBankAttacker;
@@ -1886,15 +1886,15 @@ static void atk07_adjustnormaldamage(void)
 {
     u8 hold_effect, quality;
     ApplyRandomDmgMultiplier();
-    if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
+    /*if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
     {
         hold_effect = gEnigmaBerries[gBankTarget].holdEffect, quality = gEnigmaBerries[gBankTarget].holdEffectParam;
     }
     else
-    {
+    {*/
         hold_effect = ItemId_GetHoldEffect(gBattleMons[gBankTarget].item);
         quality = ItemId_GetHoldEffectParam(gBattleMons[gBankTarget].item);
-    }
+    //}
 
     gStringBank = gBankTarget;
 
@@ -1933,15 +1933,15 @@ static void atk08_adjustnormaldamage2(void) //literally the same as 0x7 except i
 {
     u8 hold_effect, quality;
     ApplyRandomDmgMultiplier();
-    if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
+    /*if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
     {
         hold_effect = gEnigmaBerries[gBankTarget].holdEffect, quality = gEnigmaBerries[gBankTarget].holdEffectParam;
     }
     else
-    {
+    {*/
         hold_effect = ItemId_GetHoldEffect(gBattleMons[gBankTarget].item);
         quality = ItemId_GetHoldEffectParam(gBattleMons[gBankTarget].item);
-    }
+    //}
 
     gStringBank = gBankTarget;
 
@@ -2797,8 +2797,8 @@ void SetMoveEffect(bool8 primary, u8 certainArg)
                 }
                 if (gBattleMons[gBankAttacker].item)
                     {gBattlescriptCurrInstr++; return;}
-                if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
-                    {gBattlescriptCurrInstr++; return;}
+                //if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
+                //    {gBattlescriptCurrInstr++; return;}
                 if (gBattleMons[gBankTarget].item == 0)
                     {gBattlescriptCurrInstr++; return;}
 
@@ -5463,9 +5463,9 @@ static void atk23_getexp(void)
 
                 item = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
 
-                if (item == ITEM_ENIGMA_BERRY)
+                /*if (item == ITEM_ENIGMA_BERRY)
                     holdEffect = gSaveBlock1.enigmaBerry.holdEffect;
-                else
+                else*/
                     holdEffect = ItemId_GetHoldEffect(item);
 
                 if (holdEffect == HOLD_EFFECT_EXP_SHARE)
@@ -5502,9 +5502,9 @@ static void atk23_getexp(void)
         {
             item = GetMonData(&gPlayerParty[gBattleStruct->expGetterID], MON_DATA_HELD_ITEM);
 
-            if (item == ITEM_ENIGMA_BERRY)
+            /*if (item == ITEM_ENIGMA_BERRY)
                 holdEffect = gSaveBlock1.enigmaBerry.holdEffect;
-            else
+            else*/
                 holdEffect = ItemId_GetHoldEffect(item);
 
             if (holdEffect != HOLD_EFFECT_EXP_SHARE && !(gBattleStruct->sentInPokes & 1))
@@ -6819,9 +6819,9 @@ static void atk49_moveend(void)
 
     arg1 = T2_READ_8(gBattlescriptCurrInstr + 1);
     arg2 = T2_READ_8(gBattlescriptCurrInstr + 2);
-    if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
+    /*if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
         hold_effect_atk = gEnigmaBerries[gBankAttacker].holdEffect;
-    else
+    else*/
         hold_effect_atk = ItemId_GetHoldEffect(gBattleMons[gBankTarget].item);
 
     choiced_move_atk = (u16*)(gBankAttacker * (ewram_addr + 0x160E8));
@@ -10551,13 +10551,13 @@ static void atk68_cancelallactions(void)
 static void atk69_adjustsetdamage(void) //literally a copy of atk07 except theres no rand dmg modifier...
 {
     u8 hold_effect, quality;
-    if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
+    /*if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
         hold_effect = gEnigmaBerries[gBankTarget].holdEffect, quality = gEnigmaBerries[gBankTarget].holdEffectParam;
     else
-    {
+    {*/
         hold_effect = ItemId_GetHoldEffect(gBattleMons[gBankTarget].item);
         quality = ItemId_GetHoldEffectParam(gBattleMons[gBankTarget].item);
-    }
+    //}
 
     gStringBank = gBankTarget;
 
@@ -12062,13 +12062,13 @@ static void atk92_setlightscreen(void)
 #ifdef NOTMATCHING
 static void atk93_tryKO(void)
 {
-   if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
+    /*if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
         hold_effect = gEnigmaBerries[gBankTarget].holdEffect, quality = gEnigmaBerries[gBankTarget].holdEffectParam;
     else
-    {
+    {*/
         hold_effect = ItemId_GetHoldEffect(gBattleMons[gBankTarget].item);
         quality = ItemId_GetHoldEffectParam(gBattleMons[gBankTarget].item);
-    }
+    //}
 
     gStringBank = gBankTarget;
 
