@@ -1546,13 +1546,10 @@ void sub_8040B8C(void)
     StrCpyDecodeBattle(BattleText_PreventedSwitch, gStringVar4);
 }
 
-static const u16 sWildTreasureMap[] =
-{
-	ITEM_TREASURE_MAP
-};
-
 void SetWildMonHeldItem(void)
 {
+	u16 treasureMap = ITEM_TREASURE_MAP;
+	
     if (!(gBattleTypeFlags & (BATTLE_TYPE_LEGENDARY | BATTLE_TYPE_TRAINER)))
     {
         u16 rnd = Random() % 100;
@@ -1560,7 +1557,7 @@ void SetWildMonHeldItem(void)
         u16 species = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, 0);
 		if (rnd2 == 0)
 		{
-			SetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, &sWildTreasureMap[0]);
+			SetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, &treasureMap);
 			return;
 		}
 

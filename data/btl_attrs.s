@@ -270,6 +270,19 @@ gStatusConditionString_ConfusionJpn:: @ 81FA6C4
 gStatusConditionString_LoveJpn:: @ 81FA6CC
 	.string "メロメロ$$$$"
 
+@just do it in english, fuck it
+gStatusConditionString_NightmareJpn::
+	.string "nightmare$"
+	
+gStatusConditionString_CursedJpn::
+	.string "curse$$$"
+	
+gStatusConditionString_TormentJpn::
+	.string "torment$"
+	
+gStatusConditionString_YawnJpn::
+	.string "drowziness$"
+
 	.align 2
 gUnknown_081FA6D4:: @ 81FA6D4
 	.4byte gStatusConditionString_PoisonJpn, BattleText_PoisonStatus
@@ -279,6 +292,10 @@ gUnknown_081FA6D4:: @ 81FA6D4
 	.4byte gStatusConditionString_IceJpn, BattleText_IceStatus
 	.4byte gStatusConditionString_ConfusionJpn, BattleText_Confusion
 	.4byte gStatusConditionString_LoveJpn, BattleText_Love
+	@.4byte gStatusConditionString_NightmareJpn, BattleText_Nightmare
+	@.4byte gStatusConditionString_CursedJpn, BattleText_Cursed
+	@.4byte gStatusConditionString_TormentJpn, BattleText_Torment
+	@.4byte gStatusConditionString_YawnJpn, BattleText_Yawn
 
 gUnknown_081FA70C:: @ 81FA70C
 	.byte 0, 0, 0

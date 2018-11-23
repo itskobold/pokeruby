@@ -74,6 +74,10 @@ extern const u8 gStatusConditionString_BurnJpn[];
 extern const u8 gStatusConditionString_IceJpn[];
 extern const u8 gStatusConditionString_ConfusionJpn[];
 extern const u8 gStatusConditionString_LoveJpn[];
+extern const u8 gStatusConditionString_NightmareJpn[];
+extern const u8 gStatusConditionString_CursedJpn[];
+extern const u8 gStatusConditionString_TormentJpn[];
+extern const u8 gStatusConditionString_YawnJpn[];
 extern const BattleCmdFunc gBattleScriptingCommandsTable[];
 
 u8 IsImprisoned(u8 bank, u16 move);
@@ -3029,16 +3033,56 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
                     effect = ITEM_STATUS_CHANGE;
                 }
                 break;
-            case HOLD_EFFECT_CURE_CONFUSION:
-                if (gBattleMons[bank].status2 & STATUS2_CONFUSION)
+            case HOLD_EFFECT_CURE_MINOR_STATUS:
+                if (gBattleMons[bank].status2 & STATUS2_CURABLE)
                 {
+                    i = 0;
+                    if (gBattleMons[bank].status2 & STATUS2_CONFUSION)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_ConfusionJpn);
+                        i++;
+                    }
+					if (gBattleMons[bank].status2 & STATUS2_INFATUATION)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_LoveJpn);
+                        i++;
+                    }
+					if (gBattleMons[bank].status2 & STATUS2_NIGHTMARE)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_NightmareJpn);
+                        i++;
+                    }
+					if (gBattleMons[bank].status2 & STATUS2_CURSED)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_CursedJpn);
+                        i++;
+                    }
+					if (gBattleMons[bank].status2 & STATUS2_TORMENT)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_TormentJpn);
+                        i++;
+                    }
+					if (gStatuses3[bank] & STATUS3_YAWN)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_YawnJpn);
+                        i++;
+                    }
+                    if (!(i > 1))
+                        gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+                    else
+                        gBattleCommunication[MULTISTRING_CHOOSER] = 1;
                     gBattleMons[bank].status2 &= ~(STATUS2_CONFUSION);
-                    BattleScriptExecute(BattleScript_BerryCureConfusionEnd2);
-                    effect = ITEM_EFFECT_OTHER;
+					gBattleMons[bank].status2 &= ~(STATUS2_INFATUATION);
+					gBattleMons[bank].status2 &= ~(STATUS2_NIGHTMARE);
+					gBattleMons[bank].status2 &= ~(STATUS2_CURSED);
+					gBattleMons[bank].status2 &= ~(STATUS2_TORMENT);
+					//add yawn here
+                    BattleScriptExecute(BattleScript_BerryCureChosenStatusEnd2);
+                    effect = ITEM_STATUS_CHANGE;
                 }
                 break;
             case HOLD_EFFECT_CURE_STATUS:
-                if (gBattleMons[bank].status1 & STATUS_ANY || gBattleMons[bank].status2 & STATUS2_CONFUSION)
+                if (gBattleMons[bank].status1 & STATUS_ANY || gBattleMons[bank].status2 & STATUS2_CURABLE || gStatuses3[bank] & STATUS3_CURABLE)
                 {
                     i = 0;
                     if (gBattleMons[bank].status1 & STATUS_PSN_ANY)
@@ -3072,17 +3116,47 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
                         StringCopy(gBattleTextBuff1, gStatusConditionString_ConfusionJpn);
                         i++;
                     }
+					if (gBattleMons[bank].status2 & STATUS2_INFATUATION)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_LoveJpn);
+                        i++;
+                    }
+					if (gBattleMons[bank].status2 & STATUS2_NIGHTMARE)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_NightmareJpn);
+                        i++;
+                    }
+					if (gBattleMons[bank].status2 & STATUS2_CURSED)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_CursedJpn);
+                        i++;
+                    }
+					if (gBattleMons[bank].status2 & STATUS2_TORMENT)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_TormentJpn);
+                        i++;
+                    }
+					if (gStatuses3[bank] & STATUS3_YAWN)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_YawnJpn);
+                        i++;
+                    }
                     if (!(i > 1))
                         gBattleCommunication[MULTISTRING_CHOOSER] = 0;
                     else
                         gBattleCommunication[MULTISTRING_CHOOSER] = 1;
                     gBattleMons[bank].status1 = 0;
                     gBattleMons[bank].status2 &= ~(STATUS2_CONFUSION);
+					gBattleMons[bank].status2 &= ~(STATUS2_INFATUATION);
+					gBattleMons[bank].status2 &= ~(STATUS2_NIGHTMARE);
+					gBattleMons[bank].status2 &= ~(STATUS2_CURSED);
+					gBattleMons[bank].status2 &= ~(STATUS2_TORMENT);
+					gStatuses3[bank] &= ~(STATUS3_YAWN);
                     BattleScriptExecute(BattleScript_BerryCureChosenStatusEnd2);
                     effect = ITEM_STATUS_CHANGE;
                 }
                 break;
-            case HOLD_EFFECT_CURE_ATTRACT:
+            case HOLD_EFFECT_CURE_ATTRACT: //will be removed
                 if (gBattleMons[bank].status2 & STATUS2_INFATUATION)
                 {
                     gBattleMons[bank].status2 &= ~(STATUS2_INFATUATION);
@@ -3176,16 +3250,52 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
                     effect = ITEM_STATUS_CHANGE;
                 }
                 break;
-            case HOLD_EFFECT_CURE_CONFUSION:
-                if (gBattleMons[bank].status2 & STATUS2_CONFUSION)
+            case HOLD_EFFECT_CURE_MINOR_STATUS:
+                if (gBattleMons[bank].status2 & STATUS2_CURABLE || gStatuses3[bank] & STATUS3_CURABLE)
                 {
+                    i = 0;
+                    if (gBattleMons[bank].status2 & STATUS2_CONFUSION)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_ConfusionJpn);
+                        i++;
+                    }
+					if (gBattleMons[bank].status2 & STATUS2_INFATUATION)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_LoveJpn);
+                        i++;
+                    }
+					if (gBattleMons[bank].status2 & STATUS2_NIGHTMARE)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_NightmareJpn);
+                        i++;
+                    }
+					if (gBattleMons[bank].status2 & STATUS2_CURSED)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_CursedJpn);
+                        i++;
+                    }
+					if (gBattleMons[bank].status2 & STATUS2_TORMENT)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_TormentJpn);
+                        i++;
+                    }
+					if (gStatuses3[bank] & STATUS3_YAWN)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_YawnJpn);
+                        i++;
+                    }
+                    gBattleCommunication[MULTISTRING_CHOOSER] = 0;
                     gBattleMons[bank].status2 &= ~(STATUS2_CONFUSION);
-                    BattleScriptPushCursor();
-                    gBattlescriptCurrInstr = BattleScript_BerryCureConfusionRet;
-                    effect = ITEM_EFFECT_OTHER;
+					gBattleMons[bank].status2 &= ~(STATUS2_INFATUATION);
+					gBattleMons[bank].status2 &= ~(STATUS2_NIGHTMARE);
+					gBattleMons[bank].status2 &= ~(STATUS2_CURSED);
+					gBattleMons[bank].status2 &= ~(STATUS2_TORMENT);
+					gStatuses3[bank] &= ~(STATUS3_YAWN);
+                    BattleScriptExecute(BattleScript_BerryCureChosenStatusEnd2);
+                    effect = ITEM_STATUS_CHANGE;
                 }
                 break;
-            case HOLD_EFFECT_CURE_ATTRACT:
+            case HOLD_EFFECT_CURE_ATTRACT: //will be removed
                 if (gBattleMons[bank].status2 & STATUS2_INFATUATION)
                 {
                     gBattleMons[bank].status2 &= ~(STATUS2_INFATUATION);
@@ -3197,7 +3307,7 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
                 }
                 break;
             case HOLD_EFFECT_CURE_STATUS:
-                if (gBattleMons[bank].status1 & STATUS_ANY || gBattleMons[bank].status2 & STATUS2_CONFUSION)
+                if (gBattleMons[bank].status1 & STATUS_ANY || gBattleMons[bank].status2 & STATUS2_CURABLE || gStatuses3[bank] & STATUS3_CURABLE)
                 {
                     if (gBattleMons[bank].status1 & STATUS_PSN_ANY)
                     {
@@ -3224,8 +3334,38 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
                     {
                         StringCopy(gBattleTextBuff1, gStatusConditionString_ConfusionJpn);
                     }
+					if (gBattleMons[bank].status2 & STATUS2_INFATUATION)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_LoveJpn);
+                        i++;
+                    }
+					if (gBattleMons[bank].status2 & STATUS2_NIGHTMARE)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_NightmareJpn);
+                        i++;
+                    }
+					if (gBattleMons[bank].status2 & STATUS2_CURSED)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_CursedJpn);
+                        i++;
+                    }
+					if (gBattleMons[bank].status2 & STATUS2_TORMENT)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_TormentJpn);
+                        i++;
+                    }
+					if (gStatuses3[bank] & STATUS3_YAWN)
+                    {
+                        StringCopy(gBattleTextBuff1, gStatusConditionString_YawnJpn);
+                        i++;
+                    }
                     gBattleMons[bank].status1 = 0;
                     gBattleMons[bank].status2 &= ~(STATUS2_CONFUSION);
+					gBattleMons[bank].status2 &= ~(STATUS2_INFATUATION);
+					gBattleMons[bank].status2 &= ~(STATUS2_NIGHTMARE);
+					gBattleMons[bank].status2 &= ~(STATUS2_CURSED);
+					gBattleMons[bank].status2 &= ~(STATUS2_TORMENT);
+					gStatuses3[bank] &= ~(STATUS3_YAWN);
                     BattleScriptPushCursor();
                     gBattleCommunication[MULTISTRING_CHOOSER] = 0;
                     gBattlescriptCurrInstr = BattleScript_BerryCureChosenStatusRet;

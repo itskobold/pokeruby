@@ -688,6 +688,46 @@ static const u8 gItemDescription_CheriBerry[] = _(
     "heals paralysis\n"
     "in battle.");
 
+static const u8 gItemDescription_ChestoBerry[] = _(
+    "A hold item that\n"
+    "awakens POKéMON\n"
+    "in battle.");
+
+static const u8 gItemDescription_PechaBerry[] = _(
+    "A hold item that\n"
+    "heals poisoning\n"
+    "in battle.");
+
+static const u8 gItemDescription_RawstBerry[] = _(
+    "A hold item that\n"
+    "heals a burn in\n"
+    "battle.");
+
+static const u8 gItemDescription_AspearBerry[] = _(
+    "A hold item that\n"
+    "defrosts POKéMON\n"
+    "in battle.");
+	
+static const u8 gItemDescription_PersimBerry[] = _(
+    "A hold item that\n"
+    "heals any minor\n"
+    "status in battle.");
+	
+static const u8 gItemDescription_LumBerry[] = _(
+    "A hold item that\n"
+    "heals any status\n"
+    "ailment in battle.");
+	
+static const u8 gItemDescription_StarfBerry[] = _(
+    "A rare berry. Can\n"
+    "be used to make\n"
+    "candy for POKéMON.");
+	
+static const u8 gItemDescription_BerryPulp[] = _(
+    "A rotten, bitter\n"
+    "berry. POKéMON\n"
+    "hate its scent.");
+
 static const u8 gItemDescription_BrightPowder[] = _(
     "A hold item that\n"
     "casts a glare to\n"
