@@ -5337,12 +5337,12 @@ static void atk1F_jumpifsideaffecting(void)
         side = GetBattlerPosition(gBankTarget) & 1;
 
     flags = T2_READ_16(gBattlescriptCurrInstr + 2);
-    jump_loc = T2_READ_PTR(gBattlescriptCurrInstr + 4);
+    jump_loc = T2_READ_PTR(gBattlescriptCurrInstr + 6); //add 2 to vanilla values from here
 
     if (gSideAffecting[side] & flags)
         gBattlescriptCurrInstr = jump_loc;
     else
-        gBattlescriptCurrInstr += 8;
+        gBattlescriptCurrInstr += 10; //used to be 8 but that broke shit for some reason???? i'm absolutely baffled as to why but setting it to 10 seems to fix things
 }
 
 static void atk20_jumpifstat(void)

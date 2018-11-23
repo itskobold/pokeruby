@@ -3297,7 +3297,7 @@ BattleScript_SideStatusWoreOff:: @ 81D9030
 	waitmessage 64
 	end2
 
-BattleScript_SafeguardProtected: @ 81D9037
+BattleScript_SafeguardProtected:: @ 81D9037
 	pause 32
 	printstring BATTLE_TEXT_SafeguardActive
 	waitmessage 64
