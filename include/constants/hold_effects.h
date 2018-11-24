@@ -11,11 +11,11 @@
 #define HOLD_EFFECT_RESTORE_PP      	7
 #define HOLD_EFFECT_CURE_MINOR_STATUS  	8
 #define HOLD_EFFECT_CURE_STATUS     	9
-#define HOLD_EFFECT_CONFUSE_SPICY  		10
-#define HOLD_EFFECT_CONFUSE_DRY    		11
-#define HOLD_EFFECT_CONFUSE_SWEET  		12
-#define HOLD_EFFECT_CONFUSE_BITTER 		13
-#define HOLD_EFFECT_CONFUSE_SOUR   		14
+#define HOLD_EFFECT_CONFUSE_SPICY  		10	//remove this
+#define HOLD_EFFECT_CONFUSE_DRY    		11	//remove this
+#define HOLD_EFFECT_CONFUSE_SWEET  		12	//remove this
+#define HOLD_EFFECT_CONFUSE_BITTER 		13	//remove this
+#define HOLD_EFFECT_CONFUSE_SOUR   		14	//remove this
 #define HOLD_EFFECT_ATTACK_UP      		15
 #define HOLD_EFFECT_DEFENSE_UP     		16
 #define HOLD_EFFECT_SPEED_UP       		17
@@ -29,7 +29,7 @@
 #define HOLD_EFFECT_EXP_SHARE      		25
 #define HOLD_EFFECT_QUICK_CLAW     		26
 #define HOLD_EFFECT_HAPPINESS_UP   		27
-#define HOLD_EFFECT_CURE_ATTRACT   		28	//remove this eventually
+#define HOLD_EFFECT_ACCURACY_UP   		28
 #define HOLD_EFFECT_CHOICE_BAND    		29
 #define HOLD_EFFECT_FLINCH         		30
 #define HOLD_EFFECT_BUG_POWER      		31

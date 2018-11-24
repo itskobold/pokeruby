@@ -4982,15 +4982,7 @@ u8 GetItemEffectType(u16 item)
 #define mask 0x3F
 #endif
 
-    // Read the item's effect properties.
-    /*if (item == ITEM_ENIGMA_BERRY)
-    {
-        itemEffect = gSaveBlock1.enigmaBerry.itemEffect;
-    }
-    else
-    {*/
-        itemEffect = gItemEffectTable[item - ITEM_POTION];
-    //}
+    itemEffect = gItemEffectTable[item - ITEM_POTION];
 
 #ifndef NONMATCHING
     itemEffect0 = itemEffect[0];

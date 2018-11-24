@@ -718,10 +718,150 @@ static const u8 gItemDescription_LumBerry[] = _(
     "heals any status\n"
     "ailment in battle.");
 	
+static const u8 gItemDescription_LeppaBerry[] = _(
+    "A hold item that\n"
+    "restores 10 PP in\n"
+    "battle.");
+	
+static const u8 gItemDescription_BlukBerry[] = _(
+    "A hold item that\n"
+    "fully restores a\n"
+    "move’s PP in battle.");
+	
+static const u8 gItemDescription_OranBerry[] = _(
+    "A hold item that\n"
+    "restores 10 HP in\n"
+    "battle.");
+	
+static const u8 gItemDescription_SitrusBerry[] = _(
+    "A hold item that\n"
+    "restores 25 HP in\n"
+    "battle.");
+	
+static const u8 gItemDescription_RazzBerry[] = _(
+    "A hold item that\n"
+    "restores 75 HP in\n"
+    "battle.");
+	
+static const u8 gItemDescription_BelueBerry[] = _(
+    "A hold item that\n"
+    "restores 150 HP in\n"
+    "battle.");
+	
+static const u8 gItemDescription_WatmelBerry[] = _(
+    "A hold item that\n"
+    "restores 225 HP in\n"
+    "battle.");
+	
+static const u8 gItemDescription_PomegBerry[] = _(
+    "Raises a POKéMON’s\n"
+    "HP EV count\n"
+    "by a little.");
+	
+static const u8 gItemDescription_KelpsyBerry[] = _(
+    "Raises a POKéMON’s\n"
+    "ATTACK EV count\n"
+    "by a little.");
+	
+static const u8 gItemDescription_QualotBerry[] = _(
+    "Raises a POKéMON’s\n"
+    "DEFENSE EV count\n"
+    "by a little.");
+	
+static const u8 gItemDescription_HondewBerry[] = _(
+    "Raises a POKéMON’s\n"
+    "SP. ATK EV count\n"
+    "by a little.");
+	
+static const u8 gItemDescription_GrepaBerry[] = _(
+    "Raises a POKéMON’s\n"
+    "SP. DEF EV count\n"
+    "by a little.");
+	
+static const u8 gItemDescription_TamatoBerry[] = _(
+    "Raises a POKéMON’s\n"
+    "SPEED EV count\n"
+    "by a little.");
+	
+static const u8 gItemDescription_CornnBerry[] = _(
+    "Boosts a POKéMON’s\n"
+    "ATTACK in battle\n"
+    "when held.");
+	
+static const u8 gItemDescription_MagostBerry[] = _(
+    "Boosts a POKéMON’s\n"
+    "DEFENSE in battle\n"
+    "when held.");
+	
+static const u8 gItemDescription_RabutaBerry[] = _(
+    "Boosts a POKéMON’s\n"
+    "SP. ATK in battle\n"
+    "when held.");
+	
+static const u8 gItemDescription_NomelBerry[] = _(
+    "Boosts a POKéMON’s\n"
+    "SP. DEF in battle\n"
+    "when held.");
+	
+static const u8 gItemDescription_FigyBerry[] = _(
+    "Boosts a POKéMON’s\n"
+    "SPEED in battle\n"
+    "when held.");
+	
+static const u8 gItemDescription_AguavBerry[] = _(
+    "Boosts a POKéMON’s\n"
+    "ACCURACY in battle\n"
+    "when held.");
+	
+static const u8 gItemDescription_WikiBerry[] = _(
+    "Boosts a POKéMON’s\n"
+    "critical-hit ratio\n"
+    "in battle when held.");
+	
+static const u8 gItemDescription_PamtreBerry[] = _(
+    "Boosts a random\n"
+    "stat in battle\n"
+    "when held.");
+	
+static const u8 gItemDescription_LiechiBerry[] = _(
+    "Sharply boosts a\n"
+    "POKéMON’s ATTACK\n"
+    "when held.");
+	
+static const u8 gItemDescription_GanlonBerry[] = _(
+    "Sharply boosts a\n"
+    "POKéMON’s DEFENSE\n"
+    "when held.");
+	
+static const u8 gItemDescription_SalacBerry[] = _(
+    "Sharply boosts a\n"
+    "POKéMON’s SP. ATK\n"
+    "when held.");
+	
+static const u8 gItemDescription_PetayaBerry[] = _(
+    "Sharply boosts a\n"
+    "POKéMON’s SP. DEF\n"
+    "when held.");
+	
+static const u8 gItemDescription_ApicotBerry[] = _(
+    "Sharply boosts a\n"
+    "POKéMON’s SPEED\n"
+    "when held.");
+	
+static const u8 gItemDescription_MicleBerry[] = _(
+    "Sharply boosts a\n"
+    "POKéMON’s ACCURACY\n"
+    "when held.");
+	
+static const u8 gItemDescription_NanabBerry[] = _(
+    "Sharply boosts a\n"
+    "random stat in\n"
+    "battle when held.");
+	
 static const u8 gItemDescription_StarfBerry[] = _(
-    "A rare berry. Can\n"
-    "be used to make\n"
-    "candy for POKéMON.");
+    "A rare berry loved\n"
+    "by POKéMON. Can be\n"
+    "made into candy.");
 	
 static const u8 gItemDescription_BerryPulp[] = _(
     "A rotten, bitter\n"

@@ -89,10 +89,7 @@ void ExecuteSwitchToOverworldFromItemUse(u8 taskId)
 {
     u8 taskData;
 
-    /*if (gSpecialVar_ItemId == ITEM_ENIGMA_BERRY)
-        taskData = gTasks[taskId].data[15] - 1;
-    else*/
-        taskData = ItemId_GetType(gSpecialVar_ItemId) - 1;
+    taskData = ItemId_GetType(gSpecialVar_ItemId) - 1;
 
     gTasks[taskId].data[8] = (u32)gExitToOverworldFuncList[taskData] >> 16;
     gTasks[taskId].data[9] = (u32)gExitToOverworldFuncList[taskData];
