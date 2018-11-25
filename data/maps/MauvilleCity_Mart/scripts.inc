@@ -25,10 +25,7 @@ MauvilleCity_Mart_Items:: @ 81573D8
 	.2byte ITEM_GUARD_SPEC
 	.2byte ITEM_DIRE_HIT
 	.2byte ITEM_X_ACCURACY
-	.2byte ITEM_PERSIM_BERRY
-	.2byte ITEM_LUM_BERRY
-	.2byte ITEM_STARF_BERRY
-	.2byte ITEM_BERRY_PULP
+	.2byte ITEM_CUSTAP_BERRY
 	.2byte ITEM_NONE
 	release
 	end

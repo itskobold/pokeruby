@@ -11,11 +11,11 @@
 #define HOLD_EFFECT_RESTORE_PP      	7
 #define HOLD_EFFECT_CURE_MINOR_STATUS  	8
 #define HOLD_EFFECT_CURE_STATUS     	9
-#define HOLD_EFFECT_CONFUSE_SPICY  		10	//remove this
-#define HOLD_EFFECT_CONFUSE_DRY    		11	//remove this
-#define HOLD_EFFECT_CONFUSE_SWEET  		12	//remove this
-#define HOLD_EFFECT_CONFUSE_BITTER 		13	//remove this
-#define HOLD_EFFECT_CONFUSE_SOUR   		14	//remove this
+#define HOLD_EFFECT_MOVE_FIRST_ONCE  	10
+#define HOLD_EFFECT_HALF_SE_DAMAGE 		11
+#define HOLD_EFFECT_DAMAGE_ATTACKER		12
+#define HOLD_EFFECT_RAISE_STAT_ON_HIT	13
+#define HOLD_EFFECT_PLACEHOLDER   		14	//unused
 #define HOLD_EFFECT_ATTACK_UP      		15
 #define HOLD_EFFECT_DEFENSE_UP     		16
 #define HOLD_EFFECT_SPEED_UP       		17

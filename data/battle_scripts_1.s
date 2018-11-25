@@ -4381,6 +4381,17 @@ BattleScript_BerryCureChosenStatusRet:: @ 81D9A4A
 	updatestatusicon SCRIPTING_BANK
 	removeitem SCRIPTING_BANK
 	return
+	
+BattleScript_BerryMoveFirstEnd::
+	call BattleScript_BerryMoveFirstRet
+	end2
+
+BattleScript_BerryMoveFirstRet::
+	playanimation 10, B_ANIM_ITEM_EFFECT, NULL
+	printstring BATTLE_TEXT_MoveFirst
+	waitmessage 64
+	removeitem SCRIPTING_BANK
+	return
 
 BattleScript_WhiteHerbEnd2:: @ 81D9A5E
 	call BattleScript_WhiteHerbRet

@@ -858,6 +858,11 @@ static const u8 gItemDescription_NanabBerry[] = _(
     "random stat in\n"
     "battle when held.");
 	
+static const u8 gItemDescription_CustapBerry[] = _(
+    "A hold item that\n"
+    "allows a POKéMON\n"
+    "to move first.");
+	
 static const u8 gItemDescription_StarfBerry[] = _(
     "A rare berry loved\n"
     "by POKéMON. Can be\n"
