@@ -191,6 +191,8 @@ extern u8 BattleScript_BerryCureFrzEnd2[];
 extern u8 BattleScript_BerryCureSlpEnd2[];
 extern u8 BattleScript_BerryCureConfusionEnd2[];
 extern u8 BattleScript_BerryCureChosenStatusEnd2[]; //berry cure any status end2
+extern u8 BattleScript_BerryMoveFirstEnd[]; //custap berry
+extern u8 BattleScript_BerryHalfSuperEffectiveDmgEnd[]; //durin berry
 extern u8 BattleScript_BerryCureParRet[];
 extern u8 BattleScript_BerryCurePsnRet[];
 extern u8 BattleScript_BerryCureBrnRet[];
@@ -198,8 +200,8 @@ extern u8 BattleScript_BerryCureFrzRet[];
 extern u8 BattleScript_BerryCureSlpRet[];
 extern u8 BattleScript_BerryCureConfusionRet[];
 extern u8 BattleScript_BerryCureChosenStatusRet[]; //berry cure any status return
-extern u8 BattleScript_BerryMoveFirstEnd[]; //custap berry
 extern u8 BattleScript_BerryMoveFirstRet[]; //custap berry
+extern u8 BattleScript_BerryHalfSuperEffectiveDmgRet[]; //durin berry
 
 extern u8 BattleScript_ItemHealHP_Ret[];
 
@@ -3327,6 +3329,17 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
                     effect = ITEM_STATUS_CHANGE;
                 }
                 break;
+			case HOLD_EFFECT_HALF_SE_DAMAGE:
+				if (gMoveResultFlags & MOVE_RESULT_SUPER_EFFECTIVE
+                    && gSpecialStatuses[bank].moveturnLostHP != 0
+                    && gBattleMons[bank].hp != 0)
+				{
+					BattleScriptPushCursor();
+					gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+					BattleScriptExecute(BattleScript_BerryHalfSuperEffectiveDmgEnd);
+                    effect = ITEM_EFFECT_OTHER;
+				}
+				break;
             case HOLD_EFFECT_RESTORE_STATS:
                 for (i = 0; i < 8; i++)
                 {

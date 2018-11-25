@@ -1338,16 +1338,8 @@ static void atk01_accuracycheck(void)
         if (gBattleMons[gBankAttacker].ability == ABILITY_HUSTLE && type < 9)
             calc = (calc * 80) / 100; // 1.2 hustle loss;
 
-        /*if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
-        {
-            holdEffect = gEnigmaBerries[gBankTarget].holdEffect;
-            quality = gEnigmaBerries[gBankTarget].holdEffectParam;
-        }
-        else
-        {*/
-            holdEffect = ItemId_GetHoldEffect(gBattleMons[gBankTarget].item);
-            quality = ItemId_GetHoldEffectParam(gBattleMons[gBankTarget].item);
-        //}
+		holdEffect = ItemId_GetHoldEffect(gBattleMons[gBankTarget].item);
+		quality = ItemId_GetHoldEffectParam(gBattleMons[gBankTarget].item);
 
         gStringBank = gBankTarget;
 
@@ -1435,11 +1427,7 @@ static void atk04_critcalc(void)
     u16 item, critChance;
 
     item = gBattleMons[gBankAttacker].item;
-
-    /*if (item == ITEM_ENIGMA_BERRY)
-        holdEffect = gEnigmaBerries[gBankAttacker].holdEffect;
-    else*/
-        holdEffect = ItemId_GetHoldEffect(item);
+	holdEffect = ItemId_GetHoldEffect(item);
 
     gStringBank = gBankAttacker;
 
@@ -1477,16 +1465,7 @@ static void atk05_damagecalc(void)
     if (gStatuses3[gBankAttacker] & STATUS3_CHARGED_UP && gBattleMoves[gCurrentMove].type == TYPE_ELECTRIC)
         gBattleMoveDamage *= 2;
     if (gProtectStructs[gBankAttacker].helpingHand)
-        gBattleMoveDamage = gBattleMoveDamage * 15 / 10;
-	
-	//Nuzlocke buff damage boost
-	if (GetBattlerSide(gBankAttacker) == B_SIDE_PLAYER && gBattleMons[gBankAttacker].item == ITEM_NUZLOCKE_BUFF && gSaveBlock2.nuzlockeMode != NUZLOCKE_MODE_OFF)
-		gBattleMoveDamage += gBattleMoveDamage / 100 * 20;
-	
-	//Nuzlocke buff damage reduction
-	if (GetBattlerSide(gBankAttacker) == B_SIDE_OPPONENT && gBattleMons[gBankTarget].item == ITEM_NUZLOCKE_BUFF && gSaveBlock2.nuzlockeMode != NUZLOCKE_MODE_OFF)
-		gBattleMoveDamage -= gBattleMoveDamage / 100 * 20;
-		
+        gBattleMoveDamage = gBattleMoveDamage * 15 / 10;	
 
     gBattlescriptCurrInstr++;
 }
@@ -1886,15 +1865,9 @@ static void atk07_adjustnormaldamage(void)
 {
     u8 hold_effect, quality;
     ApplyRandomDmgMultiplier();
-    /*if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
-    {
-        hold_effect = gEnigmaBerries[gBankTarget].holdEffect, quality = gEnigmaBerries[gBankTarget].holdEffectParam;
-    }
-    else
-    {*/
-        hold_effect = ItemId_GetHoldEffect(gBattleMons[gBankTarget].item);
-        quality = ItemId_GetHoldEffectParam(gBattleMons[gBankTarget].item);
-    //}
+
+	hold_effect = ItemId_GetHoldEffect(gBattleMons[gBankTarget].item);
+	quality = ItemId_GetHoldEffectParam(gBattleMons[gBankTarget].item);
 
     gStringBank = gBankTarget;
 
@@ -1933,15 +1906,9 @@ static void atk08_adjustnormaldamage2(void) //literally the same as 0x7 except i
 {
     u8 hold_effect, quality;
     ApplyRandomDmgMultiplier();
-    /*if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
-    {
-        hold_effect = gEnigmaBerries[gBankTarget].holdEffect, quality = gEnigmaBerries[gBankTarget].holdEffectParam;
-    }
-    else
-    {*/
-        hold_effect = ItemId_GetHoldEffect(gBattleMons[gBankTarget].item);
-        quality = ItemId_GetHoldEffectParam(gBattleMons[gBankTarget].item);
-    //}
+	
+	hold_effect = ItemId_GetHoldEffect(gBattleMons[gBankTarget].item);
+	quality = ItemId_GetHoldEffectParam(gBattleMons[gBankTarget].item);
 
     gStringBank = gBankTarget;
 
@@ -2034,12 +2001,10 @@ static void atk0B_healthbarupdate(void)
         }
         else
         {
-            // Emerald
-            /*
             s16 healthValue;
 
             s32 currDmg = gBattleMoveDamage;
-            s32 maxPossibleDmgValue = 10000; // not present in R/S, ensures that huge damage values don't change sign
+            s32 maxPossibleDmgValue = 10000; // not present in R/S, ensures that huge damage values don't change sign (emerald code)
 
             if (currDmg <= maxPossibleDmgValue)
                 healthValue = currDmg;
@@ -2047,9 +2012,6 @@ static void atk0B_healthbarupdate(void)
                 healthValue = maxPossibleDmgValue;
 
             EmitHealthBarUpdate(0, healthValue);
-            */
-
-            EmitHealthBarUpdate(0, gBattleMoveDamage);
             MarkBufferBankForExecution(gActiveBattler);
 
             if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER && gBattleMoveDamage > 0)

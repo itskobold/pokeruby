@@ -110,27 +110,11 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     spAttack = attacker->spAttack;
     spDefense = defender->spDefense;
 
-    /*if (attacker->item == ITEM_ENIGMA_BERRY)
-    {
-        attackerHoldEffect = gEnigmaBerries[bankAtk].holdEffect;
-        attackerHoldEffectParam = gEnigmaBerries[bankAtk].holdEffectParam;
-    }
-    else
-    {*/
-        attackerHoldEffect = ItemId_GetHoldEffect(attacker->item);
-        attackerHoldEffectParam = ItemId_GetHoldEffectParam(attacker->item);
-    //}
+	attackerHoldEffect = ItemId_GetHoldEffect(attacker->item);
+	attackerHoldEffectParam = ItemId_GetHoldEffectParam(attacker->item);
 
-    /*if (defender->item == ITEM_ENIGMA_BERRY)
-    {
-        defenderHoldEffect = gEnigmaBerries[bankDef].holdEffect;
-        defenderHoldEffectParam = gEnigmaBerries[bankDef].holdEffectParam;
-    }
-    else
-    {*/
-        defenderHoldEffect = ItemId_GetHoldEffect(defender->item);
-        defenderHoldEffectParam = ItemId_GetHoldEffectParam(defender->item);
-    //}
+	defenderHoldEffect = ItemId_GetHoldEffect(defender->item);
+	defenderHoldEffectParam = ItemId_GetHoldEffectParam(defender->item);
 
     if (attacker->ability == ABILITY_HUGE_POWER || attacker->ability == ABILITY_PURE_POWER)
         attack *= 2;
@@ -253,7 +237,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         damage = damage / damageHelper;
         damage /= 50;
 
-        if ((attacker->status1 & STATUS_BURN) && attacker->ability != ABILITY_GUTS)
+        if ((attacker->status1 & STATUS_BURN) && attacker->ability != ABILITY_GUTS) //change to STATUS_BRN_ANY eventually
             damage /= 2;
 
         if ((sideStatus & SIDE_STATUS_REFLECT) && gCritMultiplier == 1)
@@ -266,13 +250,9 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
 
         if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && gBattleMoves[move].target == 8 && CountAliveMons(2) == 2)
             damage /= 2;
-		
-        // moves always do at least 1 damage.
-        if (damage == 0)
-            damage = 1;
     }
 
-    if (gBattleMoves[move].pss == MOVE_IS_SPECIAL)
+    else if (gBattleMoves[move].pss == MOVE_IS_SPECIAL)
     {
         if (gCritMultiplier == 2)
         {
@@ -299,6 +279,9 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
 
         damage = (damage / damageHelper);
         damage /= 50;
+		
+		if (attacker->status1 & STATUS_PSN_ANY)
+            damage /= 2;
 
         if ((sideStatus & SIDE_STATUS_LIGHTSCREEN) && gCritMultiplier == 1)
         {
@@ -310,47 +293,64 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
 
         if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && gBattleMoves[move].target == 8 && CountAliveMons(2) == 2)
             damage /= 2;
-
-        // are effects of weather negated with cloud nine or air lock
-        if (!AbilityBattleEffects(ABILITYEFFECT_FIELD_SPORT, 0, ABILITY_CLOUD_NINE, 0, 0)
-            && !AbilityBattleEffects(ABILITYEFFECT_FIELD_SPORT, 0, ABILITY_AIR_LOCK, 0, 0))
-        {
-            if (gBattleWeather & WEATHER_RAIN_TEMPORARY)
-            {
-                switch (type)
-                {
-                case TYPE_FIRE:
-                    damage /= 2;
-                    break;
-                case TYPE_WATER:
-                    damage = (15 * damage) / 10;
-                    break;
-                }
-            }
-
-            // any weather except sun weakens solar beam
-            if ((gBattleWeather & (WEATHER_RAIN_ANY | WEATHER_SANDSTORM_ANY | WEATHER_HAIL)) && gCurrentMove == MOVE_SOLAR_BEAM)
-                damage /= 2;
-
-            // sunny
-            if (gBattleWeather & WEATHER_SUN_ANY)
-            {
-                switch (type)
-                {
-                case TYPE_FIRE:
-                    damage = (15 * damage) / 10;
-                    break;
-                case TYPE_WATER:
-                    damage /= 2;
-                    break;
-                }
-            }
-        }
-
-        // flash fire triggered
-        if ((eFlashFireArr.arr[bankAtk] & 1) && type == TYPE_FIRE)
-            damage = (15 * damage) / 10;
     }
+	
+	// durin berry
+	if (defenderHoldEffect == HOLD_EFFECT_HALF_SE_DAMAGE)
+		damage /= 2;
+	
+	// are effects of weather negated with cloud nine or air lock
+	if (!AbilityBattleEffects(ABILITYEFFECT_FIELD_SPORT, 0, ABILITY_CLOUD_NINE, 0, 0)
+		&& !AbilityBattleEffects(ABILITYEFFECT_FIELD_SPORT, 0, ABILITY_AIR_LOCK, 0, 0))
+	{
+		if (gBattleWeather & WEATHER_RAIN_TEMPORARY)
+		{
+			switch (type)
+			{
+			case TYPE_FIRE:
+				damage /= 2;
+				break;
+			case TYPE_WATER:
+				damage = (15 * damage) / 10;
+				break;
+			}
+		}
 
-    return damage + 2;
+		// any weather except sun weakens solar beam
+		if ((gBattleWeather & (WEATHER_RAIN_ANY | WEATHER_SANDSTORM_ANY | WEATHER_HAIL)) && gCurrentMove == MOVE_SOLAR_BEAM)
+			damage /= 2;
+
+		// sunny
+		if (gBattleWeather & WEATHER_SUN_ANY)
+		{
+			switch (type)
+			{
+			case TYPE_FIRE:
+				damage = (15 * damage) / 10;
+				break;
+			case TYPE_WATER:
+				damage /= 2;
+				break;
+			}
+		}
+	}
+	
+	// flash fire triggered
+	if ((eFlashFireArr.arr[bankAtk] & 1) && type == TYPE_FIRE)
+		damage = (15 * damage) / 10;
+	
+	// nuzlocke buff
+	if (gSaveBlock2.nuzlockeMode != NUZLOCKE_MODE_OFF)
+	{
+		if (attackerHoldEffect == HOLD_EFFECT_NUZLOCKE_BUFF)
+			damage += damage / 100 * 20;
+		if (defenderHoldEffect == HOLD_EFFECT_NUZLOCKE_BUFF)
+			damage -= damage / 100 * 20;
+	}
+	
+	// moves always do at least 1 damage.
+	if (damage == 0)
+		damage = 1;
+
+    return damage;
 }

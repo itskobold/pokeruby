@@ -4392,6 +4392,17 @@ BattleScript_BerryMoveFirstRet::
 	waitmessage 64
 	removeitem SCRIPTING_BANK
 	return
+	
+BattleScript_BerryHalfSuperEffectiveDmgEnd::
+	call BattleScript_BerryHalfSuperEffectiveDmgRet
+	end2
+
+BattleScript_BerryHalfSuperEffectiveDmgRet::
+	playanimation 10, B_ANIM_ITEM_EFFECT, NULL
+	printstring BATTLE_TEXT_HalfSuperEffectiveDmg
+	waitmessage 64
+	removeitem SCRIPTING_BANK
+	return
 
 BattleScript_WhiteHerbEnd2:: @ 81D9A5E
 	call BattleScript_WhiteHerbRet

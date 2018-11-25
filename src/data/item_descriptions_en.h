@@ -863,6 +863,11 @@ static const u8 gItemDescription_CustapBerry[] = _(
     "allows a POKéMON\n"
     "to move first.");
 	
+static const u8 gItemDescription_DurinBerry[] = _(
+    "Reduces damage\n"
+    "taken from super\n"
+    "effective moves.");
+	
 static const u8 gItemDescription_StarfBerry[] = _(
     "A rare berry loved\n"
     "by POKéMON. Can be\n"
