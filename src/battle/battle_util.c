@@ -66,6 +66,7 @@ extern s32 gBattleMoveDamage;
 extern u16 gDynamicBasePower;
 extern u32 gBattleExecBuffer;
 extern u8 gSentPokesToOpponent[2];
+extern u8 gMultiHitCounter;
 extern const u16 gSoundMovesTable[];
 extern const u8 gStatusConditionString_PoisonJpn[];
 extern const u8 gStatusConditionString_SleepJpn[];
@@ -192,6 +193,7 @@ extern u8 BattleScript_BerryCureSlpEnd2[];
 extern u8 BattleScript_BerryCureConfusionEnd2[];
 extern u8 BattleScript_BerryCureChosenStatusEnd2[]; //berry cure any status end2
 extern u8 BattleScript_BerryMoveFirstEnd[]; //custap berry
+extern u8 BattleScript_BerryInflictDmgEnd[]; //jaboca/rowap berry
 extern u8 BattleScript_BerryHalfSuperEffectiveDmgEnd[]; //durin berry
 extern u8 BattleScript_BerryCureParRet[];
 extern u8 BattleScript_BerryCurePsnRet[];
@@ -202,6 +204,7 @@ extern u8 BattleScript_BerryCureConfusionRet[];
 extern u8 BattleScript_BerryCureChosenStatusRet[]; //berry cure any status return
 extern u8 BattleScript_BerryMoveFirstRet[]; //custap berry
 extern u8 BattleScript_BerryHalfSuperEffectiveDmgRet[]; //durin berry
+extern u8 BattleScript_BerryInflictDmgRet[]; //jaboca/rowap berry
 
 extern u8 BattleScript_ItemHealHP_Ret[];
 
@@ -2747,12 +2750,18 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
                     effect = ITEM_EFFECT_OTHER;
 				}
                 break;
-            case HOLD_EFFECT_HALF_SE_DAMAGE:
-                break;
-            case HOLD_EFFECT_DAMAGE_ATTACKER:
-                break;
-            case HOLD_EFFECT_RAISE_STAT_ON_HIT:
-                break;
+			case HOLD_EFFECT_DAMAGE_ATTACKER:
+				if (((gSpecialStatuses[bank].moveturnLostHP_physical != 0 && secondaryId == 0) 
+					|| (gSpecialStatuses[bank].moveturnLostHP_special != 0 && secondaryId != 0))
+					&& gBattleMons[gBankAttacker].hp != 0 
+                    && gBattleMons[bank].hp != 0)
+				{
+					BattleScriptPushCursor();
+					gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+					BattleScriptExecute(BattleScript_BerryInflictDmgEnd);
+                    effect = ITEM_EFFECT_OTHER;
+				}
+				break;
             case HOLD_EFFECT_PLACEHOLDER:
                 break;
             case HOLD_EFFECT_ATTACK_UP:
@@ -3329,17 +3338,6 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
                     effect = ITEM_STATUS_CHANGE;
                 }
                 break;
-			case HOLD_EFFECT_HALF_SE_DAMAGE:
-				if (gMoveResultFlags & MOVE_RESULT_SUPER_EFFECTIVE
-                    && gSpecialStatuses[bank].moveturnLostHP != 0
-                    && gBattleMons[bank].hp != 0)
-				{
-					BattleScriptPushCursor();
-					gBattleCommunication[MULTISTRING_CHOOSER] = 0;
-					BattleScriptExecute(BattleScript_BerryHalfSuperEffectiveDmgEnd);
-                    effect = ITEM_EFFECT_OTHER;
-				}
-				break;
             case HOLD_EFFECT_RESTORE_STATS:
                 for (i = 0; i < 8; i++)
                 {
@@ -3358,6 +3356,18 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
                     return effect; // unnecessary return
                 }
                 break;
+			case HOLD_EFFECT_HALF_SE_DAMAGE:
+				if ((gMoveResultFlags & MOVE_RESULT_SUPER_EFFECTIVE)
+                    && gSpecialStatuses[bank].moveturnLostHP != 0
+                    && gBattleMons[bank].hp != 0 
+					&& gMultiHitCounter == 0)
+				{
+					BattleScriptPushCursor();
+					gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+					BattleScriptExecute(BattleScript_BerryHalfSuperEffectiveDmgEnd);
+                    effect = ITEM_EFFECT_OTHER;
+				}
+				break;
             }
             if (effect)
             {

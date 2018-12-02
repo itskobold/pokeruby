@@ -2177,7 +2177,7 @@ BattleScript_EffectUproar: @ 81D83FA
 	ppreduce
 
 BattleScript_UproarHit: @ 81D8414
-	nop
+	@nop
 	goto BattleScript_HitFromCritCalc
 
 BattleScript_EffectStockpile: @ 81D841A
@@ -4401,6 +4401,21 @@ BattleScript_BerryHalfSuperEffectiveDmgRet::
 	playanimation 10, B_ANIM_ITEM_EFFECT, NULL
 	printstring BATTLE_TEXT_HalfSuperEffectiveDmg
 	waitmessage 64
+	removeitem SCRIPTING_BANK
+	return
+	
+BattleScript_BerryInflictDmgEnd::
+	call BattleScript_BerryInflictDmgRet
+	end2
+
+BattleScript_BerryInflictDmgRet::
+	playanimation 10, B_ANIM_ITEM_EFFECT, NULL
+	jabocarowapdmg
+	printstring BATTLE_TEXT_BerryInflictedDmg
+	waitmessage 64
+	healthbarupdate TARGET
+	datahpupdate TARGET
+	tryfaintmon TARGET, FALSE, NULL
 	removeitem SCRIPTING_BANK
 	return
 

@@ -352,3 +352,4 @@
 	enum BATTLE_TEXT_NoEffectOn
     enum BATTLE_TEXT_MoveFirst
 	enum BATTLE_TEXT_HalfSuperEffectiveDmg
+	enum BATTLE_TEXT_BerryInflictedDmg

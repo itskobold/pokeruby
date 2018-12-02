@@ -295,10 +295,6 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
             damage /= 2;
     }
 	
-	// durin berry
-	if (defenderHoldEffect == HOLD_EFFECT_HALF_SE_DAMAGE)
-		damage /= 2;
-	
 	// are effects of weather negated with cloud nine or air lock
 	if (!AbilityBattleEffects(ABILITYEFFECT_FIELD_SPORT, 0, ABILITY_CLOUD_NINE, 0, 0)
 		&& !AbilityBattleEffects(ABILITYEFFECT_FIELD_SPORT, 0, ABILITY_AIR_LOCK, 0, 0))
@@ -348,9 +344,13 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
 			damage -= damage / 100 * 20;
 	}
 	
+	// durin berry
+	if (defenderHoldEffect == HOLD_EFFECT_HALF_SE_DAMAGE)
+		damage /= 2;
+	
 	// moves always do at least 1 damage.
 	if (damage == 0)
 		damage = 1;
 
-    return damage;
+    return damage + 2;
 }

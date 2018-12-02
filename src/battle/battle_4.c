@@ -295,6 +295,7 @@ extern u8 BattleScript_FaintAttacker[];
 extern u8 BattleScript_FaintTarget[];
 extern u8 BattleScript_DestinyBondTakesLife[];
 extern u8 BattleScript_SelectingImprisionedMoveInPalace[];
+extern u8 BattleScript_BerryInflictDmgRet2[];
 
 // read via orr
 #define BSScriptRead32(ptr) ((ptr)[0] | (ptr)[1] << 8 | (ptr)[2] << 16 | (ptr)[3] << 24)
@@ -483,7 +484,7 @@ static void atk7F_setseeded(void);
 static void atk80_manipulatedamage(void);
 static void atk81_trysetrest(void);
 static void atk82_jumpifnotfirstturn(void);
-static void atk83_nop(void);
+static void atk83_jabocarowapdmg(void);
 static void atk84_jumpifcantmakeasleep(void);
 static void atk85_stockpile(void);
 static void atk86_stockpiletobasedamage(void);
@@ -735,7 +736,7 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     atk80_manipulatedamage,
     atk81_trysetrest,
     atk82_jumpifnotfirstturn,
-    atk83_nop,
+    atk83_jabocarowapdmg,
     atk84_jumpifcantmakeasleep,
     atk85_stockpile,
     atk86_stockpiletobasedamage,
@@ -941,7 +942,7 @@ static const u32 sStatusFlagsForMoveEffects[] =
     0x00000000,
     0x00000000,
     0x00000000,
-    0x00000000
+    0x00000000,
 };
 
 u8* const gMoveEffectBS_Ptrs[] =
@@ -2118,7 +2119,7 @@ static void atk0C_datahpupdate(void)
                         gSpecialStatuses[gActiveBattler].moveturnPhysicalBank = gBankTarget;
                     }
                 }
-                else if (gBattleMoves[gCurrentMove].pss == MOVE_IS_PHYSICAL && !(gHitMarker & HITMARKER_x100000))
+                else if (gBattleMoves[gCurrentMove].pss == MOVE_IS_SPECIAL && !(gHitMarker & HITMARKER_x100000))
                 {
                     gProtectStructs[gActiveBattler].specialDmg = gHpDealt;
                     gSpecialStatuses[gActiveBattler].moveturnLostHP_special = gHpDealt;
@@ -2759,8 +2760,6 @@ void SetMoveEffect(bool8 primary, u8 certainArg)
                 }
                 if (gBattleMons[gBankAttacker].item)
                     {gBattlescriptCurrInstr++; return;}
-                //if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
-                //    {gBattlescriptCurrInstr++; return;}
                 if (gBattleMons[gBankTarget].item == 0)
                     {gBattlescriptCurrInstr++; return;}
 
@@ -5425,10 +5424,7 @@ static void atk23_getexp(void)
 
                 item = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
 
-                /*if (item == ITEM_ENIGMA_BERRY)
-                    holdEffect = gSaveBlock1.enigmaBerry.holdEffect;
-                else*/
-                    holdEffect = ItemId_GetHoldEffect(item);
+                holdEffect = ItemId_GetHoldEffect(item);
 
                 if (holdEffect == HOLD_EFFECT_EXP_SHARE)
                     viaExpShare++;
@@ -5464,10 +5460,7 @@ static void atk23_getexp(void)
         {
             item = GetMonData(&gPlayerParty[gBattleStruct->expGetterID], MON_DATA_HELD_ITEM);
 
-            /*if (item == ITEM_ENIGMA_BERRY)
-                holdEffect = gSaveBlock1.enigmaBerry.holdEffect;
-            else*/
-                holdEffect = ItemId_GetHoldEffect(item);
+            holdEffect = ItemId_GetHoldEffect(item);
 
             if (holdEffect != HOLD_EFFECT_EXP_SHARE && !(gBattleStruct->sentInPokes & 1))
             {
@@ -5595,8 +5588,8 @@ static void atk23_getexp(void)
                     gBattleMons[0].maxHP = GetMonData(&gPlayerParty[gBattleStruct->expGetterID], MON_DATA_MAX_HP);
                     gBattleMons[0].attack = GetMonData(&gPlayerParty[gBattleStruct->expGetterID], MON_DATA_ATK);
                     gBattleMons[0].defense = GetMonData(&gPlayerParty[gBattleStruct->expGetterID], MON_DATA_DEF);
-                    // Why is this duplicated?
-                    gBattleMons[0].speed = GetMonData(&gPlayerParty[gBattleStruct->expGetterID], MON_DATA_SPEED);
+                    // Why is this duplicated? (fixed)
+                    //gBattleMons[0].speed = GetMonData(&gPlayerParty[gBattleStruct->expGetterID], MON_DATA_SPEED);
                     gBattleMons[0].speed = GetMonData(&gPlayerParty[gBattleStruct->expGetterID], MON_DATA_SPEED);
                     gBattleMons[0].spAttack = GetMonData(&gPlayerParty[gBattleStruct->expGetterID], MON_DATA_SPATK);
                     gBattleMons[0].spDefense = GetMonData(&gPlayerParty[gBattleStruct->expGetterID], MON_DATA_SPDEF);
@@ -5609,9 +5602,9 @@ static void atk23_getexp(void)
                     gBattleMons[2].maxHP = GetMonData(&gPlayerParty[gBattleStruct->expGetterID], MON_DATA_MAX_HP);
                     gBattleMons[2].attack = GetMonData(&gPlayerParty[gBattleStruct->expGetterID], MON_DATA_ATK);
                     gBattleMons[2].defense = GetMonData(&gPlayerParty[gBattleStruct->expGetterID], MON_DATA_DEF);
-                    // Duplicated again, but this time there's no Sp Defense
+                    // Duplicated again, but this time there's no Sp Defense (fixed)
                     gBattleMons[2].speed = GetMonData(&gPlayerParty[gBattleStruct->expGetterID], MON_DATA_SPEED);
-                    gBattleMons[2].speed = GetMonData(&gPlayerParty[gBattleStruct->expGetterID], MON_DATA_SPEED);
+                    gBattleMons[2].speed = GetMonData(&gPlayerParty[gBattleStruct->expGetterID], MON_DATA_SPDEF);
                     gBattleMons[2].spAttack = GetMonData(&gPlayerParty[gBattleStruct->expGetterID], MON_DATA_SPATK);
                 }
             }
@@ -10513,13 +10506,9 @@ static void atk68_cancelallactions(void)
 static void atk69_adjustsetdamage(void) //literally a copy of atk07 except theres no rand dmg modifier...
 {
     u8 hold_effect, quality;
-    /*if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
-        hold_effect = gEnigmaBerries[gBankTarget].holdEffect, quality = gEnigmaBerries[gBankTarget].holdEffectParam;
-    else
-    {*/
-        hold_effect = ItemId_GetHoldEffect(gBattleMons[gBankTarget].item);
-        quality = ItemId_GetHoldEffectParam(gBattleMons[gBankTarget].item);
-    //}
+    
+	hold_effect = ItemId_GetHoldEffect(gBattleMons[gBankTarget].item);
+    quality = ItemId_GetHoldEffectParam(gBattleMons[gBankTarget].item);
 
     gStringBank = gBankTarget;
 
@@ -11451,9 +11440,12 @@ static void atk82_jumpifnotfirstturn(void)
         gBattlescriptCurrInstr = jump_loc;
 }
 
-static void atk83_nop(void)
+static void atk83_jabocarowapdmg(void)
 {
-    gBattlescriptCurrInstr++;
+    gBattleMoveDamage = gBattleMons[gBankTarget].maxHP / 8;
+	if (gBattleMoveDamage == 0)
+		gBattleMoveDamage = 1;
+	gBattlescriptCurrInstr++;
 }
 
 bool8 UproarWakeUpCheck(u8 bank)
@@ -14108,9 +14100,6 @@ static void atkC1_hiddenpowercalc(void)
 	gDynamicBasePower = 30 + (power * 40 / 63);
 	
 	gBattleStruct->dynamicMoveType = ((type * 15) / 63) + 1;
-	/*
-	if (gBattleStruct->dynamicMoveType >= TYPE_MYSTERY)
-		gBattleStruct->dynamicMoveType++;*/
 	
 	gBattleStruct->dynamicMoveType |= 0xC0;
 	
@@ -15741,8 +15730,6 @@ void atkEF_handleballthrow(void)
             case ITEM_PREMIER_BALL:
                 ball_multiplier = 10;
                 break;
-			//HOENNISLES START
-			//new ball types!
 			case ITEM_BALANCE_BALL:
 			    if (gBattleMons[gBankTarget].type1 == TYPE_FIGHTING || gBattleMons[gBankTarget].type2 == TYPE_FIGHTING || gBattleMons[gBankTarget].type1 == TYPE_PSYCHIC || gBattleMons[gBankTarget].type2 == TYPE_PSYCHIC)
                     ball_multiplier = 50;
@@ -15803,7 +15790,6 @@ void atkEF_handleballthrow(void)
                 else
                     ball_multiplier = 10;
                 break;
-			//HOENNISLES END
             }
         }
         else
@@ -15812,7 +15798,7 @@ void atkEF_handleballthrow(void)
         odds = (catch_rate * ball_multiplier / 10) * (gBattleMons[gBankTarget].maxHP * 3 - gBattleMons[gBankTarget].hp * 2) / (3 * gBattleMons[gBankTarget].maxHP);
         if (gBattleMons[gBankTarget].status1 & (STATUS_SLEEP | STATUS_FREEZE))
             odds *= 2;
-        if (gBattleMons[gBankTarget].status1 & (STATUS_POISON | STATUS_BURN | STATUS_PARALYSIS /*| STATUS_TOXIC_POISON */)) //nice one gf
+        if (gBattleMons[gBankTarget].status1 & (STATUS_PSN_ANY | STATUS_BURN | STATUS_PARALYSIS)) //add STATUS_BRN_ANY
             odds = (odds * 15) / 10;
 
         if (gLastUsedItem != ITEM_SAFARI_BALL)
