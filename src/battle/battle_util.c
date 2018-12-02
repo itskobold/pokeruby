@@ -2610,6 +2610,7 @@ enum
 u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
 {
     int i = 0;
+	u8 stat;
     u8 effect = ITEM_NO_EFFECT;
     u8 changedPP = 0;
     u8 bankHoldEffect, atkHoldEffect, defHoldEffect;
@@ -2762,8 +2763,32 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
                     effect = ITEM_EFFECT_OTHER;
 				}
 				break;
-            case HOLD_EFFECT_PLACEHOLDER:
-                break;
+            case HOLD_EFFECT_RAISE_STAT_ON_HIT:
+				if (secondaryId != 0)
+					stat = STAT_STAGE_SPDEF;	//maranga - raise sp.def
+				else
+					stat = STAT_STAGE_DEF;		//kee - raise def
+			
+				if (((gSpecialStatuses[bank].moveturnLostHP_physical != 0 && secondaryId == 0) 
+					|| (gSpecialStatuses[bank].moveturnLostHP_special != 0 && secondaryId != 0))
+					&& gBattleMons[gBankAttacker].hp != 0 
+                    && gBattleMons[bank].hp != 0
+					//&& !moveTurn 
+					&& gBattleMons[bank].statStages[stat] < 0xC)
+				{
+                    gBattleTextBuff1[0] = 0xFD;
+                    gBattleTextBuff1[1] = 5;
+                    gBattleTextBuff1[2] = stat;
+                    gBattleTextBuff1[3] = EOS;
+					
+                    gEffectBank = bank;
+                    gBattleStruct->statChanger = 0x20 + stat;
+                    gBattleStruct->animArg1 = 0xE + stat;
+                    gBattleStruct->animArg2 = 0;
+					BattleScriptExecute(BattleScript_BerryStatRaiseEnd2);
+                    effect = ITEM_EFFECT_OTHER;
+				}
+				break;
             case HOLD_EFFECT_ATTACK_UP:
                 if (gBattleMons[bank].hp <= gBattleMons[bank].maxHP / bankQuality && !moveTurn && gBattleMons[bank].statStages[STAT_STAGE_ATK] < 0xC)
                 {
