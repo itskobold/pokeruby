@@ -888,6 +888,106 @@ static const u8 gItemDescription_MarangaBerry[] = _(
     "if hit by a\n"
     "SPECIAL move.");
 	
+static const u8 gItemDescription_OccaBerry[] = _(
+    "Changes the hidden\n"
+    "type of a POKéMON\n"
+    "to FIRE.");
+	
+static const u8 gItemDescription_PasshoBerry[] = _(
+    "Changes the hidden\n"
+    "type of a POKéMON\n"
+    "to WATER.");
+	
+static const u8 gItemDescription_WacanBerry[] = _(
+    "Changes the hidden\n"
+    "type of a POKéMON\n"
+    "to ELECTRIC.");
+	
+static const u8 gItemDescription_RindoBerry[] = _(
+    "Changes the hidden\n"
+    "type of a POKéMON\n"
+    "to GRASS.");
+	
+static const u8 gItemDescription_YacheBerry[] = _(
+    "Changes the hidden\n"
+    "type of a POKéMON\n"
+    "to ICE.");
+	
+static const u8 gItemDescription_ChopleBerry[] = _(
+    "Changes the hidden\n"
+    "type of a POKéMON\n"
+    "to FIGHTING.");
+	
+static const u8 gItemDescription_KebiaBerry[] = _(
+    "Changes the hidden\n"
+    "type of a POKéMON\n"
+    "to POISON.");
+	
+static const u8 gItemDescription_ShucaBerry[] = _(
+    "Changes the hidden\n"
+    "type of a POKéMON\n"
+    "to GROUND.");
+	
+static const u8 gItemDescription_CobaBerry[] = _(
+    "Changes the hidden\n"
+    "type of a POKéMON\n"
+    "to FLYING.");
+	
+static const u8 gItemDescription_PayapaBerry[] = _(
+    "Changes the hidden\n"
+    "type of a POKéMON\n"
+    "to PSYCHIC.");
+	
+static const u8 gItemDescription_TangaBerry[] = _(
+    "Changes the hidden\n"
+    "type of a POKéMON\n"
+    "to BUG.");
+	
+static const u8 gItemDescription_ChartiBerry[] = _(
+    "Changes the hidden\n"
+    "type of a POKéMON\n"
+    "to ROCK.");
+	
+static const u8 gItemDescription_KasibBerry[] = _(
+    "Changes the hidden\n"
+    "type of a POKéMON\n"
+    "to GHOST.");
+	
+static const u8 gItemDescription_HabanBerry[] = _(
+    "Changes the hidden\n"
+    "type of a POKéMON\n"
+    "to DRAGON.");
+	
+static const u8 gItemDescription_ColburBerry[] = _(
+    "Changes the hidden\n"
+    "type of a POKéMON\n"
+    "to DARK.");
+	
+static const u8 gItemDescription_BabiriBerry[] = _(
+    "Changes the hidden\n"
+    "type of a POKéMON\n"
+    "to STEEL.");
+	
+static const u8 gItemDescription_ChilanBerry[] = _(
+    "Changes the hidden\n"
+    "type of a POKéMON\n"
+    "to NORMAL.");
+	
+static const u8 gItemDescription_RoseliBerry[] = _(
+    "Changes the hidden\n"
+    "type of a POKéMON\n"
+    "to FAIRY.");
+	
+static const u8 gItemDescription_PinapBerry[] = _(
+    "Changes the hidden\n"
+    "type of a POKéMON\n"
+    "to AUDIO.");
+	
+static const u8 gItemDescription_EnigmaBerry[] = _(
+    "Changes the hidden\n"
+    "type of a POKéMON\n"
+    "to COSMIC.");
+	
 static const u8 gItemDescription_StarfBerry[] = _(
     "A rare berry loved\n"
     "by POKéMON. Can be\n"
