@@ -4204,10 +4204,7 @@ bool8 IsHPRecoveryItem(u16 item)
 {
     const u8 *itemEffect;
 
-    /*if (item == ITEM_ENIGMA_BERRY)
-        itemEffect = gSaveBlock1.enigmaBerry.itemEffect;
-    else*/
-        itemEffect = gItemEffectTable[item - ITEM_POTION];
+    itemEffect = gItemEffectTable[item - ITEM_POTION];
 
     if (itemEffect[4] & 4)
         return TRUE;
@@ -4971,7 +4968,7 @@ void DoEvolutionStoneItemEffect(u8 taskId, u16 evolutionStoneItem, TaskFunc c)
 u8 GetItemEffectType(u16 item)
 {
     const u8 *itemEffect;
-#ifndef NONMATCHING
+/*#ifndef NONMATCHING
     register u8 itemEffect0 asm("r1");
     register u8 itemEffect3 asm("r3");
     register u32 itemEffect0_r0 asm("r0"); // u32 to prevent shifting when transferring itemEffect0 to this
@@ -4980,11 +4977,11 @@ u8 GetItemEffectType(u16 item)
 #define itemEffect0 itemEffect[0]
 #define itemEffect3 itemEffect[3]
 #define mask 0x3F
-#endif
+#endif*/
 
     itemEffect = gItemEffectTable[item - ITEM_POTION];
 
-#ifndef NONMATCHING
+/*#ifndef NONMATCHING
     itemEffect0 = itemEffect[0];
     mask = 0x3F;
 #endif
@@ -5050,80 +5047,74 @@ u8 GetItemEffectType(u16 item)
         {
             return 11;
         }
-    }
-	else if (itemEffect[10] == 0x01) //roll types
-    {
-        return 23;
-    }
-	else if (itemEffect[10] == 0x02) //roll ability
-    {
-        return 24;
-    }
-	else if (itemEffect[10] == 0x03) //roll nature
-    {
-        return 25;
-    }
-	else if (itemEffect[10] == 0x04) //vital tonic
-    {
-        return 26;
-    }
-	else if (itemEffect[10] == 0x05) //strong tonic
-    {
-        return 27;
-    }
-	else if (itemEffect[10] == 0x06) //guard tonic
-    {
-        return 28;
-    }
-	else if (itemEffect[10] == 0x07) //rapid tonic
-    {
-        return 29;
-    }
-	else if (itemEffect[10] == 0x08) //mental tonic
-    {
-        return 30;
-    }
-	else if (itemEffect[10] == 0x09) //shield tonic
-    {
-        return 31;
-    }
-	else if (itemEffect[10] == 0x0a) //hp up
-    {
-        return 13;
-    }
-	else if (itemEffect[10] == 0x0b) //protein
-    {
-        return 12;
-    }
-	else if (itemEffect[10] == 0x0c) //iron
-    {
-        return 17;
-    }
-	else if (itemEffect[10] == 0x0d) //carbos
-    {
-        return 16;
-    }
-	else if (itemEffect[10] == 0x0e) //calcium
-    {
-        return 14;
-    }
-	else if (itemEffect[10] == 0x0f) //zinc
-    {
-        return 15;
-    }
-	else if (itemEffect[10] == 0x10) //pp up
-    {
-        return 19;
-    }
-	else if (itemEffect[10] == 0x11) //pp max
-    {
-        return 20;
-    }
-	else if (itemEffect[10] == 0x22) //ability capsule
-    {
-        return 32;
-    }
-    else if (itemEffect[4] & 0x44)
+    }*/
+	switch(itemEffect[0])
+	{
+		case MEDICINE_GROUP_PP_BOOSTER:
+			switch (itemEffect[1])
+			{
+				case ITEM_PP_UP:
+					return 19;
+				case ITEM_PP_MAX:
+					return 20;
+			}
+		case MEDICINE_GROUP_EV_VITAMIN:
+			switch (itemEffect[1])
+			{
+				case ITEM_HP_UP:
+					return 13;
+				case ITEM_PROTEIN:
+					return 12;
+				case ITEM_IRON:
+					return 17;
+				case ITEM_CARBOS:
+					return 16;
+				case ITEM_CALCIUM:
+					return 14;
+				case ITEM_ZINC:
+					return 15;
+			}
+		case MEDICINE_GROUP_IV_TONIC:
+			switch (itemEffect[1])
+			{
+				case ITEM_VITAL_TONIC:
+					return 26;
+				case ITEM_STRONG_TONIC:
+					return 27;
+				case ITEM_GUARD_TONIC:
+					return 28;
+				case ITEM_RAPID_TONIC:
+					return 29;
+				case ITEM_MENTAL_TONIC:
+					return 30;
+				case ITEM_SHIELD_TONIC:
+					return 31;
+			}
+		case MEDICINE_GROUP_TYPE_MODIFIER:
+			switch (itemEffect[1])
+			{
+				case ITEM_ROLL_TYPES:
+					return 23;
+			}
+		case MEDICINE_GROUP_ABILITY_MODIFIER:
+			switch (itemEffect[1])
+			{
+				case ITEM_ROLL_ABILITY:
+					return 24;
+				case ITEM_ABILITY_CAPSULE:
+					return 32;
+			}
+		case MEDICINE_GROUP_NATURE_MODIFIER:
+			switch (itemEffect[1])
+			{
+				case ITEM_ROLL_NATURE:
+					return 25;
+			}
+		default:
+			return 0;
+	}
+
+    if (itemEffect[4] & 0x44)
     {
         return 2;
     }
@@ -5171,11 +5162,11 @@ u8 GetItemEffectType(u16 item)
     {
         return 22;
     }
-#ifdef NONMATCHING
+/*#ifdef NONMATCHING
 #undef itemEffect0
 #undef itemEffect3
 #undef mask
-#endif
+#endif*/
 }
 #if 0
 NAKED

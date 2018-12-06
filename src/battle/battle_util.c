@@ -2773,7 +2773,6 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
 					|| (gSpecialStatuses[bank].moveturnLostHP_special != 0 && secondaryId != 0))
 					&& gBattleMons[gBankAttacker].hp != 0 
                     && gBattleMons[bank].hp != 0
-					//&& !moveTurn 
 					&& gBattleMons[bank].statStages[stat] < 0xC)
 				{
                     gBattleTextBuff1[0] = 0xFD;

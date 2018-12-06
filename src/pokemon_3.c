@@ -220,63 +220,49 @@ u8 *sub_803F378(u16 itemId)
     int stat;
     const u8 *itemEffect;
 
-    /*if (itemId == ITEM_ENIGMA_BERRY)
-    {
-        if (gMain.inBattle)
-        {
-            itemEffect = gEnigmaBerries[gBankInMenu].itemEffect;
-        }
-        else
-        {
-            itemEffect = gSaveBlock1.enigmaBerry.itemEffect;
-        }
-    }
-    else
-    {*/
-        itemEffect = gItemEffectTable[itemId - 13];
-    //}
+    itemEffect = gItemEffectTable[itemId - 13];
 
     gStringBank = gBankInMenu;
 
 	//new stat booster print
-	if (itemEffect[10] >= 0x12 && itemEffect[10] <= 0x1d)
+	if (itemEffect[1] >= ITEM_X_ATTACK && itemEffect[1] <= ITEM_MAX_ACCURACY)
 	{
-		switch (itemEffect[10])
+		switch (itemEffect[1])
 		{	
-			case 0x12:		//attack
+			case ITEM_X_ATTACK:		//attack
 				stat = 1;
 				break;
-			case 0x13:
+			case ITEM_MAX_ATTACK:
 				stat = 11;
 				break;
-			case 0x14:		//defense
+			case ITEM_X_DEFEND:		//defense
 				stat = 3;
 				break;
-			case 0x15:
+			case ITEM_MAX_DEFEND:
 				stat = 13;
 				break;
-			case 0x16:		//speed
+			case ITEM_X_SPEED:		//speed
 				stat = 2;
 				break;
-			case 0x17:
+			case ITEM_MAX_SPEED:
 				stat = 12;
 				break;
-			case 0x18:		//sp. atk
+			case ITEM_X_SP_ATK:		//sp. atk
 				stat = 4;
 				break;
-			case 0x19:
+			case ITEM_MAX_SP_ATK:
 				stat = 14;
 				break;
-			case 0x1a:		//sp. def
+			case ITEM_X_SP_DEF:		//sp. def
 				stat = 6;
 				break;
-			case 0x1b:
+			case ITEM_MAX_SP_DEF:
 				stat = 16;
 				break;
-			case 0x1c:		//accuracy
+			case ITEM_X_ACCURACY:	//accuracy
 				stat = 5;
 				break;
-			case 0x1d:
+			case ITEM_MAX_ACCURACY:
 				stat = 15;
 				break;
 		};
@@ -285,9 +271,9 @@ u8 *sub_803F378(u16 itemId)
 	
 	gBankAttacker = gBankInMenu;
 	
-	if (itemEffect[10] == 0x1e)
+	if (itemEffect[1] == ITEM_DIRE_HIT)
 		StrCpyDecodeToDisplayedStringBattle(BattleText_DireHit);
-	else if (itemEffect[10] == 0x1f)
+	else if (itemEffect[1] == ITEM_GUARD_SPEC)
 		StrCpyDecodeToDisplayedStringBattle(BattleText_GuardSpec);
 
     return gDisplayedStringBattle;

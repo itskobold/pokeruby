@@ -28,8 +28,9 @@ extern struct BattleEnigmaBerry gEnigmaBerries[];
 
 enum
 {
-    STAT_BOOSTER_X,       // 0
-    STAT_BOOSTER_MAX,     // 1
+	STAT_BOOSTER_BERRY,	  // 0
+    STAT_BOOSTER_X,       // 1
+    STAT_BOOSTER_MAX,     // 2
 };
 
 static const u8 sGetMonDataEVConstants[] =
@@ -40,24 +41,6 @@ static const u8 sGetMonDataEVConstants[] =
     MON_DATA_SPEED_EV,
     MON_DATA_SPDEF_EV,
     MON_DATA_SPATK_EV
-};
-
-//0 = X item
-//1 = MAX item
-static const u8 gStatBoosters[][2] =
-{
-	{STAT_STAGE_ATK,		0},
-	{STAT_STAGE_ATK,		1},
-	{STAT_STAGE_DEF,		0},
-	{STAT_STAGE_DEF,		1},
-	{STAT_STAGE_SPEED,		0},
-	{STAT_STAGE_SPEED,		1},
-	{STAT_STAGE_SPATK,		0},
-	{STAT_STAGE_SPATK,		1},
-	{STAT_STAGE_SPDEF,		0},
-	{STAT_STAGE_SPDEF,		1},
-	{STAT_STAGE_ACC,		0},
-	{STAT_STAGE_ACC,		1}
 };
 
 extern u8 gPPUpReadMasks[];
@@ -74,24 +57,33 @@ bool8 ExecuteTableBasedItemEffect_(struct Pokemon *pkmn, u16 item, u8 partyIndex
 bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 moveIndex, u8 e)
 {
     u32 data;
-    s32 friendship;
-    s32 cmdIndex;
+	u32 data2;
+    //s32 friendship;
+    //s32 cmdIndex;
     bool8 retVal = TRUE;
     const u8 *itemEffect;
-    u8 sp24 = 6;
-    u32 sp28;
-    s8 sp2C = 0;
+	int i;
+    //u8 sp24 = 6;
+    //u32 sp28;
+    //s8 sp2C = 0;
     u8 holdEffect;
-    u8 sp34 = 4;
+    //u8 sp34 = 4;
     u16 heldItem;
-    u8 r10;
-    u32 r4;
+    //u8 r10;
+    //u32 r4;
+	u8 type1 = GetMonData(pkmn, MON_DATA_TYPE_1), type2 = GetMonData(pkmn, MON_DATA_TYPE_2);
+	u16 ability = GetMonData(pkmn, MON_DATA_ABILITY);
+	u8 nature = GetMonData(pkmn, MON_DATA_NATURE);
+	u8 level = GetMonData(pkmn, MON_DATA_LEVEL);
+	u16 species = GetMonData(pkmn, MON_DATA_SPECIES);
+	u32 exp = GetMonData(pkmn, MON_DATA_EXP);
+	u16 evCount;
 
     heldItem = GetMonData(pkmn, MON_DATA_HELD_ITEM, NULL);
     holdEffect = ItemId_GetHoldEffect(heldItem);
 
     gStringBank = gBankInMenu;
-    if (gMain.inBattle)
+    /*if (gMain.inBattle)
     {
         gActiveBattler = gBankInMenu;
         cmdIndex = (GetBattlerSide(gActiveBattler) != 0);
@@ -109,16 +101,305 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
     {
         gActiveBattler = 0;
         sp34 = 4;
-    }
+    }*/
 
     if (!IS_POKEMON_ITEM(item))
         return TRUE;
-    if (gItemEffectTable[item - 13] == NULL/* && item != ITEM_ENIGMA_BERRY*/)
+    if (gItemEffectTable[item - 13] == NULL)
         return TRUE;
 
     itemEffect = gItemEffectTable[item - 13];
+	
+	switch (itemEffect[0])
+	{
+		case MEDICINE_GROUP_PP_BOOSTER:
+			data = (GetMonData(pkmn, MON_DATA_PP_BONUSES, NULL) & gPPUpReadMasks[moveIndex]) >> (moveIndex * 2);
+			
+			switch (itemEffect[1])
+			{
+				case ITEM_PP_UP:
+					data2 = CalculatePPWithBonus(GetMonData(pkmn, MON_DATA_MOVE1 + moveIndex, NULL), GetMonData(pkmn, MON_DATA_PP_BONUSES, NULL), moveIndex);
+					if (data < 3 && data2 > 4)
+					{
+						data = GetMonData(pkmn, MON_DATA_PP_BONUSES, NULL) + gPPUpValues[moveIndex];
+						
+						SetMonData(pkmn, MON_DATA_PP_BONUSES, &data);
+						data = CalculatePPWithBonus(GetMonData(pkmn, MON_DATA_MOVE1 + moveIndex, NULL), data, moveIndex) - data2;
+						data = GetMonData(pkmn, MON_DATA_PP1 + moveIndex, NULL) + data;
+						SetMonData(pkmn, MON_DATA_PP1 + moveIndex, &data);
+						retVal = FALSE;
+					}
+					break;
+				case ITEM_PP_MAX:
+					if (data < 3)
+					{
+						data2 = CalculatePPWithBonus(GetMonData(pkmn, MON_DATA_MOVE1 + moveIndex, NULL), GetMonData(pkmn, MON_DATA_PP_BONUSES, NULL), moveIndex);
+						data = GetMonData(pkmn, MON_DATA_PP_BONUSES, NULL);
+						data &= gPPUpWriteMasks[moveIndex];
+						data += gPPUpValues[moveIndex] * 3;
 
-    for (cmdIndex = 0; cmdIndex < 11; cmdIndex++)
+						SetMonData(pkmn, MON_DATA_PP_BONUSES, &data);
+						data = CalculatePPWithBonus(GetMonData(pkmn, MON_DATA_MOVE1 + moveIndex, NULL), data, moveIndex) - data2;
+						data = GetMonData(pkmn, MON_DATA_PP1 + moveIndex, NULL) + data;
+						SetMonData(pkmn, MON_DATA_PP1 + moveIndex, &data);
+						retVal = FALSE;
+					}
+					break;
+			}
+			break;
+		case MEDICINE_GROUP_EV_VITAMIN:
+			evCount = GetMonEVCount(pkmn);
+			
+			if (evCount >= MAX_TOTAL_EVS)
+				return TRUE; //has hit max EV count across all stats
+			
+			switch (itemEffect[1])
+			{
+				case ITEM_HP_UP:
+					data = STAT_HP;
+					break;
+				case ITEM_PROTEIN:
+					data = STAT_ATK;
+					break;
+				case ITEM_IRON:
+					data = STAT_DEF;
+					break;
+				case ITEM_CARBOS:
+					data = STAT_SPD;
+					break;
+				case ITEM_CALCIUM:
+					data = STAT_SPATK;
+					break;
+				case ITEM_ZINC:
+					data = STAT_SPDEF;
+					break;
+			}
+			
+			for (i = 0; i < 20; i++) //EV is raised by a maximum of 20
+			{
+				data2 = GetMonData(pkmn, MON_DATA_HP_EV + data);
+				
+				if (data2 >= 252) //EV is maxed out
+				{
+					if (i == 0) //hasn't looped - EV has been maxed out before vitamin was used
+						return TRUE;
+					else //EV was maxed during loop
+						break;
+				}
+				else
+					data2++;
+				
+				SetMonData(pkmn, MON_DATA_HP_EV + data, &data2);
+			}
+			CalculateMonStats(pkmn);
+			RedrawPokemonInfoInMenu(partyIndex, pkmn);
+			retVal = FALSE;
+			break;
+		case MEDICINE_GROUP_IV_TONIC:
+			data = itemEffect[1] - ITEM_VITAL_TONIC; //tonics MUST be grouped next to each other in HP/ATK/DEF/SPD/SP.ATK/SP.DEF order
+			
+			for (i = 0; i < 4; i++) //IV is raised by a maximum of 4
+			{
+				data2 = GetMonData(pkmn, MON_DATA_HP_IV + data);
+				
+				if (data2 >= 31) //IV is maxed out
+				{
+					if (i == 0) //hasn't looped - IV has been maxed out before tonic was used
+						return TRUE;
+					else //IV was maxed during loop
+						break;
+				}
+				else
+					data2++;
+				
+				SetMonData(pkmn, MON_DATA_HP_IV + data, &data2);
+			}
+			CalculateMonStats(pkmn);
+			RedrawPokemonInfoInMenu(partyIndex, pkmn);
+			retVal = FALSE;
+			break;
+		case MEDICINE_GROUP_BATTLE_ITEM:
+			switch (itemEffect[1])
+			{
+				case ITEM_X_ATTACK:
+					data = STAT_STAGE_ATK;
+					data2 = STAT_BOOSTER_X;
+					break;
+				case ITEM_MAX_ATTACK:
+					data = STAT_STAGE_ATK;
+					data2 = STAT_BOOSTER_MAX;
+					break;
+				case ITEM_X_DEFEND:
+					data = STAT_STAGE_DEF;
+					data2 = STAT_BOOSTER_X;
+					break;
+				case ITEM_MAX_DEFEND:
+					data = STAT_STAGE_DEF;
+					data2 = STAT_BOOSTER_MAX;
+					break;
+				case ITEM_X_SPEED:
+					data = STAT_STAGE_SPEED;
+					data2 = STAT_BOOSTER_X;
+					break;
+				case ITEM_MAX_SPEED:
+					data = STAT_STAGE_SPEED;
+					data2 = STAT_BOOSTER_MAX;
+					break;
+				case ITEM_X_SP_ATK:
+					data = STAT_STAGE_SPATK;
+					data2 = STAT_BOOSTER_X;
+					break;
+				case ITEM_MAX_SP_ATK:
+					data = STAT_STAGE_SPATK;
+					data2 = STAT_BOOSTER_MAX;
+					break;
+				case ITEM_X_SP_DEF:
+					data = STAT_STAGE_SPDEF;
+					data2 = STAT_BOOSTER_X;
+					break;
+				case ITEM_MAX_SP_DEF:
+					data = STAT_STAGE_SPDEF;
+					data2 = STAT_BOOSTER_MAX;
+					break;
+				case ITEM_X_ACCURACY:
+					data = STAT_STAGE_ACC;
+					data2 = STAT_BOOSTER_X;
+					break;
+				case ITEM_MAX_ACCURACY:
+					data = STAT_STAGE_ACC;
+					data2 = STAT_BOOSTER_MAX;
+					break;
+				default:
+					if (itemEffect[1] == ITEM_DIRE_HIT)
+					{
+						if (!(gBattleMons[gActiveBattler].status2 & STATUS2_FOCUS_ENERGY))
+						{
+							gBattleMons[gActiveBattler].status2 |= STATUS2_FOCUS_ENERGY;
+							return FALSE;
+						}
+						else
+							return TRUE;
+					}
+					else //guard spec
+					{
+						if (gSideTimers[GetBattlerSide(gActiveBattler)].mistTimer == 0)
+						{
+							gSideTimers[GetBattlerSide(gActiveBattler)].mistTimer = 5;
+							return FALSE;
+						}
+						else
+							return TRUE;
+					}
+			}
+				
+			if (gBattleMons[gActiveBattler].statStages[data] < 12)
+			{
+				if (data2 == STAT_BOOSTER_BERRY)										//it's a basic stat booster berry, boost stat by 1 stage
+					gBattleMons[gActiveBattler].statStages[data]++;
+				else if (data2 == STAT_BOOSTER_X)										//it's a regular X item or higher tier berry, boost stat by 2 stages
+					gBattleMons[gActiveBattler].statStages[data] += 2;
+				else																	//it's a MAX item, maximise stat
+					gBattleMons[gActiveBattler].statStages[data] = 12;
+					
+				if (gBattleMons[gActiveBattler].statStages[data] > 12)
+					gBattleMons[gActiveBattler].statStages[data] = 12;
+				
+				retVal = FALSE;
+			}
+			break;
+		case MEDICINE_GROUP_EXP_BOOSTER:
+			if (itemEffect[1] == ITEM_RARE_CANDY)
+			{
+				data = exp - gExperienceTables[gBaseStats[species].growthRate][level];
+				data += gExperienceTables[gBaseStats[species].growthRate][level + 1];
+			}
+			else //candy
+			{
+				data = gExperienceTables[gBaseStats[species].growthRate][level + 1]
+					 - gExperienceTables[gBaseStats[species].growthRate][level];
+				data /= 2;
+				data += exp;
+			}
+			
+			SetMonData(pkmn, MON_DATA_EXP, &data);
+			CalculateMonStats(pkmn);
+			
+			if (GetMonData(pkmn, MON_DATA_LEVEL) >= MAX_LEVEL) //if mon hits max level, set exp to cap
+			{
+				data = gExperienceTables[gBaseStats[species].growthRate][MAX_LEVEL];
+				SetMonData(pkmn, MON_DATA_EXP, &data);
+			}
+			
+			retVal = FALSE;
+			break;
+		case MEDICINE_GROUP_TYPE_MODIFIER:
+			switch (itemEffect[1])
+			{
+				case ITEM_ROLL_TYPES:
+					if (gSaveBlock2.gameMode != GAME_MODE_SUPER_RANDOM) //only works on super random
+						return TRUE;
+					
+					do
+					{
+						GenerateRandomTypes(&pkmn->box);
+					} while (type1 == GetMonData(pkmn, MON_DATA_TYPE_1) && type2 == GetMonData(pkmn, MON_DATA_TYPE_2));
+					retVal = FALSE;
+					break;
+			}
+			break;
+		case MEDICINE_GROUP_ABILITY_MODIFIER:
+			switch (itemEffect[1])
+			{
+				case ITEM_ROLL_ABILITY:
+					if (gSaveBlock2.gameMode != GAME_MODE_SUPER_RANDOM || GetMonData(pkmn, MON_DATA_SPECIES) == SPECIES_SHEDINJA) //only works on super random & if mon is not Shedinja
+						return TRUE;
+					
+					do
+					{
+						SetRandomAbility(&pkmn->box);
+					} while (GetMonData(pkmn, MON_DATA_ABILITY) == ability);
+					retVal = FALSE;
+					break;
+				case ITEM_ABILITY_CAPSULE:
+					ability = 0;
+				
+					if (GetMonData(pkmn, MON_DATA_ABILITY) != 0) //set mon custom ability & ability bit to 0 if mon has custom ability
+					{
+						SetMonData(pkmn, MON_DATA_ABILITY, &ability);
+						SetMonData(pkmn, MON_DATA_ALT_ABILITY, &ability);
+					}
+					else
+					{
+						if (gBaseStats[GetMonData(pkmn, MON_DATA_SPECIES)].ability2 == 0) //if mon only has 1 ability return no effect
+							return TRUE;
+						
+						ability = ~(GetMonData(pkmn, MON_DATA_ALT_ABILITY));
+						SetMonData(pkmn, MON_DATA_ALT_ABILITY, &ability);
+					}
+					retVal = FALSE;
+					break;
+			}
+			break;
+		case MEDICINE_GROUP_NATURE_MODIFIER:
+			switch (itemEffect[1])
+			{
+				case ITEM_ROLL_NATURE:
+					if (gSaveBlock2.gameMode != GAME_MODE_SUPER_RANDOM) //only works on super random
+						return TRUE;
+					
+					do
+					{
+						GenerateRandomNature(&pkmn->box);
+					} while (GetMonData(pkmn, MON_DATA_NATURE) == nature);
+					
+					CalculateMonStats(pkmn);
+					retVal = FALSE;
+					break;
+			}
+			break;
+	}
+	
+    /*for (cmdIndex = 0; cmdIndex < 11; cmdIndex++)
     {
         switch (cmdIndex)
         {
@@ -763,6 +1044,6 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 				retVal = FALSE;
 			}
 		}
-    }
+    }*/
     return retVal;
 }
