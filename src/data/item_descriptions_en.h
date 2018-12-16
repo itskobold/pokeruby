@@ -43,6 +43,16 @@ static const u8 gItemDescription_UltraPotion[] = _(
     "a POKéMON by\n"
     "150 points.");
 	
+static const u8 gItemDescription_MinorHeal[] = _(
+    "Heals a POKéMON of\n"
+    "its minor status\n"
+    "problems in battle.");
+	
+static const u8 gItemDescription_FullRevive[] = _(
+    "Revives a fainted\n"
+    "POKéMON with all\n"
+    "its HP and PP.");
+	
 static const u8 gItemDescription_BalanceBall[] = _(
     "Catches FIGHTING-\n"
     "and PSYCHIC-type\n"
@@ -176,7 +186,7 @@ static const u8 gItemDescription_PremierBall[] = _(
 static const u8 gItemDescription_Potion[] = _(
     "Restores the HP of\n"
     "a POKéMON by\n"
-    "20 points.");
+    "25 points.");
 
 static const u8 gItemDescription_Antidote[] = _(
     "Heals a poisoned\n"

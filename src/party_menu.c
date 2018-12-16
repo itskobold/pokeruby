@@ -4200,13 +4200,15 @@ void sub_806FB44(u8 taskId)
     }
 }
 
-bool8 IsHPRecoveryItem(u16 item)
+u8 IsHPRecoveryItem(u16 item)
 {
     const u8 *itemEffect;
 
     itemEffect = gItemEffectTable[item - ITEM_POTION];
 
-    if (itemEffect[4] & 4)
+	if (itemEffect[1] == ITEM_FULL_RESTORE)
+		return 2;
+    if (itemEffect[0] == MEDICINE_GROUP_HP_RESTORE)
         return TRUE;
     else
         return FALSE;
@@ -4237,10 +4239,10 @@ void GetMedicineItemEffectMessage(u16 item)
     case 7:
         StringExpandPlaceholders(gStringVar4, gOtherText_CuredParalysis);
         break;
-    case 8:
+    case 8: //unused
         StringExpandPlaceholders(gStringVar4, gOtherText_SnapConfusion);
         break;
-    case 9:
+    case 9: //unused
         StringExpandPlaceholders(gStringVar4, gOtherText_GotOverLove);
         break;
     case 11:
@@ -4333,7 +4335,7 @@ bool8 ExecuteTableBasedItemEffect__(u8 monIndex, u16 item, u8 moveIndex)
 void UseMedicine(u8 taskId, u16 item, TaskFunc func)
 {
     u8 r7;
-    bool8 r9 = FALSE;
+    u8 r9 = FALSE;
     bool8 r0;
 
     gTasks[taskId].func = TaskDummy;
@@ -4342,7 +4344,7 @@ void UseMedicine(u8 taskId, u16 item, TaskFunc func)
     if (!IsMedicineIneffective(ewram1C000.pokemon, item))
     {
         r9 = IsHPRecoveryItem(item);
-        if (r9 == TRUE)
+        if (r9 != FALSE)
         {
             gTasks[r7].data[10] = GetMonData(ewram1C000.pokemon, MON_DATA_MAX_HP);
             gTasks[r7].data[11] = GetMonData(ewram1C000.pokemon, MON_DATA_HP);
@@ -4379,7 +4381,7 @@ void UseMedicine(u8 taskId, u16 item, TaskFunc func)
         statusAndPkrs = GetMonStatusAndPokerus(ewram1C000.pokemon);
         if (statusAndPkrs == STATUS_PRIMARY_POKERUS || statusAndPkrs == STATUS_PRIMARY_NONE)
             PartyMenuUpdateLevelOrStatus(ewram1C000.pokemon, ewram1C000.primarySelectedMonIndex);
-        if (r9 == TRUE)
+        if (r9 != FALSE)
         {
             gTasks[r7].data[12] = GetMonData(ewram1C000.pokemon, MON_DATA_HP) - gTasks[r7].data[11];
             ewram1C000.unkC = -32768;
@@ -4549,14 +4551,11 @@ void DoPPRecoveryItemEffect(u8 taskId, u16 item, TaskFunc c)
     const u8 *itemEffect;
     u8 taskId2;
 
-    /*if (item == ITEM_ENIGMA_BERRY)
-        itemEffect = gSaveBlock1.enigmaBerry.itemEffect;
-    else*/
-        itemEffect = gItemEffectTable[item - ITEM_POTION];
+    itemEffect = gItemEffectTable[item - ITEM_POTION];
     gTasks[taskId].func = TaskDummy;
     taskId2 = CreateTask(TaskDummy, 5);
     sub_806E8D0(taskId, item, c);
-    if (!(itemEffect[4] & 0x10))
+    if (!(itemEffect[0] == MEDICINE_GROUP_PP_RESTORE))
     {
         gTasks[taskId2].data[11] = 0;
         DoRecoverPP(taskId2);
@@ -4945,111 +4944,71 @@ static void sub_8070D90(u8 taskId)
 
 void DoEvolutionStoneItemEffect(u8 taskId, u16 evolutionStoneItem, TaskFunc c)
 {
+	u16 evolutionSpecies;
+	
     PlaySE(SE_SELECT);
 
     gTasks[taskId].func = TaskDummy;
     sub_806E8D0(taskId, evolutionStoneItem, c);
 
-    gCB2_AfterEvolution = sub_80A53F8;
-
-    if (ExecuteTableBasedItemEffect__(ewram1C000.primarySelectedMonIndex, evolutionStoneItem, 0))
+	evolutionSpecies = GetEvolutionTargetSpecies(ewram1C000.pokemon, 2, evolutionStoneItem);
+	
+    if (evolutionSpecies != 0)
     {
+		gCB2_AfterEvolution = sub_80A53F8;
+		BeginEvolutionScene(ewram1C000.pokemon, evolutionSpecies, 0, ewram1C000.primarySelectedMonIndex);
+		DestroyTask(taskId);
+        RemoveBagItem(evolutionStoneItem, 1);
+    }
+	else
+	{
         gUnknown_0202E8F4 = 0;
         sub_806E834(gOtherText_WontHaveAnyEffect, 1);
 
         CreateTask(sub_806FB0C, 5);
-    }
-    else
-    {
-        RemoveBagItem(evolutionStoneItem, 1);
     }
 }
 
 u8 GetItemEffectType(u16 item)
 {
     const u8 *itemEffect;
-/*#ifndef NONMATCHING
-    register u8 itemEffect0 asm("r1");
-    register u8 itemEffect3 asm("r3");
-    register u32 itemEffect0_r0 asm("r0"); // u32 to prevent shifting when transferring itemEffect0 to this
-    u8 mask;
-#else
-#define itemEffect0 itemEffect[0]
-#define itemEffect3 itemEffect[3]
-#define mask 0x3F
-#endif*/
 
     itemEffect = gItemEffectTable[item - ITEM_POTION];
 
-/*#ifndef NONMATCHING
-    itemEffect0 = itemEffect[0];
-    mask = 0x3F;
-#endif
-
-    if ((itemEffect0 & mask) || itemEffect[1] || itemEffect[2])
-    {
-        return 0;
-    }
-#ifndef NONMATCHING
-    itemEffect3 = itemEffect[3];
-#endif
-    if (itemEffect3 & 0x80)
-    {
-        return 0;
-    }
-    else if (itemEffect0 & 0x40)
-    {
-        return 10;
-    }
-    else if (itemEffect3 & 0x40)
-    {
-        return 1;
-    }
-    else if ((itemEffect3 & mask) || (itemEffect0 >> 7))
-    {
-        if ((itemEffect3 & mask) == 0x20)
-        {
-            return 4;
-        }
-        else if ((itemEffect3 & mask) == 0x10)
-        {
-            return 3;
-        }
-        else if ((itemEffect3 & mask) == 0x8)
-        {
-            return 5;
-        }
-        else if ((itemEffect3 & mask) == 0x4)
-        {
-            return 6;
-        }
-        else if ((itemEffect3 & mask) == 0x2)
-        {
-            return 7;
-        }
-        else if ((itemEffect3 & mask) == 0x1)
-        {
-            return 8;
-        }
-        // alternate fakematching
-        // itemEffect0_r0 = itemEffect0 >> 7;
-        // asm(""); // increase live length for greg
-        // if ((itemEffect0_r0 != 0) && (itemEffect3 & mask) == 0)
-#ifndef NONMATCHING
-        else if (((itemEffect0_r0 = itemEffect0 >> 7) != 0) && (itemEffect3 & mask) == 0)
-#else
-        else if (((itemEffect[0] >> 7) != 0) && (itemEffect[3] & 0x3F) == 0)
-#endif
-        {
-            return 9;
-        }
-        else
-        {
-            return 11;
-        }
-    }*/
 	switch(itemEffect[0])
 	{
+		case MEDICINE_GROUP_HP_RESTORE:
+			switch (itemEffect[1])
+			{
+				case ITEM_FULL_RESTORE:
+					return 11;
+			}
+		case MEDICINE_GROUP_STATUS_RESTORE:
+			switch (itemEffect[1])
+			{
+				case ITEM_ANTIDOTE:
+					return 3;
+				case ITEM_PARALYZE_HEAL:
+					return 7;
+				case ITEM_AWAKENING:
+					return 4;
+				case ITEM_BURN_HEAL:
+					return 5;
+				case ITEM_ICE_HEAL:
+					return 6;
+				case ITEM_MINOR_HEAL:
+				case ITEM_FULL_HEAL:
+					return 11;
+			}
+		case MEDICINE_GROUP_PP_RESTORE:
+			switch (itemEffect[1])
+			{
+				case ITEM_ETHER:
+				case ITEM_MAX_ETHER:
+				case ITEM_ELIXIR:
+				case ITEM_MAX_ELIXIR:
+					return 21;
+			}
 		case MEDICINE_GROUP_PP_BOOSTER:
 			switch (itemEffect[1])
 			{
@@ -5113,60 +5072,6 @@ u8 GetItemEffectType(u16 item)
 		default:
 			return 0;
 	}
-
-    if (itemEffect[4] & 0x44)
-    {
-        return 2;
-    }
-    else if (itemEffect[4] & 0x2)
-    {
-        return 12;
-    }
-    else if (itemEffect[4] & 0x1)
-    {
-        return 13;
-    }
-    else if (itemEffect[5] & 0x8)
-    {
-        return 14;
-    }
-    else if (itemEffect[5] & 0x4)
-    {
-        return 15;
-    }
-    else if (itemEffect[5] & 0x2)
-    {
-        return 16;
-    }
-    else if (itemEffect[5] & 0x1)
-    {
-        return 17;
-    }
-    else if (itemEffect[4] & 0x80)
-    {
-        return 18;
-    }
-    else if (itemEffect[4] & 0x20)
-    {
-        return 19;
-    }
-    else if (itemEffect[5] & 0x10)
-    {
-        return 20;
-    }
-    else if (itemEffect[4] & 0x18)
-    {
-        return 21;
-    }
-    else
-    {
-        return 22;
-    }
-/*#ifdef NONMATCHING
-#undef itemEffect0
-#undef itemEffect3
-#undef mask
-#endif*/
 }
 #if 0
 NAKED

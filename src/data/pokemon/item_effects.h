@@ -1,19 +1,19 @@
 #ifndef GUARD_ITEM_EFFECTS_H
 #define GUARD_ITEM_EFFECTS_H
 
-const u8 gItemEffect_Potion[]         = {0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 20};
-const u8 gItemEffect_Antidote[]       = {0x00, 0x00, 0x00, 0x10, 0x00, 0x00};
-const u8 gItemEffect_BurnHeal[]       = {0x00, 0x00, 0x00, 0x08, 0x00, 0x00};
-const u8 gItemEffect_IceHeal[]        = {0x00, 0x00, 0x00, 0x04, 0x00, 0x00};
-const u8 gItemEffect_Awakening[]      = {0x00, 0x00, 0x00, 0x20, 0x00, 0x00};
-const u8 gItemEffect_ParalyzeHeal[]   = {0x00, 0x00, 0x00, 0x02, 0x00, 0x00};
-const u8 gItemEffect_FullRestore[]    = {0x00, 0x00, 0x00, 0x3f, 0x04, 0x00, 0xff};
-const u8 gItemEffect_MaxPotion[]      = {0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0xff};
-const u8 gItemEffect_HyperPotion[]    = {0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 200};
-const u8 gItemEffect_SuperPotion[]    = {0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 50};
-const u8 gItemEffect_FullHeal[]       = {0x00, 0x00, 0x00, 0x3f, 0x00, 0x00};
-const u8 gItemEffect_Revive[]         = {0x00, 0x00, 0x00, 0x00, 0x44, 0x00, 0xfe};
-const u8 gItemEffect_MaxRevive[]      = {0x00, 0x00, 0x00, 0x00, 0x44, 0x00, 0xff};
+const u8 gItemEffect_Potion[]         = {MEDICINE_GROUP_HP_RESTORE, ITEM_POTION};
+const u8 gItemEffect_Antidote[]       = {MEDICINE_GROUP_STATUS_RESTORE, ITEM_ANTIDOTE};
+const u8 gItemEffect_BurnHeal[]       = {MEDICINE_GROUP_STATUS_RESTORE, ITEM_BURN_HEAL};
+const u8 gItemEffect_IceHeal[]        = {MEDICINE_GROUP_STATUS_RESTORE, ITEM_ICE_HEAL};
+const u8 gItemEffect_Awakening[]      = {MEDICINE_GROUP_STATUS_RESTORE, ITEM_AWAKENING};
+const u8 gItemEffect_ParalyzeHeal[]   = {MEDICINE_GROUP_STATUS_RESTORE, ITEM_PARALYZE_HEAL};
+const u8 gItemEffect_FullRestore[]    = {MEDICINE_GROUP_HP_RESTORE, ITEM_FULL_RESTORE};
+const u8 gItemEffect_MaxPotion[]      = {MEDICINE_GROUP_HP_RESTORE, ITEM_MAX_POTION};
+const u8 gItemEffect_HyperPotion[]    = {MEDICINE_GROUP_HP_RESTORE, ITEM_HYPER_POTION};
+const u8 gItemEffect_SuperPotion[]    = {MEDICINE_GROUP_HP_RESTORE, ITEM_SUPER_POTION};
+const u8 gItemEffect_FullHeal[]       = {MEDICINE_GROUP_STATUS_RESTORE, ITEM_FULL_HEAL};
+const u8 gItemEffect_Revive[]         = {MEDICINE_GROUP_HP_RESTORE, ITEM_REVIVE};
+const u8 gItemEffect_MaxRevive[]      = {MEDICINE_GROUP_HP_RESTORE, ITEM_MAX_REVIVE};
 const u8 gItemEffect_FreshWater[]     = {0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 50};
 const u8 gItemEffect_SodaPop[]        = {0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 60};
 const u8 gItemEffect_Lemonade[]       = {0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 80};
@@ -22,10 +22,10 @@ const u8 gItemEffect_EnergyPowder[]   = {0x00, 0x00, 0x00, 0x00, 0x04, 0xe0, 50,
 const u8 gItemEffect_EnergyRoot[]     = {0x00, 0x00, 0x00, 0x00, 0x04, 0xe0, 200, 0xf6, 0xf6, 0xf1};
 const u8 gItemEffect_HealPowder[]     = {0x00, 0x00, 0x00, 0x3f, 0x00, 0xe0, 0xfb, 0xfb, 0xf6};
 const u8 gItemEffect_RevivalHerb[]    = {0x00, 0x00, 0x00, 0x00, 0x44, 0xe0, 0xfe, 0xf1, 0xf1, 0xec};
-const u8 gItemEffect_Ether[]          = {0x00, 0x00, 0x00, 0x00, 0x18, 0x00, 0x0a};
-const u8 gItemEffect_MaxEther[]       = {0x00, 0x00, 0x00, 0x00, 0x18, 0x00, 0x7f};
-const u8 gItemEffect_Elixir[]         = {0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x0a};
-const u8 gItemEffect_MaxElixir[]      = {0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x7f};
+const u8 gItemEffect_Ether[]          = {MEDICINE_GROUP_PP_RESTORE, ITEM_ETHER};
+const u8 gItemEffect_MaxEther[]       = {MEDICINE_GROUP_PP_RESTORE, ITEM_MAX_ETHER};
+const u8 gItemEffect_Elixir[]         = {MEDICINE_GROUP_PP_RESTORE, ITEM_ELIXIR};
+const u8 gItemEffect_MaxElixir[]      = {MEDICINE_GROUP_PP_RESTORE, ITEM_MAX_ELIXIR};
 const u8 gItemEffect_LavaCookie[]     = {0x00, 0x00, 0x00, 0x3f, 0x00, 0x00};
 const u8 gItemEffect_BlueFlute[]      = {0x00, 0x00, 0x00, 0x20, 0x00, 0x00};
 const u8 gItemEffect_YellowFlute[]    = {0x00, 0x00, 0x00, 0x01, 0x00, 0x00};
@@ -66,16 +66,19 @@ const u8 gItemEffect_XSpDef[]         = {MEDICINE_GROUP_BATTLE_ITEM, ITEM_X_SP_D
 const u8 gItemEffect_MaxSpDef[]       = {MEDICINE_GROUP_BATTLE_ITEM, ITEM_MAX_SP_DEF};
 const u8 gItemEffect_XAccuracy[]      = {MEDICINE_GROUP_BATTLE_ITEM, ITEM_X_ACCURACY};
 const u8 gItemEffect_MaxAccuracy[]    = {MEDICINE_GROUP_BATTLE_ITEM, ITEM_MAX_ACCURACY};
-const u8 gItemEffect_SunStone[]       = {0x00, 0x00, 0x00, 0x00, 0x80, 0x00};
-const u8 gItemEffect_MoonStone[]      = {0x00, 0x00, 0x00, 0x00, 0x80, 0x00};
-const u8 gItemEffect_FireStone[]      = {0x00, 0x00, 0x00, 0x00, 0x80, 0x00};
-const u8 gItemEffect_ThunderStone[]   = {0x00, 0x00, 0x00, 0x00, 0x80, 0x00};
-const u8 gItemEffect_WaterStone[]     = {0x00, 0x00, 0x00, 0x00, 0x80, 0x00};
-const u8 gItemEffect_LeafStone[]      = {0x00, 0x00, 0x00, 0x00, 0x80, 0x00};
-const u8 gItemEffect_FrostStone[]     = {0x00, 0x00, 0x00, 0x00, 0x80, 0x00};
-const u8 gItemEffect_DawnStone[]      = {0x00, 0x00, 0x00, 0x00, 0x80, 0x00};
-const u8 gItemEffect_DuskStone[]      = {0x00, 0x00, 0x00, 0x00, 0x80, 0x00};
-const u8 gItemEffect_ShinyStone[]     = {0x00, 0x00, 0x00, 0x00, 0x80, 0x00};
+const u8 gItemEffect_UltraPotion[]    = {MEDICINE_GROUP_HP_RESTORE, ITEM_ULTRA_POTION};
+const u8 gItemEffect_MinorHeal[]      = {MEDICINE_GROUP_STATUS_RESTORE, ITEM_MINOR_HEAL};
+const u8 gItemEffect_FullRevive[]     = {MEDICINE_GROUP_HP_RESTORE, ITEM_FULL_REVIVE};
+const u8 gItemEffect_SunStone[]       = {MEDICINE_GROUP_EVO_STONE, ITEM_SUN_STONE};
+const u8 gItemEffect_MoonStone[]      = {MEDICINE_GROUP_EVO_STONE, ITEM_MOON_STONE};
+const u8 gItemEffect_FireStone[]      = {MEDICINE_GROUP_EVO_STONE, ITEM_FIRE_STONE};
+const u8 gItemEffect_ThunderStone[]   = {MEDICINE_GROUP_EVO_STONE, ITEM_THUNDER_STONE};
+const u8 gItemEffect_WaterStone[]     = {MEDICINE_GROUP_EVO_STONE, ITEM_WATER_STONE};
+const u8 gItemEffect_LeafStone[]      = {MEDICINE_GROUP_EVO_STONE, ITEM_LEAF_STONE};
+const u8 gItemEffect_FrostStone[]     = {MEDICINE_GROUP_EVO_STONE, ITEM_FROST_STONE};
+const u8 gItemEffect_DawnStone[]      = {MEDICINE_GROUP_EVO_STONE, ITEM_DAWN_STONE};
+const u8 gItemEffect_DuskStone[]      = {MEDICINE_GROUP_EVO_STONE, ITEM_DUSK_STONE};
+const u8 gItemEffect_ShinyStone[]     = {MEDICINE_GROUP_EVO_STONE, ITEM_SHINY_STONE};
 const u8 gItemEffect_CheriBerry[]     = {0x00, 0x00, 0x00, 0x02, 0x00, 0x00};
 const u8 gItemEffect_ChestoBerry[]    = {0x00, 0x00, 0x00, 0x20, 0x00, 0x00};
 const u8 gItemEffect_PechaBerry[]     = {0x00, 0x00, 0x00, 0x10, 0x00, 0x00};
@@ -163,9 +166,9 @@ const u8 *const gItemEffectTable[] =
 	gItemEffect_MaxSpDef,
     gItemEffect_XAccuracy,
     gItemEffect_MaxAccuracy,
-    NULL,
-    NULL,
-    NULL,
+    gItemEffect_UltraPotion,
+    gItemEffect_MinorHeal,
+    gItemEffect_FullRevive,
     NULL,
     NULL,
     NULL,
