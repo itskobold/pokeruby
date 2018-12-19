@@ -3,10 +3,10 @@ gWaitText_HowLongToWait::
 	.string "How long would you like to wait?$"
 	
 gWaitText_YouCantWaitNow::
-	.string "You can’t wait right now.$"
+	.string "You can't wait right now.$"
 	
 gWaitText_WaitingTooOften::
-	.string "You’ve waited for too long! Keep going\n"
+	.string "You've waited for too long! Keep going\n"
 	.string "to recharge your wait time.$"
 
 gWaitText_HoursRemaining::
@@ -23,5 +23,5 @@ gWaitText_S::
 	.string "S$"
 	
 gWaitText_NotEnoughTime::
-	.string "You can’t wait for that long. Would you\n"
+	.string "You can't wait for that long. Would you\n"
 	.string "like to wait for as long as possible?$"
