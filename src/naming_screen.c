@@ -2171,7 +2171,6 @@ static const u8 sKeyboardCharacters[][3][4][20] =
 			_(" …  “  ”  ‘  ’     "),
 		},
 	}
-};
 
 const struct OamData gOamData_83CE498 =
 {
