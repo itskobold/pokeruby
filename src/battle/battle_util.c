@@ -513,10 +513,7 @@ u8 TrySetCantSelectMoveBattleScript(void) //msg can't select a move
         gUnknown_02024C1C[gActiveBattler] = BattleScript_MoveSelectionImprisoned;
         limitations++;
     }
-    /*if (gBattleMons[gActiveBattler].item == ITEM_ENIGMA_BERRY)
-        holdEffect = gEnigmaBerries[gActiveBattler].holdEffect;
-    else*/
-        holdEffect = ItemId_GetHoldEffect(gBattleMons[gActiveBattler].item);
+    holdEffect = ItemId_GetHoldEffect(gBattleMons[gActiveBattler].item);
     gStringBank = gActiveBattler;
     if (holdEffect == HOLD_EFFECT_CHOICE_BAND && *choicedMove != 0 && *choicedMove != 0xFFFF && *choicedMove != move)
     {
@@ -545,10 +542,8 @@ u8 CheckMoveLimitations(u8 bank, u8 unusableMoves, u8 check)
     u8 holdEffect;
     u16* choicedMove = CHOICED_MOVE(bank);
     s32 i;
-    /*if (gBattleMons[bank].item == ITEM_ENIGMA_BERRY)
-        holdEffect = gEnigmaBerries[bank].holdEffect;
-    else*/
-        holdEffect = ItemId_GetHoldEffect(gBattleMons[bank].item);
+    
+	holdEffect = ItemId_GetHoldEffect(gBattleMons[bank].item);
     gStringBank = bank;
     for (i = 0; i < 4; i++)
     {
@@ -2744,7 +2739,7 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
                 }
                 break;
             case HOLD_EFFECT_MOVE_FIRST_ONCE:
-				if (gBattleMons[bank].hp <= gBattleMons[bank].maxHP / 2 && !moveTurn) //less than 50% health
+				if (gBattleMons[bank].hp <= gBattleMons[bank].maxHP / 2 && !moveTurn && !(gStatuses3[bank] & STATUS3_CUSTAP_BERRY)) //less than 50% health
 				{
 					gStatuses3[bank] |= STATUS3_CUSTAP_BERRY;
 					BattleScriptExecute(BattleScript_BerryMoveFirstEnd);
@@ -2793,7 +2788,7 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
                 {
 					u8 boost;
 					
-					if (secondaryId != 0)
+					if (secondaryId > 9)
 						boost = 0x20;	//sharply raise
 					else
 						boost = 0x10;	//just raise
@@ -2822,7 +2817,7 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
                 {
 					u8 boost;
 					
-					if (secondaryId != 0)
+					if (secondaryId > 9)
 						boost = 0x20;	//sharply raise
 					else
 						boost = 0x10;	//just raise
@@ -2845,7 +2840,7 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
                 {
 					u8 boost;
 					
-					if (secondaryId != 0)
+					if (secondaryId > 9)
 						boost = 0x20;	//sharply raise
 					else
 						boost = 0x10;	//just raise
@@ -2868,7 +2863,7 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
                 {
 					u8 boost;
 					
-					if (secondaryId != 0)
+					if (secondaryId > 9)
 						boost = 0x20;	//sharply raise
 					else
 						boost = 0x10;	//just raise
@@ -2891,7 +2886,7 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
                 {
 					u8 boost;
 					
-					if (secondaryId != 0)
+					if (secondaryId > 9)
 						boost = 0x20;	//sharply raise
 					else
 						boost = 0x10;	//just raise
@@ -2922,7 +2917,7 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
                 {
 					u8 boost;
 					
-					if (secondaryId != 0)
+					if (secondaryId > 9)
 						boost = 0x20;	//sharply raise
 					else
 						boost = 0x10;	//just raise
@@ -3132,7 +3127,7 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
                 {
 					u8 boost;
 					
-					if (secondaryId != 0)
+					if (secondaryId > 9)
 						boost = 0x20;	//sharply raise
 					else
 						boost = 0x10;	//just raise
@@ -3278,7 +3273,7 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
                 {
 					u8 boost;
 					
-					if (secondaryId != 0)
+					if (secondaryId > 9)
 						boost = 0x20;	//sharply raise
 					else
 						boost = 0x10;	//just raise

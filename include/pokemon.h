@@ -419,6 +419,17 @@ enum
     STAT_SPDEF,  // 5
 };
 
+enum
+{
+	CURE_ALL,		// 0
+	CURE_SLP,		// 1
+	CURE_PSN,		// 2
+	CURE_BRN,		// 3
+	CURE_FRZ,		// 4
+	CURE_PAR,		// 5
+	CURE_SECONDARY	// 6
+};
+
 struct BaseStats
 {
     /*0x00*/ u8 baseHP;

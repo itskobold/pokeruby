@@ -79,16 +79,62 @@ const u8 gItemEffect_FrostStone[]     = {MEDICINE_GROUP_EVO_STONE, ITEM_FROST_ST
 const u8 gItemEffect_DawnStone[]      = {MEDICINE_GROUP_EVO_STONE, ITEM_DAWN_STONE};
 const u8 gItemEffect_DuskStone[]      = {MEDICINE_GROUP_EVO_STONE, ITEM_DUSK_STONE};
 const u8 gItemEffect_ShinyStone[]     = {MEDICINE_GROUP_EVO_STONE, ITEM_SHINY_STONE};
-const u8 gItemEffect_CheriBerry[]     = {0x00, 0x00, 0x00, 0x02, 0x00, 0x00};
-const u8 gItemEffect_ChestoBerry[]    = {0x00, 0x00, 0x00, 0x20, 0x00, 0x00};
-const u8 gItemEffect_PechaBerry[]     = {0x00, 0x00, 0x00, 0x10, 0x00, 0x00};
-const u8 gItemEffect_RawstBerry[]     = {0x00, 0x00, 0x00, 0x08, 0x00, 0x00};
-const u8 gItemEffect_AspearBerry[]    = {0x00, 0x00, 0x00, 0x04, 0x00, 0x00};
-const u8 gItemEffect_LeppaBerry[]     = {0x00, 0x00, 0x00, 0x00, 0x18, 0x00, 0x0a};
-const u8 gItemEffect_OranBerry[]      = {0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 10};
-const u8 gItemEffect_PersimBerry[]    = {0x00, 0x00, 0x00, 0x01, 0x00, 0x00};
-const u8 gItemEffect_LumBerry[]       = {0x00, 0x00, 0x00, 0x3f, 0x00, 0x00};
-const u8 gItemEffect_SitrusBerry[]    = {0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 30};
+const u8 gItemEffect_CheriBerry[]     = {MEDICINE_GROUP_STATUS_RESTORE, ITEM_CHERI_BERRY};
+const u8 gItemEffect_ChestoBerry[]    = {MEDICINE_GROUP_STATUS_RESTORE, ITEM_CHESTO_BERRY};
+const u8 gItemEffect_PechaBerry[]     = {MEDICINE_GROUP_STATUS_RESTORE, ITEM_PECHA_BERRY};
+const u8 gItemEffect_RawstBerry[]     = {MEDICINE_GROUP_STATUS_RESTORE, ITEM_RAWST_BERRY};
+const u8 gItemEffect_AspearBerry[]    = {MEDICINE_GROUP_STATUS_RESTORE, ITEM_ASPEAR_BERRY};
+const u8 gItemEffect_PersimBerry[]    = {MEDICINE_GROUP_STATUS_RESTORE, ITEM_PERSIM_BERRY};
+const u8 gItemEffect_LumBerry[]       = {MEDICINE_GROUP_STATUS_RESTORE, ITEM_LUM_BERRY};
+const u8 gItemEffect_LeppaBerry[]     = {MEDICINE_GROUP_PP_RESTORE, ITEM_LEPPA_BERRY};
+const u8 gItemEffect_BlukBerry[]      = {MEDICINE_GROUP_PP_RESTORE, ITEM_BLUK_BERRY};
+const u8 gItemEffect_OranBerry[]      = {MEDICINE_GROUP_HP_RESTORE, ITEM_ORAN_BERRY};
+const u8 gItemEffect_SitrusBerry[]    = {MEDICINE_GROUP_HP_RESTORE, ITEM_SITRUS_BERRY};
+const u8 gItemEffect_RazzBerry[]      = {MEDICINE_GROUP_HP_RESTORE, ITEM_RAZZ_BERRY};
+const u8 gItemEffect_BelueBerry[]     = {MEDICINE_GROUP_HP_RESTORE, ITEM_BELUE_BERRY};
+const u8 gItemEffect_WatmelBerry[]    = {MEDICINE_GROUP_HP_RESTORE, ITEM_WATMEL_BERRY};
+const u8 gItemEffect_PomegBerry[]     = {MEDICINE_GROUP_EV_VITAMIN, ITEM_POMEG_BERRY};
+const u8 gItemEffect_KelpsyBerry[]    = {MEDICINE_GROUP_EV_VITAMIN, ITEM_KELPSY_BERRY};
+const u8 gItemEffect_QualotBerry[]    = {MEDICINE_GROUP_EV_VITAMIN, ITEM_QUALOT_BERRY};
+const u8 gItemEffect_HondewBerry[]    = {MEDICINE_GROUP_EV_VITAMIN, ITEM_HONDEW_BERRY};
+const u8 gItemEffect_GrepaBerry[]     = {MEDICINE_GROUP_EV_VITAMIN, ITEM_GREPA_BERRY};
+const u8 gItemEffect_TamatoBerry[]    = {MEDICINE_GROUP_EV_VITAMIN, ITEM_TAMATO_BERRY};
+const u8 gItemEffect_CornnBerry[]     = {MEDICINE_GROUP_BATTLE_ITEM, ITEM_CORNN_BERRY};
+const u8 gItemEffect_MagostBerry[]    = {MEDICINE_GROUP_BATTLE_ITEM, ITEM_MAGOST_BERRY};
+const u8 gItemEffect_RabutaBerry[]    = {MEDICINE_GROUP_BATTLE_ITEM, ITEM_RABUTA_BERRY};
+const u8 gItemEffect_NomelBerry[]     = {MEDICINE_GROUP_BATTLE_ITEM, ITEM_NOMEL_BERRY};
+const u8 gItemEffect_FigyBerry[]      = {MEDICINE_GROUP_BATTLE_ITEM, ITEM_FIGY_BERRY};
+const u8 gItemEffect_AguavBerry[]     = {MEDICINE_GROUP_BATTLE_ITEM, ITEM_AGUAV_BERRY};
+const u8 gItemEffect_WikiBerry[]      = {MEDICINE_GROUP_BATTLE_ITEM, ITEM_WIKI_BERRY};
+const u8 gItemEffect_PamtreBerry[]    = {MEDICINE_GROUP_BATTLE_ITEM, ITEM_PAMTRE_BERRY};
+const u8 gItemEffect_LiechiBerry[]    = {MEDICINE_GROUP_BATTLE_ITEM, ITEM_LIECHI_BERRY};
+const u8 gItemEffect_GanlonBerry[]    = {MEDICINE_GROUP_BATTLE_ITEM, ITEM_GANLON_BERRY};
+const u8 gItemEffect_SalacBerry[]     = {MEDICINE_GROUP_BATTLE_ITEM, ITEM_SALAC_BERRY};
+const u8 gItemEffect_PetayaBerry[]    = {MEDICINE_GROUP_BATTLE_ITEM, ITEM_PETAYA_BERRY};
+const u8 gItemEffect_ApicotBerry[]    = {MEDICINE_GROUP_BATTLE_ITEM, ITEM_APICOT_BERRY};
+const u8 gItemEffect_MicleBerry[]     = {MEDICINE_GROUP_BATTLE_ITEM, ITEM_MICLE_BERRY};
+const u8 gItemEffect_NanabBerry[]     = {MEDICINE_GROUP_BATTLE_ITEM, ITEM_NANAB_BERRY};
+const u8 gItemEffect_CustapBerry[]    = {MEDICINE_GROUP_BATTLE_ITEM, ITEM_CUSTAP_BERRY};
+const u8 gItemEffect_OccaBerry[]      = {MEDICINE_GROUP_HIDDEN_TYPE, ITEM_OCCA_BERRY};
+const u8 gItemEffect_PasshoBerry[]    = {MEDICINE_GROUP_HIDDEN_TYPE, ITEM_PASSHO_BERRY};
+const u8 gItemEffect_WacanBerry[]     = {MEDICINE_GROUP_HIDDEN_TYPE, ITEM_WACAN_BERRY};
+const u8 gItemEffect_RindoBerry[]     = {MEDICINE_GROUP_HIDDEN_TYPE, ITEM_RINDO_BERRY};
+const u8 gItemEffect_YacheBerry[]     = {MEDICINE_GROUP_HIDDEN_TYPE, ITEM_YACHE_BERRY};
+const u8 gItemEffect_ChopleBerry[]    = {MEDICINE_GROUP_HIDDEN_TYPE, ITEM_CHOPLE_BERRY};
+const u8 gItemEffect_KebiaBerry[]     = {MEDICINE_GROUP_HIDDEN_TYPE, ITEM_KEBIA_BERRY};
+const u8 gItemEffect_ShucaBerry[]     = {MEDICINE_GROUP_HIDDEN_TYPE, ITEM_SHUCA_BERRY};
+const u8 gItemEffect_CobaBerry[]      = {MEDICINE_GROUP_HIDDEN_TYPE, ITEM_COBA_BERRY};
+const u8 gItemEffect_PayapaBerry[]    = {MEDICINE_GROUP_HIDDEN_TYPE, ITEM_PAYAPA_BERRY};
+const u8 gItemEffect_TangaBerry[]     = {MEDICINE_GROUP_HIDDEN_TYPE, ITEM_TANGA_BERRY};
+const u8 gItemEffect_ChartiBerry[]    = {MEDICINE_GROUP_HIDDEN_TYPE, ITEM_CHARTI_BERRY};
+const u8 gItemEffect_KasibBerry[]     = {MEDICINE_GROUP_HIDDEN_TYPE, ITEM_KASIB_BERRY};
+const u8 gItemEffect_HabanBerry[]     = {MEDICINE_GROUP_HIDDEN_TYPE, ITEM_HABAN_BERRY};
+const u8 gItemEffect_ColburBerry[]    = {MEDICINE_GROUP_HIDDEN_TYPE, ITEM_COLBUR_BERRY};
+const u8 gItemEffect_BabiriBerry[]    = {MEDICINE_GROUP_HIDDEN_TYPE, ITEM_BABIRI_BERRY};
+const u8 gItemEffect_ChilanBerry[]    = {MEDICINE_GROUP_HIDDEN_TYPE, ITEM_CHILAN_BERRY};
+const u8 gItemEffect_RoseliBerry[]    = {MEDICINE_GROUP_HIDDEN_TYPE, ITEM_ROSELI_BERRY};
+const u8 gItemEffect_PinapBerry[]     = {MEDICINE_GROUP_HIDDEN_TYPE, ITEM_PINAP_BERRY};
+const u8 gItemEffect_EnigmaBerry[]    = {MEDICINE_GROUP_HIDDEN_TYPE, ITEM_ENIGMA_BERRY};
 
 const u8 *const gItemEffectTable[] =
 {
@@ -172,12 +218,6 @@ const u8 *const gItemEffectTable[] =
     NULL,
     NULL,
     NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
     gItemEffect_SunStone,
     gItemEffect_MoonStone,
     gItemEffect_FireStone,
@@ -188,96 +228,62 @@ const u8 *const gItemEffectTable[] =
     gItemEffect_DawnStone,
     gItemEffect_DuskStone,
     gItemEffect_ShinyStone,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    NULL,
     gItemEffect_CheriBerry,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
-	NULL,
+	gItemEffect_ChestoBerry,
+	gItemEffect_PechaBerry,
+	gItemEffect_RawstBerry,
+	gItemEffect_AspearBerry,
+	gItemEffect_PersimBerry,
+	gItemEffect_LumBerry,
+	gItemEffect_LeppaBerry,
+	gItemEffect_BlukBerry,
+	gItemEffect_OranBerry,
+	gItemEffect_SitrusBerry,
+	gItemEffect_RazzBerry,
+	gItemEffect_BelueBerry,
+	gItemEffect_WatmelBerry,
+	gItemEffect_PomegBerry,
+	gItemEffect_KelpsyBerry,
+	gItemEffect_QualotBerry,
+	gItemEffect_HondewBerry,
+	gItemEffect_GrepaBerry,
+	gItemEffect_TamatoBerry,
+	gItemEffect_CornnBerry,
+	gItemEffect_MagostBerry,
+	gItemEffect_RabutaBerry,
+	gItemEffect_NomelBerry,
+	gItemEffect_FigyBerry,
+	gItemEffect_AguavBerry,
+	gItemEffect_WikiBerry,
+	gItemEffect_PamtreBerry,
+	gItemEffect_LiechiBerry,
+	gItemEffect_GanlonBerry,
+	gItemEffect_SalacBerry,
+	gItemEffect_PetayaBerry,
+	gItemEffect_ApicotBerry,
+	gItemEffect_MicleBerry,
+	gItemEffect_NanabBerry,
+	gItemEffect_CustapBerry,
+	gItemEffect_OccaBerry,
+	gItemEffect_PasshoBerry,
+	gItemEffect_WacanBerry,
+	gItemEffect_RindoBerry,
+	gItemEffect_YacheBerry,
+	gItemEffect_ChopleBerry,
+	gItemEffect_KebiaBerry,
+	gItemEffect_ShucaBerry,
+	gItemEffect_CobaBerry,
+	gItemEffect_PayapaBerry,
+	gItemEffect_TangaBerry,
+	gItemEffect_ChartiBerry,
+	gItemEffect_KasibBerry,
+	gItemEffect_HabanBerry,
+	gItemEffect_ColburBerry,
+	gItemEffect_BabiriBerry,
+	gItemEffect_ChilanBerry,
+	gItemEffect_RoseliBerry,
+	gItemEffect_PinapBerry,
+	gItemEffect_EnigmaBerry,
 	NULL
 };
 

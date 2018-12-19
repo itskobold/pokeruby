@@ -607,6 +607,7 @@ const u8 BattleText_CuredOfProblem[] = _("{STRING 16}’s {STRING 23}\ncured its
 const u8 BattleText_NoEffectOn[] = _("{STRING 16}’s {STRING 23}\nhad no effect on {STRING 14}!");
 const u8 BattleText_Sharply[] = _("sharply ");
 const u8 BattleText_Rose[] = _("rose!");
+const u8 BattleText_SharplyRose[] = _("sharply rose!"); //i'm lazy
 const u8 BattleText_WasMaximized[] = _("was maximized!");
 const u8 BattleText_Harshly[] = _("harshly ");
 const u8 BattleText_Fell[] = _("fell!");

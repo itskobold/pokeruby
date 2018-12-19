@@ -4309,6 +4309,9 @@ void GetMedicineItemEffectMessage(u16 item)
 	case 32: //Ability Capsule
 		StringExpandPlaceholders(gStringVar4, gOtherText_AbilitySwapped);
         break;
+	case 33: //Hidden Type berries
+		StringExpandPlaceholders(gStringVar4, gOtherText_HiddenTypeChanged);
+        break;
     default:
         StringExpandPlaceholders(gStringVar4, gOtherText_WontHaveAnyEffect);
         break;
@@ -5020,16 +5023,22 @@ u8 GetItemEffectType(u16 item)
 		case MEDICINE_GROUP_EV_VITAMIN:
 			switch (itemEffect[1])
 			{
+				case ITEM_POMEG_BERRY:
 				case ITEM_HP_UP:
 					return 13;
+				case ITEM_KELPSY_BERRY:
 				case ITEM_PROTEIN:
 					return 12;
+				case ITEM_QUALOT_BERRY:
 				case ITEM_IRON:
 					return 17;
+				case ITEM_TAMATO_BERRY:
 				case ITEM_CARBOS:
 					return 16;
+				case ITEM_HONDEW_BERRY:
 				case ITEM_CALCIUM:
 					return 14;
+				case ITEM_GREPA_BERRY:
 				case ITEM_ZINC:
 					return 15;
 			}
@@ -5049,6 +5058,8 @@ u8 GetItemEffectType(u16 item)
 				case ITEM_SHIELD_TONIC:
 					return 31;
 			}
+		case MEDICINE_GROUP_HIDDEN_TYPE:
+			return 33;
 		case MEDICINE_GROUP_TYPE_MODIFIER:
 			switch (itemEffect[1])
 			{

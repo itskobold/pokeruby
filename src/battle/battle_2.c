@@ -6093,10 +6093,8 @@ u8 GetWhoStrikesFirst(u8 bank1, u8 bank2, bool8 ignoreMovePriorities)
         bank1AdjustedSpeed /= 4;
 
 	if (gStatuses3[bank1] & STATUS3_CUSTAP_BERRY)
-	{
 		bank1AdjustedSpeed = UINT_MAX;
-		gStatuses3[bank1] &= ~(STATUS3_CUSTAP_BERRY);
-	}
+
     else if (heldItemEffect == HOLD_EFFECT_QUICK_CLAW && gRandomTurnNumber < (heldItemEffectParam * 0xFFFF) / 100)
         bank1AdjustedSpeed = UINT_MAX;
 
@@ -6120,10 +6118,8 @@ u8 GetWhoStrikesFirst(u8 bank1, u8 bank2, bool8 ignoreMovePriorities)
         bank2AdjustedSpeed /= 4;
 	
 	if (gStatuses3[bank2] & STATUS3_CUSTAP_BERRY)
-	{
 		bank2AdjustedSpeed = UINT_MAX;
-		gStatuses3[bank2] &= ~(STATUS3_CUSTAP_BERRY);
-	}
+
     else if (heldItemEffect == HOLD_EFFECT_QUICK_CLAW && gRandomTurnNumber < (heldItemEffectParam * 0xFFFF) / 100)
         bank2AdjustedSpeed = UINT_MAX;
 
@@ -6805,6 +6801,9 @@ void HandleAction_UseMove(void)
             }
         }
     }
+	
+	if (gStatuses3[gBankAttacker] & STATUS3_CUSTAP_BERRY)
+		gStatuses3[gBankAttacker] &= ~(STATUS3_CUSTAP_BERRY);
 
     gBattlescriptCurrInstr = gBattleScriptsForMoveEffects[gBattleMoves[gCurrentMove].effect];
     gCurrentActionFuncId = ACTION_RUN_BATTLESCRIPT;
@@ -7283,10 +7282,7 @@ bool8 TryRunFromBattle(u8 bank)
     u8 holdEffect;
     u8 speedVar;
 
-    /*if (gBattleMons[bank].item == ITEM_ENIGMA_BERRY)
-        holdEffect = gEnigmaBerries[bank].holdEffect;
-    else*/
-        holdEffect = ItemId_GetHoldEffect(gBattleMons[bank].item);
+    holdEffect = ItemId_GetHoldEffect(gBattleMons[bank].item);
 
     gStringBank = bank;
 

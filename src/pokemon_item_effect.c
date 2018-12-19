@@ -12,6 +12,7 @@
 #include "party_menu.h"
 #include "pokemon.h"
 #include "pokemon_item_effect.h"
+#include "random.h"
 #include "rom_8077ABC.h"
 #include "rom_8094928.h"
 #include "util.h"
@@ -24,6 +25,7 @@ extern u16 gBattlerPartyIndexes[];
 extern u8 gActiveBattler;
 extern u8 gStringBank;
 extern u32 gStatuses3[4];
+extern u8 gRandomStatBoosted;
 extern struct BattlePokemon gBattleMons[];
 extern struct BattleEnigmaBerry gEnigmaBerries[];
 
@@ -42,17 +44,6 @@ static const u8 sGetMonDataEVConstants[] =
     MON_DATA_SPEED_EV,
     MON_DATA_SPDEF_EV,
     MON_DATA_SPATK_EV
-};
-
-enum
-{
-	CURE_ALL,
-	CURE_SLP,
-	CURE_PSN,
-	CURE_BRN,
-	CURE_FRZ,
-	CURE_PAR,
-	CURE_SECONDARY
 };
 
 extern u8 gPPUpReadMasks[];
@@ -213,18 +204,23 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 				{
 					switch (itemEffect[1])
 					{
+						case ITEM_ORAN_BERRY:
 						case ITEM_POTION:
 							restoreAmt = 25;
 							break;
+						case ITEM_SITRUS_BERRY:
 						case ITEM_SUPER_POTION:
 							restoreAmt = 75;
 							break;
+						case ITEM_RAZZ_BERRY:
 						case ITEM_ULTRA_POTION:
 							restoreAmt = 150;
 							break;
+						case ITEM_BELUE_BERRY:
 						case ITEM_HYPER_POTION:
 							restoreAmt = 300;
 							break;
+						case ITEM_WATMEL_BERRY:
 						case ITEM_MAX_POTION:
 							restoreAmt = GetMonData(pkmn, MON_DATA_MAX_HP);
 							break;
@@ -255,6 +251,11 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 					
 					if (restorePP)
 						retVal = RestorePPAllMoves(pkmn, sp34, TRUE);
+					
+					data = GetMonData(pkmn, MON_DATA_HP, NULL) + restoreAmt;
+					if (data > GetMonData(pkmn, MON_DATA_MAX_HP, NULL))
+						data = GetMonData(pkmn, MON_DATA_MAX_HP, NULL);
+					SetMonData(pkmn, MON_DATA_HP, &data);
 					
 					if (!revive)
 					{
@@ -298,11 +299,6 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 							}
 						}
 					}
-					
-					data = GetMonData(pkmn, MON_DATA_HP, NULL) + restoreAmt;
-					if (data > GetMonData(pkmn, MON_DATA_MAX_HP, NULL))
-						data = GetMonData(pkmn, MON_DATA_MAX_HP, NULL);
-					SetMonData(pkmn, MON_DATA_HP, &data);
 				}
 				else
 					gBattleMoveDamage = -data;
@@ -313,32 +309,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 		}
 		case MEDICINE_GROUP_STATUS_RESTORE:
 		{
-			u8 status;
-			
-			switch (itemEffect[1])
-			{
-				case ITEM_ANTIDOTE:
-					status = CURE_PSN;
-					break;
-				case ITEM_PARALYZE_HEAL:
-					status = CURE_PAR;
-					break;
-				case ITEM_AWAKENING:
-					status = CURE_SLP;
-					break;
-				case ITEM_BURN_HEAL:
-					status = CURE_BRN;
-					break;
-				case ITEM_ICE_HEAL:
-					status = CURE_FRZ;
-					break;
-				case ITEM_MINOR_HEAL:
-					status = CURE_SECONDARY;
-					break;
-				case ITEM_FULL_HEAL:
-					status = CURE_ALL;
-					break;
-			}
+			u8 status = ItemId_GetSecondaryId(item);
 			
 			retVal = DoCureStatusCheck(pkmn, partyIndex, status, sp34);
 			break;
@@ -357,9 +328,9 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 					data2 = GetMonData(pkmn, MON_DATA_MOVE1 + moveIndex, NULL);
 					if (data != CalculatePPWithBonus(data2, GetMonData(pkmn, MON_DATA_PP_BONUSES, NULL), moveIndex))
 					{
-						if (itemEffect[1] == ITEM_ETHER)
+						if (itemEffect[1] == ITEM_ETHER || itemEffect[1] == ITEM_LEPPA_BERRY)
 							data += 10;
-						else
+						else //max ether/bluk berry
 							data = CalculatePPWithBonus(data2, GetMonData(pkmn, MON_DATA_PP_BONUSES, NULL), moveIndex);
 						data2 = GetMonData(pkmn, MON_DATA_MOVE1 + moveIndex, NULL);
 						if (data > CalculatePPWithBonus(data2, GetMonData(pkmn, MON_DATA_PP_BONUSES, NULL), moveIndex))
@@ -416,33 +387,17 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 		{
 			int i;
 			u16 evCount = GetMonEVCount(pkmn);
+			u8 evGrowth = 5;
 			
 			if (evCount >= MAX_TOTAL_EVS)
 				return TRUE; //has hit max EV count across all stats
 			
-			switch (itemEffect[1])
-			{
-				case ITEM_HP_UP:
-					data = STAT_HP;
-					break;
-				case ITEM_PROTEIN:
-					data = STAT_ATK;
-					break;
-				case ITEM_IRON:
-					data = STAT_DEF;
-					break;
-				case ITEM_CARBOS:
-					data = STAT_SPD;
-					break;
-				case ITEM_CALCIUM:
-					data = STAT_SPATK;
-					break;
-				case ITEM_ZINC:
-					data = STAT_SPDEF;
-					break;
-			}
+			data = ItemId_GetSecondaryId(item);
 			
-			for (i = 0; i < 20; i++) //EV is raised by a maximum of 20
+			if (itemEffect[1] < ITEM_POMEG_BERRY)
+				evGrowth = 20;
+			
+			for (i = 0; i < evGrowth; i++) //EV is raised by a maximum of 20 (vitamin item) or a minimum of 4 (berry)
 			{
 				data2 = GetMonData(pkmn, MON_DATA_HP_EV + data);
 				
@@ -466,7 +421,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 		case MEDICINE_GROUP_IV_TONIC:
 		{
 			int i;
-			data = itemEffect[1] - ITEM_VITAL_TONIC; //tonics MUST be grouped next to each other in HP/ATK/DEF/SPD/SP.ATK/SP.DEF order
+			data = ItemId_GetSecondaryId(item);
 			
 			for (i = 0; i < 4; i++) //IV is raised by a maximum of 4
 			{
@@ -492,90 +447,82 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 		case MEDICINE_GROUP_BATTLE_ITEM:
 			switch (itemEffect[1])
 			{
-				case ITEM_X_ATTACK:
-					data = STAT_STAGE_ATK;
-					data2 = STAT_BOOSTER_X;
+				int i;
+				
+				case ITEM_DIRE_HIT:
+				case ITEM_WIKI_BERRY:
+					if (!(gBattleMons[gActiveBattler].status2 & STATUS2_FOCUS_ENERGY))
+					{
+						gBattleMons[gActiveBattler].status2 |= STATUS2_FOCUS_ENERGY;
+						retVal = FALSE;
+					}
 					break;
-				case ITEM_MAX_ATTACK:
-					data = STAT_STAGE_ATK;
-					data2 = STAT_BOOSTER_MAX;
+				case ITEM_CUSTAP_BERRY:
+					if (!(gStatuses3[gActiveBattler] & STATUS3_CUSTAP_BERRY))
+					{
+						gStatuses3[gActiveBattler] |= STATUS3_CUSTAP_BERRY;
+						retVal = FALSE;
+					}
 					break;
-				case ITEM_X_DEFEND:
-					data = STAT_STAGE_DEF;
-					data2 = STAT_BOOSTER_X;
-					break;
-				case ITEM_MAX_DEFEND:
-					data = STAT_STAGE_DEF;
-					data2 = STAT_BOOSTER_MAX;
-					break;
-				case ITEM_X_SPEED:
-					data = STAT_STAGE_SPEED;
-					data2 = STAT_BOOSTER_X;
-					break;
-				case ITEM_MAX_SPEED:
-					data = STAT_STAGE_SPEED;
-					data2 = STAT_BOOSTER_MAX;
-					break;
-				case ITEM_X_SP_ATK:
-					data = STAT_STAGE_SPATK;
-					data2 = STAT_BOOSTER_X;
-					break;
-				case ITEM_MAX_SP_ATK:
-					data = STAT_STAGE_SPATK;
-					data2 = STAT_BOOSTER_MAX;
-					break;
-				case ITEM_X_SP_DEF:
-					data = STAT_STAGE_SPDEF;
-					data2 = STAT_BOOSTER_X;
-					break;
-				case ITEM_MAX_SP_DEF:
-					data = STAT_STAGE_SPDEF;
-					data2 = STAT_BOOSTER_MAX;
-					break;
-				case ITEM_X_ACCURACY:
-					data = STAT_STAGE_ACC;
-					data2 = STAT_BOOSTER_X;
-					break;
-				case ITEM_MAX_ACCURACY:
-					data = STAT_STAGE_ACC;
-					data2 = STAT_BOOSTER_MAX;
+				case ITEM_GUARD_SPEC:
+					if (gSideTimers[GetBattlerSide(gActiveBattler)].mistTimer == 0)
+					{
+						gSideTimers[GetBattlerSide(gActiveBattler)].mistTimer = 5;
+						retVal = FALSE;
+					}
 					break;
 				default:
-					if (itemEffect[1] == ITEM_DIRE_HIT)
-					{
-						if (!(gBattleMons[gActiveBattler].status2 & STATUS2_FOCUS_ENERGY))
-						{
-							gBattleMons[gActiveBattler].status2 |= STATUS2_FOCUS_ENERGY;
-							return FALSE;
-						}
-						else
-							return TRUE;
-					}
-					else //guard spec
-					{
-						if (gSideTimers[GetBattlerSide(gActiveBattler)].mistTimer == 0)
-						{
-							gSideTimers[GetBattlerSide(gActiveBattler)].mistTimer = 5;
-							return FALSE;
-						}
-						else
-							return TRUE;
-					}
-			}
+					data = ItemId_GetSecondaryId(item);
 				
-			if (gBattleMons[gActiveBattler].statStages[data] < 12)
-			{
-				if (data2 == STAT_BOOSTER_BERRY)										//it's a basic stat booster berry, boost stat by 1 stage
-					gBattleMons[gActiveBattler].statStages[data]++;
-				else if (data2 == STAT_BOOSTER_X)										//it's a regular X item or higher tier berry, boost stat by 2 stages
-					gBattleMons[gActiveBattler].statStages[data] += 2;
-				else																	//it's a MAX item, maximise stat
-					gBattleMons[gActiveBattler].statStages[data] = 12;
+					if (data == 0xFF) //nanab berry
+					{
+						data = 0;
+						data2 = STAT_BOOSTER_X;
+					}
+					else if (data > 19)
+					{
+						data -= 20;
+						data2 = STAT_BOOSTER_MAX;
+					}
+					else if (data > 9)
+					{
+						data -= 10;
+						data2 = STAT_BOOSTER_X;
+					}
+					else
+						data2 = STAT_BOOSTER_BERRY;
 					
-				if (gBattleMons[gActiveBattler].statStages[data] > 12)
-					gBattleMons[gActiveBattler].statStages[data] = 12;
-				
-				retVal = FALSE;
+					if (data == 0) //random stat
+					{
+						for (i = 1; i < 6; i++)
+						{
+							if (gBattleMons[gActiveBattler].statStages[i] < 12)
+								break;
+							return TRUE;
+						}
+						
+						do
+						{
+							data = Random() % 5;
+							data++;
+						} while (!(gBattleMons[gActiveBattler].statStages[data] < 12));
+						gRandomStatBoosted = data; 
+					}
+						
+					if (gBattleMons[gActiveBattler].statStages[data] < 12)
+					{
+						if (data2 == STAT_BOOSTER_BERRY)										//it's a basic stat booster berry, boost stat by 1 stage
+							gBattleMons[gActiveBattler].statStages[data]++;
+						else if (data2 == STAT_BOOSTER_X)										//it's a regular X item or higher tier berry, boost stat by 2 stages
+							gBattleMons[gActiveBattler].statStages[data] += 2;
+						else																	//it's a MAX item, maximise stat
+							gBattleMons[gActiveBattler].statStages[data] = 12;
+							
+						if (gBattleMons[gActiveBattler].statStages[data] > 12)
+							gBattleMons[gActiveBattler].statStages[data] = 12;
+						
+						retVal = FALSE;
+					}
 			}
 			break;
 		case MEDICINE_GROUP_EXP_BOOSTER:
@@ -604,6 +551,18 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 				data = gExperienceTables[gBaseStats[species].growthRate][MAX_LEVEL];
 				SetMonData(pkmn, MON_DATA_EXP, &data);
 			}
+			
+			retVal = FALSE;
+			break;
+		}
+		case MEDICINE_GROUP_HIDDEN_TYPE:
+		{
+			u8 hiddenType = ItemId_GetSecondaryId(item);
+			
+			if (GetMonData(pkmn, MON_DATA_HIDDEN_TYPE) == hiddenType)
+				return TRUE;
+			else
+				SetMonData(pkmn, MON_DATA_HIDDEN_TYPE, &hiddenType);
 			
 			retVal = FALSE;
 			break;
