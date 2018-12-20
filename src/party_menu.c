@@ -4377,10 +4377,7 @@ void UseMedicine(u8 taskId, u16 item, TaskFunc func)
         u8 statusAndPkrs;
 
         gUnknown_0202E8F4 = 1;
-        if (!IsBlueYellowRedFlute(item))
-            PlaySE(SE_KAIFUKU);
-        else
-            PlaySE(SE_BIDORO);
+        PlaySE(SE_BIDORO);
         statusAndPkrs = GetMonStatusAndPokerus(ewram1C000.pokemon);
         if (statusAndPkrs == STATUS_PRIMARY_POKERUS || statusAndPkrs == STATUS_PRIMARY_NONE)
             PartyMenuUpdateLevelOrStatus(ewram1C000.pokemon, ewram1C000.primarySelectedMonIndex);
@@ -4399,24 +4396,13 @@ void UseMedicine(u8 taskId, u16 item, TaskFunc func)
         else
         {
             GetMonNickname(ewram1C000.pokemon, gStringVar1);
-            if (!IsBlueYellowRedFlute(item))
-                RemoveBagItem(item, 1);
+            RemoveBagItem(item, 1);
             GetMedicineItemEffectMessage(item);
             TryPrintPartyMenuMonNickname(ewram1C000.primarySelectedMonIndex, ewram1C000.pokemon);
             sub_806E834(gStringVar4, 1);
             gTasks[r7].func = sub_806FB0C;
         }
     }
-}
-
-bool8 IsBlueYellowRedFlute(u16 item)
-{
-    if (item == ITEM_BLUE_FLUTE
-     || item == ITEM_RED_FLUTE
-     || item == ITEM_YELLOW_FLUTE)
-        return TRUE;
-    else
-        return FALSE;
 }
 
 void DoSacredAshItemEffect(u8 taskId, u16 item, TaskFunc func)

@@ -242,46 +242,6 @@ static const u8 gItemDescription_MaxRevive[] = _(
     "POKéMON with all\n"
     "its HP.");
 
-static const u8 gItemDescription_FreshWater[] = _(
-    "A mineral water\n"
-    "that restores HP\n"
-    "by 50 points.");
-
-static const u8 gItemDescription_SodaPop[] = _(
-    "A fizzy soda drink\n"
-    "that restores HP\n"
-    "by 60 points.");
-
-static const u8 gItemDescription_Lemonade[] = _(
-    "A very sweet drink\n"
-    "that restores HP\n"
-    "by 80 points.");
-
-static const u8 gItemDescription_MoomooMilk[] = _(
-    "A nutritious milk\n"
-    "that restores HP\n"
-    "by 100 points.");
-
-static const u8 gItemDescription_EnergyPowder[] = _(
-    "A bitter powder\n"
-    "that restores HP\n"
-    "by 50 points.");
-
-static const u8 gItemDescription_EnergyRoot[] = _(
-    "A bitter root\n"
-    "that restores HP\n"
-    "by 200 points.");
-
-static const u8 gItemDescription_HealPowder[] = _(
-    "A bitter powder\n"
-    "that heals all\n"
-    "status problems.");
-
-static const u8 gItemDescription_RevivalHerb[] = _(
-    "A very bitter herb\n"
-    "that revives a\n"
-    "fainted POKéMON.");
-
 static const u8 gItemDescription_Ether[] = _(
     "Restores the PP\n"
     "of a selected move\n"
@@ -301,26 +261,6 @@ static const u8 gItemDescription_MaxElixir[] = _(
     "PP of a POKéMON's\n"
     "moves.");
 
-static const u8 gItemDescription_LavaCookie[] = _(
-    "A local specialty\n"
-    "that heals all\n"
-    "status problems.");
-
-static const u8 gItemDescription_BlueFlute[] = _(
-    "A glass flute that\n"
-    "awakens sleeping\n"
-    "POKéMON.");
-
-static const u8 gItemDescription_YellowFlute[] = _(
-    "A glass flute that\n"
-    "snaps POKéMON\n"
-    "out of confusion.");
-
-static const u8 gItemDescription_RedFlute[] = _(
-    "A glass flute that\n"
-    "snaps POKéMON\n"
-    "out of attraction.");
-
 static const u8 gItemDescription_BlackFlute[] = _(
     "A glass flute that\n"
     "keeps away wild\n"
@@ -329,16 +269,6 @@ static const u8 gItemDescription_BlackFlute[] = _(
 static const u8 gItemDescription_WhiteFlute[] = _(
     "A glass flute that\n"
     "lures wild POKéMON.");
-
-static const u8 gItemDescription_BerryJuice[] = _(
-    "A 100% pure juice\n"
-    "that restores HP\n"
-    "by 20 points.");
-
-static const u8 gItemDescription_SacredAsh[] = _(
-    "Fully revives and\n"
-    "restores all\n"
-    "fainted POKéMON.");
 
 static const u8 gItemDescription_ShoalSalt[] = _(
     "Salt obtained from\n"

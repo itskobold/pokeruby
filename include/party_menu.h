@@ -191,7 +191,6 @@ void PartyMenuUpdateLevelOrStatus(struct Pokemon *, u8);
 void GetMedicineItemEffectMessage(u16);
 bool8 ExecuteTableBasedItemEffect__(u8, u16, u8);
 void UseMedicine(u8, u16, TaskFunc);
-bool8 IsBlueYellowRedFlute(u16);
 void DoSacredAshItemEffect(u8, u16, TaskFunc);
 void sub_8070088(u8);
 void sub_80701DC(u8 taskId);

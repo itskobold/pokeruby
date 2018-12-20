@@ -14,24 +14,10 @@ const u8 gItemEffect_SuperPotion[]    = {MEDICINE_GROUP_HP_RESTORE, ITEM_SUPER_P
 const u8 gItemEffect_FullHeal[]       = {MEDICINE_GROUP_STATUS_RESTORE, ITEM_FULL_HEAL};
 const u8 gItemEffect_Revive[]         = {MEDICINE_GROUP_HP_RESTORE, ITEM_REVIVE};
 const u8 gItemEffect_MaxRevive[]      = {MEDICINE_GROUP_HP_RESTORE, ITEM_MAX_REVIVE};
-const u8 gItemEffect_FreshWater[]     = {0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 50};
-const u8 gItemEffect_SodaPop[]        = {0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 60};
-const u8 gItemEffect_Lemonade[]       = {0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 80};
-const u8 gItemEffect_MoomooMilk[]     = {0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 100};
-const u8 gItemEffect_EnergyPowder[]   = {0x00, 0x00, 0x00, 0x00, 0x04, 0xe0, 50, 0xfb, 0xfb, 0xf6};
-const u8 gItemEffect_EnergyRoot[]     = {0x00, 0x00, 0x00, 0x00, 0x04, 0xe0, 200, 0xf6, 0xf6, 0xf1};
-const u8 gItemEffect_HealPowder[]     = {0x00, 0x00, 0x00, 0x3f, 0x00, 0xe0, 0xfb, 0xfb, 0xf6};
-const u8 gItemEffect_RevivalHerb[]    = {0x00, 0x00, 0x00, 0x00, 0x44, 0xe0, 0xfe, 0xf1, 0xf1, 0xec};
 const u8 gItemEffect_Ether[]          = {MEDICINE_GROUP_PP_RESTORE, ITEM_ETHER};
 const u8 gItemEffect_MaxEther[]       = {MEDICINE_GROUP_PP_RESTORE, ITEM_MAX_ETHER};
 const u8 gItemEffect_Elixir[]         = {MEDICINE_GROUP_PP_RESTORE, ITEM_ELIXIR};
 const u8 gItemEffect_MaxElixir[]      = {MEDICINE_GROUP_PP_RESTORE, ITEM_MAX_ELIXIR};
-const u8 gItemEffect_LavaCookie[]     = {0x00, 0x00, 0x00, 0x3f, 0x00, 0x00};
-const u8 gItemEffect_BlueFlute[]      = {0x00, 0x00, 0x00, 0x20, 0x00, 0x00};
-const u8 gItemEffect_YellowFlute[]    = {0x00, 0x00, 0x00, 0x01, 0x00, 0x00};
-const u8 gItemEffect_RedFlute[]       = {0x80, 0x00, 0x00, 0x00, 0x00, 0x00};
-const u8 gItemEffect_BerryJuice[]     = {0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 20};
-const u8 gItemEffect_SacredAsh[]      = {0x40, 0x00, 0x00, 0x00, 0x44, 0x00, 0xff};
 const u8 gItemEffect_Candy[]          = {MEDICINE_GROUP_EXP_BOOSTER, ITEM_CANDY};
 const u8 gItemEffect_VitalTonic[]     = {MEDICINE_GROUP_IV_TONIC, ITEM_VITAL_TONIC};
 const u8 gItemEffect_StrongTonic[]    = {MEDICINE_GROUP_IV_TONIC, ITEM_STRONG_TONIC};
@@ -151,26 +137,26 @@ const u8 *const gItemEffectTable[] =
     gItemEffect_FullHeal,
     gItemEffect_Revive,
     gItemEffect_MaxRevive,
-    gItemEffect_FreshWater,
-    gItemEffect_SodaPop,
-    gItemEffect_Lemonade,
-    gItemEffect_MoomooMilk,
-    gItemEffect_EnergyPowder,
-    gItemEffect_EnergyRoot,
-    gItemEffect_HealPowder,
-    gItemEffect_RevivalHerb,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
     gItemEffect_Ether,
     gItemEffect_MaxEther,
     gItemEffect_Elixir,
     gItemEffect_MaxElixir,
-    gItemEffect_LavaCookie,
-    gItemEffect_BlueFlute,
-    gItemEffect_YellowFlute,
-    gItemEffect_RedFlute,
     NULL,
     NULL,
-    gItemEffect_BerryJuice,
-    gItemEffect_SacredAsh,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
     NULL,
     NULL,
     NULL,
@@ -279,12 +265,16 @@ const u8 *const gItemEffectTable[] =
 	gItemEffect_KasibBerry,
 	gItemEffect_HabanBerry,
 	gItemEffect_ColburBerry,
+	NULL, //why do these have to be null?
+	NULL,
+	NULL,
+	NULL,
+	NULL,
 	gItemEffect_BabiriBerry,
 	gItemEffect_ChilanBerry,
 	gItemEffect_RoseliBerry,
 	gItemEffect_PinapBerry,
-	gItemEffect_EnigmaBerry,
-	NULL
+	gItemEffect_EnigmaBerry
 };
 
 #endif //GUARD_ITEM_EFFECTS_H

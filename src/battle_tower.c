@@ -44,7 +44,7 @@ static const u16 sBattleTowerHeldItems[] =
     ITEM_FOCUS_BAND,
     ITEM_PERSIM_BERRY,
     ITEM_MIRACLE_SEED,
-    ITEM_BERRY_JUICE,
+    ITEM_POTION, //originally berry juice
     ITEM_MACHO_BRACE,
     ITEM_SILVER_POWDER,
     ITEM_CHERI_BERRY,
