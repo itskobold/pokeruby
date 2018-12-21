@@ -15,6 +15,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("MASTER BALL"),
@@ -31,6 +32,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("ULTRA BALL"),
@@ -47,6 +49,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 1,
+		.medicineGroup = 0,
     },
     {
         .name = _("GREAT BALL"),
@@ -63,6 +66,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 2,
+		.medicineGroup = 0,
     },
     {
         .name = _("POKé BALL"),
@@ -79,6 +83,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 3,
+		.medicineGroup = 0,
     },
     {
         .name = _("SAFARI BALL"),
@@ -95,6 +100,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 4,
+		.medicineGroup = 0,
     },
     {
         .name = _("NET BALL"),
@@ -111,6 +117,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 5,
+		.medicineGroup = 0,
     },
     {
         .name = _("DIVE BALL"),
@@ -127,6 +134,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 6,
+		.medicineGroup = 0,
     },
     {
         .name = _("NEST BALL"),
@@ -143,6 +151,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 7,
+		.medicineGroup = 0,
     },
     {
         .name = _("REPEAT BALL"),
@@ -159,6 +168,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 8,
+		.medicineGroup = 0,
     },
     {
         .name = _("TIMER BALL"),
@@ -175,6 +185,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 9,
+		.medicineGroup = 0,
     },
     {
         .name = _("LUXURY BALL"),
@@ -191,6 +202,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 10,
+		.medicineGroup = 0,
     },
     {
         .name = _("PREMIER BALL"),
@@ -207,6 +219,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 11,
+		.medicineGroup = 0,
     },
     {
         .name = _("POTION"),
@@ -223,6 +236,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("ANTIDOTE"),
@@ -239,6 +253,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = CURE_PSN,
+		.medicineGroup = MEDICINE_GROUP_STATUS_RESTORE,
     },
     {
         .name = _("BURN HEAL"),
@@ -255,6 +270,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = CURE_BRN,
+		.medicineGroup = MEDICINE_GROUP_STATUS_RESTORE,
     },
     {
         .name = _("ICE HEAL"),
@@ -271,6 +287,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = CURE_FRZ,
+		.medicineGroup = MEDICINE_GROUP_STATUS_RESTORE,
     },
     {
         .name = _("AWAKENING"),
@@ -287,6 +304,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = CURE_SLP,
+		.medicineGroup = MEDICINE_GROUP_STATUS_RESTORE,
     },
     {
         .name = _("PARALYZE HEAL"),
@@ -303,6 +321,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = CURE_PAR,
+		.medicineGroup = MEDICINE_GROUP_STATUS_RESTORE,
     },
     {
         .name = _("FULL RESTORE"),
@@ -319,6 +338,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("MAX POTION"),
@@ -335,6 +355,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("HYPER POTION"),
@@ -351,6 +372,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("SUPER POTION"),
@@ -367,6 +389,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("FULL HEAL"),
@@ -383,6 +406,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = CURE_ALL,
+		.medicineGroup = MEDICINE_GROUP_STATUS_RESTORE,
     },
     {
         .name = _("REVIVE"),
@@ -399,6 +423,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("MAX REVIVE"),
@@ -415,6 +440,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
 {
         .name = _("ETHER"),
@@ -431,6 +457,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_PPRecovery,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_PP_RESTORE,
     },
     {
         .name = _("MAX ETHER"),
@@ -447,6 +474,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_PPRecovery,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_PP_RESTORE,
     },
     {
         .name = _("ELIXIR"),
@@ -463,6 +491,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_PPRecovery,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_PP_RESTORE,
     },
     {
         .name = _("MAX ELIXIR"),
@@ -479,6 +508,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_PPRecovery,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_PP_RESTORE,
     },
     {
         .name = _("FRESH WATER"),
@@ -495,6 +525,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("LEMONADE"),
@@ -511,6 +542,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("SHALOUR SABLE"),
@@ -527,6 +559,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("LAVA COOKIE"),
@@ -543,6 +576,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("ORAN TEA"),
@@ -559,6 +593,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("SITRUS JUICE"),
@@ -575,6 +610,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("BIG MALASADA"),
@@ -591,6 +627,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("CASTELIACONE"),
@@ -607,6 +644,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("MOOMOO MILK"),
@@ -623,6 +661,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("RAZZ SHAKE"),
@@ -639,6 +678,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("BELUE KEBAB"),
@@ -655,6 +695,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("LEAFY SALAD"),
@@ -671,6 +712,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("RARE BERRYADE"),
@@ -687,6 +729,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("WATMEL SLUSH"),
@@ -703,6 +746,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("RAGE CANDY BAR"),
@@ -719,6 +763,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("CREAM POFFIN"),
@@ -735,6 +780,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("????????"),
@@ -751,6 +797,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -767,6 +814,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -783,6 +831,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -799,6 +848,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -815,6 +865,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
 	{
         .name = _("????????"),
@@ -831,6 +882,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("CANDY"),
@@ -847,6 +899,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("VITAL TONIC"),
@@ -863,6 +916,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = STAT_HP,
+		.medicineGroup = MEDICINE_GROUP_IV_TONIC,
     },
     {
         .name = _("STRONG TONIC"),
@@ -879,6 +933,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = STAT_ATK,
+		.medicineGroup = MEDICINE_GROUP_IV_TONIC,
     },
     {
         .name = _("GUARD TONIC"),
@@ -895,6 +950,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = STAT_DEF,
+		.medicineGroup = MEDICINE_GROUP_IV_TONIC,
     },
     {
         .name = _("MENTAL TONIC"),
@@ -911,6 +967,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = STAT_SPATK,
+		.medicineGroup = MEDICINE_GROUP_IV_TONIC,
     },
     {
         .name = _("SHIELD TONIC"),
@@ -927,6 +984,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = STAT_SPDEF,
+		.medicineGroup = MEDICINE_GROUP_IV_TONIC,
     },
     {
         .name = _("RAPID TONIC"),
@@ -943,6 +1001,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = STAT_SPD,
+		.medicineGroup = MEDICINE_GROUP_IV_TONIC,
     },
     {
         .name = _("ROLL TYPES"),
@@ -959,6 +1018,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_TYPE_MODIFIER,
     },
     {
         .name = _("ROLL ABILITY"),
@@ -975,6 +1035,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_ABILITY_MODIFIER,
     },
     {
         .name = _("ROLL NATURE"),
@@ -991,6 +1052,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_NATURE_MODIFIER,
     },
     {
         .name = _("HP UP"),
@@ -1007,6 +1069,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = STAT_HP,
+		.medicineGroup = MEDICINE_GROUP_EV_VITAMIN,
     },
     {
         .name = _("PROTEIN"),
@@ -1023,6 +1086,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = STAT_ATK,
+		.medicineGroup = MEDICINE_GROUP_EV_VITAMIN,
     },
     {
         .name = _("IRON"),
@@ -1039,6 +1103,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = STAT_DEF,
+		.medicineGroup = MEDICINE_GROUP_EV_VITAMIN,
     },
     {
         .name = _("CARBOS"),
@@ -1055,6 +1120,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = STAT_SPD,
+		.medicineGroup = MEDICINE_GROUP_EV_VITAMIN,
     },
     {
         .name = _("CALCIUM"),
@@ -1071,6 +1137,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = STAT_SPATK,
+		.medicineGroup = MEDICINE_GROUP_EV_VITAMIN,
     },
     {
         .name = _("RARE CANDY"),
@@ -1087,6 +1154,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_EXP_BOOSTER,
     },
     {
         .name = _("PP UP"),
@@ -1103,6 +1171,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_PP_BOOSTER,
     },
     {
         .name = _("ZINC"),
@@ -1119,6 +1188,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = STAT_SPDEF,
+		.medicineGroup = MEDICINE_GROUP_EV_VITAMIN,
     },
     {
         .name = _("PP MAX"),
@@ -1135,6 +1205,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_PP_BOOSTER,
     },
     {
         .name = _("ABILITY CAPSULE"),
@@ -1151,6 +1222,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_ABILITY_MODIFIER,
     },
     {
         .name = _("GUARD SPEC."),
@@ -1167,6 +1239,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
     {
         .name = _("DIRE HIT"),
@@ -1183,6 +1256,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
     {
         .name = _("X ATTACK"),
@@ -1199,6 +1273,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_ATK + 10,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
     {
         .name = _("MAX ATTACK"),
@@ -1215,6 +1290,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_ATK + 20,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
     {
         .name = _("X DEFEND"),
@@ -1231,6 +1307,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_DEF + 10,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
     {
         .name = _("MAX DEFEND"),
@@ -1247,6 +1324,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_DEF + 20,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
         {
         .name = _("X SPEED"),
@@ -1263,6 +1341,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_SPEED + 10,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
     {
         .name = _("MAX SPEED"),
@@ -1279,6 +1358,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_SPEED + 20,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
     {
         .name = _("X SP. ATK"),
@@ -1295,6 +1375,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_SPATK + 10,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
     {
         .name = _("MAX SP. ATK"),
@@ -1311,6 +1392,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_SPATK + 20,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
     {
         .name = _("X SP. DEF"),
@@ -1327,6 +1409,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_SPDEF + 10,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
     {
         .name = _("MAX SP. DEF"),
@@ -1343,6 +1426,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_SPDEF + 20,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
     {
         .name = _("X ACCURACY"),
@@ -1359,6 +1443,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_ACC + 10,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
     {
         .name = _("MAX ACCURACY"),
@@ -1375,6 +1460,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_ACC + 20,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
     {
         .name = _("ULTRA POTION"),
@@ -1391,6 +1477,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("MINOR HEAL"),
@@ -1407,6 +1494,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = CURE_SECONDARY,
+		.medicineGroup = MEDICINE_GROUP_STATUS_RESTORE,
     },
     {
         .name = _("FULL REVIVE"),
@@ -1423,6 +1511,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
     {
         .name = _("????????"),
@@ -1439,6 +1528,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -1455,6 +1545,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -1471,6 +1562,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("SUN STONE"),
@@ -1487,6 +1579,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_EVO_STONE,
     },
     {
         .name = _("MOON STONE"),
@@ -1503,6 +1596,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_EVO_STONE,
     },
     {
         .name = _("FIRE STONE"),
@@ -1519,6 +1613,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_EVO_STONE,
     },
     {
         .name = _("THUNDER STONE"),
@@ -1535,6 +1630,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_EVO_STONE,
     },
     {
         .name = _("WATER STONE"),
@@ -1551,6 +1647,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_EVO_STONE,
     },
     {
         .name = _("LEAF STONE"),
@@ -1567,6 +1664,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_EVO_STONE,
     },
     {
         .name = _("FROST STONE"),
@@ -1583,6 +1681,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_EVO_STONE,
     },
     {
         .name = _("DAWN STONE"),
@@ -1599,6 +1698,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_EVO_STONE,
     },
     {
         .name = _("DUSK STONE"),
@@ -1615,6 +1715,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_EVO_STONE,
     },
     {
         .name = _("SHINY STONE"),
@@ -1631,6 +1732,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_EVO_STONE,
     },
     {
         .name = _("CHERI BERRY"),
@@ -1647,6 +1749,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = CURE_PAR,
+		.medicineGroup = MEDICINE_GROUP_STATUS_RESTORE,
     },
     {
         .name = _("CHESTO BERRY"),
@@ -1663,6 +1766,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = CURE_SLP,
+		.medicineGroup = MEDICINE_GROUP_STATUS_RESTORE,
     },
     {
         .name = _("PECHA BERRY"),
@@ -1679,6 +1783,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = CURE_PSN,
+		.medicineGroup = MEDICINE_GROUP_STATUS_RESTORE,
     },
     {
         .name = _("RAWST BERRY"),
@@ -1695,6 +1800,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = CURE_BRN,
+		.medicineGroup = MEDICINE_GROUP_STATUS_RESTORE,
     },
     {
         .name = _("ASPEAR BERRY"),
@@ -1711,6 +1817,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = CURE_FRZ,
+		.medicineGroup = MEDICINE_GROUP_STATUS_RESTORE,
     },
 	{
         .name = _("PERSIM BERRY"),
@@ -1727,6 +1834,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = CURE_SECONDARY,
+		.medicineGroup = MEDICINE_GROUP_STATUS_RESTORE,
     },
 	{
         .name = _("LUM BERRY"),
@@ -1743,6 +1851,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = CURE_ALL,
+		.medicineGroup = MEDICINE_GROUP_STATUS_RESTORE,
     },
     {
         .name = _("LEPPA BERRY"),
@@ -1759,6 +1868,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_PPRecovery,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_PP_RESTORE,
     },
 	{
         .name = _("BLUK BERRY"),
@@ -1775,6 +1885,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_PPRecovery,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_PP_RESTORE,
     },
 	{
         .name = _("ORAN BERRY"),
@@ -1791,6 +1902,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
 	{
         .name = _("SITRUS BERRY"),
@@ -1807,6 +1919,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
 	{
         .name = _("RAZZ BERRY"),
@@ -1823,6 +1936,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
 	{
         .name = _("BELUE BERRY"),
@@ -1839,6 +1953,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
 	{
         .name = _("WATMEL BERRY"),
@@ -1855,6 +1970,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_Medicine,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_HP_RESTORE,
     },
 	{
         .name = _("POMEG BERRY"),
@@ -1871,6 +1987,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = STAT_HP,
+		.medicineGroup = MEDICINE_GROUP_EV_VITAMIN,
     },
 	{
         .name = _("KELPSY BERRY"),
@@ -1887,6 +2004,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = STAT_ATK,
+		.medicineGroup = MEDICINE_GROUP_EV_VITAMIN,
     },
 	{
         .name = _("QUALOT BERRY"),
@@ -1903,6 +2021,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = STAT_DEF,
+		.medicineGroup = MEDICINE_GROUP_EV_VITAMIN,
     },
 	{
         .name = _("HONDEW BERRY"),
@@ -1919,6 +2038,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = STAT_SPATK,
+		.medicineGroup = MEDICINE_GROUP_EV_VITAMIN,
     },
 	{
         .name = _("GREPA BERRY"),
@@ -1935,6 +2055,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = STAT_SPDEF,
+		.medicineGroup = MEDICINE_GROUP_EV_VITAMIN,
     },
 	{
         .name = _("TAMATO BERRY"),
@@ -1951,6 +2072,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = STAT_SPD,
+		.medicineGroup = MEDICINE_GROUP_EV_VITAMIN,
     },
 	{
         .name = _("CORNN BERRY"),
@@ -1967,6 +2089,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_ATK,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
 	{
         .name = _("MAGOST BERRY"),
@@ -1983,6 +2106,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_DEF,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
 	{
         .name = _("RABUTA BERRY"),
@@ -1999,6 +2123,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_SPATK,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
 	{
         .name = _("NOMEL BERRY"),
@@ -2015,6 +2140,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_SPDEF,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
 	{
         .name = _("FIGY BERRY"),
@@ -2031,6 +2157,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_SPEED,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
 	{
         .name = _("AGUAV BERRY"),
@@ -2047,6 +2174,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_ACC,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
 	{
         .name = _("WIKI BERRY"),
@@ -2063,6 +2191,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
 	{
         .name = _("PAMTRE BERRY"),
@@ -2079,6 +2208,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
 	{
         .name = _("LIECHI BERRY"),
@@ -2095,6 +2225,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_ATK + 10,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
 	{
         .name = _("GANLON BERRY"),
@@ -2111,6 +2242,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_DEF + 10,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
 	{
         .name = _("SALAC BERRY"),
@@ -2127,6 +2259,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_SPATK + 10,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
 	{
         .name = _("PETAYA BERRY"),
@@ -2143,6 +2276,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_SPDEF + 10,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
 	{
         .name = _("APICOT BERRY"),
@@ -2159,6 +2293,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_SPEED + 10,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
 	{
         .name = _("MICLE BERRY"),
@@ -2175,6 +2310,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = STAT_STAGE_ACC + 10,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
 	{
         .name = _("NANAB BERRY"),
@@ -2191,6 +2327,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = 0xFF,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
 	{
         .name = _("CUSTAP BERRY"),
@@ -2207,6 +2344,7 @@ const struct Item gItems[] =
         .battleUsage = 1,
         .battleUseFunc = ItemUseInBattle_StatIncrease,
         .secondaryId = 0,
+		.medicineGroup = MEDICINE_GROUP_BATTLE_ITEM,
     },
 	{
         .name = _("DURIN BERRY"),
@@ -2223,6 +2361,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
 	{
         .name = _("JABOCA BERRY"),
@@ -2239,6 +2378,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
 	{
         .name = _("ROWAP BERRY"),
@@ -2255,6 +2395,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 1,
+		.medicineGroup = 0,
     },
 	{
         .name = _("KEE BERRY"),
@@ -2271,6 +2412,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
 	{
         .name = _("MARANGA BERRY"),
@@ -2287,6 +2429,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 1,
+		.medicineGroup = 0,
     },
 	{
         .name = _("OCCA BERRY"),
@@ -2303,6 +2446,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = TYPE_FIRE,
+		.medicineGroup = MEDICINE_GROUP_HIDDEN_TYPE,
     },
 	{
         .name = _("PASSHO BERRY"),
@@ -2319,6 +2463,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = TYPE_WATER,
+		.medicineGroup = MEDICINE_GROUP_HIDDEN_TYPE,
     },
 	{
         .name = _("WACAN BERRY"),
@@ -2335,6 +2480,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = TYPE_ELECTRIC,
+		.medicineGroup = MEDICINE_GROUP_HIDDEN_TYPE,
     },
 	{
         .name = _("RINDO BERRY"),
@@ -2351,6 +2497,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = TYPE_GRASS,
+		.medicineGroup = MEDICINE_GROUP_HIDDEN_TYPE,
     },
 	{
         .name = _("YACHE BERRY"),
@@ -2367,6 +2514,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = TYPE_ICE,
+		.medicineGroup = MEDICINE_GROUP_HIDDEN_TYPE,
     },
 	{
         .name = _("CHOPLE BERRY"),
@@ -2383,6 +2531,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = TYPE_FIGHTING,
+		.medicineGroup = MEDICINE_GROUP_HIDDEN_TYPE,
     },
 	{
         .name = _("KEBIA BERRY"),
@@ -2399,6 +2548,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = TYPE_POISON,
+		.medicineGroup = MEDICINE_GROUP_HIDDEN_TYPE,
     },
 	{
         .name = _("SHUCA BERRY"),
@@ -2415,6 +2565,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = TYPE_GROUND,
+		.medicineGroup = MEDICINE_GROUP_HIDDEN_TYPE,
     },
 	{
         .name = _("COBA BERRY"),
@@ -2431,6 +2582,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = TYPE_FLYING,
+		.medicineGroup = MEDICINE_GROUP_HIDDEN_TYPE,
     },
 	{
         .name = _("PAYAPA BERRY"),
@@ -2447,6 +2599,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = TYPE_PSYCHIC,
+		.medicineGroup = MEDICINE_GROUP_HIDDEN_TYPE,
     },
 	{
         .name = _("TANGA BERRY"),
@@ -2463,6 +2616,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = TYPE_BUG,
+		.medicineGroup = MEDICINE_GROUP_HIDDEN_TYPE,
     },
 	{
         .name = _("CHARTI BERRY"),
@@ -2479,6 +2633,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = TYPE_ROCK,
+		.medicineGroup = MEDICINE_GROUP_HIDDEN_TYPE,
     },
 	{
         .name = _("KASIB BERRY"),
@@ -2495,6 +2650,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = TYPE_GHOST,
+		.medicineGroup = MEDICINE_GROUP_HIDDEN_TYPE,
     },
 	{
         .name = _("HABAN BERRY"),
@@ -2511,6 +2667,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = TYPE_DRAGON,
+		.medicineGroup = MEDICINE_GROUP_HIDDEN_TYPE,
     },
 	{
         .name = _("COLBUR BERRY"),
@@ -2527,6 +2684,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = TYPE_DARK,
+		.medicineGroup = MEDICINE_GROUP_HIDDEN_TYPE,
     },
 	{
         .name = _("BABIRI BERRY"),
@@ -2543,6 +2701,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = TYPE_STEEL,
+		.medicineGroup = MEDICINE_GROUP_HIDDEN_TYPE,
     },
 	{
         .name = _("CHILAN BERRY"),
@@ -2559,6 +2718,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = TYPE_NORMAL,
+		.medicineGroup = MEDICINE_GROUP_HIDDEN_TYPE,
     },
 	{
         .name = _("ROSELI BERRY"),
@@ -2575,6 +2735,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = TYPE_FAIRY,
+		.medicineGroup = MEDICINE_GROUP_HIDDEN_TYPE,
     },
 	{
         .name = _("PINAP BERRY"),
@@ -2591,6 +2752,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = TYPE_AUDIO,
+		.medicineGroup = MEDICINE_GROUP_HIDDEN_TYPE,
     },
 	{
         .name = _("ENIGMA BERRY"),
@@ -2607,6 +2769,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = TYPE_COSMIC,
+		.medicineGroup = MEDICINE_GROUP_HIDDEN_TYPE,
     },
 	{
         .name = _("STARF BERRY"),
@@ -2623,9 +2786,10 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
-        .name = _("TINYMUSHROOM"),
+        .name = _("TINY MUSHROOM"),
         .itemId = ITEM_TINY_MUSHROOM,
         .price = 500,
         .holdEffect = HOLD_EFFECT_NONE,
@@ -2639,6 +2803,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("BIG MUSHROOM"),
@@ -2655,6 +2820,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("ESCAPE ROPE"),
@@ -2671,6 +2837,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("PEARL"),
@@ -2687,6 +2854,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("BIG PEARL"),
@@ -2703,6 +2871,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("STARDUST"),
@@ -2719,6 +2888,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("STAR PIECE"),
@@ -2735,6 +2905,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("NUGGET"),
@@ -2751,6 +2922,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("HEART SCALE"),
@@ -2767,6 +2939,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("REPEL"),
@@ -2783,6 +2956,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("ULTRA REPEL"),
@@ -2799,6 +2973,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("MAX REPEL"),
@@ -2815,6 +2990,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("BLACK FLUTE"),
@@ -2831,6 +3007,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("WHITE FLUTE"),
@@ -2847,6 +3024,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("SHOAL SALT"),
@@ -2863,6 +3041,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("SHOAL SHELL"),
@@ -2879,6 +3058,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("RED SHARD"),
@@ -2895,6 +3075,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("BLUE SHARD"),
@@ -2911,6 +3092,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("YELLOW SHARD"),
@@ -2927,6 +3109,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("GREEN SHARD"),
@@ -2943,6 +3126,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
 {
         .name = _("POKé DOLL"),
@@ -2959,6 +3143,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_Escape,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -2975,6 +3160,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -2991,6 +3177,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -3007,6 +3194,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -3023,6 +3211,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -3039,6 +3228,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -3055,6 +3245,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -3071,6 +3262,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -3087,6 +3279,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -3103,6 +3296,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
 	{
         .name = _("BERRY PULP"),
@@ -3119,6 +3313,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("BRIGHTPOWDER"),
@@ -3135,6 +3330,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("WHITE HERB"),
@@ -3151,6 +3347,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("MACHO BRACE"),
@@ -3167,6 +3364,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("EXP. SHARE"),
@@ -3183,6 +3381,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("QUICK CLAW"),
@@ -3199,6 +3398,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("SOOTHE BELL"),
@@ -3215,6 +3415,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("MENTAL HERB"),
@@ -3231,6 +3432,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("CHOICE BAND"),
@@ -3247,6 +3449,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("KING'S ROCK"),
@@ -3263,6 +3466,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("SILVERPOWDER"),
@@ -3279,6 +3483,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("AMULET COIN"),
@@ -3295,6 +3500,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("CLEANSE TAG"),
@@ -3311,6 +3517,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("SOUL DEW"),
@@ -3327,6 +3534,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("DEEPSEATOOTH"),
@@ -3343,6 +3551,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("DEEPSEASCALE"),
@@ -3359,6 +3568,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("SMOKE BALL"),
@@ -3375,6 +3585,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("EVERSTONE"),
@@ -3391,6 +3602,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("FOCUS BAND"),
@@ -3407,6 +3619,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("LUCKY EGG"),
@@ -3423,6 +3636,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("SCOPE LENS"),
@@ -3439,6 +3653,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TOUGH ORE"),
@@ -3455,6 +3670,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("LEFTOVERS"),
@@ -3471,6 +3687,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("DRAGON SCALE"),
@@ -3487,6 +3704,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("LIGHT BALL"),
@@ -3503,6 +3721,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("SOFT SAND"),
@@ -3519,6 +3738,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("HARD ROCK"),
@@ -3535,6 +3755,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("MIRACLE SEED"),
@@ -3551,6 +3772,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("BLACK GLASSES"),
@@ -3567,6 +3789,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("BLACK BELT"),
@@ -3583,6 +3806,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("MAGNET"),
@@ -3599,6 +3823,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("MYSTIC WATER"),
@@ -3615,6 +3840,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("SHARP BEAK"),
@@ -3631,6 +3857,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("POISON BARB"),
@@ -3647,6 +3874,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("NEVER-MELT ICE"),
@@ -3663,6 +3891,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("SPELL TAG"),
@@ -3679,6 +3908,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TWISTEDSPOON"),
@@ -3695,6 +3925,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("CHARCOAL"),
@@ -3711,6 +3942,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("DRAGON FANG"),
@@ -3727,6 +3959,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("SILK RIBBON"),
@@ -3743,6 +3976,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("UP-GRADE"),
@@ -3759,6 +3993,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("SHELL BELL"),
@@ -3775,6 +4010,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("SEA INCENSE"),
@@ -3791,6 +4027,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("LAX INCENSE"),
@@ -3807,6 +4044,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("LUCKY PUNCH"),
@@ -3823,6 +4061,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("METAL POWDER"),
@@ -3839,6 +4078,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("THICK CLUB"),
@@ -3855,6 +4095,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("STICK"),
@@ -3871,6 +4112,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
 	{
         .name = _("POTPOURRI"),
@@ -3887,6 +4129,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
 	{
         .name = _("TIN WHISTLE"),
@@ -3903,6 +4146,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
 	{
         .name = _("SPACE ROCK"),
@@ -3919,6 +4163,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
 	{
         .name = _("????????"),
@@ -3935,6 +4180,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
 	{
         .name = _("BALANCE BALL"),
@@ -3951,6 +4197,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 12,
+		.medicineGroup = 0,
     },
 	{
         .name = _("ROOST BALL"),
@@ -3967,6 +4214,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 13,
+		.medicineGroup = 0,
     },
 	{
         .name = _("FURNACE BALL"),
@@ -3983,6 +4231,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 14,
+		.medicineGroup = 0,
     },
 	{
         .name = _("GEODE BALL"),
@@ -3999,6 +4248,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 15,
+		.medicineGroup = 0,
     },
 	{
         .name = _("VENOM BALL"),
@@ -4015,6 +4265,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 16,
+		.medicineGroup = 0,
     },
 	{
         .name = _("COMET BALL"),
@@ -4031,6 +4282,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 17,
+		.medicineGroup = 0,
     },
 	{
         .name = _("FABLE BALL"),
@@ -4047,6 +4299,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 18,
+		.medicineGroup = 0,
     },
 	{
         .name = _("SWAMP BALL"),
@@ -4063,6 +4316,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 19,
+		.medicineGroup = 0,
     },
 	{
         .name = _("NEUTRON BALL"),
@@ -4079,6 +4333,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 20,
+		.medicineGroup = 0,
     },
 	{
         .name = _("LAIR BALL"),
@@ -4095,6 +4350,7 @@ const struct Item gItems[] =
         .battleUsage = 2,
         .battleUseFunc = ItemUseInBattle_PokeBall,
         .secondaryId = 21,
+		.medicineGroup = 0,
     },
     {
         .name = _("RED SCARF"),
@@ -4111,6 +4367,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("BLUE SCARF"),
@@ -4127,6 +4384,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("YELLOW SCARF"),
@@ -4143,6 +4401,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("GREEN SCARF"),
@@ -4159,6 +4418,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("PINK SCARF"),
@@ -4175,6 +4435,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("PURPLE SCARF"),
@@ -4191,6 +4452,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -4207,6 +4469,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -4223,6 +4486,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -4239,6 +4503,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -4255,6 +4520,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("SHINY CHARM"),
@@ -4271,6 +4537,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("NUZLOCKE BUFF"),
@@ -4287,6 +4554,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TREASURE MAP"),
@@ -4303,6 +4571,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("EVIOLITE"),
@@ -4319,6 +4588,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -4335,6 +4605,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -4351,6 +4622,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -4367,6 +4639,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -4383,6 +4656,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -4399,6 +4673,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("MACH BIKE"),
@@ -4415,6 +4690,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("COIN CASE"),
@@ -4431,6 +4707,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("ITEMFINDER"),
@@ -4447,6 +4724,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("OLD ROD"),
@@ -4463,6 +4741,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("GOOD ROD"),
@@ -4479,6 +4758,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 1,
+		.medicineGroup = 0,
     },
     {
         .name = _("SUPER ROD"),
@@ -4495,6 +4775,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 2,
+		.medicineGroup = 0,
     },
     {
         .name = _("S.S. TICKET"),
@@ -4511,6 +4792,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("CONTEST PASS"),
@@ -4527,6 +4809,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -4543,6 +4826,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("WAILMER PAIL"),
@@ -4559,6 +4843,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("DEVON GOODS"),
@@ -4575,6 +4860,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("SOOT SACK"),
@@ -4591,6 +4877,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("BASEMENT KEY"),
@@ -4607,6 +4894,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("ACRO BIKE"),
@@ -4623,6 +4911,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 1,
+		.medicineGroup = 0,
     },
     {
         .name = _("{POKEBLOCK} CASE"),
@@ -4639,6 +4928,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("LETTER"),
@@ -4655,6 +4945,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("EON TICKET"),
@@ -4671,6 +4962,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 1,
+		.medicineGroup = 0,
     },
     {
         .name = _("RED ORB"),
@@ -4687,6 +4979,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("BLUE ORB"),
@@ -4703,6 +4996,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("SCANNER"),
@@ -4719,6 +5013,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("GO-GOGGLES"),
@@ -4735,6 +5030,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("METEORITE"),
@@ -4751,6 +5047,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("RM. 1 KEY"),
@@ -4767,6 +5064,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("RM. 2 KEY"),
@@ -4783,6 +5081,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("RM. 4 KEY"),
@@ -4799,6 +5098,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("RM. 6 KEY"),
@@ -4815,6 +5115,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("STORAGE KEY"),
@@ -4831,6 +5132,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("ROOT FOSSIL"),
@@ -4847,6 +5149,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("CLAW FOSSIL"),
@@ -4863,6 +5166,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("DEVON SCOPE"),
@@ -4879,6 +5183,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM01"),
@@ -4895,6 +5200,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM02"),
@@ -4911,6 +5217,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM03"),
@@ -4927,6 +5234,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM04"),
@@ -4943,6 +5251,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM05"),
@@ -4959,6 +5268,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM06"),
@@ -4975,6 +5285,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM07"),
@@ -4991,6 +5302,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM08"),
@@ -5007,6 +5319,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM09"),
@@ -5023,6 +5336,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM10"),
@@ -5039,6 +5353,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM11"),
@@ -5055,6 +5370,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM12"),
@@ -5071,6 +5387,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM13"),
@@ -5087,6 +5404,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM14"),
@@ -5103,6 +5421,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM15"),
@@ -5119,6 +5438,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM16"),
@@ -5135,6 +5455,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM17"),
@@ -5151,6 +5472,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM18"),
@@ -5167,6 +5489,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM19"),
@@ -5183,6 +5506,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM20"),
@@ -5199,6 +5523,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM21"),
@@ -5215,6 +5540,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM22"),
@@ -5231,6 +5557,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM23"),
@@ -5247,6 +5574,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM24"),
@@ -5263,6 +5591,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM25"),
@@ -5279,6 +5608,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM26"),
@@ -5295,6 +5625,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM27"),
@@ -5311,6 +5642,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM28"),
@@ -5327,6 +5659,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM29"),
@@ -5343,6 +5676,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM30"),
@@ -5359,6 +5693,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM31"),
@@ -5375,6 +5710,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM32"),
@@ -5391,6 +5727,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM33"),
@@ -5407,6 +5744,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM34"),
@@ -5423,6 +5761,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM35"),
@@ -5439,6 +5778,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM36"),
@@ -5455,6 +5795,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM37"),
@@ -5471,6 +5812,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM38"),
@@ -5487,6 +5829,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM39"),
@@ -5503,6 +5846,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM40"),
@@ -5519,6 +5863,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM41"),
@@ -5535,6 +5880,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM42"),
@@ -5551,6 +5897,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM43"),
@@ -5567,6 +5914,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM44"),
@@ -5583,6 +5931,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM45"),
@@ -5599,6 +5948,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM46"),
@@ -5615,6 +5965,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM47"),
@@ -5631,6 +5982,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM48"),
@@ -5647,6 +5999,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM49"),
@@ -5663,6 +6016,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("TM50"),
@@ -5679,6 +6033,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("HM01"),
@@ -5695,6 +6050,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("HM02"),
@@ -5711,6 +6067,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("HM03"),
@@ -5727,6 +6084,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("HM04"),
@@ -5743,6 +6101,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("HM05"),
@@ -5759,6 +6118,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("HM06"),
@@ -5775,6 +6135,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("HM07"),
@@ -5791,6 +6152,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("HM08"),
@@ -5807,6 +6169,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -5823,6 +6186,7 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
     {
         .name = _("????????"),
@@ -5839,5 +6203,6 @@ const struct Item gItems[] =
         .battleUsage = 0,
         .battleUseFunc = NULL,
         .secondaryId = 0,
+		.medicineGroup = 0,
     },
 };

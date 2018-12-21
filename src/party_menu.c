@@ -4202,13 +4202,11 @@ void sub_806FB44(u8 taskId)
 
 u8 IsHPRecoveryItem(u16 item)
 {
-    const u8 *itemEffect;
+    u8 medicineGroup = ItemId_GetMedicineGroup(item);
 
-    itemEffect = gItemEffectTable[item - ITEM_POTION];
-
-	if (itemEffect[1] == ITEM_FULL_RESTORE)
+	if (item == ITEM_FULL_RESTORE)
 		return 2;
-    if (itemEffect[0] == MEDICINE_GROUP_HP_RESTORE)
+    if (medicineGroup == MEDICINE_GROUP_HP_RESTORE)
         return TRUE;
     else
         return FALSE;
@@ -4537,14 +4535,14 @@ void Task_HandleItemUseMoveMenuInput(u8 taskId)
 
 void DoPPRecoveryItemEffect(u8 taskId, u16 item, TaskFunc c)
 {
-    const u8 *itemEffect;
+    u8 medicineGroup;
     u8 taskId2;
 
-    itemEffect = gItemEffectTable[item - ITEM_POTION];
+    medicineGroup = ItemId_GetMedicineGroup(item);
     gTasks[taskId].func = TaskDummy;
     taskId2 = CreateTask(TaskDummy, 5);
     sub_806E8D0(taskId, item, c);
-    if (!(itemEffect[0] == MEDICINE_GROUP_PP_RESTORE))
+    if (medicineGroup == MEDICINE_GROUP_PP_RESTORE) //test this?
     {
         gTasks[taskId2].data[11] = 0;
         DoRecoverPP(taskId2);
@@ -4960,20 +4958,18 @@ void DoEvolutionStoneItemEffect(u8 taskId, u16 evolutionStoneItem, TaskFunc c)
 
 u8 GetItemEffectType(u16 item)
 {
-    const u8 *itemEffect;
+    u8 medicineGroup = ItemId_GetMedicineGroup(item);
 
-    itemEffect = gItemEffectTable[item - ITEM_POTION];
-
-	switch(itemEffect[0])
+	switch(medicineGroup)
 	{
 		case MEDICINE_GROUP_HP_RESTORE:
-			switch (itemEffect[1])
+			switch (item)
 			{
 				case ITEM_FULL_RESTORE:
 					return 11;
 			}
 		case MEDICINE_GROUP_STATUS_RESTORE:
-			switch (itemEffect[1])
+			switch (item)
 			{
 				case ITEM_ANTIDOTE:
 					return 3;
@@ -4990,7 +4986,7 @@ u8 GetItemEffectType(u16 item)
 					return 11;
 			}
 		case MEDICINE_GROUP_PP_RESTORE:
-			switch (itemEffect[1])
+			switch (item)
 			{
 				case ITEM_ETHER:
 				case ITEM_MAX_ETHER:
@@ -4999,7 +4995,7 @@ u8 GetItemEffectType(u16 item)
 					return 21;
 			}
 		case MEDICINE_GROUP_PP_BOOSTER:
-			switch (itemEffect[1])
+			switch (item)
 			{
 				case ITEM_PP_UP:
 					return 19;
@@ -5007,7 +5003,7 @@ u8 GetItemEffectType(u16 item)
 					return 20;
 			}
 		case MEDICINE_GROUP_EV_VITAMIN:
-			switch (itemEffect[1])
+			switch (item)
 			{
 				case ITEM_POMEG_BERRY:
 				case ITEM_HP_UP:
@@ -5029,7 +5025,7 @@ u8 GetItemEffectType(u16 item)
 					return 15;
 			}
 		case MEDICINE_GROUP_IV_TONIC:
-			switch (itemEffect[1])
+			switch (item)
 			{
 				case ITEM_VITAL_TONIC:
 					return 26;
@@ -5047,13 +5043,13 @@ u8 GetItemEffectType(u16 item)
 		case MEDICINE_GROUP_HIDDEN_TYPE:
 			return 33;
 		case MEDICINE_GROUP_TYPE_MODIFIER:
-			switch (itemEffect[1])
+			switch (item)
 			{
 				case ITEM_ROLL_TYPES:
 					return 23;
 			}
 		case MEDICINE_GROUP_ABILITY_MODIFIER:
-			switch (itemEffect[1])
+			switch (item)
 			{
 				case ITEM_ROLL_ABILITY:
 					return 24;
@@ -5061,7 +5057,7 @@ u8 GetItemEffectType(u16 item)
 					return 32;
 			}
 		case MEDICINE_GROUP_NATURE_MODIFIER:
-			switch (itemEffect[1])
+			switch (item)
 			{
 				case ITEM_ROLL_NATURE:
 					return 25;

@@ -72,7 +72,7 @@ bool8 SetUpFieldMove_SoftBoiled(void);
 bool8 SetUpFieldMove_SoftBoiled(void);
 bool8 SetUpFieldMove_SweetScent(void);
 
-#define sFieldMovesTerminator 0xFFFF // (>>DONE THIS, was 0xFF originally) note: should be changed to 0xFFFF, because currently it makes it impossible to add a field move with 0xFF index
+#define sFieldMovesTerminator 0xFFFF
 
 // this file's functions
 static void sub_808A8A8(void);
@@ -204,10 +204,7 @@ static void sub_8089A8C(void)
         if (GetMonData(&gPlayerParty[1], MON_DATA_SPECIES) != 0)
             AppendToList(sPokeMenuOptionsOrder, &sPokeMenuOptionsNo, POKEMENU_SWITCH);
 
-        /*if (ItemIsMail(GetMonData(&gPlayerParty[gLastFieldPokeMenuOpened], MON_DATA_HELD_ITEM)))
-            AppendToList(sPokeMenuOptionsOrder, &sPokeMenuOptionsNo, POKEMENU_MAIL);
-        else*/
-            AppendToList(sPokeMenuOptionsOrder, &sPokeMenuOptionsNo, POKEMENU_ITEM);
+        AppendToList(sPokeMenuOptionsOrder, &sPokeMenuOptionsNo, POKEMENU_ITEM);
 
 		AppendToList(sPokeMenuOptionsOrder, &sPokeMenuOptionsNo, POKEMENU_RENAME);
         AppendToList(sPokeMenuOptionsOrder, &sPokeMenuOptionsNo, POKEMENU_CANCEL);

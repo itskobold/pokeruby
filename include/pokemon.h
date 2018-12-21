@@ -571,7 +571,6 @@ extern u8 gPlayerPartyCount;
 extern struct Pokemon gPlayerParty[PARTY_SIZE];
 extern u8 gEnemyPartyCount;
 extern struct Pokemon gEnemyParty[PARTY_SIZE];
-extern const u8 *const gItemEffectTable[];
 extern const struct BaseStats gBaseStats[];
 extern const u32 gExperienceTables[][101];
 extern const u16 *gLevelUpLearnsets[];
@@ -719,7 +718,7 @@ struct Sprite *sub_80F7920(u16, u16, const u16 *);
 void BoxMonRestorePP(struct BoxPokemon *);
 
 bool8 HealStatusConditions(struct Pokemon *mon, u32 unused, u32 healMask, u8 battleId);
-u8 GetItemEffectParamOffset(u16 itemId, u8 effectByte, u8 effectBit);
+u16 GetItemHealAmount(u16 itemId, u16 maxHP);
 
 #if DEBUG
 void Nakamura_NakaGenderTest_RecalcStats(struct Pokemon *);

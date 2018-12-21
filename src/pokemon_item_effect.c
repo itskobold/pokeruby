@@ -159,7 +159,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 	s32 cmdIndex;
 	u8 sp34 = 4;
     bool8 retVal = TRUE;
-    const u8 *itemEffect;
+	u8 medicineGroup = ItemId_GetMedicineGroup(item);
 	u16 species = GetMonData(pkmn, MON_DATA_SPECIES);
 
     gStringBank = gBankInMenu;
@@ -182,12 +182,10 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 		
     if (!IS_POKEMON_ITEM(item))
         return TRUE;
-    if (gItemEffectTable[item - 13] == NULL)
+    if (medicineGroup == 0)
         return TRUE;
-
-    itemEffect = gItemEffectTable[item - 13];
 	
-	switch (itemEffect[0])
+	switch (medicineGroup)
 	{
 		case MEDICINE_GROUP_HP_RESTORE:
 		{
@@ -272,6 +270,11 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 							break;
 					}
 					
+					data = GetMonData(pkmn, MON_DATA_HP, NULL);
+					
+					if ((!revive && data == 0) || (revive && data != 0))
+						return TRUE;
+					
 					if (restoreAmt == 0)
 						restoreAmt = 1;
 					
@@ -292,7 +295,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 						SetMonData(pkmn, MON_DATA_FRIENDSHIP, &friendship);
 					}
 					
-					data = GetMonData(pkmn, MON_DATA_HP, NULL) + restoreAmt;
+					data += restoreAmt;
 					if (data > GetMonData(pkmn, MON_DATA_MAX_HP, NULL))
 						data = GetMonData(pkmn, MON_DATA_MAX_HP, NULL);
 					SetMonData(pkmn, MON_DATA_HP, &data);
@@ -319,9 +322,6 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 					}
 					else
 					{
-						if (GetMonData(pkmn, MON_DATA_HP, NULL) != 0)
-							return TRUE;
-						
 						if (gMain.inBattle)
 						{
 							if (sp34 != 4)

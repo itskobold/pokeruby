@@ -25,6 +25,7 @@ struct Item
     u8 battleUsage;
     ItemUseFunc battleUseFunc;
     u8 secondaryId;
+	u8 medicineGroup;
 };
 
 extern u8 gCurSelectedItemSlotIndex;
@@ -62,15 +63,7 @@ static void CompactPCItems(void);
 
 void CopyItemName(u16 itemId, u8 *string)
 {
-    /*if (itemId == ITEM_ENIGMA_BERRY)
-    {
-        StringCopy(string, GetBerryInfo(GETBERRYID(ITEM_ENIGMA_BERRY))->name);
-        StringAppend(string, gOtherText_Berry2);
-    }
-    else
-    {*/
-        StringCopy(string, ItemId_GetName(itemId));
-    //}
+    StringCopy(string, ItemId_GetName(itemId));
 }
 
 //Unreferenced
@@ -542,4 +535,9 @@ ItemUseFunc ItemId_GetBattleFunc(u16 itemId)
 u8 ItemId_GetSecondaryId(u16 itemId)
 {
     return gItems[SanitizeItemId(itemId)].secondaryId;
+}
+
+u8 ItemId_GetMedicineGroup(u16 itemId)
+{
+    return gItems[SanitizeItemId(itemId)].medicineGroup;
 }

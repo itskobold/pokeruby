@@ -85,112 +85,53 @@ bool8 HealStatusConditions(struct Pokemon *mon, u32 unused, u32 healMask, u8 bat
     }
 }
 
-u8 GetItemEffectParamOffset(u16 itemId, u8 effectByte, u8 effectBit)
+u16 GetItemHealAmount(u16 itemId, u16 maxHP)
 {
-    const u8 *temp;
-    const u8 *itemEffect;
-    u8 offset;
-    int i;
-    u8 j;
-    u8 val;
-
-    offset = 6;
-
-    temp = gItemEffectTable[itemId - 13];
-
-    if (!temp)
-        return 0;
-
-    itemEffect = temp;
-
-    for (i = 0; i < 6; i++)
-    {
-        switch (i)
-        {
-        case 0:
-        case 1:
-        case 2:
-        case 3:
-            if (i == effectByte)
-                return 0;
-            break;
-        case 4:
-            val = itemEffect[4];
-            if (val & 0x20)
-                val &= 0xDF;
-            j = 0;
-            while (val)
-            {
-                if (val & 1)
-                {
-                    switch (j)
-                    {
-                    case 2:
-                        if (val & 0x10)
-                            val &= 0xEF;
-                    case 0:
-                        if (i == effectByte && (val & effectBit))
-                            return offset;
-                        offset++;
-                        break;
-                    case 1:
-                        if (i == effectByte && (val & effectBit))
-                            return offset;
-                        offset++;
-                        break;
-                    case 3:
-                        if (i == effectByte && (val & effectBit))
-                            return offset;
-                        offset++;
-                        break;
-                    case 7:
-                        if (i == effectByte)
-                            return 0;
-                        break;
-                    }
-                }
-                j++;
-                val >>= 1;
-                if (i == effectByte)
-                    effectBit >>= 1;
-            }
-            break;
-        case 5:
-            val = itemEffect[5];
-            j = 0;
-            while (val)
-            {
-                if (val & 1)
-                {
-                    switch (j)
-                    {
-                    case 0:
-                    case 1:
-                    case 2:
-                    case 3:
-                    case 4:
-                    case 5:
-                    case 6:
-                        if (i == effectByte && (val & effectBit))
-                            return offset;
-                        offset++;
-                        break;
-                    case 7:
-                        if (i == effectByte)
-                            return 0;
-                        break;
-                    }
-                }
-                j++;
-                val >>= 1;
-                if (i == effectByte)
-                    effectBit >>= 1;
-            }
-            break;
-        }
-    }
-
-    return offset;
+	u16 healAmt;
+	
+    switch (itemId)
+	{
+		case ITEM_ORAN_BERRY:
+		case ITEM_POTION:
+			healAmt = 25;
+		case ITEM_SITRUS_BERRY:
+		case ITEM_SUPER_POTION:
+			healAmt = 75;
+		case ITEM_RAZZ_BERRY:
+		case ITEM_ULTRA_POTION:
+			healAmt = 150;
+		case ITEM_BELUE_BERRY:
+		case ITEM_HYPER_POTION:
+			healAmt = 300;
+		case ITEM_WATMEL_BERRY:
+		case ITEM_MAX_POTION:
+		case ITEM_FULL_RESTORE:
+		case ITEM_WATMEL_SLUSH:
+		case ITEM_RARE_BERRYADE:
+		case ITEM_RAGE_CANDY_BAR:
+		case ITEM_CREAM_POFFIN:
+			healAmt = maxHP;
+		case ITEM_FRESH_WATER:
+		case ITEM_LEMONADE:
+		case ITEM_SHALOUR_SABLE:
+		case ITEM_LAVA_COOKIE:
+			healAmt = maxHP / 4;
+		case ITEM_ORAN_TEA:
+		case ITEM_SITRUS_JUICE:
+		case ITEM_BIG_MALASADA:
+		case ITEM_CASTELIACONE:
+			healAmt = maxHP / 2;
+		case ITEM_MOOMOO_MILK:
+		case ITEM_RAZZ_SHAKE:
+		case ITEM_BELUE_KEBAB:
+		case ITEM_LEAFY_SALAD:
+			healAmt = maxHP * 0.75;
+	}
+	
+	if (healAmt == 0)
+		healAmt = 1;
+	
+	return healAmt;
 }
 
 const u8 gUnknown_082082F8[] = {1, 1, 3, 2, 4, 6};
@@ -212,9 +153,7 @@ u8 *sub_803F378(u16 itemId)
 {
     u8 stat;
 	u8 state = 0;
-    const u8 *itemEffect;
-
-    itemEffect = gItemEffectTable[itemId - 13];
+    u8 medicineGroup = ItemId_GetMedicineGroup(itemId);
 
     gStringBank = gBankInMenu;
 
@@ -227,7 +166,7 @@ u8 *sub_803F378(u16 itemId)
 	else
 	{
 		//new stat booster print
-		if (itemEffect[0] == MEDICINE_GROUP_BATTLE_ITEM)
+		if (medicineGroup == MEDICINE_GROUP_BATTLE_ITEM)
 		{
 			if (itemId == ITEM_PAMTRE_BERRY || itemId == ITEM_NANAB_BERRY)
 				stat = *gStatBoosted;
