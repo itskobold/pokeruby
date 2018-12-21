@@ -377,7 +377,6 @@ extern const u8 gOtherText_ElevatedTo[];
 extern const u8 gOtherText_WasRaised[];
 extern const u8 gOtherText_SnapConfusion[];
 extern const u8 gOtherText_GotOverLove[];
-extern const u8 gOtherText_MoveFirstNextTurn[];
 extern const u8 OtherText_ChoosePoke[];
 extern const u8 OtherText_MovePokeTo[];
 extern const u8 OtherText_TeachWhat[];

@@ -341,6 +341,41 @@ static const u8 gItemDescription_CreamPoffin[] = _(
     "Restores HP and\n"
     "raises happiness.");
 
+static const u8 gItemDescription_PicnicBasket[] = _(
+    "A big basket of\n"
+    "food. Fully heals\n"
+    "the whole party.");
+	
+static const u8 gItemDescription_EnergyPulp[] = _(
+    "Heals half of the\n"
+    "user's max HP but\n"
+    "lowers happiness.");
+	
+static const u8 gItemDescription_EnergyRoot[] = _(
+    "Fully restores a\n"
+    "POKéMON's HP but\n"
+    "lowers happiness.");
+	
+static const u8 gItemDescription_HealingSeeds[] = _(
+    "Cures any minor\n"
+    "status ailment but\n"
+    "lowers happiness.");
+	
+static const u8 gItemDescription_HealingDust[] = _(
+    "Cures any status\n"
+    "affliction but\n"
+    "lowers happiness.");
+	
+static const u8 gItemDescription_RevivalHerb[] = _(
+    "Revives a POKéMON\n"
+    "with one HP. Also\n"
+    "lowers happiness.");
+	
+static const u8 gItemDescription_BitterHerb[] = _(
+    "Resets all stat\n"
+    "changes to one\n"
+    "POKéMON in battle.");
+	
 static const u8 gItemDescription_VitalTonic[] = _(
     "Raises the\n"
     "HP IV of\n"

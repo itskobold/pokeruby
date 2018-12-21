@@ -268,6 +268,19 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 							restoreAmt = GetMonData(pkmn, MON_DATA_MAX_HP);
 							friendshipAmt = 12;
 							break;
+						case ITEM_ENERGY_PULP:
+							restoreAmt = GetMonData(pkmn, MON_DATA_MAX_HP) / 2;
+							friendshipAmt = -3;
+							break;
+						case ITEM_ENERGY_ROOT:
+							restoreAmt = GetMonData(pkmn, MON_DATA_MAX_HP);
+							friendshipAmt = -3;
+							break;
+						case ITEM_REVIVAL_HERB:
+							restoreAmt = 1;
+							revive = TRUE;
+							friendshipAmt = -3;
+							break;
 					}
 					
 					data = GetMonData(pkmn, MON_DATA_HP, NULL);
@@ -352,6 +365,18 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 			u8 status = ItemId_GetSecondaryId(item);
 			
 			retVal = DoCureStatusCheck(pkmn, partyIndex, status, sp34);
+			
+			if (item == ITEM_HEALING_SEEDS || item == ITEM_HEALING_DUST)
+			{
+				s16 friendship = GetMonData(pkmn, MON_DATA_HP, NULL);
+						
+				if (friendship - 3 < 0)
+					friendship = 0;
+				else 
+					friendship -= 3;
+				SetMonData(pkmn, MON_DATA_FRIENDSHIP, &friendship);
+			}
+			
 			break;
 		}
 		case MEDICINE_GROUP_PP_RESTORE:
@@ -485,10 +510,11 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 			break;
 		}
 		case MEDICINE_GROUP_BATTLE_ITEM:
+		{
+			int i;
+
 			switch (item)
 			{
-				int i;
-				
 				case ITEM_DIRE_HIT:
 				case ITEM_WIKI_BERRY:
 					if (!(gBattleMons[gActiveBattler].status2 & STATUS2_FOCUS_ENERGY))
@@ -511,6 +537,26 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 						retVal = FALSE;
 					}
 					break;
+				case ITEM_BITTER_HERB:
+				{
+					bool8 statReset;
+					statReset = FALSE;
+					
+					for (i = 1; i < STAT_STAGE_EVASION + 1; i++)
+					{
+						if (gBattleMons[gActiveBattler].statStages[i] != 6)
+						{
+							gBattleMons[gActiveBattler].statStages[i] = 6;
+							statReset = TRUE;
+						}
+						
+						if (!statReset)
+							return TRUE;
+						else
+							retVal = FALSE;
+					}
+					break;
+				}
 				default:
 					data = ItemId_GetSecondaryId(item);
 				
@@ -534,11 +580,11 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 					
 					if (data == 0) //random stat
 					{
-						for (i = 1; i < 6; i++) //include accuracy 
+						for (i = 1; i <= STAT_STAGE_SPDEF; i++)
 						{
 							if (gBattleMons[gActiveBattler].statStages[i] < 12)
 								break;
-							if (i == 5)
+							if (i == STAT_STAGE_SPDEF)
 								return TRUE;
 						}
 						
@@ -566,6 +612,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 					}
 			}
 			break;
+		}
 		case MEDICINE_GROUP_EXP_BOOSTER:
 		{
 			u8 level = GetMonData(pkmn, MON_DATA_LEVEL);

@@ -64,7 +64,8 @@ extern u8 BattleText_WasMaximized[];
 extern u8 BattleText_UnknownString3[];
 extern u8 BattleText_GuardSpec[];
 extern u8 BattleText_DireHit[];
-extern u8 gOtherText_MoveFirstNextTurn[];
+extern u8 BattleText_MoveFirstNextTurn[];
+extern u8 BattleText_StatsReset[];
 extern u8 *gUnknown_08400F58[];
 
 bool8 HealStatusConditions(struct Pokemon *mon, u32 unused, u32 healMask, u8 battleId)
@@ -110,6 +111,7 @@ u16 GetItemHealAmount(u16 itemId, u16 maxHP)
 		case ITEM_RARE_BERRYADE:
 		case ITEM_RAGE_CANDY_BAR:
 		case ITEM_CREAM_POFFIN:
+		case ITEM_ENERGY_ROOT:
 			healAmt = maxHP;
 		case ITEM_FRESH_WATER:
 		case ITEM_LEMONADE:
@@ -120,6 +122,7 @@ u16 GetItemHealAmount(u16 itemId, u16 maxHP)
 		case ITEM_SITRUS_JUICE:
 		case ITEM_BIG_MALASADA:
 		case ITEM_CASTELIACONE:
+		case ITEM_ENERGY_PULP:
 			healAmt = maxHP / 2;
 		case ITEM_MOOMOO_MILK:
 		case ITEM_RAZZ_SHAKE:
@@ -162,7 +165,9 @@ u8 *sub_803F378(u16 itemId)
 	else if (itemId == ITEM_GUARD_SPEC)
 		StrCpyDecodeToDisplayedStringBattle(BattleText_GuardSpec);
 	else if (itemId == ITEM_CUSTAP_BERRY)
-		StrCpyDecodeToDisplayedStringBattle(gOtherText_MoveFirstNextTurn);
+		StrCpyDecodeToDisplayedStringBattle(BattleText_MoveFirstNextTurn);
+	else if (itemId == ITEM_BITTER_HERB)
+		StrCpyDecodeToDisplayedStringBattle(BattleText_StatsReset);
 	else
 	{
 		//new stat booster print

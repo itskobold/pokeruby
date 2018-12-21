@@ -394,7 +394,6 @@ const u8 gOtherText_ElevatedTo[] = _("{STR_VAR_1} was elevated to\nLv. {STR_VAR_
 const u8 gOtherText_WasRaised[] = _("{STR_VAR_1}'s {STR_VAR_2} was\nraised.{PAUSE_UNTIL_PRESS}");
 const u8 gOtherText_SnapConfusion[] = _("{STR_VAR_1} snapped out of its\nconfusion.{PAUSE_UNTIL_PRESS}");
 const u8 gOtherText_GotOverLove[] = _("{STR_VAR_1} got over its\ninfatuation.{PAUSE_UNTIL_PRESS}");
-const u8 gOtherText_MoveFirstNextTurn[] = _("{STR_VAR_1} can move first\nnext turn!");
 const u8 OtherText_ChoosePoke[] = _("Choose a POKéMON.");
 const u8 OtherText_MovePokeTo[] = _("Move to where?");
 const u8 OtherText_TeachWhat[] = _("Teach which POKéMON?");

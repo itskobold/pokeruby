@@ -454,11 +454,11 @@ const u8 BattleText_Clamped[] = _("{ATTACKING_MON} CLAMPED\n{DEFENDING_MON}!");
 const u8 BattleText_HurtBy[] = _("{ATTACKING_MON} is hurt\nby {STRING 0}!");
 const u8 BattleText_FreedFrom[] = _("{ATTACKING_MON} was freed\nfrom {STRING 0}!");
 const u8 BattleText_KeptGoingCrash[] = _("{ATTACKING_MON} kept going\nand crashed!");
-const u8 BattleText_MistShroud[] = _("{STRING 38} became\nshrouded in MIST!");
+const u8 BattleText_MistShroud[] = _("{STRING 38}became\nshrouded in MIST!");
 const u8 BattleText_GuardSpec[] = _("{STRING 38}stats are protected for 5 turns!");
 const u8 BattleText_MistProtect[] = _("{STRING 16}'s stats can't\nbe lowered!");
 const u8 BattleText_GetPumped[] = _("{ATTACKING_MON} is getting\npumped!");
-const u8 BattleText_DireHit[] = _("{ATTACKING_MON} became more likely\nto deliver a critical hit!");
+const u8 BattleText_DireHit[] = _("{STRING 16} became more likely\nto deliver a critical hit!");
 const u8 BattleText_HitRecoil[] = _("{ATTACKING_MON} is hit\nwith recoil!");
 const u8 BattleText_ProtectedItself2[] = _("{ATTACKING_MON} protected\nitself!");
 const u8 BattleText_SandBuffeted[] = _("{ATTACKING_MON} is buffeted\nby the sandstorm!");
@@ -854,6 +854,8 @@ const u8 BattleText_Dark[] = _("a DARK move");
 const u8 BattleText_MoveFirst[] = _("{STRING 16} can move first next\ndue to it's {STRING 19}!");
 const u8 BattleText_HalfSuperEffectiveDmg[] = _("{STRING 16} absorbed damage\ndue to it's {STRING 19}!");
 const u8 BattleText_BerryInflictedDmg[] = _("{ATTACKING_MON} took damage due to\n{STRING 16}'s {STRING 19}!");
+const u8 BattleText_MoveFirstNextTurn[] = _("{STR_VAR_1} can move first\nnext turn!");
+const u8 BattleText_StatsReset[] = _("{STR_VAR_1}'s stats\nwere reset!");
 
 const u8 *const gUnknown_08400F58[] =
 {
