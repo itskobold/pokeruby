@@ -189,7 +189,7 @@ bool8 ItemIsMail(u16 itemId)
 {
     switch (itemId)
     {
-    case ITEM_ORANGE_MAIL:
+    /*case ITEM_ORANGE_MAIL:
     case ITEM_HARBOR_MAIL:
     case ITEM_GLITTER_MAIL:
     case ITEM_MECH_MAIL:
@@ -201,7 +201,7 @@ bool8 ItemIsMail(u16 itemId)
     case ITEM_DREAM_MAIL:
     case ITEM_FAB_MAIL:
     case ITEM_RETRO_MAIL:
-        return TRUE;
+        return TRUE;*/
     default:
         return FALSE;
     }

@@ -56,7 +56,7 @@ extern s8 gPokeblockFlavorCompatibilityTable[];
 extern u8 gLastUsedAbility;
 extern const u8 BattleText_PreventedSwitch[];
 extern u16 gBattlerPartyIndexes[];
-extern u8 gRandomStatBoosted[];
+extern u8 gStatBoosted[];
 
 extern u8 BattleText_Rose[];
 extern u8 BattleText_SharplyRose[];
@@ -98,13 +98,8 @@ u8 GetItemEffectParamOffset(u16 itemId, u8 effectByte, u8 effectBit)
 
     temp = gItemEffectTable[itemId - 13];
 
-    if (!temp/* && itemId != ITEM_ENIGMA_BERRY*/)
+    if (!temp)
         return 0;
-
-    /*if (itemId == ITEM_ENIGMA_BERRY)
-    {
-        temp = gEnigmaBerries[gActiveBattler].itemEffect;
-    }*/
 
     itemEffect = temp;
 
@@ -200,20 +195,8 @@ u8 GetItemEffectParamOffset(u16 itemId, u8 effectByte, u8 effectBit)
 
 const u8 gUnknown_082082F8[] = {1, 1, 3, 2, 4, 6};
 
-void sub_803F324(int stat)
+void sub_803F324(u8 stat, u8 state)
 {
-	u8 state = 0;
-	
-	if (stat > 19)
-	{
-		stat -= 20;
-		state = 2;
-	}
-	else if (stat > 9)
-	{
-		stat -= 10;
-		state = 1;
-	}
     gBankTarget = gBankInMenu;
     StringCopy(gBattleTextBuff1, gUnknown_08400F58[gUnknown_082082F8[stat]]);
 	if (state == 2)
@@ -227,100 +210,50 @@ void sub_803F324(int stat)
 
 u8 *sub_803F378(u16 itemId)
 {
-    int stat;
+    u8 stat;
+	u8 state = 0;
     const u8 *itemEffect;
 
     itemEffect = gItemEffectTable[itemId - 13];
 
     gStringBank = gBankInMenu;
 
-	if (itemEffect[1] == ITEM_DIRE_HIT || itemEffect[1] == ITEM_WIKI_BERRY)
+	if (itemId == ITEM_DIRE_HIT || itemId == ITEM_WIKI_BERRY)
 		StrCpyDecodeToDisplayedStringBattle(BattleText_DireHit);
-	else if (itemEffect[1] == ITEM_GUARD_SPEC)
+	else if (itemId == ITEM_GUARD_SPEC)
 		StrCpyDecodeToDisplayedStringBattle(BattleText_GuardSpec);
-	else if (itemEffect[1] == ITEM_CUSTAP_BERRY)
+	else if (itemId == ITEM_CUSTAP_BERRY)
 		StrCpyDecodeToDisplayedStringBattle(gOtherText_MoveFirstNextTurn);
 	else
 	{
 		//new stat booster print
 		if (itemEffect[0] == MEDICINE_GROUP_BATTLE_ITEM)
 		{
-			switch (itemEffect[1])
-			{	
-				case ITEM_CORNN_BERRY:		//attack
-					stat = 1;
-					break;
-				case ITEM_LIECHI_BERRY:
-				case ITEM_X_ATTACK:	
-					stat = 11;
-					break;
-				case ITEM_MAX_ATTACK:
-					stat = 21;
-					break;
-				case ITEM_MAGOST_BERRY:		//defense
-					stat = 3;
-					break;
-				case ITEM_GANLON_BERRY:
-				case ITEM_X_DEFEND:
-					stat = 13;
-					break;
-				case ITEM_MAX_DEFEND:
-					stat = 23;
-					break;
-				case ITEM_FIGY_BERRY:		//speed
-					stat = 2;
-					break;
-				case ITEM_APICOT_BERRY:
-				case ITEM_X_SPEED:
-					stat = 12;
-					break;
-				case ITEM_MAX_SPEED:
-					stat = 22;
-					break;
-				case ITEM_RABUTA_BERRY:		//sp. atk
-					stat = 4;
-					break;
-				case ITEM_SALAC_BERRY:
-				case ITEM_X_SP_ATK:
-					stat = 14;
-					break;
-				case ITEM_MAX_SP_ATK:
-					stat = 24;
-					break;
-				case ITEM_NOMEL_BERRY:		//sp. def
-					stat = 6;
-					break;
-				case ITEM_PETAYA_BERRY:
-				case ITEM_X_SP_DEF:
-					stat = 16;
-					break;
-				case ITEM_MAX_SP_DEF:
-					stat = 26;
-					break;
-				case ITEM_AGUAV_BERRY:		//accuracy
-					stat = 5;
-					break;
-				case ITEM_MICLE_BERRY:
-				case ITEM_X_ACCURACY:
-					stat = 15;
-					break;
-				case ITEM_MAX_ACCURACY:
-					stat = 25;
-					break;
-				case ITEM_PAMTRE_BERRY:
-				case ITEM_NANAB_BERRY:
-					stat = *gRandomStatBoosted;
-					if (stat == 2 || stat == 5)
-						stat++;
-					else if (stat == 3)
-						stat--;
-					if (itemEffect[1] == ITEM_PAMTRE_BERRY)
-						break;
-					else
-						stat += 10;
-					break;
-			};
-			sub_803F324(stat);
+			if (itemId == ITEM_PAMTRE_BERRY || itemId == ITEM_NANAB_BERRY)
+				stat = *gStatBoosted;
+			else
+				stat = ItemId_GetSecondaryId(itemId);
+			
+			if (stat > 19) //max item
+			{
+				stat -= 20;
+				state = 2;
+			}
+			else if (stat > 9) //x item/tier 2 berry
+			{
+				stat -= 10;
+				state = 1;
+			}
+			
+			if (itemId == ITEM_NANAB_BERRY)
+				state = 1;
+
+			if (stat == 2 || stat == 5)
+				stat++;
+			else if (stat == 3 || stat == 6)
+				stat--;
+
+			sub_803F324(stat, state);
 		}
 	}
 	

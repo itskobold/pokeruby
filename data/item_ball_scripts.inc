@@ -335,7 +335,7 @@ NewMauville_Inside_EventScript_1B1870:: @ 81B1870
 	end
 
 AbandonedShip_Rooms_1F_EventScript_1B187D:: @ 81B187D
-	giveitem_std ITEM_HARBOR_MAIL, 1, 1
+	giveitem_std ITEM_POTION, 1, 1
 	end
 
 AbandonedShip_Rooms_B1F_EventScript_1B188A:: @ 81B188A
@@ -479,39 +479,39 @@ CaveOfOrigin_B3F_EventScript_1B1A44:: @ 81B1A44
 	end
 
 Route110_TrickHousePuzzle1_EventScript_1B1A51:: @ 81B1A51
-	giveitem_std ITEM_ORANGE_MAIL, 1, 1
+	giveitem_std ITEM_POTION, 1, 1
 	end
 
 Route110_TrickHousePuzzle2_EventScript_1B1A5E:: @ 81B1A5E
-	giveitem_std ITEM_HARBOR_MAIL, 1, 1
+	giveitem_std ITEM_POTION, 1, 1
 	end
 
 Route110_TrickHousePuzzle2_EventScript_1B1A6B:: @ 81B1A6B
-	giveitem_std ITEM_WAVE_MAIL, 1, 1
+	giveitem_std ITEM_POTION, 1, 1
 	end
 
 Route110_TrickHousePuzzle3_EventScript_1B1A78:: @ 81B1A78
-	giveitem_std ITEM_SHADOW_MAIL, 1, 1
+	giveitem_std ITEM_POTION, 1, 1
 	end
 
 Route110_TrickHousePuzzle3_EventScript_1B1A85:: @ 81B1A85
-	giveitem_std ITEM_WOOD_MAIL, 1, 1
+	giveitem_std ITEM_POTION, 1, 1
 	end
 
 Route110_TrickHousePuzzle4_EventScript_1B1A92:: @ 81B1A92
-	giveitem_std ITEM_MECH_MAIL, 1, 1
+	giveitem_std ITEM_POTION, 1, 1
 	end
 
 Route110_TrickHousePuzzle6_EventScript_1B1A9F:: @ 81B1A9F
-	giveitem_std ITEM_GLITTER_MAIL, 1, 1
+	giveitem_std ITEM_POTION, 1, 1
 	end
 
 Route110_TrickHousePuzzle7_EventScript_1B1AAC:: @ 81B1AAC
-	giveitem_std ITEM_TROPIC_MAIL, 1, 1
+	giveitem_std ITEM_POTION, 1, 1
 	end
 
 Route110_TrickHousePuzzle8_EventScript_1B1AB9:: @ 81B1AB9
-	giveitem_std ITEM_BEAD_MAIL, 1, 1
+	giveitem_std ITEM_POTION, 1, 1
 	end
 
 VictoryRoad_1F_EventScript_1B1AC6:: @ 81B1AC6

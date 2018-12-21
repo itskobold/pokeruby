@@ -301,7 +301,7 @@ gMoveToLearn = .; /* 2024E82 */
 gBattleMonForms = .; /* 2024E84 */
     . += 0x4;
 	
-gRandomStatBoosted = .; /* 2024E85 */
+gStatBoosted = .; /* 2024E85 */
 	. += 0x1;
 
 . = ALIGN(4); src/pokemon_1.o(ewram_data);

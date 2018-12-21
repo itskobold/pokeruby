@@ -332,7 +332,7 @@ void HandleReadMail(struct MailStruct *arg0, MainCallback arg1, bool8 arg2)
         ewram0_4.var100 = 1;
         ewram0_4.var104 = (MainCallback)EasyChat_GetWordText;
         ewram0_4.var108 = (MainCallback)ConvertEasyChatWordsToString;
-        if (IS_ITEM_MAIL(arg0->itemId))
+        /*if (IS_ITEM_MAIL(arg0->itemId))
         {
             ewram0_4.varFA = arg0->itemId - 0x79;
         }
@@ -340,7 +340,7 @@ void HandleReadMail(struct MailStruct *arg0, MainCallback arg1, bool8 arg2)
         {
             ewram0_4.varFA = 0;
             arg2 = FALSE;
-        }
+        }*/
     }
 
     switch (ewram0_4.var100)
@@ -889,7 +889,7 @@ u8 debug_sub_810CED0(void)
         return 0;
     default:
         gSpecialVar_0x8005 = input;
-        if (IS_ITEM_MAIL(gSaveBlock1.mail[input].itemId))
+        /*if (IS_ITEM_MAIL(gSaveBlock1.mail[input].itemId))
         {
             Menu_EraseScreen();
             Menu_DisplayDialogueFrame();
@@ -903,7 +903,7 @@ u8 debug_sub_810CED0(void)
             gMenuCallback = debug_sub_810CEA4;
             return 0;
         }
-        break;
+        break;*/
     }
     debug_sub_810D340();
     return 0;
@@ -925,7 +925,7 @@ u8 debug_sub_810CFA4(void)
         return 0;
     default:
         gSpecialVar_0x8005 = input;
-        if (IS_ITEM_MAIL(gSaveBlock1.mail[input].itemId))
+        /*if (IS_ITEM_MAIL(gSaveBlock1.mail[input].itemId))
         {
             Menu_EraseScreen();
             Menu_DisplayDialogueFrame();
@@ -937,7 +937,7 @@ u8 debug_sub_810CFA4(void)
         {
             CreateTask(debug_sub_810CCEC, 0);
             return 1;
-        }
+        }*/
     }
 }
 
@@ -1002,10 +1002,10 @@ void debug_sub_810D174(u8 a)
         {
             ConvertIntToDecimalStringN(gStringVar2, 1, 1, 1);
         }
-        else if (IS_ITEM_MAIL(gSaveBlock1.mail[i].itemId))
+        /*else if (IS_ITEM_MAIL(gSaveBlock1.mail[i].itemId))
         {
             ConvertIntToDecimalStringN(gStringVar2, 2, 1, 1);
-        }
+        }*/
         else
         {
             ConvertIntToDecimalStringN(gStringVar2, 0, 1, 1);

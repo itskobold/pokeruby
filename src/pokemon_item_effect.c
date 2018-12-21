@@ -25,7 +25,7 @@ extern u16 gBattlerPartyIndexes[];
 extern u8 gActiveBattler;
 extern u8 gStringBank;
 extern u32 gStatuses3[4];
-extern u8 gRandomStatBoosted;
+extern u8 gStatBoosted;
 extern struct BattlePokemon gBattleMons[];
 extern struct BattleEnigmaBerry gEnigmaBerries[];
 
@@ -192,6 +192,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 		case MEDICINE_GROUP_HP_RESTORE:
 		{
 			s32 restoreAmt;
+			s16 friendshipAmt = 0;
 			bool8 cureStatus = FALSE;
 			bool8 revive = FALSE;
 			bool8 restorePP = FALSE;
@@ -202,7 +203,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 			{
 				if (e == 0)
 				{
-					switch (itemEffect[1])
+					switch (item)
 					{
 						case ITEM_ORAN_BERRY:
 						case ITEM_POTION:
@@ -241,6 +242,34 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 							revive = TRUE;
 							restorePP = TRUE;
 							break;
+						case ITEM_FRESH_WATER:
+						case ITEM_LEMONADE:
+						case ITEM_SHALOUR_SABLE:
+						case ITEM_LAVA_COOKIE:
+							restoreAmt = GetMonData(pkmn, MON_DATA_MAX_HP) / 4;
+							friendshipAmt = 3;
+							break;
+						case ITEM_ORAN_TEA:
+						case ITEM_SITRUS_JUICE:
+						case ITEM_BIG_MALASADA:
+						case ITEM_CASTELIACONE:
+							restoreAmt = GetMonData(pkmn, MON_DATA_MAX_HP) / 2;
+							friendshipAmt = 6;
+							break;
+						case ITEM_MOOMOO_MILK:
+						case ITEM_RAZZ_SHAKE:
+						case ITEM_BELUE_KEBAB:
+						case ITEM_LEAFY_SALAD:
+							restoreAmt = GetMonData(pkmn, MON_DATA_MAX_HP) * 0.75;
+							friendshipAmt = 9;
+							break;
+						case ITEM_WATMEL_SLUSH:
+						case ITEM_RARE_BERRYADE:
+						case ITEM_RAGE_CANDY_BAR:
+						case ITEM_CREAM_POFFIN:
+							restoreAmt = GetMonData(pkmn, MON_DATA_MAX_HP);
+							friendshipAmt = 12;
+							break;
 					}
 					
 					if (restoreAmt == 0)
@@ -251,6 +280,17 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 					
 					if (restorePP)
 						retVal = RestorePPAllMoves(pkmn, sp34, TRUE);
+					
+					if (!friendshipAmt)
+					{
+						s16 friendship = GetMonData(pkmn, MON_DATA_HP, NULL);
+						
+						if (friendship + friendshipAmt < 0)
+							friendship = 0;
+						else if (friendship + friendshipAmt > 255)
+							friendship = 255;
+						SetMonData(pkmn, MON_DATA_FRIENDSHIP, &friendship);
+					}
 					
 					data = GetMonData(pkmn, MON_DATA_HP, NULL) + restoreAmt;
 					if (data > GetMonData(pkmn, MON_DATA_MAX_HP, NULL))
@@ -315,7 +355,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 			break;
 		}
 		case MEDICINE_GROUP_PP_RESTORE:
-			switch (itemEffect[1])
+			switch (item)
 			{
 				case ITEM_ELIXIR:
 					retVal = RestorePPAllMoves(pkmn, sp34, FALSE);
@@ -328,7 +368,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 					data2 = GetMonData(pkmn, MON_DATA_MOVE1 + moveIndex, NULL);
 					if (data != CalculatePPWithBonus(data2, GetMonData(pkmn, MON_DATA_PP_BONUSES, NULL), moveIndex))
 					{
-						if (itemEffect[1] == ITEM_ETHER || itemEffect[1] == ITEM_LEPPA_BERRY)
+						if (item == ITEM_ETHER || item == ITEM_LEPPA_BERRY)
 							data += 10;
 						else //max ether/bluk berry
 							data = CalculatePPWithBonus(data2, GetMonData(pkmn, MON_DATA_PP_BONUSES, NULL), moveIndex);
@@ -351,7 +391,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 		case MEDICINE_GROUP_PP_BOOSTER:
 			data = (GetMonData(pkmn, MON_DATA_PP_BONUSES, NULL) & gPPUpReadMasks[moveIndex]) >> (moveIndex * 2);
 			
-			switch (itemEffect[1])
+			switch (item)
 			{
 				case ITEM_PP_UP:
 					data2 = CalculatePPWithBonus(GetMonData(pkmn, MON_DATA_MOVE1 + moveIndex, NULL), GetMonData(pkmn, MON_DATA_PP_BONUSES, NULL), moveIndex);
@@ -394,7 +434,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 			
 			data = ItemId_GetSecondaryId(item);
 			
-			if (itemEffect[1] < ITEM_POMEG_BERRY)
+			if (item < ITEM_POMEG_BERRY)
 				evGrowth = 20;
 			
 			for (i = 0; i < evGrowth; i++) //EV is raised by a maximum of 20 (vitamin item) or a minimum of 4 (berry)
@@ -445,7 +485,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 			break;
 		}
 		case MEDICINE_GROUP_BATTLE_ITEM:
-			switch (itemEffect[1])
+			switch (item)
 			{
 				int i;
 				
@@ -494,11 +534,12 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 					
 					if (data == 0) //random stat
 					{
-						for (i = 1; i < 6; i++)
+						for (i = 1; i < 6; i++) //include accuracy 
 						{
 							if (gBattleMons[gActiveBattler].statStages[i] < 12)
 								break;
-							return TRUE;
+							if (i == 5)
+								return TRUE;
 						}
 						
 						do
@@ -506,7 +547,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 							data = Random() % 5;
 							data++;
 						} while (!(gBattleMons[gActiveBattler].statStages[data] < 12));
-						gRandomStatBoosted = data; 
+						gStatBoosted = data; 
 					}
 						
 					if (gBattleMons[gActiveBattler].statStages[data] < 12)
@@ -530,7 +571,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 			u8 level = GetMonData(pkmn, MON_DATA_LEVEL);
 			u32 exp = GetMonData(pkmn, MON_DATA_EXP);
 			
-			if (itemEffect[1] == ITEM_RARE_CANDY)
+			if (item == ITEM_RARE_CANDY)
 			{
 				data = exp - gExperienceTables[gBaseStats[species].growthRate][level];
 				data += gExperienceTables[gBaseStats[species].growthRate][level + 1];
@@ -571,7 +612,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 		{
 			u8 type1 = GetMonData(pkmn, MON_DATA_TYPE_1), type2 = GetMonData(pkmn, MON_DATA_TYPE_2);
 			
-			switch (itemEffect[1])
+			switch (item)
 			{
 				case ITEM_ROLL_TYPES:
 					if (gSaveBlock2.gameMode != GAME_MODE_SUPER_RANDOM) //only works on super random
@@ -590,7 +631,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 		{
 			u16 ability = GetMonData(pkmn, MON_DATA_ABILITY);
 			
-			switch (itemEffect[1])
+			switch (item)
 			{
 				case ITEM_ROLL_ABILITY:
 					if (gSaveBlock2.gameMode != GAME_MODE_SUPER_RANDOM || species == SPECIES_SHEDINJA) //only works on super random & if mon is not Shedinja
@@ -627,7 +668,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 		{
 			u8 nature = GetMonData(pkmn, MON_DATA_NATURE);
 		
-			switch (itemEffect[1])
+			switch (item)
 			{
 				case ITEM_ROLL_NATURE:
 					if (gSaveBlock2.gameMode != GAME_MODE_SUPER_RANDOM) //only works on super random

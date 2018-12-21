@@ -261,44 +261,85 @@ static const u8 gItemDescription_MaxElixir[] = _(
     "PP of a POKéMON's\n"
     "moves.");
 
-static const u8 gItemDescription_BlackFlute[] = _(
-    "A glass flute that\n"
-    "keeps away wild\n"
-    "POKéMON.");
-
-static const u8 gItemDescription_WhiteFlute[] = _(
-    "A glass flute that\n"
-    "lures wild POKéMON.");
-
-static const u8 gItemDescription_ShoalSalt[] = _(
-    "Salt obtained from\n"
-    "deep inside the\n"
-    "SHOAL CAVE.");
-
-static const u8 gItemDescription_ShoalShell[] = _(
-    "A seashell found\n"
-    "deep inside the\n"
-    "SHOAL CAVE.");
-
-static const u8 gItemDescription_RedShard[] = _(
-    "A shard from an\n"
-    "ancient item.\n"
-    "Can be sold cheaply.");
-
-static const u8 gItemDescription_BlueShard[] = _(
-    "A shard from an\n"
-    "ancient item.\n"
-    "Can be sold cheaply.");
-
-static const u8 gItemDescription_YellowShard[] = _(
-    "A shard from an\n"
-    "ancient item.\n"
-    "Can be sold cheaply.");
-
-static const u8 gItemDescription_GreenShard[] = _(
-    "A shard from an\n"
-    "ancient item.\n"
-    "Can be sold cheaply.");
+static const u8 gItemDescription_FreshWater[] = _(
+    "Fresh spring water.\n"
+    "Restores HP and\n"
+    "raises happiness.");
+	
+static const u8 gItemDescription_Lemonade[] = _(
+    "Sweet lemonade.\n"
+    "Restores HP and\n"
+    "raises happiness.");
+	
+static const u8 gItemDescription_ShalourSable[] = _(
+    "A tasty cookie.\n"
+    "Restores HP and\n"
+    "raises happiness.");
+	
+static const u8 gItemDescription_LavaCookie[] = _(
+    "A HOENN specialty.\n"
+    "Restores HP and\n"
+    "raises happiness.");
+	
+static const u8 gItemDescription_OranTea[] = _(
+    "Steaming hot tea.\n"
+    "Restores HP and\n"
+    "raises happiness.");
+	
+static const u8 gItemDescription_SitrusJuice[] = _(
+    "Very sour juice.\n"
+    "Restores HP and\n"
+    "raises happiness.");
+	
+static const u8 gItemDescription_BigMalasada[] = _(
+    "A soft donut.\n"
+    "Restores HP and\n"
+    "raises happiness.");
+	
+static const u8 gItemDescription_Casteliacone[] = _(
+    "Rich ice cream.\n"
+    "Restores HP and\n"
+    "raises happiness.");
+	
+static const u8 gItemDescription_MoomooMilk[] = _(
+    "Milk from MILTANK.\n"
+    "Restores HP and\n"
+    "raises happiness.");
+	
+static const u8 gItemDescription_RazzShake[] = _(
+    "A berry milkshake.\n"
+    "Restores HP and\n"
+    "raises happiness.");
+	
+static const u8 gItemDescription_BelueKebab[] = _(
+    "Skewered BELUE.\n"
+    "Restores HP and\n"
+    "raises happiness.");
+	
+static const u8 gItemDescription_LeafySalad[] = _(
+    "A healthy salad.\n"
+    "Restores HP and\n"
+    "raises happiness.");
+	
+static const u8 gItemDescription_WatmelSlush[] = _(
+    "A frozen drink.\n"
+    "Restores HP and\n"
+    "raises happiness.");
+	
+static const u8 gItemDescription_RareBerryade[] = _(
+    "Fine berry juice.\n"
+    "Restores HP and\n"
+    "raises happiness.");
+	
+static const u8 gItemDescription_RageCandyBar[] = _(
+    "Candy from JOHTO.\n"
+    "Restores HP and\n"
+    "raises happiness.");
+	
+static const u8 gItemDescription_CreamPoffin[] = _(
+    "A fluffy pancake.\n"
+    "Restores HP and\n"
+    "raises happiness.");
 
 static const u8 gItemDescription_VitalTonic[] = _(
     "Raises the\n"
@@ -483,6 +524,45 @@ static const u8 gItemDescription_MaxRepel[] = _(
     "Repels weak wild\n"
     "POKéMON for 250\n"
     "steps.");
+	
+static const u8 gItemDescription_BlackFlute[] = _(
+    "A glass flute that\n"
+    "keeps away wild\n"
+    "POKéMON.");
+
+static const u8 gItemDescription_WhiteFlute[] = _(
+    "A glass flute that\n"
+    "lures wild POKéMON.");
+
+static const u8 gItemDescription_ShoalSalt[] = _(
+    "Salt obtained from\n"
+    "deep inside the\n"
+    "SHOAL CAVE.");
+
+static const u8 gItemDescription_ShoalShell[] = _(
+    "A seashell found\n"
+    "deep inside the\n"
+    "SHOAL CAVE.");
+
+static const u8 gItemDescription_RedShard[] = _(
+    "A shard from an\n"
+    "ancient item.\n"
+    "Can be sold cheaply.");
+
+static const u8 gItemDescription_BlueShard[] = _(
+    "A shard from an\n"
+    "ancient item.\n"
+    "Can be sold cheaply.");
+
+static const u8 gItemDescription_YellowShard[] = _(
+    "A shard from an\n"
+    "ancient item.\n"
+    "Can be sold cheaply.");
+
+static const u8 gItemDescription_GreenShard[] = _(
+    "A shard from an\n"
+    "ancient item.\n"
+    "Can be sold cheaply.");
 
 static const u8 gItemDescription_EscapeRope[] = _(
     "Use to escape\n"

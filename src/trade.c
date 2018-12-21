@@ -871,7 +871,7 @@ const struct InGameTrade gIngameTrades[] = {
         FALSE, 2259,
         5, 5, 30, 5, 5,
         0x498A2E17,
-        ITEM_GLITTER_MAIL, 0,
+        ITEM_POTION, 0,
         _("DARRELL"), FEMALE, 10,
         SPECIES_PIKACHU
     }, {
@@ -881,7 +881,7 @@ const struct InGameTrade gIngameTrades[] = {
         TRUE, 50183,
         5, 30, 5, 5, 5,
         0x4C970B7F,
-        ITEM_TROPIC_MAIL, 1,
+        ITEM_POTION, 1,
         _("LANE"), FEMALE, 10,
         SPECIES_BELLOSSOM
     }
@@ -901,7 +901,7 @@ const struct InGameTrade gIngameTrades[] = {
         FALSE, 2259,
         5, 5, 30, 5, 5,
         0x498A2E17,
-        ITEM_GLITTER_MAIL, 0,
+        ITEM_POTION, 0,
         _("MADINA"), FEMALE, 10,
         SPECIES_PIKACHU
     }, {
@@ -911,7 +911,7 @@ const struct InGameTrade gIngameTrades[] = {
         TRUE, 50183,
         5, 30, 5, 5, 5,
         0x4C970B7F,
-        ITEM_TROPIC_MAIL, 1,
+        ITEM_POTION, 1,
         _("LIANA"), FEMALE, 10,
         SPECIES_BELLOSSOM
     }

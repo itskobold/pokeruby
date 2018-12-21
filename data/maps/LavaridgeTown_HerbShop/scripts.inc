@@ -13,10 +13,7 @@ LavaridgeTown_HerbShop_EventScript_153629:: @ 8153629
 
 	.align 2
 LavaridgeTown_HerbShop_Items:: @ 8153640
-	.2byte ITEM_ENERGY_POWDER
-	.2byte ITEM_ENERGY_ROOT
-	.2byte ITEM_HEAL_POWDER
-	.2byte ITEM_REVIVAL_HERB
+	.2byte ITEM_POTION
 	.2byte ITEM_NONE
 	release
 	end

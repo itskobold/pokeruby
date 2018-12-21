@@ -24,7 +24,6 @@ PetalburgCity_Mart_Items1:: @ 81552D0
 	.2byte ITEM_X_SPEED
 	.2byte ITEM_X_ATTACK
 	.2byte ITEM_X_DEFEND
-	.2byte ITEM_ORANGE_MAIL
 	.2byte ITEM_NONE
 	release
 	end
@@ -49,7 +48,6 @@ PetalburgCity_Mart_Items2:: @ 81552FC
 	.2byte ITEM_X_SPEED
 	.2byte ITEM_X_ATTACK
 	.2byte ITEM_X_DEFEND
-	.2byte ITEM_ORANGE_MAIL
 	.2byte ITEM_NONE
 	release
 	end

@@ -24,10 +24,10 @@ MtChimney_EventScript_15CF95:: @ 815CF95
 	compare RESULT, 0
 	goto_if_eq MtChimney_EventScript_15D018
 	msgbox MtChimney_Text_1957A9, 4
-	checkitemspace ITEM_LAVA_COOKIE, 1
+	checkitemspace ITEM_POTION, 1
 	compare RESULT, 1
 	call_if_eq MtChimney_EventScript_15D000
-	giveitem_std ITEM_LAVA_COOKIE
+	giveitem_std ITEM_POTION
 	compare RESULT, 0
 	goto_if_eq MtChimney_EventScript_15CFF3
 	hidemoneybox 0, 0
