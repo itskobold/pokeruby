@@ -43,12 +43,10 @@ enum {
     MENU_ACTION_POKEDEX,
     MENU_ACTION_POKEMON,
     MENU_ACTION_BAG,
-    MENU_ACTION_MAP,
+    MENU_ACTION_POKENAV,
     MENU_ACTION_PLAYER,
 	MENU_ACTION_WAIT,
     MENU_ACTION_SAVE,
-	MENU_ACTION_TRADE,
-	MENU_ACTION_BATTLE,
     MENU_ACTION_OPTIONS,
     MENU_ACTION_EXIT,
 	MENU_ACTION_PLAYER_LINK,
@@ -164,12 +162,10 @@ static const struct MenuAction sStartMenuItems[] =
     { SystemText_Pokedex, StartMenu_PokedexCallback },
     { SystemText_Pokemon, StartMenu_PokemonCallback },
     { SystemText_BAG, StartMenu_BagCallback },
-    { SystemText_Map, StartMenu_PokenavCallback },
+    { SystemText_Pokenav, StartMenu_PokenavCallback },
     { SystemText_Player, StartMenu_PlayerCallback },
 	{ SystemText_Wait, StartMenu_WaitCallback },
     { SystemText_Save, StartMenu_SaveCallback },
-	{ SystemText_Trade, StartMenu_PlayerLinkCallback }, //replace this with new trade function when it's done
-	{ SystemText_Battle, StartMenu_PlayerLinkCallback }, //replace this with link battle function when it's done
     { SystemText_Option, StartMenu_OptionCallback },
     { SystemText_Exit, StartMenu_ExitCallback },
     { SystemText_Player, StartMenu_PlayerLinkCallback },
@@ -220,7 +216,6 @@ static void sub_8071B54(void);
 static void Task_8071B64(u8 taskId);
 static void CopyHourToString1(void);
 static void CopyClockStrings(void);
-static void ShowTimeAndDate(void);
 static void ShowWeatherOrSafariBalls(void);
 static void FreezeObjectsForStartAndWait(void);
 
@@ -341,7 +336,7 @@ static u8 GetFirstStartMenuAction(void) //probably a much less ugly way to do th
 	else if (FlagGet(FLAG_SYS_POKEMON_GET) == TRUE)
 		return MENU_ACTION_POKEMON;
 	else if (FlagGet(FLAG_SYS_POKENAV_GET) == TRUE)
-		return MENU_ACTION_MAP;
+		return MENU_ACTION_POKENAV;
 	else
 		return MENU_ACTION_BAG;
 }
@@ -377,10 +372,10 @@ static void BuildStartMenuActionList(void)
 					j++;
 				}
 				break;
-			case MENU_ACTION_MAP:
+			case MENU_ACTION_POKENAV:
 				if (FlagGet(FLAG_SYS_POKENAV_GET) == TRUE)
 				{
-					sStartMenuActionList[j] = MENU_ACTION_MAP;
+					sStartMenuActionList[j] = MENU_ACTION_POKENAV;
 					j++;
 				}
 				break;
@@ -401,20 +396,6 @@ static void BuildStartMenuActionList(void)
 				if (gSaveBlock2.nuzlockeMode < NUZLOCKE_MODE_HARDLOCKE) //remove save option if on hardlocke or deadlocke
 				{
 					sStartMenuActionList[j] = MENU_ACTION_SAVE;
-					j++;
-				}
-				break;
-			case MENU_ACTION_TRADE:
-				if (FlagGet(FLAG_SYS_POKEMON_GET) == TRUE) //give it it's own flag check eventually
-				{
-					sStartMenuActionList[j] = MENU_ACTION_TRADE;
-					j++;
-				}
-				break;
-			case MENU_ACTION_BATTLE:
-				if (FlagGet(FLAG_SYS_POKEMON_GET) == TRUE) //give it it's own flag check eventually
-				{
-					sStartMenuActionList[j] = MENU_ACTION_BATTLE;
 					j++;
 				}
 				break;
@@ -441,16 +422,20 @@ static void BuildStartMenuActions(void)
 	
 	BuildStartMenuActionList();
 	
-	for (i = 0; i < 5; i++)
+	for (i = 0;; i++)
 	{
 		if (sStartMenuActionList[sStartMenuScroll + i] != MENU_ACTION_DUMMY)
 		{
 			if (i == 0)
 				firstOption = sStartMenuActionList[sStartMenuScroll];
-			else if (i == 4)
-				lastOption = sStartMenuActionList[sStartMenuScroll + i];
 			
 			AddStartMenuAction(sStartMenuActionList[sStartMenuScroll + i]);
+			
+			if (i >= 5 || sStartMenuActionList[sStartMenuScroll + i] == MENU_ACTION_EXIT)
+			{
+				lastOption = sStartMenuActionList[sStartMenuScroll + i];
+				break;
+			}
 		}
 	}
 	
@@ -478,22 +463,11 @@ static void CopyClockStrings(void)
 //Also shows weather forecast or safari ball count (if in safari zone)
 static void DisplayDateAndWeatherWindow(void)
 {
-    Menu_DrawStdWindowFrame(2, 14, 28, 19);
+    Menu_DrawStdWindowFrame(2, 16, 28, 19);
 	
 	CopyClockStrings();
-	ShowTimeAndDate();
-	ShowWeatherOrSafariBalls();
-}
-
-static void ShowTimeAndDate(void)
-{
-	Menu_PrintText(TimeText_PrintTimeString, 3, 15);
-}
-
-void UpdateTimeAndDate(void) //called every minute from play_time.c
-{
-	CopyClockStrings();
-	ShowTimeAndDate();
+	Menu_PrintText(TimeText_PrintTimeString, 3, 17);
+	//ShowWeatherOrSafariBalls();
 }
 
 static void ShowWeatherOrSafariBalls(void)
@@ -521,9 +495,9 @@ static bool32 PrintStartMenuItemsMultistep(s16 *index)
 	int i;
     int _index = *index;
 	
-	Menu_BlankWindowRect(23, 1, 28, 11); //clears the menu first
+	Menu_BlankWindowRect(23, 1, 28, sNumStartMenuActions * 2 + 1); //clears the menu first
 
-	for (i = 0; i < 5; i++)
+	for (i = 0; i < 6; i++)
 	{
 		if (sStartMenuItems[gSaveBlock2.registeredMenuItem].func == sStartMenuItems[sCurrentStartMenuActions[_index]].func)
 		{
@@ -582,7 +556,7 @@ static bool32 InitStartMenuMultistep(s16 *step, s16 *index)
         (*step)++;
         break;
     case 3:
-		Menu_DrawStdWindowFrame(22, 0, 29, 13);
+		Menu_DrawStdWindowFrame(22, 0, 29, sNumStartMenuActions * 2 + 3);
         *index = 0;
         (*step)++;
         break;
@@ -594,7 +568,7 @@ static bool32 InitStartMenuMultistep(s16 *step, s16 *index)
         (*step)++;
         break;
     case 5:
-        sStartMenuCursorPos = InitMenu(0, 0x17, 2, 5, sStartMenuCursorPos, 6);
+        sStartMenuCursorPos = InitMenu(0, 0x17, 2, sNumStartMenuActions, sStartMenuCursorPos, 6);
 		gMain.stopClockUpdating = TRUE;
         return TRUE;
     }
@@ -653,7 +627,7 @@ static void StartMenu_CreateScrollArrows(void)
 	ClearVerticalScrollIndicatorPalettes();
 	LoadScrollIndicatorPalette();
 	CreateVerticalScrollIndicators(TOP_ARROW, 208, 12);
-	CreateVerticalScrollIndicators(BOTTOM_ARROW, 208, 100);
+	CreateVerticalScrollIndicators(BOTTOM_ARROW, 208, 116);
 	SetVerticalScrollIndicatorPriority(TOP_ARROW, 0);
 	SetVerticalScrollIndicatorPriority(BOTTOM_ARROW, 0);
 }
@@ -685,7 +659,7 @@ static u8 StartMenu_InputProcessCallback(void)
     }
     if (gMain.newKeys & DPAD_DOWN)
     {
-		if (sStartMenuCursorPos == 4 && sStartMenuItems[sCurrentStartMenuActions[sStartMenuCursorPos]].func != StartMenu_ExitCallback)
+		if (sStartMenuCursorPos == 5 && sStartMenuItems[sCurrentStartMenuActions[sStartMenuCursorPos]].func != StartMenu_ExitCallback)
 		{
 			sStartMenuScroll++;
 			UpdateStartMenuOptions();

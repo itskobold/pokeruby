@@ -358,6 +358,7 @@ static void RedrawDescriptionAndHighlight(u8 taskId)
 static void DisplayConfirmMessage(void)
 {
 	Menu_BlankWindowRect(2, 15, 27, 18);
+	Menu_DrawStdWindowFrame(1, 14, 21, 19);
 	Menu_PrintText(gSystemText_AreYouSure,  2,  15);
 	
 	DisplayYesNoMenu(22, 14, 1);

@@ -61,6 +61,7 @@ extern u8 gUnknown_020297ED;
 extern u16 gTotalCameraPixelOffsetY;
 extern u16 gTotalCameraPixelOffsetX;
 
+extern bool8 gDifferentSaveFile;
 extern u8 S_WhiteOut[];
 extern u8 gUnknown_0819FC9F[];
 extern u8 SingleBattleColosseum_EventScript_1A436F[];
@@ -1325,7 +1326,8 @@ void CB2_WhiteOut(void)
 		switch (gSaveBlock2.nuzlockeMode)
 		{
 			case NUZLOCKE_MODE_DEADLOCKE:
-				Save_EraseAllData();
+				if (!gDifferentSaveFile)
+					Save_EraseAllData();
 			default:
 			{
 				DoSoftReset();

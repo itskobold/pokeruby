@@ -209,7 +209,7 @@ gSystemText_CancelDescription::
 	.string "Save settings and\nreturn to the game.$"
 	
 gSystemText_AreYouSure::
-	.string "Are you sure?\nThis action cannot be undone."
+	.string "Are you sure?\nThis action can't be undone."
 	
 SystemText_BlueText::
 	.string "{COLOR BLUE}$"
@@ -221,8 +221,8 @@ SystemText_Pokemon::
 	.string "POKéMON$"
 SystemText_BAG::
 	.string "BAG$"
-SystemText_Map::
-	.string "MAP$"
+SystemText_Pokenav::
+	.string "POKéNAV$"
 SystemText_Player::
 	.string "{PLAYER}$"
 SystemText_Wait::
@@ -231,10 +231,6 @@ SystemText_Save::
 	.string "SAVE$"
 SystemText_Option::
 	.string "OPTIONS$"
-SystemText_Trade::
-	.string "TRADE$"
-SystemText_Battle::
-	.string "BATTLE$"
 SystemText_Exit::
 	.string "EXIT$"
 SystemText_Retire:: @ safari zone?
