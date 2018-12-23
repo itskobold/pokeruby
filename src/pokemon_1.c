@@ -1625,7 +1625,7 @@ void GenerateSuperRandomMovesetForBoxMon(struct BoxPokemon *boxMon, s32 level, b
 		move = GenerateSuperRandomMove(moveType1, moveType2);
 	} while (gBattleMoves[move].pss == MOVE_IS_STATUS &&
 			 move != MOVE_SELF_DESTRUCT &&
-			 move != MOVE_EXPLOSION
+			 move != MOVE_EXPLOSION && 
 			 move != MOVE_DREAM_EATER); //first move will always be attacking & effective
 	
 	for (i = 0; i < (GetSuperRandomMovesetSize(level, hatched)); i++) //make movelist
