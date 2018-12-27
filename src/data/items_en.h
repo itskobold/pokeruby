@@ -2976,7 +2976,7 @@ const struct Item gItems[] =
 		.medicineGroup = 0,
     },
     {
-        .name = _("ULTRA REPEL"),
+        .name = _("SUPER REPEL"),
         .itemId = ITEM_SUPER_REPEL,
         .price = 500,
         .holdEffect = HOLD_EFFECT_NONE,

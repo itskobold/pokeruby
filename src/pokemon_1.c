@@ -1406,8 +1406,6 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
         personality = Random32();
 
     SetBoxMonData(boxMon, MON_DATA_PERSONALITY, &personality);
-	
-	nature = GetNatureFromPersonality(personality);
 
     //Determine original trainer ID
     if (otIdType == 2) //Pokemon cannot be shiny

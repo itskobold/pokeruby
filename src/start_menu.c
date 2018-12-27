@@ -649,6 +649,7 @@ static void StartMenu_DestroyScrollArrows(void)
 	DestroyVerticalScrollIndicator(BOTTOM_ARROW);
 	DestroyVerticalScrollIndicator(LEFT_ARROW);
 	DestroyVerticalScrollIndicator(RIGHT_ARROW);
+	BuyMenuFreeMemory();
 }
 
 static u8 StartMenu_InputProcessCallback(void)
