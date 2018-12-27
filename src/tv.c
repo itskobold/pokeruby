@@ -42,6 +42,7 @@
 #include "ewram.h"
 #include "constants/moves.h"
 #include "constants/region_map_sections.h"
+#include "pokemon_menu.h"
 
 struct UnkTvStruct
 {
@@ -82,6 +83,7 @@ static EWRAM_DATA ALIGNED(4) u8 sTVShowState = 0; // why is this aligned to a 4-
 static u8 gUnknown_03000720;
 static u8 gUnknown_03000721;
 static s8 gUnknown_03000722;
+extern u8 gUnknown_020384F0; //selected mon for rename function
 
 const struct OutbreakPokemon gPokeOutbreakSpeciesList[5] =
 {
@@ -2073,8 +2075,8 @@ void RenamePokemon(void)
 void RenamePokemon_CB(void)
 {
 	SetMonData(&(gPlayerParty[gSpecialVar_0x8004]), MON_DATA_NICKNAME, gStringVar2);
-	//HOENNBUG this needs to close to the pokemon menu instead of the overworld
-    c2_exit_to_overworld_1_continue_scripts_restart_music();
+	gUnknown_020384F0 = gSpecialVar_0x8004;
+	sub_8089F14();
 }
 
 void ChangePokemonNickname_CB(void);

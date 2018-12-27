@@ -55,8 +55,9 @@ enum {
 //Wait dialog status
 enum
 {
-    WAIT_IN_PROGRESS,
-	WAIT_CANT,
+    WAIT_STATE_IN_PROGRESS,
+	WAIT_STATE_DONE,
+	WAIT_STATE_RETURN,
 };
 
 //Save dialog status
@@ -100,9 +101,12 @@ EWRAM_DATA static u8 sWaitMenuCursorPos = 0;
 EWRAM_DATA static u8 sStartMenuCursorPosBuffer = 0; //stores the last position the cursor was in
 EWRAM_DATA static u8 sWaitMenuCursorPosBuffer = 0; //stores the last position the cursor was in
 EWRAM_DATA static u8 sNumStartMenuActions = 0;
+EWRAM_DATA static u8 sDataWindow = 0;
 EWRAM_DATA static u8 sCurrentStartMenuActions[NUM_START_MENU_ACTIONS] = {0};
 EWRAM_DATA static u8 sStartMenuActionList[NUM_START_MENU_ACTIONS] = {0}; //different to sCurrentStartMenuActions - this holds the options available to the player before the start menu is built
 EWRAM_DATA static bool8 sHasMenuBeenOpenedBefore = FALSE;
+
+#define NUM_DATA_WINDOWS 3
 
 //Text strings
 extern u8 gSaveText_PlayerSavedTheGame[];
@@ -176,7 +180,9 @@ static void CloseStartMenu(void);
 static void BuildStartMenuActions(void);
 static void UpdateStartMenuOptions(void);
 static void AddStartMenuAction(u8 action);
-static void DisplayDateAndWeatherWindow(void);
+static void DisplayDataInWindow(void);
+static void UpdateDataWindowText(void);
+static void DisplaySafariBallsWindow(void);
 static bool32 PrintStartMenuItemsMultistep(s16 *a);
 static bool32 InitStartMenuMultistep(s16 *a, s16 *b);
 static void Task_StartMenu(u8 taskId);
@@ -216,7 +222,6 @@ static void sub_8071B54(void);
 static void Task_8071B64(u8 taskId);
 static void CopyHourToString1(void);
 static void CopyClockStrings(void);
-static void ShowWeatherOrSafariBalls(void);
 static void FreezeObjectsForStartAndWait(void);
 
 #if DEBUG
@@ -407,6 +412,14 @@ static void BuildStartMenuActionList(void)
 	}
 }
 
+//Show number of safari balls left
+static void DisplaySafariBallsWindow(void)
+{
+    AlignInt2InMenuWindow(gStringVar1, gNumSafariBalls, 12, 1);
+    Menu_DrawStdWindowFrame(0, 0, 10, 5);
+    Menu_PrintText(gOtherText_SafariStock, 1, 1);
+}
+
 static void BuildStartMenuActions(void)
 {
 	int i, firstOption, lastOption;
@@ -459,34 +472,30 @@ static void CopyClockStrings(void)
 	StringCopy(gStringVar3, gSeasonLookup[CalculateSubSeason()]);
 }
 
-//Show hour & date
-//Also shows weather forecast or safari ball count (if in safari zone)
-static void DisplayDateAndWeatherWindow(void)
+//Shows info pane at bottom of screen (maybe replace this later cuz the left/right arrows are kinda annoying)
+static void DisplayDataInWindow(void)
 {
-    Menu_DrawStdWindowFrame(2, 16, 28, 19);
+    Menu_DrawStdWindowFrame(1, 16, 28, 19);
+	UpdateDataWindowText();
+}
+
+static void UpdateDataWindowText(void)
+{
+	Menu_BlankWindowRect(2, 17, 27, 18);
 	
-	CopyClockStrings();
-	Menu_PrintText(TimeText_PrintTimeString, 3, 17);
-	//ShowWeatherOrSafariBalls();
-}
-
-static void ShowWeatherOrSafariBalls(void)
-{
-	if (GetSafariZoneFlag()) //print safari ball count if in safari zone
+	switch (sDataWindow)
 	{
-		AlignInt2InMenuWindow(gStringVar1, gNumSafariBalls, 12, 1);
-		Menu_PrintText(gOtherText_SafariStock, 3, 17);
+		case 0: //clock
+			CopyClockStrings();
+			Menu_PrintText(TimeText_PrintTimeString, 3, 17);
+			break;
+		case 1: //weather forecast
+			Menu_PrintText(gOtherText_WeatherForecastPlaceholder, 3, 17);
+			break;
+		case 2: //weather forecast
+			Menu_PrintText(gOtherText_TemperaturePlaceholder, 3, 17);
+			break;
 	}
-	else //display weather forecast if else - this will need to be implemented later
-	{
-		Menu_PrintText(gOtherText_WeatherForecastPlaceholder, 3, 17);
-	}
-}
-
-void UpdateWeatherOrSafariBalls(void) //called every minute from play_time.c
-{
-	CopyClockStrings();
-	ShowWeatherOrSafariBalls();
 }
 
 //Prints n menu items starting at *index
@@ -552,11 +561,13 @@ static bool32 InitStartMenuMultistep(s16 *step, s16 *index)
 		(*step)++;
         break;
     case 2:
-        DisplayDateAndWeatherWindow();
+        DisplayDataInWindow();
         (*step)++;
         break;
     case 3:
 		Menu_DrawStdWindowFrame(22, 0, 29, sNumStartMenuActions * 2 + 3);
+		if (GetSafariZoneFlag())
+            DisplaySafariBallsWindow();
         *index = 0;
         (*step)++;
         break;
@@ -569,7 +580,7 @@ static bool32 InitStartMenuMultistep(s16 *step, s16 *index)
         break;
     case 5:
         sStartMenuCursorPos = InitMenu(0, 0x17, 2, sNumStartMenuActions, sStartMenuCursorPos, 6);
-		gMain.stopClockUpdating = TRUE;
+//		gMain.stopClockUpdating = TRUE;
         return TRUE;
     }
     return FALSE;
@@ -628,14 +639,16 @@ static void StartMenu_CreateScrollArrows(void)
 	LoadScrollIndicatorPalette();
 	CreateVerticalScrollIndicators(TOP_ARROW, 208, 12);
 	CreateVerticalScrollIndicators(BOTTOM_ARROW, 208, 116);
-	SetVerticalScrollIndicatorPriority(TOP_ARROW, 0);
-	SetVerticalScrollIndicatorPriority(BOTTOM_ARROW, 0);
+	CreateVerticalScrollIndicators(LEFT_ARROW, 16, 144);
+	CreateVerticalScrollIndicators(RIGHT_ARROW, 224, 144);
 }
 
 static void StartMenu_DestroyScrollArrows(void)
 {
 	DestroyVerticalScrollIndicator(TOP_ARROW);
 	DestroyVerticalScrollIndicator(BOTTOM_ARROW);
+	DestroyVerticalScrollIndicator(LEFT_ARROW);
+	DestroyVerticalScrollIndicator(RIGHT_ARROW);
 }
 
 static u8 StartMenu_InputProcessCallback(void)
@@ -674,6 +687,24 @@ static u8 StartMenu_InputProcessCallback(void)
 				PlaySE(SE_SELECT);
 		}
     }
+	if (gMain.newKeys & DPAD_LEFT)
+    {
+		if (sDataWindow - 1 < 0)
+			sDataWindow = NUM_DATA_WINDOWS - 1;
+		else
+			sDataWindow--;
+		UpdateDataWindowText();
+		PlaySE(SE_SELECT);
+	}
+	if (gMain.newKeys & DPAD_RIGHT)
+    {
+		if (sDataWindow + 1 >= NUM_DATA_WINDOWS)
+			sDataWindow = 0;
+		else
+			sDataWindow++;
+		UpdateDataWindowText();
+		PlaySE(SE_SELECT);
+	}
     if (gMain.newKeys & A_BUTTON)
     {
         PlaySE(SE_SELECT);
@@ -906,12 +937,6 @@ static u8 RunSaveDialogCallback(void)
 }
 
 void ScrSpecial_DoSaveDialog(void)
-{
-    sub_807160C();
-    CreateTask(Task_SaveDialog, 0x50);
-}
-
-void ScrSpecial_DoSaveDialogNuzlocke(void)
 {
     sub_807160C();
     CreateTask(Task_SaveDialog, 0x50);
@@ -1263,21 +1288,25 @@ static u8 WaitCallback2(void)
 {
     switch (RunWaitDialogCallback())
     {
-    case WAIT_IN_PROGRESS:
-        break;
-    case WAIT_CANT:
+    case WAIT_STATE_IN_PROGRESS:
+        return FALSE;
+	case WAIT_STATE_DONE:
+		gMain.stopClockUpdating = FALSE;
+		UnfreezeScreenPostSaveOrWait();
+		EnableBothScriptContexts();
+		break;
+    case WAIT_STATE_RETURN:
         //Go back to start menu
         Menu_EraseScreen();
 		InitStartMenu();
 		gMenuCallback = StartMenu_InputProcessCallback;
     }
-    return FALSE;
 }
 
 static u8 RunWaitDialogCallback(void)
 {
     if (!Menu_UpdateWindowText())
-        return 0;
+        return WAIT_STATE_IN_PROGRESS;
     return dialogCallback();
 }
 
@@ -1309,24 +1338,29 @@ static u8 WaitMenu_InputProcessCallback(void)
     {
         PlaySE(SE_SELECT);
 		if (gWaitMenuText[sWaitMenuCursorPos] == WaitText_Cancel)
+		{
 			WaitMenu_Close();
+			return WAIT_STATE_RETURN;
+		}
 		else if (gWaitTimeLookup[sWaitMenuCursorPos] > gSaveBlock2.waitTime)
 		{
 			Menu_DestroyCursor();
 			Menu_EraseScreen();
 			DisplayWaitMessageWithCallback(gWaitText_NotEnoughTime, WaitDialogCB_DisplayConfirmYesNoMenu);
-			return WAIT_IN_PROGRESS;
+			return WAIT_STATE_IN_PROGRESS;
 		}
 		else
+		{
 			WaitMenu_DoWaitCallback();
-        return 0;
+			return WAIT_STATE_DONE;
+		}
     }
     if (gMain.newKeys & B_BUTTON)
     {
 		WaitMenu_Close();
-        return 0;
+        return WAIT_STATE_RETURN;
     }
-    return 0;
+    return WAIT_STATE_IN_PROGRESS;
 }
 
 static u8 WaitMenu_DoWaitCallback(void)
@@ -1344,16 +1378,21 @@ static u8 WaitMenu_DoWaitCallback(void)
 			break;
 	}
 	
-	gMenuCallback = StartMenu_ExitCallback;
-    return;
+	if (gMain.isOptionBeingUsedThroughRegister)
+		WaitMenu_Close();
+	else
+		gMenuCallback = StartMenu_ExitCallback;
 }
 
 static void WaitMenu_Close(void)
 {
 	Menu_EraseScreen();
 	PlaySE(SE_SELECT);
-	InitStartMenu();
-	gMenuCallback = StartMenu_InputProcessCallback;
+	if (gMain.isOptionBeingUsedThroughRegister)
+	{
+		gMain.isOptionBeingUsedThroughRegister = FALSE;
+		Menu_DestroyCursor();
+	}
 }
 
 static u8 WaitDialogCB_DoWaitMenu(void)
@@ -1383,7 +1422,7 @@ static u8 WaitDialogCB_DoWaitMenu(void)
 	sWaitMenuCursorPos = InitMenu(0, 0x17, 1, 5, 0, 6);
 	
 	dialogCallback = WaitMenu_InputProcessCallback;
-	return WAIT_IN_PROGRESS;
+	return WAIT_STATE_IN_PROGRESS;
 }
 
 static u8 WaitDialogCB_TryToWait(void)
@@ -1401,38 +1440,42 @@ static u8 WaitDialogCB_TryToWait(void)
 	case WAIT_UNABLE:
 		DisplayWaitMessageWithCallback(gWaitText_YouCantWaitNow, WaitDialogCB_CantWait);
 	}
-	return WAIT_IN_PROGRESS;
+	return WAIT_STATE_IN_PROGRESS;
 }
 
-static u8 WaitDialogCB_CantWait(void) //returns to start menu
+static u8 WaitDialogCB_CantWait(void) //returns to start menu/overworld
 {
 	if (gMain.newKeys & (A_BUTTON | B_BUTTON))
-		return WAIT_CANT;
+		return WAIT_STATE_RETURN;
 }
 
 static u8 WaitDialogCB_DisplayConfirmYesNoMenu(void)
 {
     DisplayYesNoMenu(20, 8, 1);
     dialogCallback = WaitDialogCB_ProcessConfirmYesNoMenu;
-    return WAIT_IN_PROGRESS;
+    return WAIT_STATE_IN_PROGRESS;
 }
 
 static u8 WaitDialogCB_ProcessConfirmYesNoMenu(void)
 {
+	bool8 isRegister = gMain.isOptionBeingUsedThroughRegister;
     switch (Menu_ProcessInputNoWrap_())
     {
     case 0:     //YES
 		WaitMenu_DoWaitCallback();
-        break;
+		if (isRegister)
+			return WAIT_STATE_RETURN;
+		else
+			return WAIT_STATE_IN_PROGRESS;
     case -1:    //B button
     case 1:     //NO
-        return WAIT_CANT;
+        return WAIT_STATE_RETURN;
     }
-    return WAIT_IN_PROGRESS;
 }
 
 void ScrSpecial_DoWaitDialog(void)
 {
+	CopyClockStrings();
 	dialogCallback = WaitDialogCB_TryToWait;
     CreateTask(Task_WaitDialog, 0x50);
 }
@@ -1443,34 +1486,17 @@ static void Task_WaitDialog(u8 taskId)
 	
 	switch (RunWaitDialogCallback())
     {
-    case WAIT_IN_PROGRESS:
+    case WAIT_STATE_IN_PROGRESS:
         return;
-    case WAIT_CANT:
+	case WAIT_STATE_RETURN:
+    case WAIT_STATE_DONE:
         //Go back to overworld
-        Menu_EraseScreen();
+        gMain.stopClockUpdating = FALSE;
+		gMain.isOptionBeingUsedThroughRegister = FALSE;
+		UnfreezeScreenPostSaveOrWait();
+		DestroyTask(taskId);
+		EnableBothScriptContexts();
     }
-	
-/*    u8 status = RunSaveDialogCallback();
-	
-	FreezeObjectsForStartAndWait();
-	
-	switch (RunWaitDialogCallback())
-    {
-    case WAIT_IN_PROGRESS:
-        break;
-    case WAIT_CANT:
-        //Go back to start menu
-        Menu_EraseScreen();
-		InitStartMenu();
-		gMenuCallback = StartMenu_InputProcessCallback;
-    }
-	return FALSE;*/
-	
-	gMain.stopClockUpdating = FALSE;
-	gMain.isOptionBeingUsedThroughRegister = FALSE;
-	UnfreezeScreenPostSaveOrWait();
-    DestroyTask(taskId);
-    EnableBothScriptContexts();
 }
 
 //=================================================================================================
@@ -1520,8 +1546,7 @@ void RunRegisteredStartOption(void)
 	}
 
 	if (sStartMenuItems[gSaveBlock2.registeredMenuItem].func != StartMenu_SaveCallback &&
-		sStartMenuItems[gSaveBlock2.registeredMenuItem].func != StartMenu_WaitCallback &&
-        sStartMenuItems[gSaveBlock2.registeredMenuItem].func != StartMenu_ExitCallback)
+		sStartMenuItems[gSaveBlock2.registeredMenuItem].func != StartMenu_WaitCallback)
 		FadeScreen(1, 0);
 }
 

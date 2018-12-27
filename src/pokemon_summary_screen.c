@@ -3254,12 +3254,7 @@ static void PrintNumRibbons(struct Pokemon *mon)
 
 static void PrintHeldItemName(u16 itemId, u8 left, u8 top)
 {
-    /*if (itemId == ITEM_ENIGMA_BERRY
-     && sub_80F9344() == TRUE
-     && IsLinkDoubleBattle() == TRUE
-     && (pssData.monIndex == 1 || pssData.monIndex == 4 || pssData.monIndex == 5))
-        StringCopy(gStringVar1, ItemId_GetName(itemId));
-    else */if (itemId == 0)
+    if (itemId == 0)
         StringCopy(gStringVar1, gOtherText_None);
     else
         CopyItemName(itemId, gStringVar1);

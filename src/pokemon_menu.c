@@ -321,7 +321,7 @@ static void sub_8089EBC(void)
     } while (sub_80F9344() != TRUE);
 }
 
-static void sub_8089F14(void)
+void sub_8089F14(void)
 {
     gPaletteFade.bufferTransferDisabled = 1;
     SetPartyMenuSettings(PARTY_MENU_TYPE_STANDARD, 0xFF, sub_8089D94, 5);
@@ -383,7 +383,7 @@ static void sub_808A060(u8 taskID)
     }
 }
 
-static void sub_808A100(u8 taskID)
+void sub_808A100(u8 taskID)
 {
     ShowPartyPopupMenu(0, &sUnknown_0839F578, (void*)(sPokemonMenuActions), 0);
     PrintPartyMenuPromptText(0xD, 2);

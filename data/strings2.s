@@ -311,50 +311,53 @@ TimeText_11PM::
 	.string "{COLOR RED}11PM$"
 	
 TimeText_Monday::
-	.string "{COLOR RED}MONDAY$"
+	.string "{COLOR RED}Monday$"
 TimeText_Tuesday::
-	.string "{COLOR RED}TUESDAY$"
+	.string "{COLOR RED}Tuesday$"
 TimeText_Wednesday::
-	.string "{COLOR RED}WEDNESDAY$"
+	.string "{COLOR RED}Wednesday$"
 TimeText_Thursday::
-	.string "{COLOR RED}THURSDAY$"
+	.string "{COLOR RED}Thursday$"
 TimeText_Friday::
-	.string "{COLOR RED}FRIDAY$"
+	.string "{COLOR RED}Friday$"
 TimeText_Saturday::
-	.string "{COLOR RED}SATURDAY$"
+	.string "{COLOR RED}Saturday$"
 TimeText_Sunday::
-	.string "{COLOR RED}SUNDAY$"
+	.string "{COLOR RED}Sunday$"
 	
 TimeText_EarlySpring::
-	.string "EARLY SPRING$"
+	.string "early {COLOR RED}Spring$"
 TimeText_Spring::
-	.string "SPRING$"
+	.string "{COLOR RED}Spring$"
 TimeText_LateSpring::
-	.string "LATE SPRING$"
+	.string "late {COLOR RED}Spring$"
 TimeText_EarlySummer::
-	.string "EARLY SUMMER$"
+	.string "early {COLOR RED}Summer$"
 TimeText_Summer::
-	.string "SUMMER$"
+	.string "{COLOR RED}Summer$"
 TimeText_LateSummer::
-	.string "LATE SUMMER$"
+	.string "late {COLOR RED}Summer$"
 TimeText_EarlyFall::
-	.string "EARLY FALL$"
+	.string "early {COLOR RED}Fall$"
 TimeText_Fall::
-	.string "FALL$"
+	.string "{COLOR RED}Fall$"
 TimeText_LateFall::
-	.string "LATE FALL$"
+	.string "late {COLOR RED}Fall$"
 TimeText_EarlyWinter::
-	.string "EARLY WINTER$"
+	.string "early {COLOR RED}Winter$"
 TimeText_Winter::
-	.string "WINTER$"
+	.string "{COLOR RED}Winter$"
 TimeText_LateWinter::
-	.string "LATE WINTER$"
+	.string "late {COLOR RED}Winter$"
 	
 gOtherText_SafariStock:: @ 842C4A9
-	.string "SAFARI BALLS remaining: {STR_VAR_1}$"
+	.string "SAFARI BALLS\nremaining: {COLOR RED}{STR_VAR_1}$"
 
 gOtherText_WeatherForecastPlaceholder::
 	.string "Weather forecast placeholder text$"
+	
+gOtherText_TemperaturePlaceholder::
+	.string "{COLOR RED}28{COLOR DARK_GREY}ºc - {COLOR RED}Rainforest{COLOR DARK_GREY} - {COLOR RED}high{COLOR DARK_GREY} elevation$"
 
 gSystemText_LinkStandby:: @ 842C4C0
 	.string "Link standby...\n... ... B Button: Cancel$"

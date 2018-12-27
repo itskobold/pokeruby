@@ -105,6 +105,7 @@ extern const u8 SystemText_Exit[];
 extern const u8 SystemText_Retire[];
 extern const u8 gOtherText_SafariStock[];
 extern const u8 gOtherText_WeatherForecastPlaceholder[];
+extern const u8 gOtherText_TemperaturePlaceholder[];
 
 //start menu clock text
 extern const u8 TimeText_PrintTimeString[];
