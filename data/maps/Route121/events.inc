@@ -39,7 +39,7 @@ Route121_MapBGEvents:: @ 838475C
 	bg_secret_base_event 42, 7, 0, SECRET_BASE_TREE2_2
 	bg_event 39, 6, 0, BG_EVENT_PLAYER_FACING_ANY, Route121_EventScript_151B1C
 	bg_hidden_item_event 23, 10, 3, ITEM_HP_UP, FLAG_HIDDEN_ITEM_27
-	bg_hidden_item_event 58, 3, 3, ITEM_NUGGET, FLAG_HIDDEN_ITEM_28
+	bg_hidden_item_event 58, 3, 3, ITEM_GOLD_NUGGET, FLAG_HIDDEN_ITEM_28
 	bg_hidden_item_event 72, 5, 3, ITEM_FULL_HEAL, FLAG_HIDDEN_ITEM_49
 
 Route121_MapEvents:: @ 83847C8

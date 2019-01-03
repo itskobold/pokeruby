@@ -1070,7 +1070,7 @@ static const u16 sPickupItems[] =
     ITEM_RARE_CANDY, 60,
     ITEM_FULL_RESTORE, 70,
     ITEM_REVIVE, 80,
-    ITEM_NUGGET, 90,
+    ITEM_GOLD_NUGGET, 90,
     ITEM_PROTEIN, 95,
     ITEM_PP_UP, 99,
     ITEM_KINGS_ROCK, 1
@@ -1437,9 +1437,7 @@ static void atk04_critcalc(void)
                 + (gBattleMoves[gCurrentMove].effect == EFFECT_SKY_ATTACK)
                 + (gBattleMoves[gCurrentMove].effect == EFFECT_BLAZE_KICK)
                 + (gBattleMoves[gCurrentMove].effect == EFFECT_POISON_TAIL)
-                + (holdEffect == HOLD_EFFECT_SCOPE_LENS)
-                + 2 * (holdEffect == HOLD_EFFECT_LUCKY_PUNCH && gBattleMons[gBankAttacker].species == SPECIES_CHANSEY)
-                + 2 * (holdEffect == HOLD_EFFECT_STICK && gBattleMons[gBankAttacker].species == SPECIES_FARFETCHD);
+                + (holdEffect == HOLD_EFFECT_SCOPE_LENS);
 
     if (critChance > 4)
         critChance = 4;

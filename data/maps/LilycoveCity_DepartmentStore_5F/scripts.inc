@@ -49,7 +49,7 @@ LilycoveCity_DepartmentStore_5F_Items2:: @ 815A0AC
 	.2byte ITEM_BIG_PEARL
 	.2byte ITEM_STARDUST
 	.2byte ITEM_STAR_PIECE
-	.2byte ITEM_NUGGET
+	.2byte ITEM_GOLD_NUGGET
 	.2byte ITEM_NONE
 	release
 	end

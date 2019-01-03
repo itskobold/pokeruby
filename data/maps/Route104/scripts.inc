@@ -49,7 +49,7 @@ Route104_EventScript_14EF09:: @ 814EF09
 	faceplayer
 	goto_if_set FLAG_RECEIVED_WHITE_HERB, Route104_EventScript_14EF38
 	msgbox Route104_Text_16DD91, 4
-	giveitem_std ITEM_WHITE_HERB
+	giveitem_std ITEM_POTION
 	compare RESULT, 0
 	goto_if_eq Route104_EventScript_1A029B
 	setflag FLAG_RECEIVED_WHITE_HERB

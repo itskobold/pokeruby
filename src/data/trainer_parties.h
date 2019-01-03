@@ -1724,7 +1724,7 @@ const struct TrainerMonItemDefaultMoves gTrainerParty_Cindy1[] = {
 	.level = 7,
 	.species = SPECIES_ZIGZAGOON,
 	.rarity = COSMETIC_RARITY_TYPICAL,
-        .heldItem = ITEM_NUGGET
+        .heldItem = ITEM_GOLD_NUGGET
 	}
 };
 
@@ -1770,7 +1770,7 @@ const struct TrainerMonItemDefaultMoves gTrainerParty_Brianna2[] = {
 	.level = 41,
 	.species = SPECIES_SEAKING,
 	.rarity = COSMETIC_RARITY_TYPICAL,
-        .heldItem = ITEM_NUGGET
+        .heldItem = ITEM_GOLD_NUGGET
 	}
 };
 
@@ -1780,7 +1780,7 @@ const struct TrainerMonItemDefaultMoves gTrainerParty_Anette[] = {
 	.level = 45,
 	.species = SPECIES_ROSELIA,
 	.rarity = COSMETIC_RARITY_TYPICAL,
-        .heldItem = ITEM_NUGGET
+        .heldItem = ITEM_GOLD_NUGGET
 	}
 };
 
@@ -1790,7 +1790,7 @@ const struct TrainerMonItemDefaultMoves gTrainerParty_Cindy3[] = {
 	.level = 27,
 	.species = SPECIES_LINOONE,
 	.rarity = COSMETIC_RARITY_TYPICAL,
-        .heldItem = ITEM_NUGGET
+        .heldItem = ITEM_GOLD_NUGGET
 	}
 };
 
@@ -1800,7 +1800,7 @@ const struct TrainerMonItemDefaultMoves gTrainerParty_Cindy4[] = {
 	.level = 30,
 	.species = SPECIES_LINOONE,
 	.rarity = COSMETIC_RARITY_TYPICAL,
-        .heldItem = ITEM_NUGGET
+        .heldItem = ITEM_GOLD_NUGGET
 	}
 };
 
@@ -1810,7 +1810,7 @@ const struct TrainerMonItemDefaultMoves gTrainerParty_Cindy5[] = {
 	.level = 33,
 	.species = SPECIES_LINOONE,
 	.rarity = COSMETIC_RARITY_TYPICAL,
-        .heldItem = ITEM_NUGGET
+        .heldItem = ITEM_GOLD_NUGGET
 	}
 };
 
@@ -1820,7 +1820,7 @@ const struct TrainerMonItemCustomMoves gTrainerParty_Cindy6[] = {
 	.level = 36,
 	.species = SPECIES_LINOONE,
 	.rarity = COSMETIC_RARITY_TYPICAL,
-        .heldItem = ITEM_NUGGET,
+        .heldItem = ITEM_GOLD_NUGGET,
         .moves = MOVE_FURY_SWIPES, MOVE_MUD_SPORT, MOVE_ODOR_SLEUTH, MOVE_SAND_ATTACK
 	}
 };
@@ -1998,7 +1998,7 @@ const struct TrainerMonItemDefaultMoves gTrainerParty_Winston1[] = {
 	.level = 7,
 	.species = SPECIES_ZIGZAGOON,
 	.rarity = COSMETIC_RARITY_TYPICAL,
-        .heldItem = ITEM_NUGGET
+        .heldItem = ITEM_GOLD_NUGGET
 	}
 };
 
@@ -2017,7 +2017,7 @@ const struct TrainerMonItemDefaultMoves gTrainerParty_Garret[] = {
 	.level = 45,
 	.species = SPECIES_AZUMARILL,
 	.rarity = COSMETIC_RARITY_TYPICAL,
-        .heldItem = ITEM_NUGGET
+        .heldItem = ITEM_GOLD_NUGGET
 	}
 };
 
@@ -2027,7 +2027,7 @@ const struct TrainerMonItemDefaultMoves gTrainerParty_Winston2[] = {
 	.level = 27,
 	.species = SPECIES_LINOONE,
 	.rarity = COSMETIC_RARITY_TYPICAL,
-        .heldItem = ITEM_NUGGET
+        .heldItem = ITEM_GOLD_NUGGET
 	}
 };
 
@@ -2037,7 +2037,7 @@ const struct TrainerMonItemDefaultMoves gTrainerParty_Winston3[] = {
 	.level = 30,
 	.species = SPECIES_LINOONE,
 	.rarity = COSMETIC_RARITY_TYPICAL,
-        .heldItem = ITEM_NUGGET
+        .heldItem = ITEM_GOLD_NUGGET
 	}
 };
 
@@ -2047,7 +2047,7 @@ const struct TrainerMonItemDefaultMoves gTrainerParty_Winston4[] = {
 	.level = 33,
 	.species = SPECIES_LINOONE,
 	.rarity = COSMETIC_RARITY_TYPICAL,
-        .heldItem = ITEM_NUGGET
+        .heldItem = ITEM_GOLD_NUGGET
 	}
 };
 
@@ -2057,7 +2057,7 @@ const struct TrainerMonItemCustomMoves gTrainerParty_Winston5[] = {
 	.level = 36,
 	.species = SPECIES_LINOONE,
 	.rarity = COSMETIC_RARITY_TYPICAL,
-        .heldItem = ITEM_NUGGET,
+        .heldItem = ITEM_GOLD_NUGGET,
         .moves = MOVE_FURY_SWIPES, MOVE_MUD_SPORT, MOVE_ODOR_SLEUTH, MOVE_SAND_ATTACK
 	}
 };

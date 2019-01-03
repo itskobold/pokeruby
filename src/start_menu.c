@@ -220,7 +220,6 @@ static void sub_80719F0(void);
 static bool32 sub_80719FC(u8 *ptr);
 static void sub_8071B54(void);
 static void Task_8071B64(u8 taskId);
-static void CopyHourToString1(void);
 static void CopyClockStrings(void);
 static void FreezeObjectsForStartAndWait(void);
 
@@ -458,16 +457,11 @@ static void BuildStartMenuActions(void)
 		SetVerticalScrollIndicators(BOTTOM_ARROW, INVISIBLE);
 }
 
-static void CopyHourToString1(void)
+static void CopyClockStrings(void)
 {
 	StringCopy(gStringVar1, gHourLookup[gSaveBlock2.timeHour]);
 	StringAppend(gStringVar1, TimeText_Spacer);
 	StringAppend(gStringVar1, gDNStatusLookup[gSaveBlock2.dayNightStatus]);
-}
-
-static void CopyClockStrings(void)
-{
-	CopyHourToString1();
 	StringCopy(gStringVar2, gDayLookup[gSaveBlock2.timeDay]);
 	StringCopy(gStringVar3, gSeasonLookup[CalculateSubSeason()]);
 }
@@ -1400,7 +1394,7 @@ static u8 WaitDialogCB_DoWaitMenu(void)
 {
 	int i;
 	
-	CopyHourToString1();
+	CopyClockStrings();
 	AlignInt2InMenuWindow(gStringVar2, gSaveBlock2.waitTime, 12, 0);
 	
 	if (gSaveBlock2.waitTime >= 10) //does there need to be a space added?

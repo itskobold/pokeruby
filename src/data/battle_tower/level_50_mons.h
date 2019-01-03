@@ -106,7 +106,7 @@ const struct BattleTowerPokemon gBattleTowerLevel50Mons[] =
 	},
 	{
 		.species = SPECIES_DELCATTY,
-		.heldItem = BATTLE_TOWER_ITEM_SILK_SCARF,
+		.heldItem = BATTLE_TOWER_ITEM_SILK_RIBBON,
 		.teamFlags = 0x42,
 		.moves = {
 			MOVE_ATTRACT,

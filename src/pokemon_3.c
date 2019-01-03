@@ -751,17 +751,7 @@ void AdjustFriendship(struct Pokemon *mon, u8 event)
     u16 heldItem = GetMonData(mon, MON_DATA_HELD_ITEM, 0);
     u8 holdEffect;
 
-    /*if (heldItem == ITEM_ENIGMA_BERRY)
-    {
-        if (gMain.inBattle)
-            holdEffect = gEnigmaBerries[0].holdEffect;
-        else
-            holdEffect = gSaveBlock1.enigmaBerry.holdEffect;
-    }
-    else
-    {*/
-        holdEffect = ItemId_GetHoldEffect(heldItem);
-    //}
+    holdEffect = ItemId_GetHoldEffect(heldItem);
 
     if (species && species != SPECIES_EGG)
     {
@@ -780,8 +770,6 @@ void AdjustFriendship(struct Pokemon *mon, u8 event)
             || gTrainers[gTrainerBattleOpponent].trainerClass == TRAINER_CLASS_CHAMPION))))
         {
             s8 delta = sFriendshipEventDeltas[event][friendshipLevel];
-            if (delta > 0 && holdEffect == HOLD_EFFECT_HAPPINESS_UP)
-                delta = (150 * delta) / 100;
 
             friendship += delta;
             if (delta > 0)
@@ -791,6 +779,9 @@ void AdjustFriendship(struct Pokemon *mon, u8 event)
                 if (GetMonData(mon, MON_DATA_MET_LOCATION, 0) == sav1_map_get_name())
                     friendship++;
             }
+			
+			if (delta > 0 && holdEffect == HOLD_EFFECT_HAPPINESS_UP)
+                delta = (150 * delta) / 100;
 
             if (friendship < 0)
                 friendship = 0;

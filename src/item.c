@@ -10,7 +10,7 @@
 
 struct Item
 {
-    u8 name[16];
+    u8 name[18];
     u16 itemId;
     u16 price;
     u8 holdEffect;

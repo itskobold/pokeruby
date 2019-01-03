@@ -171,29 +171,26 @@ static void ApplyDaycareExperience(struct Pokemon * mon)
     bool8 firstMove;
     u16 learnedMove;
 
-	if (gSaveBlock2.nuzlockeMode == NUZLOCKE_MODE_OFF)
-    {
-		for (i = 0; i < MAX_LEVEL; i++)
+	for (i = 0; i < MAX_LEVEL; i++)
+	{
+		// Add the mon's gained daycare experience level by level until it can't level up anymore.
+		if (TryIncrementMonLevel(mon))
 		{
-			// Add the mon's gained daycare experience level by level until it can't level up anymore.
-			if (TryIncrementMonLevel(mon))
+			// Teach the mon new moves it learned while in the daycare.
+			firstMove = TRUE;
+			while ((learnedMove = MonTryLearningNewMove(mon, firstMove)) != 0)
 			{
-				// Teach the mon new moves it learned while in the daycare.
-				firstMove = TRUE;
-				while ((learnedMove = MonTryLearningNewMove(mon, firstMove)) != 0)
+				firstMove = FALSE;
+				if (learnedMove == 0xffff)
 				{
-					firstMove = FALSE;
-					if (learnedMove == 0xffff)
-					{
-						// Mon already knows 4 moves.
-						DeleteFirstMoveAndGiveMoveToMon(mon, gMoveToLearn);
-					}
+					// Mon already knows 4 moves.
+					DeleteFirstMoveAndGiveMoveToMon(mon, gMoveToLearn);
 				}
 			}
-			else
-			{
-				break;
-			}
+		}
+		else
+		{
+			break;
 		}
 	}
 
@@ -211,7 +208,7 @@ static u16 TakeSelectedPokemonFromDaycare(struct DayCare * daycare, u8 slot)
     species = GetBoxMonData(&daycare->mons[slot], MON_DATA_SPECIES);
     ExpandBoxMon(&daycare->mons[slot], &pokemon);
 
-	if (GetMonData(&pokemon, MON_DATA_LEVEL) != MAX_LEVEL)
+	if (GetMonData(&pokemon, MON_DATA_LEVEL) != MAX_LEVEL && gSaveBlock2.nuzlockeMode == NUZLOCKE_MODE_OFF)
     {
 		experience = GetMonData(&pokemon, MON_DATA_EXP) + daycare->misc.countersEtc.steps[slot];
 		SetMonData(&pokemon, MON_DATA_EXP, &experience);
@@ -302,8 +299,7 @@ u8 GetNumLevelsGainedFromDaycare(void)
 {
 	if (gSaveBlock2.nuzlockeMode != NUZLOCKE_MODE_OFF)
 		return 0;
-	
-    if (GetBoxMonData(&gSaveBlock1.daycare.mons[gSpecialVar_0x8004], MON_DATA_SPECIES) != 0)
+	else if (GetBoxMonData(&gSaveBlock1.daycare.mons[gSpecialVar_0x8004], MON_DATA_SPECIES) != 0)
         return GetNumLevelsGainedForDaycareSlot(&gSaveBlock1.daycare, gSpecialVar_0x8004);
 }
 
@@ -355,7 +351,7 @@ u16 GetEggSpecies(u16 species)
         found = FALSE;
         for (j = 1; j < NUM_SPECIES; j++)
         {
-            for (k = 0; k < NUM_MAX_POSSIBLE_EVOLUTIONS; k++) //VANILLA for (k = 0; k < 5; k++)
+            for (k = 0; k < NUM_MAX_POSSIBLE_EVOLUTIONS; k++)
             {
                 if (gEvolutionTable[j][k].targetSpecies == species)
                 {
@@ -480,6 +476,25 @@ static void InheritIVs(struct Pokemon *egg, struct DayCare *daycare)
                 break;
         }
     }
+}
+
+static void InheritNature(struct Pokemon *egg, struct DayCare *daycare)
+{
+	int i;
+	u8 nature;
+	struct BoxPokemon *parent;
+	
+	for (i = 0; i < DAYCARE_MON_COUNT; i++)
+	{
+		parent = &daycare->mons[i];
+		
+		if (GetBoxMonData(&daycare->mons[i], MON_DATA_HELD_ITEM) == ITEM_EVERSTONE)
+		{
+			nature = GetMonData(&daycare->mons[i], MON_DATA_NATURE);
+			SetMonData(egg, MON_DATA_NATURE, &nature);
+			break;
+		}
+	}
 }
 
 // Counts the number of egg moves a pokemon learns and stores the moves in
@@ -621,25 +636,6 @@ void RejectEggFromDayCare(void)
     RemoveEggFromDayCare(&gSaveBlock1.daycare);
 }
 
-static void AlterEggSpeciesWithIncenseItem(u16 *species, struct DayCare *daycare)
-{
-    u16 motherItem, fatherItem;
-    if (*species == SPECIES_WYNAUT || *species == SPECIES_AZURILL)
-    {
-        motherItem = GetBoxMonData(&daycare->mons[0], MON_DATA_HELD_ITEM);
-        fatherItem = GetBoxMonData(&daycare->mons[1], MON_DATA_HELD_ITEM);
-        if (*species == SPECIES_WYNAUT && motherItem != ITEM_LAX_INCENSE && fatherItem != ITEM_LAX_INCENSE)
-        {
-            *species = SPECIES_WOBBUFFET;
-        }
-
-        if (*species == SPECIES_AZURILL && motherItem != ITEM_SEA_INCENSE && fatherItem != ITEM_SEA_INCENSE)
-        {
-            *species = SPECIES_MARILL;
-        }
-    }
-}
-
 static u16 DetermineEggSpeciesAndParentSlots(struct DayCare *daycare, u8 *parentSlots)
 {
     u16 i;
@@ -692,8 +688,6 @@ static void _GiveEggFromDaycare(struct DayCare *daycare) // give_egg
     u8 parentSlots[2]; // 0th index is "mother" daycare slot, 1st is "father"
     u8 isEgg;
 	
-//HOENNISLES START
-//eggs hatched in super random give a random species
 	if (gSaveBlock2.gameMode == GAME_MODE_SUPER_RANDOM)
 	{
 		species = GenerateRandomSpecies(1); //eggs hatch at level 1 hence the value of 1
@@ -702,9 +696,9 @@ static void _GiveEggFromDaycare(struct DayCare *daycare) // give_egg
 	{
 		species = DetermineEggSpeciesAndParentSlots(daycare, parentSlots);
     }
-	AlterEggSpeciesWithIncenseItem(&species, daycare);
     SetInitialEggData(&egg, species, daycare);
     InheritIVs(&egg, daycare);
+	InheritNature(&egg, daycare);
     BuildEggMoveset(&egg, &daycare->mons[parentSlots[1]], &daycare->mons[parentSlots[0]]);
     isEgg = TRUE;
     SetMonData(&egg, MON_DATA_IS_EGG, &isEgg);

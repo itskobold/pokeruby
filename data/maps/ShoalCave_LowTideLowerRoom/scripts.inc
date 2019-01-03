@@ -17,7 +17,7 @@ ShoalCave_LowTideLowerRoom_EventScript_15E412:: @ 815E412
 ShoalCave_LowTideLowerRoom_EventScript_15E413:: @ 815E413
 	lockall
 	goto_if_set FLAG_HIDE_TOOK_SHOAL_SALT_4, ShoalCave_LowTideLowerRoom_EventScript_15E445
-	giveitem_std ITEM_SHOAL_SALT
+	giveitem_std ITEM_POTION
 	compare RESULT, 0
 	goto_if_eq ShoalCave_LowTideLowerRoom_EventScript_1A029B
 	setmetatile 18, 2, 858, 0

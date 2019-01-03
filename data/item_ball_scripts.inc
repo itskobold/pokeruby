@@ -55,7 +55,7 @@ Route111_EventScript_1B14E2:: @ 81B14E2
 	end
 
 Route112_EventScript_1B14EF:: @ 81B14EF
-	giveitem_std ITEM_NUGGET, 1, 1
+	giveitem_std ITEM_GOLD_NUGGET, 1, 1
 	end
 
 Route113_EventScript_1B14FC:: @ 81B14FC
@@ -147,7 +147,7 @@ Route119_EventScript_1B160D:: @ 81B160D
 	end
 
 Route120_EventScript_1B161A:: @ 81B161A
-	giveitem_std ITEM_NUGGET, 1, 1
+	giveitem_std ITEM_GOLD_NUGGET, 1, 1
 	end
 
 Route120_EventScript_1B1627:: @ 81B1627
@@ -399,11 +399,11 @@ MtPyre_3F_EventScript_1B1940:: @ 81B1940
 	end
 
 MtPyre_4F_EventScript_1B194D:: @ 81B194D
-	giveitem_std ITEM_SEA_INCENSE, 1, 1
+	giveitem_std ITEM_POTION, 1, 1
 	end
 
 MtPyre_5F_EventScript_1B195A:: @ 81B195A
-	giveitem_std ITEM_LAX_INCENSE, 1, 1
+	giveitem_std ITEM_POTION, 1, 1
 	end
 
 MtPyre_6F_EventScript_1B1967:: @ 81B1967
@@ -423,7 +423,7 @@ AquaHideout_B1F_EventScript_1B198E:: @ 81B198E
 	end
 
 AquaHideout_B1F_EventScript_1B199B:: @ 81B199B
-	giveitem_std ITEM_NUGGET, 1, 1
+	giveitem_std ITEM_GOLD_NUGGET, 1, 1
 	end
 
 AquaHideout_B1F_EventScript_1B19A8:: @ 81B19A8
@@ -439,7 +439,7 @@ MagmaHideout_B1F_EventScript_1B19C2:: @ 81B19C2
 	end
 
 MagmaHideout_B1F_EventScript_1B19CF:: @ 81B19CF
-	giveitem_std ITEM_NUGGET, 1, 1
+	giveitem_std ITEM_GOLD_NUGGET, 1, 1
 	end
 
 MagmaHideout_B1F_EventScript_1B19DC:: @ 81B19DC

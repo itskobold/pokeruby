@@ -563,7 +563,6 @@ static void Shop_DisplayNormalPriceInList(u16 itemId, u8 var2, bool32 hasControl
         stringPtr = &gStringVar1[3];
 
     GetMoneyAmountText(stringPtr, (ItemId_GetPrice(itemId) >> GetPriceReduction(1)), 0x4);
-//HOENNISLES START
 	if (ItemId_GetPrice(itemId) >= 10000)
 	{
 		Menu_PrintTextPixelCoords(&gStringVar1[0], 0xC4, var2 << 3, 1);
@@ -572,8 +571,6 @@ static void Shop_DisplayNormalPriceInList(u16 itemId, u8 var2, bool32 hasControl
 	{
 		Menu_PrintTextPixelCoords(&gStringVar1[0], 0xCA, var2 << 3, 1);
 	}
-//HOENNISLES END
-//	Menu_PrintTextPixelCoords(&gStringVar1[0], 0xCA, var2 << 3, 1); VANILLA
 }
 
 static void Shop_DisplayDecorationPriceInList(u16 itemId, u8 var2, bool32 hasControlCode)
