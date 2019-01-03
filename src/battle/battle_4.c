@@ -11351,7 +11351,10 @@ static void atk7E_setreflect(void)
     else
     {
         gSideAffecting[GetBattlerPosition(gBankAttacker) & 1] |= SIDE_STATUS_REFLECT;
-        gSideTimers[GetBattlerPosition(gBankAttacker) & 1].reflectTimer = 5;
+		if (ItemId_GetHoldEffect(gBattleMons[gBankAttacker].item) == HOLD_EFFECT_LIGHT_CLAY)
+			gSideTimers[GetBattlerPosition(gBankAttacker) & 1].reflectTimer = 8;
+		else
+			gSideTimers[GetBattlerPosition(gBankAttacker) & 1].reflectTimer = 5;
         if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE && CountAliveMons(1) == 2)
             gBattleCommunication[MULTISTRING_CHOOSER] = 2;
         else
@@ -11922,15 +11925,7 @@ static void atk90_tryconversiontypechange(void)
     for (checked_move = 0; checked_move < valid_moves; checked_move++)
     {
         move_type = gBattleMoves[gBattleMons[gBankAttacker].moves[checked_move]].type;
-//HOENNISLES
-//not commented out in vanilla
-        /*if (move_type == TYPE_MYSTERY)
-        {
-            if (gBattleMons[gBankAttacker].type1 == TYPE_GHOST || gBattleMons[gBankAttacker].type2 == TYPE_GHOST)
-                move_type = TYPE_GHOST;
-            else
-                move_type = TYPE_NORMAL;
-        }*/
+
         if (move_type != gBattleMons[gBankAttacker].type1 && move_type != gBattleMons[gBankAttacker].type2)
             break;
     }
@@ -11947,15 +11942,12 @@ static void atk90_tryconversiontypechange(void)
             while ((checked_move = Random() & 3) >= valid_moves);
 
             move_type = gBattleMoves[gBattleMons[gBankAttacker].moves[checked_move]].type;
-//HOENNISLES
-//if statement not commented out in vanilla
-//            if (move_type == TYPE_MYSTERY)
-//           {
-                if (gBattleMons[gBankAttacker].type1 == TYPE_GHOST || gBattleMons[gBankAttacker].type2 == TYPE_GHOST)
-                    move_type = TYPE_GHOST;
-                else
-                    move_type = TYPE_NORMAL;
-//            }
+
+			if (gBattleMons[gBankAttacker].type1 == TYPE_GHOST || gBattleMons[gBankAttacker].type2 == TYPE_GHOST)
+				move_type = TYPE_GHOST;
+			else
+				move_type = TYPE_NORMAL;
+
         } while (move_type == gBattleMons[gBankAttacker].type1 || move_type == gBattleMons[gBankAttacker].type2);
 
         gBattleMons[gBankAttacker].type1 = move_type;
@@ -11999,7 +11991,10 @@ static void atk92_setlightscreen(void)
     else
     {
         gSideAffecting[GetBattlerPosition(gBankAttacker) & 1] |= SIDE_STATUS_LIGHTSCREEN;
-        gSideTimers[GetBattlerPosition(gBankAttacker) & 1].lightscreenTimer = 5;
+		if (ItemId_GetHoldEffect(gBattleMons[gBankAttacker].item) == HOLD_EFFECT_LIGHT_CLAY)
+			gSideTimers[GetBattlerPosition(gBankAttacker) & 1].lightscreenTimer = 8;
+		else
+			gSideTimers[GetBattlerPosition(gBankAttacker) & 1].lightscreenTimer = 5;
         if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE && CountAliveMons(1) == 2)
             gBattleCommunication[MULTISTRING_CHOOSER] = 4;
         else

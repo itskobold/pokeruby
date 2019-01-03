@@ -35,7 +35,7 @@
 #define HOLD_EFFECT_BUG_POWER      		31
 #define HOLD_EFFECT_DOUBLE_PRIZE   		32
 #define HOLD_EFFECT_REPEL          		33
-#define HOLD_EFFECT_PLACEHOLDER_6  		34	//unused
+#define HOLD_EFFECT_LIGHT_CLAY  		34
 #define HOLD_EFFECT_PLACEHOLDER_2 		35	//unused
 #define HOLD_EFFECT_PLACEHOLDER_3 		36	//unused
 #define HOLD_EFFECT_CAN_ALWAYS_RUN 		37
