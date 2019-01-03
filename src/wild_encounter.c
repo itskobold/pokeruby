@@ -4511,7 +4511,7 @@ static void ApplyFluteEncounterRateMod(u32 *encRate)
 static void ApplyCleanseTagEncounterRateMod(u32 *encRate)
 {
     // UB: Too few arguments for function 'GetMonData'
-    if (GetMonData(&gPlayerParty[0], MON_DATA_HELD_ITEM) == 0xBE)
+    if (GetMonData(&gPlayerParty[0], MON_DATA_HELD_ITEM) == ITEM_CLEANSE_TAG)
         *encRate = *encRate * 2 / 3;
 }
 

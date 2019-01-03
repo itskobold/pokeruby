@@ -6047,6 +6047,7 @@ void SwapTurnOrder(u8 a, u8 b)
 u8 GetWhoStrikesFirst(u8 bank1, u8 bank2, bool8 ignoreMovePriorities)
 {
     int bank1SpeedMultiplier, bank2SpeedMultiplier;
+	u32 bank1UnadjustedSpeed, bank2UnadjustedSpeed;
     u32 bank1AdjustedSpeed, bank2AdjustedSpeed;
     u8 heldItemEffect;
     u8 heldItemEffectParam;
@@ -6076,8 +6077,10 @@ u8 GetWhoStrikesFirst(u8 bank1, u8 bank2, bool8 ignoreMovePriorities)
     }
 
     // Calculate adjusted speed for first mon.
-    bank1AdjustedSpeed = (gBattleMons[bank1].speed * bank1SpeedMultiplier)
+    bank1UnadjustedSpeed = (gBattleMons[bank1].speed * bank1SpeedMultiplier)
         * gStatStageRatios[gBattleMons[bank1].statStages[STAT_STAGE_SPEED]][0] / gStatStageRatios[gBattleMons[bank1].statStages[STAT_STAGE_SPEED]][1];
+		
+	bank1AdjustedSpeed = bank1UnadjustedSpeed;
 
 	heldItemEffect = ItemId_GetHoldEffect(gBattleMons[bank1].item);
 	heldItemEffectParam = ItemId_GetHoldEffectParam(gBattleMons[bank1].item);
@@ -6091,6 +6094,9 @@ u8 GetWhoStrikesFirst(u8 bank1, u8 bank2, bool8 ignoreMovePriorities)
 	
 	if (heldItemEffect == HOLD_EFFECT_CHOICE_ITEM && heldItemEffectParam == 2) //choice scarf
         bank1AdjustedSpeed = (150 * bank1AdjustedSpeed) / 100;
+		
+	if (heldItemEffect == HOLD_EFFECT_LAGGING_TAIL)
+        bank1AdjustedSpeed = 1;
 
     if (gBattleMons[bank1].status1 & STATUS_PARALYSIS)
         bank1AdjustedSpeed /= 4;
@@ -6101,9 +6107,11 @@ u8 GetWhoStrikesFirst(u8 bank1, u8 bank2, bool8 ignoreMovePriorities)
         bank1AdjustedSpeed = UINT_MAX;
 
     // Calculate adjusted speed for second mon.
-    bank2AdjustedSpeed = gBattleMons[bank2].speed * bank2SpeedMultiplier
+    bank2UnadjustedSpeed = gBattleMons[bank2].speed * bank2SpeedMultiplier
         * gStatStageRatios[gBattleMons[bank2].statStages[STAT_STAGE_SPEED]][0] / gStatStageRatios[gBattleMons[bank2].statStages[STAT_STAGE_SPEED]][1];
 
+	bank2AdjustedSpeed = bank2UnadjustedSpeed;
+	
 	heldItemEffect = ItemId_GetHoldEffect(gBattleMons[bank2].item);
 	heldItemEffectParam = ItemId_GetHoldEffectParam(gBattleMons[bank2].item);
 
@@ -6118,6 +6126,9 @@ u8 GetWhoStrikesFirst(u8 bank1, u8 bank2, bool8 ignoreMovePriorities)
 	
 	if (heldItemEffect == HOLD_EFFECT_CHOICE_ITEM && heldItemEffectParam == 2) //choice scarf
         bank2AdjustedSpeed = (150 * bank2AdjustedSpeed) / 100;
+		
+	if (heldItemEffect == HOLD_EFFECT_LAGGING_TAIL)
+        bank2AdjustedSpeed = 1;
 
     if (gBattleMons[bank2].status1 & STATUS_PARALYSIS)
         bank2AdjustedSpeed /= 4;
@@ -6126,6 +6137,16 @@ u8 GetWhoStrikesFirst(u8 bank1, u8 bank2, bool8 ignoreMovePriorities)
 		bank2AdjustedSpeed = UINT_MAX;
     else if (heldItemEffect == HOLD_EFFECT_QUICK_CLAW && gRandomTurnNumber < (heldItemEffectParam * 0xFFFF) / 100)
         bank2AdjustedSpeed = UINT_MAX;
+	
+	//if both mons are holding lagging tails the one with the fastest unmodified speed moves first
+	if (ItemId_GetHoldEffect(gBattleMons[bank1].item) == HOLD_EFFECT_LAGGING_TAIL
+		&& heldItemEffect == HOLD_EFFECT_LAGGING_TAIL)
+	{
+		if (bank1UnadjustedSpeed > bank1UnadjustedSpeed)
+			bank1AdjustedSpeed++;
+		else
+			bank2AdjustedSpeed++;
+	}
 
     if (ignoreMovePriorities)
     {
