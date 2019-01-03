@@ -6772,10 +6772,7 @@ static void atk49_moveend(void)
 
     arg1 = T2_READ_8(gBattlescriptCurrInstr + 1);
     arg2 = T2_READ_8(gBattlescriptCurrInstr + 2);
-    /*if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
-        hold_effect_atk = gEnigmaBerries[gBankAttacker].holdEffect;
-    else*/
-        hold_effect_atk = ItemId_GetHoldEffect(gBattleMons[gBankTarget].item);
+    hold_effect_atk = ItemId_GetHoldEffect(gBattleMons[gBankTarget].item);
 
     choiced_move_atk = (u16*)(gBankAttacker * (ewram_addr + 0x160E8));
     if (gBattleStruct->dynamicMoveType)
@@ -6839,7 +6836,7 @@ static void atk49_moveend(void)
             gBattleStruct->cmd49StateTracker++;
             break;
         case 6: //update choice band move
-            if (gHitMarker & HITMARKER_OBEYS && hold_effect_atk == HOLD_EFFECT_CHOICE_BAND
+            if (gHitMarker & HITMARKER_OBEYS && hold_effect_atk == HOLD_EFFECT_CHOICE_ITEM
                 && gLastUsedMove != MOVE_STRUGGLE && (*choiced_move_atk == 0 || *choiced_move_atk == 0xFFF)
                 && gLastUsedMove != MOVE_BATON_PASS && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT))
             {
@@ -12014,13 +12011,8 @@ static void atk92_setlightscreen(void)
 #ifdef NOTMATCHING
 static void atk93_tryKO(void)
 {
-    /*if (gBattleMons[gBankTarget].item == ITEM_ENIGMA_BERRY)
-        hold_effect = gEnigmaBerries[gBankTarget].holdEffect, quality = gEnigmaBerries[gBankTarget].holdEffectParam;
-    else
-    {*/
-        hold_effect = ItemId_GetHoldEffect(gBattleMons[gBankTarget].item);
-        quality = ItemId_GetHoldEffectParam(gBattleMons[gBankTarget].item);
-    //}
+	hold_effect = ItemId_GetHoldEffect(gBattleMons[gBankTarget].item);
+	quality = ItemId_GetHoldEffectParam(gBattleMons[gBankTarget].item);
 
     gStringBank = gBankTarget;
 

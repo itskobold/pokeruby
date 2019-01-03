@@ -153,7 +153,6 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     }
 
 	for (i = 0; i < 20; i++)
-	//why is this a loop?
     {
         if (attackerHoldEffect == gHoldEffectToType[i][0]
             && type == gHoldEffectToType[i][1])
@@ -166,8 +165,13 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         }
     }
 
-    if (attackerHoldEffect == HOLD_EFFECT_CHOICE_BAND)
-        attack = (150 * attack) / 100;
+    if (attackerHoldEffect == HOLD_EFFECT_CHOICE_ITEM)
+	{
+		if (attackerHoldEffectParam == 0) //choice band
+			attack = (150 * attack) / 100;
+		else if (attackerHoldEffectParam == 1) //choice specs
+			spAttack = (150 * spAttack) / 100;
+	}
     if (defender->ability == ABILITY_THICK_FAT && (type == TYPE_FIRE || type == TYPE_ICE))
         spAttack /= 2;
     if (attacker->ability == ABILITY_HUSTLE)

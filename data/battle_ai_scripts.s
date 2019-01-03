@@ -1927,8 +1927,6 @@ AI_CV_Thief_EncourageItemsToSteal: @ 81DB6B3
 	.byte HOLD_EFFECT_RESTORE_HP
 	.byte HOLD_EFFECT_EVASION_UP
 	.byte HOLD_EFFECT_LEFTOVERS
-	.byte HOLD_EFFECT_LIGHT_BALL
-	.byte HOLD_EFFECT_THICK_CLUB
 	.byte -1
 
 AI_CV_Curse: @ 81DB6BB
@@ -2400,11 +2398,11 @@ AI_CV_Trick_End: @ 81DBC06
 
 AI_CV_Trick_EffectsToEncourage: @ 81DBC07
 	.byte HOLD_EFFECT_MACHO_BRACE
-	.byte HOLD_EFFECT_CHOICE_BAND
+	.byte HOLD_EFFECT_CHOICE_ITEM
 	.byte -1
 
 AI_CV_Trick_EffectsToEncourage2: @ 81DBC0F
-	.byte HOLD_EFFECT_CHOICE_BAND
+	.byte HOLD_EFFECT_CHOICE_ITEM
 	.byte -1
 
 AI_CV_ChangeSelfAbility: @ 81DBC11

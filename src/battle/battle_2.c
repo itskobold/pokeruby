@@ -6088,13 +6088,15 @@ u8 GetWhoStrikesFirst(u8 bank1, u8 bank2, bool8 ignoreMovePriorities)
 
     if (heldItemEffect == HOLD_EFFECT_MACHO_BRACE)
         bank1AdjustedSpeed /= 2;
+	
+	if (heldItemEffect == HOLD_EFFECT_CHOICE_ITEM && heldItemEffectParam == 2) //choice scarf
+        bank1AdjustedSpeed = (150 * bank1AdjustedSpeed) / 100;
 
     if (gBattleMons[bank1].status1 & STATUS_PARALYSIS)
         bank1AdjustedSpeed /= 4;
 
 	if (gStatuses3[bank1] & STATUS3_CUSTAP_BERRY)
 		bank1AdjustedSpeed = UINT_MAX;
-
     else if (heldItemEffect == HOLD_EFFECT_QUICK_CLAW && gRandomTurnNumber < (heldItemEffectParam * 0xFFFF) / 100)
         bank1AdjustedSpeed = UINT_MAX;
 
@@ -6113,13 +6115,15 @@ u8 GetWhoStrikesFirst(u8 bank1, u8 bank2, bool8 ignoreMovePriorities)
 
     if (heldItemEffect == HOLD_EFFECT_MACHO_BRACE)
         bank2AdjustedSpeed /= 2;
+	
+	if (heldItemEffect == HOLD_EFFECT_CHOICE_ITEM && heldItemEffectParam == 2) //choice scarf
+        bank2AdjustedSpeed = (150 * bank2AdjustedSpeed) / 100;
 
     if (gBattleMons[bank2].status1 & STATUS_PARALYSIS)
         bank2AdjustedSpeed /= 4;
 	
 	if (gStatuses3[bank2] & STATUS3_CUSTAP_BERRY)
 		bank2AdjustedSpeed = UINT_MAX;
-
     else if (heldItemEffect == HOLD_EFFECT_QUICK_CLAW && gRandomTurnNumber < (heldItemEffectParam * 0xFFFF) / 100)
         bank2AdjustedSpeed = UINT_MAX;
 
