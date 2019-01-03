@@ -11327,6 +11327,10 @@ static void atk7C_trymirrormove(void)
 
 static void atk7D_setrain(void)
 {
+	u16 item;
+	
+	item = gBattleMons[gBankAttacker].item;
+	
     if (gBattleWeather & WEATHER_RAIN_ANY)
     {
         gMoveResultFlags |= MOVE_RESULT_MISSED;
@@ -11336,7 +11340,10 @@ static void atk7D_setrain(void)
     {
         gBattleWeather = WEATHER_RAIN_TEMPORARY;
         gBattleCommunication[MULTISTRING_CHOOSER] = 0;
-        gWishFutureKnock.weatherDuration = 5;
+		if (ItemId_GetHoldEffect(item) == HOLD_EFFECT_WEATHER_ROCK && ItemId_GetHoldEffectParam(item) == 3)
+			gWishFutureKnock.weatherDuration = 8;
+		else
+			gWishFutureKnock.weatherDuration = 5;
     }
     gBattlescriptCurrInstr++;
 }
@@ -12414,6 +12421,10 @@ static void atk94_damagetohalftargethp(void) //super fang
 
 static void atk95_setsandstorm(void)
 {
+	u16 item;
+	
+	item = gBattleMons[gBankAttacker].item;
+	
     if (gBattleWeather & WEATHER_SANDSTORM_ANY)
     {
         gMoveResultFlags |= MOVE_RESULT_MISSED;
@@ -12423,7 +12434,10 @@ static void atk95_setsandstorm(void)
     {
         gBattleWeather = WEATHER_SANDSTORM_TEMPORARY;
         gBattleCommunication[MULTISTRING_CHOOSER] = 3;
-        gWishFutureKnock.weatherDuration = 5;
+		if (ItemId_GetHoldEffect(item) == HOLD_EFFECT_WEATHER_ROCK && ItemId_GetHoldEffectParam(item) == 1)
+			gWishFutureKnock.weatherDuration = 8;
+		else
+			gWishFutureKnock.weatherDuration = 5;
     }
     gBattlescriptCurrInstr++;
 }
@@ -13961,6 +13975,10 @@ static void atkBA_jumpifnopursuitswitchdmg(void)
 
 static void atkBB_setsunny(void)
 {
+	u16 item;
+	
+	item = gBattleMons[gBankAttacker].item;
+	
     if (gBattleWeather & WEATHER_SUN_ANY)
     {
         gMoveResultFlags |= MOVE_RESULT_MISSED;
@@ -13970,7 +13988,10 @@ static void atkBB_setsunny(void)
     {
         gBattleWeather = WEATHER_SUN_TEMPORARY;
         gBattleCommunication[MULTISTRING_CHOOSER] = 4;
-        gWishFutureKnock.weatherDuration = 5;
+        if (ItemId_GetHoldEffect(item) == HOLD_EFFECT_WEATHER_ROCK && ItemId_GetHoldEffectParam(item) == 2)
+			gWishFutureKnock.weatherDuration = 8;
+		else
+			gWishFutureKnock.weatherDuration = 5;
     }
     gBattlescriptCurrInstr++;
 }
@@ -14489,6 +14510,10 @@ static void atkC7_setminimize(void)
 
 static void atkC8_sethail(void)
 {
+	u16 item;
+	
+	item = gBattleMons[gBankAttacker].item;
+	
     if (gBattleWeather & WEATHER_HAIL)
     {
         gMoveResultFlags |= MOVE_RESULT_MISSED;
@@ -14498,7 +14523,10 @@ static void atkC8_sethail(void)
     {
         gBattleWeather = WEATHER_HAIL;
         gBattleCommunication[MULTISTRING_CHOOSER] = 5;
-        gWishFutureKnock.weatherDuration = 5;
+        if (ItemId_GetHoldEffect(item) == HOLD_EFFECT_WEATHER_ROCK && ItemId_GetHoldEffectParam(item) == 0)
+			gWishFutureKnock.weatherDuration = 8;
+		else
+			gWishFutureKnock.weatherDuration = 5;
     }
     gBattlescriptCurrInstr++;
 }
