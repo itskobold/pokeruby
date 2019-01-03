@@ -1503,10 +1503,10 @@ static const u8 gItemDescription_Metronome[] = _(
     "when it is used in\n"
     "succession.");
 	
-static const u8 gItemDescription_IronBall[] = _(
+static const u8 gItemDescription_HeavyWeight[] = _(
     "Drags the holder\n"
     "down to the ground\n"
-    "and cuts SPEED.");
+    "and adds weight.");
 	
 static const u8 gItemDescription_LaggingTail[] = _(
     "Causes the holder\n"

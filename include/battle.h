@@ -811,6 +811,7 @@ bool8 TryRunFromBattle(u8 bank);
 // asm/battle_2.o
 void sub_8012324(void);
 void SwapTurnOrder(u8, u8);
+u16 GetMonWeight(u16 species, u16 item);
 u8 GetWhoStrikesFirst(u8, u8, u8);
 
 void debug_sub_8010800(void);

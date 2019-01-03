@@ -13,6 +13,7 @@ MauvilleCity_Mart_EventScript_1573BE:: @ 81573BE
 
 	.align 2
 MauvilleCity_Mart_Items:: @ 81573D8
+
 	.2byte ITEM_CHERI_BERRY 	
 	.2byte ITEM_CHESTO_BERRY 	
 	.2byte ITEM_PECHA_BERRY 	
@@ -167,7 +168,7 @@ MauvilleCity_Mart_Items:: @ 81573D8
 	.2byte ITEM_TRANQUIL_ORB	
 	.2byte ITEM_FRIGID_ORB		
 	.2byte ITEM_METRONOME		
-	.2byte ITEM_IRON_BALL		
+	.2byte ITEM_HEAVY_WEIGHT		
 	.2byte ITEM_LAGGING_TAIL	
 	.2byte ITEM_ICY_ROCK		
 	.2byte ITEM_SMOOTH_ROCK		

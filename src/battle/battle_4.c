@@ -1537,7 +1537,7 @@ static void atk06_typecalc(void)
             gBattleMoveDamage = gBattleMoveDamage / 10;
         }
 
-        if (gBattleMons[gBankTarget].ability == ABILITY_LEVITATE && move_type == TYPE_GROUND)
+        if (gBattleMons[gBankTarget].ability == ABILITY_LEVITATE && gBattleMons[gBankTarget].item != ITEM_HEAVY_WEIGHT && move_type == TYPE_GROUND)
         {
             gLastUsedAbility = gBattleMons[gBankTarget].ability;
             gMoveResultFlags |= (MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE);
@@ -1615,7 +1615,7 @@ static void CheckWonderGuardAndLevitate(void)
     else
         move_type = gBattleMoves[gCurrentMove].type;
 
-    if (gBattleMons[gBankTarget].ability == ABILITY_LEVITATE && move_type == TYPE_GROUND)
+    if (gBattleMons[gBankTarget].ability == ABILITY_LEVITATE && gBattleMons[gBankTarget].item != ITEM_HEAVY_WEIGHT && move_type == TYPE_GROUND)
     {
         RecordAbilitySetField6(ABILITY_LEVITATE, move_type);
         return;
@@ -1728,7 +1728,7 @@ u8 TypeCalc(u16 move, u8 bank_atk, u8 bank_def)
         gBattleMoveDamage = gBattleMoveDamage / 10;
     }
 
-    if (gBattleMons[bank_def].ability == ABILITY_LEVITATE && move_type == TYPE_GROUND)
+    if (gBattleMons[gBankTarget].ability == ABILITY_LEVITATE && gBattleMons[gBankTarget].item != ITEM_HEAVY_WEIGHT && move_type == TYPE_GROUND)
     {
         flags |= (MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE);
     }
@@ -1795,7 +1795,7 @@ u8 AI_TypeCalc(u16 move, u8 type1, u8 type2, u16 ability)
 
     move_type = gBattleMoves[move].type;
 
-    if (ability == ABILITY_LEVITATE && move_type == TYPE_GROUND)
+    if (gBattleMons[gBankTarget].ability == ABILITY_LEVITATE && gBattleMons[gBankTarget].item != ITEM_HEAVY_WEIGHT && move_type == TYPE_GROUND)
         flags = MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE;
 	
 	if (move_type == TYPE_NULL) //if move used is null type
@@ -8215,7 +8215,7 @@ static void atk4A_typecalc2(void)
     u8 move_type = gBattleMoves[gCurrentMove].type;
 	u8 chance = Random() % 10;
 
-    if (gBattleMons[gBankTarget].ability == ABILITY_LEVITATE && move_type == TYPE_GROUND)
+    if (gBattleMons[gBankTarget].ability == ABILITY_LEVITATE && gBattleMons[gBankTarget].item != ITEM_HEAVY_WEIGHT && move_type == TYPE_GROUND)
     {
         gLastUsedAbility = gBattleMons[gBankTarget].ability;
         gMoveResultFlags |= (MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE);
@@ -9645,7 +9645,7 @@ static void atk52_switchineffects(void)
     gSpecialStatuses[gActiveBattler].flag40 = 0;
 
     if (!(gSideAffecting[GetBattlerSide(gActiveBattler)] & SIDE_STATUS_SPIKES_DAMAGED) && (gSideAffecting[GetBattlerSide(gActiveBattler)] & SIDE_STATUS_SPIKES)
-        && gBattleMons[gActiveBattler].type1 != TYPE_FLYING && gBattleMons[gActiveBattler].type2 != TYPE_FLYING && gBattleMons[gActiveBattler].ability != ABILITY_LEVITATE)
+        && gBattleMons[gActiveBattler].type1 != TYPE_FLYING && gBattleMons[gActiveBattler].type2 != TYPE_FLYING && gBattleMons[gBankTarget].ability == ABILITY_LEVITATE && gBattleMons[gBankTarget].item != ITEM_HEAVY_WEIGHT)
     {
         u8 spikesDmg;
 
@@ -15104,7 +15104,7 @@ static void atkDD_weightdamagecalculation(void)
     int i;
     for (i = 0; sWeightToDamageTable[i] != 0xFFFF; i += 2)
     {
-        if (sWeightToDamageTable[i] > GetPokedexHeightWeight(SpeciesToNationalPokedexNum(gBattleMons[gBankTarget].species), 1))
+        if (sWeightToDamageTable[i] > GetMonWeight(gBattleMons[gBankTarget].species, gBattleMons[gBankTarget].item))
             break;
     }
     if (sWeightToDamageTable[i] != 0xFFFF)

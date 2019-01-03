@@ -4411,10 +4411,7 @@ u8 CanRunFromBattle(void)
     u8 r6;
     s32 i;
 
-    /*if (gBattleMons[gActiveBattler].item == ITEM_ENIGMA_BERRY)
-        r2 = gEnigmaBerries[gActiveBattler].holdEffect;
-    else*/
-        r2 = ItemId_GetHoldEffect(gBattleMons[gActiveBattler].item);
+    r2 = ItemId_GetHoldEffect(gBattleMons[gActiveBattler].item);
     gStringBank = gActiveBattler;
     if (r2 == HOLD_EFFECT_CAN_ALWAYS_RUN)
         return 0;
@@ -4434,6 +4431,7 @@ u8 CanRunFromBattle(void)
             return 2;
         }
         if (r6 != GetBattlerSide(i)
+		 && gBattleMons[gActiveBattler].item != ITEM_HEAVY_WEIGHT 
          && gBattleMons[gActiveBattler].ability != ABILITY_LEVITATE
          && gBattleMons[gActiveBattler].type1 != TYPE_FLYING
          && gBattleMons[gActiveBattler].type2 != TYPE_FLYING
@@ -6037,6 +6035,27 @@ void SwapTurnOrder(u8 a, u8 b)
     temp = gBanksByTurnOrder[a];
     gBanksByTurnOrder[a] = gBanksByTurnOrder[b];
     gBanksByTurnOrder[b] = temp;
+}
+
+//returns adjusted weight, taking into account hold effects
+//add abilities here too eventually
+u16 GetMonWeight(u16 species, u16 item)
+{
+	u16 weight;
+	
+	weight = GetPokedexHeightWeight(SpeciesToNationalPokedexNum(species), 1);
+	if (ItemId_GetHoldEffect(item) == HOLD_EFFECT_FLOAT_ROCK)
+		weight /= 2;
+	if (ItemId_GetHoldEffect(item) == HOLD_EFFECT_HEAVY_WEIGHT)
+	{
+		if (weight * 2 > 0xFFFF)
+			weight = 0xFFFF;
+		else
+			weight *= 2;
+	}
+	if (!weight) //weight never = 0
+		weight = 1;
+	return weight;
 }
 
 // Determines which of the two given mons will strike first in a battle.
