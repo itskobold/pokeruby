@@ -191,6 +191,8 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
 		gBattleMovePower = (110 * gBattleMovePower) / 100;
 	if (attackerHoldEffect == HOLD_EFFECT_WISE_GLASSES && pss == MOVE_IS_SPECIAL)
 		gBattleMovePower = (110 * gBattleMovePower) / 100;
+	if (attackerHoldEffect == HOLD_EFFECT_MORPH_GEM && (type == attacker->type1 || type == attacker->type2))
+		gBattleMovePower = (120 * gBattleMovePower) / 100;
     if (type == TYPE_ELECTRIC && AbilityBattleEffects(ABILITYEFFECT_FIELD_SPORT, 0, 0, 0xFD, 0))
         gBattleMovePower /= 2;
     if (type == TYPE_FIRE && AbilityBattleEffects(ABILITYEFFECT_FIELD_SPORT, 0, 0, 0xFE, 0))
