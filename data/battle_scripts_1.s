@@ -4484,6 +4484,29 @@ BattleScript_BerryConfuseHealEnd2:: @ 81D9AD4
 	removeitem USER
 	end2
 
+BattleScript_GrandTotemUse::
+	playanimation USER, B_ANIM_ITEM_EFFECT, NULL
+	playanimation 2, B_ANIM_STATS_CHANGE, sANIM_ARG1
+	printstring BATTLE_TEXT_GrandTotem
+	waitmessage 64
+	end2
+	
+BattleScript_GrandWardUse::
+	playanimation USER, B_ANIM_ITEM_EFFECT, NULL
+	playanimation 2, B_ANIM_STATS_CHANGE, sANIM_ARG1
+	printstring BATTLE_TEXT_GrandWard
+	waitmessage 64
+	end2
+	
+BattleScript_TotemWardStatRaiseEnd2::
+	playanimation USER, B_ANIM_ITEM_EFFECT, NULL
+	statbuffchange AFFECTS_USER | 0x1, BattleScript_TotemWardStatRaiseCont
+
+BattleScript_TotemWardStatRaiseCont:
+	setbyte cMULTISTRING_CHOOSER, 0x4
+	call BattleScript_StatUp
+	end2
+	
 BattleScript_BerryStatRaiseEnd2:: @ 81D9AFE
 	playanimation USER, B_ANIM_ITEM_EFFECT, NULL
 	statbuffchange AFFECTS_USER | 0x1, BattleScript_1D9B0B

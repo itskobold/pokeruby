@@ -182,6 +182,7 @@ extern u8 BattleScript_WhiteHerbRet[];
 extern u8 BattleScript_ItemHealHP_RemoveItem[];
 extern u8 BattleScript_BerryPPHealEnd2[];
 extern u8 BattleScript_ItemHealHP_End2[];
+extern u8 BattleScript_TotemWardStatRaiseEnd2[];
 extern u8 BattleScript_BerryConfuseHealEnd2[];
 extern u8 BattleScript_BerryStatRaiseEnd2[];
 extern u8 BattleScript_BerryFocusEnergyEnd2[];
@@ -205,6 +206,8 @@ extern u8 BattleScript_BerryCureChosenStatusRet[]; //berry cure any status retur
 extern u8 BattleScript_BerryMoveFirstRet[]; //custap berry
 extern u8 BattleScript_BerryHalfSuperEffectiveDmgRet[]; //durin berry
 extern u8 BattleScript_BerryInflictDmgRet[]; //jaboca/rowap berry
+extern u8 BattleScript_GrandWardUse[];
+extern u8 BattleScript_GrandTotemUse[];
 
 extern u8 BattleScript_ItemHealHP_Ret[];
 
@@ -2651,7 +2654,98 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
                 BattleScriptExecute(BattleScript_WhiteHerbEnd2);
             }
             break;
-        }
+		case HOLD_EFFECT_WARD_TOTEM:
+			if (gBattleMons[bank].hp && !moveTurn)
+			{
+				gEffectBank = bank;
+				
+				if (atkQuality < 0xFE && gBattleMons[bank].statStages[atkQuality] < 0xC)
+				{
+					gBattleTextBuff1[0] = 0xFD;
+					gBattleTextBuff1[1] = 5;
+					gBattleTextBuff1[2] = atkQuality;
+					gBattleTextBuff1[3] = EOS;
+
+					gBattleTextBuff2[0] = 0xFD;
+					gBattleTextBuff2[1] = 0;
+					gBattleTextBuff2[2] = 0xD2;
+					gBattleTextBuff2[3] = 0xD2 >> 8;
+					gBattleTextBuff2[4] = EOS;
+
+					gBattleStruct->statChanger = secondaryId + atkQuality;
+					if (secondaryId > 0x10)
+						gBattleStruct->animArg1 = 0x26 + atkQuality;
+					else
+						gBattleStruct->animArg1 = 0xE + atkQuality;
+					gBattleStruct->animArg2 = 0;
+					BattleScriptExecute(BattleScript_TotemWardStatRaiseEnd2);
+					effect = ITEM_STATS_CHANGE;
+				}
+				if (atkQuality == 0xFE) //volatile ward/totem
+				{
+                    for (i = 0; i < 5; i++)
+                    {
+                        if (gBattleMons[bank].statStages[STAT_STAGE_ATK + i] < 12)
+                            break;
+                    }
+                    if (i != 5)
+                    {
+                        do
+                        {
+                            i = Random() % 5;
+							i++;
+                        } while (gBattleMons[bank].statStages[i] == 12);
+
+                        gBattleTextBuff1[0] = 0xFD;
+                        gBattleTextBuff1[1] = 5;
+                        gBattleTextBuff1[2] = i;
+                        gBattleTextBuff1[3] = EOS;
+
+                        gBattleTextBuff2[0] = 0xFD;
+                        gBattleTextBuff2[1] = 0;
+                        gBattleTextBuff2[2] = 0xD1;
+                        gBattleTextBuff2[3] = 0xD1 >> 8;
+                        gBattleTextBuff2[4] = 0;
+                        gBattleTextBuff2[5] = 0xD2;
+                        gBattleTextBuff2[6] = 0xD2 >> 8;
+                        gBattleTextBuff2[7] = EOS;
+
+                        gBattleStruct->statChanger = secondaryId + i;
+						if (secondaryId > 0x10)
+							gBattleStruct->animArg1 = 0x26 + i;
+						else
+							gBattleStruct->animArg1 = 0xE + i;
+                        gBattleStruct->animArg2 = 0;
+                        BattleScriptExecute(BattleScript_TotemWardStatRaiseEnd2);
+                        effect = ITEM_STATS_CHANGE;
+                    }
+				}
+				if (atkQuality == 0xFF) //grand ward/totem
+				{
+					for (i = 1; i < 6; i++)
+					{
+						gBattleMons[bank].statStages[i] += secondaryId;
+						
+						if (gBattleMons[bank].statStages[i] > 12)
+							gBattleMons[bank].statStages[i] = 12;
+					}
+					
+					gBattleStruct->animArg2 = 0;
+					if (secondaryId > 1)
+					{
+						gBattleStruct->animArg1 = 0x38;
+						BattleScriptExecute(BattleScript_GrandTotemUse);
+					}
+					else
+					{
+						gBattleStruct->animArg1 = 0x37;
+						BattleScriptExecute(BattleScript_GrandWardUse);
+					}
+					effect = ITEM_STATS_CHANGE;
+				}
+			}
+			break;
+		}
         break;
     case 1:
         if (gBattleMons[bank].hp)
@@ -2777,7 +2871,7 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
 					
                     gEffectBank = bank;
                     gBattleStruct->statChanger = 0x20 + stat;
-                    gBattleStruct->animArg1 = 0xE + stat;
+                    gBattleStruct->animArg1 = 0x26 + stat;
                     gBattleStruct->animArg2 = 0;
 					BattleScriptExecute(BattleScript_BerryStatRaiseEnd2);
                     effect = ITEM_EFFECT_OTHER;
@@ -2806,7 +2900,10 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
 
                     gEffectBank = bank;
                     gBattleStruct->statChanger = boost + STAT_STAGE_ATK;
-                    gBattleStruct->animArg1 = 0xE + STAT_STAGE_ATK;
+					if (boost > 0x10)
+						gBattleStruct->animArg1 = 0x26 + STAT_STAGE_ATK;
+					else
+						gBattleStruct->animArg1 = 0xE + STAT_STAGE_ATK;
                     gBattleStruct->animArg2 = 0;
                     BattleScriptExecute(BattleScript_BerryStatRaiseEnd2);
                     effect = ITEM_STATS_CHANGE;
@@ -2829,7 +2926,10 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
 
                     gEffectBank = bank;
                     gBattleStruct->statChanger = boost + STAT_STAGE_DEF;
-                    gBattleStruct->animArg1 = 0xE + STAT_STAGE_DEF;
+                    if (boost > 0x10)
+						gBattleStruct->animArg1 = 0x26 + STAT_STAGE_DEF;
+					else
+						gBattleStruct->animArg1 = 0xE + STAT_STAGE_DEF;
                     gBattleStruct->animArg2 = 0;
                     BattleScriptExecute(BattleScript_BerryStatRaiseEnd2);
                     effect = ITEM_STATS_CHANGE;
@@ -2852,7 +2952,10 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
 
                     gEffectBank = bank;
                     gBattleStruct->statChanger = boost + STAT_STAGE_SPEED;
-                    gBattleStruct->animArg1 = 0xE + STAT_STAGE_SPEED;
+                    if (boost > 0x10)
+						gBattleStruct->animArg1 = 0x26 + STAT_STAGE_SPEED;
+					else
+						gBattleStruct->animArg1 = 0xE + STAT_STAGE_SPEED;
                     gBattleStruct->animArg2 = 0;
                     BattleScriptExecute(BattleScript_BerryStatRaiseEnd2);
                     effect = ITEM_STATS_CHANGE;
@@ -2875,7 +2978,10 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
 
                     gEffectBank = bank;
                     gBattleStruct->statChanger = boost + STAT_STAGE_SPATK;
-                    gBattleStruct->animArg1 = 0xE + STAT_STAGE_SPATK;
+                    if (boost > 0x10)
+						gBattleStruct->animArg1 = 0x26 + STAT_STAGE_SPATK;
+					else
+						gBattleStruct->animArg1 = 0xE + STAT_STAGE_SPATK;
                     gBattleStruct->animArg2 = 0;
                     BattleScriptExecute(BattleScript_BerryStatRaiseEnd2);
                     effect = ITEM_STATS_CHANGE;
@@ -2898,7 +3004,10 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
 
                     gEffectBank = bank;
                     gBattleStruct->statChanger = boost + STAT_STAGE_SPDEF;
-                    gBattleStruct->animArg1 = 0xE + STAT_STAGE_SPDEF;
+                    if (boost > 0x10)
+						gBattleStruct->animArg1 = 0x26 + STAT_STAGE_SPDEF;
+					else
+						gBattleStruct->animArg1 = 0xE + STAT_STAGE_SPDEF;
                     gBattleStruct->animArg2 = 0;
                     BattleScriptExecute(BattleScript_BerryStatRaiseEnd2);
                     effect = ITEM_STATS_CHANGE;
@@ -2951,7 +3060,10 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
 
                         gEffectBank = bank;
                         gBattleStruct->statChanger = boost + i;
-                        gBattleStruct->animArg1 = boost + i + 6;
+						if (boost > 0x10)
+							gBattleStruct->animArg1 = 0x26 + i;
+						else
+							gBattleStruct->animArg1 = 0xE + i;
                         gBattleStruct->animArg2 = 0;
                         BattleScriptExecute(BattleScript_BerryStatRaiseEnd2);
                         effect = ITEM_STATS_CHANGE;
@@ -3139,7 +3251,10 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
 
                     gEffectBank = bank;
                     gBattleStruct->statChanger = boost + STAT_STAGE_ACC;
-                    gBattleStruct->animArg1 = 0xE + STAT_STAGE_ACC;
+                    if (boost > 0x10)
+						gBattleStruct->animArg1 = 0x26 + STAT_STAGE_ACC;
+					else
+						gBattleStruct->animArg1 = 0xE + STAT_STAGE_ACC;
                     gBattleStruct->animArg2 = 0;
                     BattleScriptExecute(BattleScript_BerryStatRaiseEnd2);
                     effect = ITEM_STATS_CHANGE;
@@ -3285,7 +3400,10 @@ u8 ItemBattleEffects(u8 caseID, u8 bank, bool8 moveTurn)
 
                     gEffectBank = bank;
                     gBattleStruct->statChanger = boost + STAT_STAGE_ACC;
-                    gBattleStruct->animArg1 = 0xE + STAT_STAGE_ACC;
+                    if (boost > 0x10)
+						gBattleStruct->animArg1 = 0x26 + STAT_STAGE_ACC;
+					else
+						gBattleStruct->animArg1 = 0xE + STAT_STAGE_ACC;
                     gBattleStruct->animArg2 = 0;
                     BattleScriptExecute(BattleScript_BerryStatRaiseEnd2);
                     effect = ITEM_STATS_CHANGE;

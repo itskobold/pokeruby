@@ -209,8 +209,6 @@ void sub_800E7C4(void)
 void InitBattle(void)
 {
     s32 i;
-	
-	gMain.stopClockUpdating = TRUE;
 
     SetHBlankCallback(NULL);
     SetVBlankCallback(NULL);
@@ -4431,10 +4429,13 @@ u8 CanRunFromBattle(void)
             return 2;
         }
         if (r6 != GetBattlerSide(i)
-		 && gBattleMons[gActiveBattler].item != ITEM_HEAVY_WEIGHT 
-         && gBattleMons[gActiveBattler].ability != ABILITY_LEVITATE
+         && ((gBattleMons[gActiveBattler].ability != ABILITY_LEVITATE
          && gBattleMons[gActiveBattler].type1 != TYPE_FLYING
-         && gBattleMons[gActiveBattler].type2 != TYPE_FLYING
+         && gBattleMons[gActiveBattler].type2 != TYPE_FLYING)
+		 || (gBattleMons[gActiveBattler].ability == ABILITY_LEVITATE
+         && (gBattleMons[gActiveBattler].type1 == TYPE_FLYING
+         || gBattleMons[gActiveBattler].type2 == TYPE_FLYING)
+		 && gBattleMons[gActiveBattler].item == ITEM_HEAVY_WEIGHT))
          && gBattleMons[i].ability == ABILITY_ARENA_TRAP)
         {
             ewram16003 = i;

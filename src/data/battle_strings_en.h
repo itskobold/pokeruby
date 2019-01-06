@@ -356,6 +356,8 @@ enum
 	BATTLE_TEXT_MoveFirst,
 	BATTLE_TEXT_HalfSuperEffectiveDmg,
 	BATTLE_TEXT_BerryInflictedDmg,
+	BATTLE_TEXT_GrandWard,
+	BATTLE_TEXT_GrandTotem,
 };
 
 const u8 BattleText_UnknownString[] = _("{STRING 33}");
@@ -856,6 +858,8 @@ const u8 BattleText_HalfSuperEffectiveDmg[] = _("{STRING 16} absorbed damage\ndu
 const u8 BattleText_BerryInflictedDmg[] = _("{ATTACKING_MON} took damage due to\n{STRING 16}'s {STRING 19}!");
 const u8 BattleText_MoveFirstNextTurn[] = _("{STR_VAR_1} can move first\nnext turn!");
 const u8 BattleText_StatsReset[] = _("{STR_VAR_1}'s stats\nwere reset!");
+const u8 BattleText_GrandWard[] = _("Using {STRING 19}, {STRING 2}\nraised all of its stats!");
+const u8 BattleText_GrandTotem[] = _("Using {STRING 19}, {STRING 2}\nsharply raised all of its stats!");
 
 const u8 *const gUnknown_08400F58[] =
 {
@@ -1234,6 +1238,8 @@ const u8 *const gBattleStringsTable[] =
 	BattleText_MoveFirst,
 	BattleText_HalfSuperEffectiveDmg,
 	BattleText_BerryInflictedDmg,
+	BattleText_GrandWard,
+	BattleText_GrandTotem,
 };
 
 // below are lists of battle string enums and NOT pointers to the strings.

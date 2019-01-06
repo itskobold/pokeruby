@@ -16,7 +16,7 @@
 #include "ewram.h"
 
 #define BATTLESTRING_TO_SUB 12
-#define BATTLESTRINGS_NO    354
+#define BATTLESTRINGS_NO    356
 #define BATTLESTRINGS_MAX   BATTLESTRINGS_NO + BATTLESTRING_TO_SUB
 
 #ifdef GERMAN
@@ -656,26 +656,8 @@ u32 StrCpyDecodeBattle(const u8* src, u8* dst)
             case 19: // last used item
                 if (gBattleTypeFlags & BATTLE_TYPE_LINK)
                 {
-                    /*if (gLastUsedItem == ITEM_ENIGMA_BERRY)
-                    {
-                        if (gLinkPlayers[gBattleStruct->linkPlayerIndex].lp_field_18 == gStringBank)
-                        {
-                            StringCopy(text, gEnigmaBerries[gStringBank].name);
-#ifdef ENGLISH
-                            StringAppend(text, BattleText_Berry);
-#else
-                            de_sub_8073174(text, BattleText_Berry);
-#endif
-                            toCpy = text;
-                        }
-                        else
-                            toCpy = BattleText_EnigmaBerry;
-                    }
-                    else
-                    {*/
-                        CopyItemName(gLastUsedItem, text);
-                        toCpy = text;
-                    //}
+					CopyItemName(gLastUsedItem, text);
+					toCpy = text;
                 }
                 else
                 {

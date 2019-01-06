@@ -1631,7 +1631,6 @@ void GenerateSuperRandomMovesetForBoxMon(struct BoxPokemon *boxMon, s32 level, b
 		GiveMoveToBoxMon(boxMon, move);
 		move = GenerateSuperRandomMove(moveType1, moveType2);
 	}
-    return;
 }
 
 u8 GetSuperRandomMovesetSize(s32 level, bool8 hatched)

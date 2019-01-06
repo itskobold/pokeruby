@@ -353,3 +353,5 @@
     enum BATTLE_TEXT_MoveFirst
 	enum BATTLE_TEXT_HalfSuperEffectiveDmg
 	enum BATTLE_TEXT_BerryInflictedDmg
+	enum BATTLE_TEXT_GrandWard
+	enum BATTLE_TEXT_GrandTotem
