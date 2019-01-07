@@ -251,7 +251,7 @@ struct PokemonSubstruct3
 
     /*0x02*/ u16 metLevel:7;
     /*0x02*/ u16 metGame:4;
-    /*0x03*/ u16 pokeball:4;
+    /*0x03*/ u16 filler4b:4;
     /*0x03*/ u16 otGender:1;
 
     /*0x04*/ u32 hpIV:5;
@@ -263,9 +263,8 @@ struct PokemonSubstruct3
     /*0x07*/ u32 isEgg:1;
     /*0x07*/ u32 altAbility:1;
 
-    /*0x08*/ u32 coolRibbon:3;
-    /*0x08*/ u32 beautyRibbon:3;
-    /*0x08*/ u32 cuteRibbon:3;
+    /*0x08*/ u32 pokeball:6;
+    /*0x08*/ u32 cuteRibbon:3; //all these ribbons & fateful encounter can be trashed
     /*0x09*/ u32 smartRibbon:3;
     /*0x09*/ u32 toughRibbon:3;
     /*0x09*/ u32 championRibbon:1;
@@ -281,7 +280,7 @@ struct PokemonSubstruct3
     /*0x0B*/ u32 giftRibbon6:1;
     /*0x0B*/ u32 giftRibbon7:1;
     /*0x0B*/ u32 fatefulEncounter:1; // unused in Ruby/Sapphire
-	/*0x0B*/ u32 rarity:4; //controls the Pokemon's palette, set by PID
+	/*0x0B*/ u32 rarity:4; //controls the Pokemon's palette in trainer battles
 };
 
 union PokemonSubstruct

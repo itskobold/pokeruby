@@ -732,6 +732,15 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
 			}
 			break;
 		}
+		case MEDICINE_GROUP_BALL:
+		{
+			if (GetMonData(pkmn, MON_DATA_POKEBALL) == item)
+				return TRUE;
+
+			SetMonData(pkmn, MON_DATA_POKEBALL, &item);
+			retVal = FALSE;
+			break;
+		}
 	}
 	
     return retVal;

@@ -36,6 +36,7 @@ void task08_080A1C44(u8);
 u8 CanUseEscapeRopeOnCurrMap(void);
 void ItemUseOutOfBattle_EscapeRope(u8);
 void ItemUseOutOfBattle_EvolutionStone(u8);
+void ItemUseOutOfBattle_PokeBall(u8);
 void ItemUseInBattle_PokeBall(u8);
 void ItemUseInBattle_StatIncrease(u8);
 void ItemUseInBattle_Medicine(u8);

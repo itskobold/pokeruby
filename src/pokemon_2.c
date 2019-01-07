@@ -499,12 +499,6 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
     case MON_DATA_ALT_ABILITY:
         retVal = substruct3->altAbility;
         break;
-    case MON_DATA_COOL_RIBBON:
-        retVal = substruct3->coolRibbon;
-        break;
-    case MON_DATA_BEAUTY_RIBBON:
-        retVal = substruct3->beautyRibbon;
-        break;
     case MON_DATA_CUTE_RIBBON:
         retVal = substruct3->cuteRibbon;
         break;
@@ -586,8 +580,6 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
         retVal = 0;
         if (substruct0->species && !substruct3->isEgg)
         {
-            retVal += substruct3->coolRibbon;
-            retVal += substruct3->beautyRibbon;
             retVal += substruct3->cuteRibbon;
             retVal += substruct3->smartRibbon;
             retVal += substruct3->toughRibbon;
@@ -610,8 +602,6 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
         if (substruct0->species && !substruct3->isEgg)
         {
             retVal = substruct3->championRibbon
-                | (substruct3->coolRibbon << 1)
-                | (substruct3->beautyRibbon << 4)
                 | (substruct3->cuteRibbon << 7)
                 | (substruct3->smartRibbon << 10)
                 | (substruct3->toughRibbon << 13)
@@ -870,12 +860,6 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const u8 *data)
         break;
     case MON_DATA_ALT_ABILITY:
         SET8(substruct3->altAbility);
-        break;
-    case MON_DATA_COOL_RIBBON:
-        SET8(substruct3->coolRibbon);
-        break;
-    case MON_DATA_BEAUTY_RIBBON:
-        SET8(substruct3->beautyRibbon);
         break;
     case MON_DATA_CUTE_RIBBON:
         SET8(substruct3->cuteRibbon);

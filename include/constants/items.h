@@ -14,6 +14,7 @@
 #define MEDICINE_GROUP_TYPE_MODIFIER	11
 #define MEDICINE_GROUP_ABILITY_MODIFIER	12
 #define MEDICINE_GROUP_NATURE_MODIFIER	13
+#define MEDICINE_GROUP_BALL				14
 
 #define ITEM_NONE 0
 #define ITEM_MASTER_BALL 		1 // Balls
@@ -463,6 +464,6 @@
 #define NUM_HIDDEN_MACHINES     8
 
 // Check if the item is one that can be used on a Pokemon.
-#define IS_POKEMON_ITEM(item) ((item) >= ITEM_POTION && (item) <= ITEM_STARF_BERRY)
+#define IS_POKEMON_ITEM(item) ((item) <= ITEM_STARF_BERRY)
 
 #endif  // GUARD_CONSTANTS_ITEMS_H

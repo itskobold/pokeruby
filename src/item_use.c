@@ -1018,6 +1018,12 @@ void ItemUseOutOfBattle_EvolutionStone(u8 taskId)
     SetPokemonItemUseAndFadeOut(taskId);
 }
 
+void ItemUseOutOfBattle_PokeBall(u8 taskId)
+{
+    gPokemonItemUseCallback = DoBallSwapItemEffect;
+    SetPokemonItemUseAndFadeOut(taskId);
+}
+
 void ItemUseInBattle_PokeBall(u8 taskId)
 {
     if (PlayerPartyAndPokemonStorageFull() == FALSE) // have room for mon?

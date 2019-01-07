@@ -33,6 +33,7 @@
 #include "string_util.h"
 #include "strings.h"
 #include "task.h"
+#include "text.h"
 #include "scanline_effect.h"
 #include "util.h"
 #include "script_pokemon_80F9.h"
@@ -4531,6 +4532,75 @@ void Task_HandleItemUseMoveMenuInput(u8 taskId)
         PlaySE(SE_SELECT);
         gUnknown_08376B54[1](taskId);
     }
+}
+
+void DoBallSwap(u8 taskId)
+{
+    if (ExecuteTableBasedItemEffect__(ewram1C000.primarySelectedMonIndex, ewram1C000.secondarySelectedIndex, gTasks[taskId].data[11]))
+    {
+        gUnknown_0202E8F4 = 0;
+        PlaySE(SE_SELECT);
+        sub_806E834(gOtherText_WontHaveAnyEffect, 1);
+    }
+    else
+    {
+//        gUnknown_0202E8F4 = 1;
+        RemoveBagItem(ewram1C000.secondarySelectedIndex, 1);
+//        GetMedicineItemEffectMessage(ewram1C000.secondarySelectedIndex);
+//        sub_806E834(gStringVar4, 1);
+    }
+	CreateTask(sub_806FB0C, 5);
+}
+
+void DoBallSwapItemEffect(u8 taskId, u16 item, TaskFunc c)
+{
+    u8 medicineGroup;
+    u8 taskId2;
+
+    medicineGroup = ItemId_GetMedicineGroup(item);
+    gTasks[taskId].func = TaskDummy;
+    taskId2 = CreateTask(TaskDummy, 5);
+    sub_806E8D0(taskId, item, c);
+    if (medicineGroup != MEDICINE_GROUP_BALL || GetMonData(&gPlayerParty[ewram1C000.primarySelectedMonIndex], MON_DATA_POKEBALL) == item)
+    {
+        gTasks[taskId2].data[11] = 0;
+        DoBallSwap(taskId2);
+    }
+    else
+    {
+		Menu_EraseWindowRect(23, 8, 29, 13);
+		PlaySE(SE_SELECT);
+		GetMonNickname(ewram1C000.pokemon, gStringVar1);
+		CopyItemName(item, gStringVar2);
+		StringExpandPlaceholders(gStringVar4, OtherText_MoveMonIntoBall);
+		sub_806E834(gStringVar4, 1);
+		gTasks[taskId].func = BallSwapDisplayYesNoMenu;
+    }
+}
+
+void BallSwapDisplayYesNoMenu(u8 taskId)
+{
+	if (gUnknown_0202E8F6 == 0)
+	{
+		DisplayYesNoMenu(23, 8, 1);
+		gTasks[taskId].func = BallSwapYesNoHandler;
+	}
+}
+
+void BallSwapYesNoHandler(u8 taskId)
+{
+	s8 selection;
+	
+	selection = Menu_ProcessInputNoWrap_();
+	switch (Menu_ProcessInputNoWrap_())
+	{
+	case 0:     //YES
+		DoBallSwap(taskId);
+		break;
+	case -1:    //B button
+	case 1:     //NO
+		CreateTask(sub_806FB0C, 5);
+	}
 }
 
 void DoPPRecoveryItemEffect(u8 taskId, u16 item, TaskFunc c)

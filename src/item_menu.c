@@ -209,9 +209,9 @@ static const u8 sItemPopupMenuChoicesTable[][6] =
 
     [BAG_POCKET_POKE_BALLS] =
     {
-        ITEM_ACTION_GIVE,
+        ITEM_ACTION_USE_0,
         ITEM_ACTION_TOSS,
-        ITEM_ACTION_NONE,
+        ITEM_ACTION_GIVE,
         ITEM_ACTION_CANCEL_2,
     },
 
@@ -225,7 +225,7 @@ static const u8 sItemPopupMenuChoicesTable[][6] =
 
     [BAG_POCKET_BERRIES] =
     {
-        ITEM_ACTION_CHECK_TAG,
+        ITEM_ACTION_CHECK_TAG, //change this to crush
         ITEM_ACTION_USE_0,
         ITEM_ACTION_TOSS,
         ITEM_ACTION_NONE,

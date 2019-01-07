@@ -414,6 +414,7 @@ const u8 OtherText_ThreePokeNeeded[] = _("Three POKéMON are needed.");
 const u8 OtherText_PokeCantBeSame[] = _("POKéMON can't be the same.");
 const u8 OtherText_NoIdenticalHoldItems[] = _("No identical hold items.");
 const u8 OtherText_TeachWhichPoke[] = _("Teach which POKéMON?");
+const u8 OtherText_MoveMonIntoBall[] = _("Move {STR_VAR_1} into\nthe {STR_VAR_2}?\pThe ball it is currently\nin will be lost.");
 const u8 gOtherText_Attack[] = _("ATTACK");
 const u8 gOtherText_Defense[] = _("DEFENSE");
 const u8 gOtherText_SpAtk[] = _("SP. ATK");

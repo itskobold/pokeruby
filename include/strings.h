@@ -397,6 +397,7 @@ extern const u8 OtherText_ThreePokeNeeded[];
 extern const u8 OtherText_PokeCantBeSame[];
 extern const u8 OtherText_NoIdenticalHoldItems[];
 extern const u8 OtherText_TeachWhichPoke[];
+extern const u8 OtherText_MoveMonIntoBall[];
 extern const u8 gOtherText_Attack[];
 extern const u8 gOtherText_Defense[];
 extern const u8 gOtherText_SpAtk[];
