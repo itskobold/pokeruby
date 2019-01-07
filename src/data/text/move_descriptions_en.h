@@ -636,7 +636,7 @@ static const u8 MoveDescription_Sharpen[] = _(
 
 static const u8 MoveDescription_Conversion[] = _(
     "Changes the user's type\n"
-    "into an own move's type.");
+    "into a known move's type.");
 
 static const u8 MoveDescription_TriAttack[] = _(
     "Fires three types of beams\n"

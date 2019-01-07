@@ -13,9 +13,7 @@ MauvilleCity_Mart_EventScript_1573BE:: @ 81573BE
 
 	.align 2
 MauvilleCity_Mart_Items:: @ 81573D8
-	.2byte ITEM_GREAT_BALL
-	.2byte ITEM_PREMIER_BALL
-	.2byte ITEM_TIMER_BALL
+	.2byte ITEM_RARE_CANDY
 	.2byte ITEM_NONE
 	release
 	end

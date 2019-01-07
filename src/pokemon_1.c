@@ -1661,10 +1661,18 @@ u16 GenerateSuperRandomMove(u8 moveType1, u8 moveType2)
 {
 	u16 move;
 	u8 chance = Random() % 100;
+	u8 stabChance = 40; //chance of generating a stab move
+	
+	//if both mon types are normal, 35% chance of generating a STAB move (so 50% chance of a normal move total) & 50% chance of a totally random move
+	if (moveType1 == TYPE_NORMAL && moveType2 == TYPE_NORMAL)
+		stabChance = 75;
+	//if just one type is normal, 45% chance of generating a STAB move (approx 38% chance of a normal move) & approx 72% chance of a non-normal type move
+	else if (moveType1 == TYPE_NORMAL || moveType2 == TYPE_NORMAL)
+		stabChance = 55;
 	
 	do
 	{
-		if (chance > 40) //60% - generate STAB move
+		if (chance > stabChance) //generate STAB move
 		{
 			do
 			{
@@ -1674,7 +1682,7 @@ u16 GenerateSuperRandomMove(u8 moveType1, u8 moveType2)
 			}
 			while (moveType1 != gBattleMoves[move].type || moveType2 != gBattleMoves[move].type);
 		}
-		else if (chance > 15) //25% - generate totally random move
+		else if (chance > 15) //generate totally random move
 		{
 			move = Random() % NUM_MOVES;
 		}

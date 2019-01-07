@@ -8,8 +8,6 @@ gTypeNames:: @ 81F9870
 	.string "BUG$", 7
 	.string "GHOST$", 7
 	.string "STEEL$", 7
-//HOENNISLES
-//	.string "???$", 7 not commented out in vanilla
 	.string "FIRE$", 7
 	.string "WATER$", 7
 	.string "GRASS$", 7
@@ -18,9 +16,7 @@ gTypeNames:: @ 81F9870
 	.string "ICE$", 7
 	.string "DRAGON$", 7
 	.string "DARK$", 7
-//HOENNISLES START
 	.string "AUDIO$", 7
 	.string "COSMIC$", 7
 	.string "FAIRY$", 7
 	.string "NULL$", 7
-//HOENNISLES END

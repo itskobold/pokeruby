@@ -11918,55 +11918,26 @@ static void atk8F_forcerandomswitch(void)
 
 static void atk90_tryconversiontypechange(void)
 {
-    //randomly changes user's type to one of its moves' type
-    u8 valid_moves = 0;
-    u8 checked_move;
     u8 move_type;
-    while (valid_moves < 4)
-    {
-        if (gBattleMons[gBankAttacker].moves[valid_moves] == 0)
-            break;
-        valid_moves++;
-    }
 
-    for (checked_move = 0; checked_move < valid_moves; checked_move++)
-    {
-        move_type = gBattleMoves[gBattleMons[gBankAttacker].moves[checked_move]].type;
+	move_type = gBattleMoves[gBattleMons[gBankAttacker].moves[0]].type;
 
-        if (move_type != gBattleMons[gBankAttacker].type1 && move_type != gBattleMons[gBankAttacker].type2)
-            break;
-    }
+	//fails if already the conversion type
+	if (move_type == gBattleMons[gBankAttacker].type1 && move_type == gBattleMons[gBankAttacker].type2)
+	{
+		gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
+		return;
+	}
 
-    if (checked_move == valid_moves)
-    {
-        gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
-    }
-    else
-    {
-        do
-        {
+	gBattleMons[gBankAttacker].type1 = move_type;
+	gBattleMons[gBankAttacker].type2 = move_type;
 
-            while ((checked_move = Random() & 3) >= valid_moves);
+	gBattleTextBuff1[0] = 0xFD;
+	gBattleTextBuff1[1] = 3;
+	gBattleTextBuff1[2] = move_type;
+	gBattleTextBuff1[3] = 0xFF;
 
-            move_type = gBattleMoves[gBattleMons[gBankAttacker].moves[checked_move]].type;
-
-			if (gBattleMons[gBankAttacker].type1 == TYPE_GHOST || gBattleMons[gBankAttacker].type2 == TYPE_GHOST)
-				move_type = TYPE_GHOST;
-			else
-				move_type = TYPE_NORMAL;
-
-        } while (move_type == gBattleMons[gBankAttacker].type1 || move_type == gBattleMons[gBankAttacker].type2);
-
-        gBattleMons[gBankAttacker].type1 = move_type;
-        gBattleMons[gBankAttacker].type2 = move_type;
-
-        gBattleTextBuff1[0] = 0xFD;
-        gBattleTextBuff1[1] = 3;
-        gBattleTextBuff1[2] = move_type;
-        gBattleTextBuff1[3] = 0xFF;
-
-        gBattlescriptCurrInstr += 5;
-    }
+	gBattlescriptCurrInstr += 5;
 }
 
 static void atk91_givepaydaymoney(void)

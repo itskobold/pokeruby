@@ -4543,12 +4543,8 @@ void DoBallSwap(u8 taskId)
         sub_806E834(gOtherText_WontHaveAnyEffect, 1);
     }
     else
-    {
-//        gUnknown_0202E8F4 = 1;
         RemoveBagItem(ewram1C000.secondarySelectedIndex, 1);
-//        GetMedicineItemEffectMessage(ewram1C000.secondarySelectedIndex);
-//        sub_806E834(gStringVar4, 1);
-    }
+
 	CreateTask(sub_806FB0C, 5);
 }
 
